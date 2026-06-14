@@ -220,10 +220,13 @@
         : Math.round((it.my_progress || 0) / total * 100);
       const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+      const coverBg = it.cover_url
+        ? `<div class="absolute inset-0 bg-cover bg-center" style="background-image:url('${escapeHtml(it.cover_url)}')"></div>`
+        : `<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>`;
 
       return `
         <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" data-content-id="${it.id}">
-          <div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>
+          ${coverBg}
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
           <div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg">${score}</div>
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
@@ -327,6 +330,38 @@
       item.my_progress = v;
       apiPost('/api/content/' + id + '/progress', { progress: v });
     };
+
+    // Bölümler tab
+    const epsTabEl = document.getElementById('detail-tab-episodes');
+    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id);
+
+    // Siteler tab
+    const sitesTabEl = document.getElementById('detail-tab-sites');
+    if (sitesTabEl) renderDetailSites(sitesTabEl, item.sites || [], id);
+
+    // Notlar tab
+    const notesArea = document.getElementById('detail-notes-area');
+    if (notesArea) {
+      notesArea.value = item.note_text || '';
+      const isSpoiler = !!item.note_is_spoiler;
+      notesArea.classList.toggle('blur-sm', isSpoiler);
+      const overlay = document.getElementById('detail-spoiler-overlay');
+      if (overlay) overlay.style.display = isSpoiler ? 'flex' : 'none';
+      const spoilerToggle = document.getElementById('detail-spoiler-toggle');
+      if (spoilerToggle) {
+        spoilerToggle.checked = isSpoiler;
+        spoilerToggle.onchange = function() {
+          apiPatch('/api/content/' + id, { note_is_spoiler: this.checked }).catch(function() {});
+        };
+      }
+      clearTimeout(notesArea._saveTimer);
+      notesArea.oninput = function() {
+        clearTimeout(this._saveTimer);
+        this._saveTimer = setTimeout(function() {
+          apiPatch('/api/content/' + id, { note_text: notesArea.value }).catch(function() {});
+        }, 1000);
+      };
+    }
 
     renderDetailTags(id, item.tags || []);
   }
@@ -576,6 +611,112 @@
 
     renderTagSettings();
     renderTagColorPicker();
+  }
+
+  // ── Detail Tab Yardımcıları ──────────────────────────────────────
+
+  function renderDetailEpisodes(el, episodes, contentId) {
+    if (!episodes.length) {
+      el.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm kaydı yok</p></div>';
+      return;
+    }
+    el.innerHTML = episodes.map(function(e) {
+      if (e.is_watched) {
+        return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">' +
+          '<div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm ' + e.number + '</span>' +
+          (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
+          '</div><div class="min-w-[44px] min-h-[44px] flex items-center justify-end">' +
+          '<div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50">' +
+          '<span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div></div>';
+      }
+      return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e] border ' + (e.is_new ? 'border-[#00d4ff]/30 active-rim' : 'border-white/5') + '">' +
+        '<div class="flex flex-col"><span class="font-headline-sm text-headline-sm ' + (e.is_new ? 'text-[#00d4ff]' : 'text-[#e1e0ff]') + '">Bölüm ' + e.number + '</span>' +
+        (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
+        '</div><div class="flex items-center gap-2">' +
+        (e.is_new ? '<span class="px-2 py-1 bg-[#00d4ff]/10 text-[#00d4ff] font-label-caps text-label-caps rounded uppercase text-[9px]">YENİ</span>' : '') +
+        '<button class="ep-watch-btn min-w-[44px] min-h-[44px] flex items-center justify-end cursor-pointer" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
+        '<div class="w-6 h-6 rounded bg-[#31324d] flex items-center justify-center border border-white/10 hover:border-[#00d4ff] transition-colors"></div></button>' +
+        '</div></div>';
+    }).join('');
+
+    el.querySelectorAll('.ep-watch-btn').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        const epId = parseInt(this.dataset.epId, 10);
+        const cid = parseInt(this.dataset.contentId, 10);
+        try {
+          await apiPatch('/api/episodes/' + epId + '/watch', {});
+          renderDetail(cid);
+        } catch(e) { console.error('ep watch', e); }
+      });
+    });
+  }
+
+  function renderDetailSites(el, sites, contentId) {
+    const sitesHtml = sites.length
+      ? sites.map(function(s) {
+          const abbr = (s.site_name || '?').slice(0, 2).toUpperCase();
+          return '<div class="p-4 rounded-xl bg-[#16213e] border border-[#00d4ff]/20 inner-glow flex justify-between items-center gap-2">' +
+            '<div class="flex items-center gap-3 min-w-0">' +
+            '<div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold flex-shrink-0">' + abbr + '</div>' +
+            '<div class="flex flex-col min-w-0">' +
+            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + '</span>' +
+            (s.is_primary ? '<span class="text-[10px] text-[#00d4ff]">Ana Site</span>' : '') +
+            '</div></div>' +
+            '<div class="flex items-center gap-2 flex-shrink-0">' +
+            '<a href="' + escapeHtml(s.site_url) + '" target="_blank" rel="noopener" class="px-3 py-2 bg-[#31324d] border border-white/10 rounded-lg text-[#e1e0ff] text-[13px] hover:text-[#00d4ff] transition-colors flex items-center gap-1 active:scale-[0.97]">' +
+            'Aç <span class="material-symbols-outlined text-[16px]">open_in_new</span></a>' +
+            '<button class="site-delete-btn w-8 h-8 flex items-center justify-center text-[#9090b0] hover:text-[#ffb4ab] transition-colors rounded-lg hover:bg-white/5" data-site-id="' + s.id + '" data-content-id="' + contentId + '">' +
+            '<span class="material-symbols-outlined text-[18px]">delete</span></button>' +
+            '</div></div>';
+        }).join('')
+      : '<div class="text-center text-[#9090b0] py-6 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">link_off</span><p>Henüz site eklenmemiş</p></div>';
+
+    el.innerHTML = sitesHtml +
+      '<button id="detail-site-add-toggle" class="flex items-center gap-2 text-[13px] text-[#9090b0] hover:text-[#00d4ff] transition-colors pt-2 pb-1">' +
+      '<span class="material-symbols-outlined text-[16px]">add_circle</span> Site Ekle</button>' +
+      '<div id="detail-site-add-form" class="hidden flex-col gap-2 pt-1">' +
+      '<input id="detail-site-name" class="w-full h-[44px] px-3 bg-[#16213e] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 placeholder:text-[#9090b0]" placeholder="Site adı (ör. Crunchyroll)" type="text"/>' +
+      '<input id="detail-site-url" class="w-full h-[44px] px-3 bg-[#16213e] border border-white/5 rounded-lg text-[12px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 placeholder:text-[#9090b0] font-mono" placeholder="https://..." type="text"/>' +
+      '<div class="flex gap-2 items-center">' +
+      '<label class="flex items-center gap-2 text-[13px] text-[#9090b0] cursor-pointer">' +
+      '<input id="detail-site-primary" type="checkbox" class="accent-[#00d4ff]"/> Ana Site</label>' +
+      '<button id="detail-site-save-btn" class="ml-auto h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[13px] font-medium hover:bg-[#00d4ff]/20 active:scale-[0.97] transition-colors" data-content-id="' + contentId + '">Kaydet</button>' +
+      '</div></div>';
+
+    el.querySelector('#detail-site-add-toggle').addEventListener('click', function() {
+      const form = el.querySelector('#detail-site-add-form');
+      const hidden = form.classList.contains('hidden');
+      form.classList.toggle('hidden', !hidden);
+      form.classList.toggle('flex', hidden);
+    });
+
+    el.querySelector('#detail-site-save-btn').addEventListener('click', async function() {
+      const cid = parseInt(this.dataset.contentId, 10);
+      const nameEl = el.querySelector('#detail-site-name');
+      const urlEl = el.querySelector('#detail-site-url');
+      const primaryEl = el.querySelector('#detail-site-primary');
+      const name = nameEl ? nameEl.value.trim() : '';
+      const url = urlEl ? urlEl.value.trim() : '';
+      if (!name || !url) { showToast('Ad ve URL gerekli', 'error'); return; }
+      try {
+        await apiPost('/api/content/' + cid + '/sites', { site_name: name, site_url: url, is_primary: primaryEl ? primaryEl.checked : false });
+        const updated = await apiGet('/api/content/' + cid);
+        renderDetailSites(el, updated.sites || [], cid);
+        showToast('Site eklendi', 'success');
+      } catch(e) { showToast('Eklenemedi: ' + e.message, 'error'); }
+    });
+
+    el.querySelectorAll('.site-delete-btn').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        const sid = parseInt(this.dataset.siteId, 10);
+        const cid = parseInt(this.dataset.contentId, 10);
+        try {
+          await apiDelete('/api/sites/' + sid);
+          const updated = await apiGet('/api/content/' + cid);
+          renderDetailSites(el, updated.sites || [], cid);
+        } catch(e) { showToast('Site silinemedi', 'error'); }
+      });
+    });
   }
 
   // ── Tag Yönetimi ─────────────────────────────────────────────────
