@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-1) · **Aktif sürüm:** v0.1.0 · **Son commit:** `2974da6`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-2) · **Aktif sürüm:** v0.1.0 · **Son commit:** `2974da6`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -32,15 +32,35 @@ SIRADAKI GÖREV (öncelik sırası):
 2. Stitch çıktısı gelince → frontend/ klasörüne koy
 3. Post-Stitch checklist uygula (DESIGN.md'de var)
 4. Backend yazmaya başla:
-   - backend/database.py (SQLite async engine)
-   - backend/models.py (6 ORM model)
+   - backend/database.py (SQLite async engine + aiosqlite)
+   - backend/models.py (Content, Site, Episode, Update, Tag, ContentTag — TrackingSession MVP dışı)
    - backend/main.py (FastAPI app)
-   - backend/routers/content.py (CRUD)
+   - backend/routers/content.py (CRUD + /api/discover)
 ```
 
 ---
 
 ## 🎯 NEREDE KALDIK
+
+### ✅ Sohbet-2'de Tamamlananlar (14 Haz 2026)
+
+**MD Araştırma + Düzeltme:**
+- YAPI.md: `Update` tablosu eklendi, APScheduler çelişkisi giderildi, 6 eksik endpoint eklendi
+- YAPI.md: Manhwa = `type: MANGA, countryOfOrigin: KR` (AniList'te ayrı tip yok)
+- YAPI.md: `my_score` nullable, `external_id` + `my_progress_pct` alanları eklendi
+- YAPI.md: TrackingSession → MVP DIŞI, IGDB token cache + VAPID config eklendi
+- YAPI.md: AniList rate limit (90/dk), IGDB token ömrü (~60 gün), MangaDex API (FAZ-2) belgelendi
+- YAPI.md: `nextChapter` yok → manga güncelleme = `API.chapters > DB.total_chapters` karşılaştırması
+- FEATURE_MAP.md: Backend checklist güncellendi (TrackingSession MVP dışı, doğru router listesi)
+- Klasör yapısı: `tracking.py` kaldırıldı → `settings.py` + doğru router isimleri
+
+**Araştırma Özeti (Sohbet-2):**
+- AniList: 90 req/dk limit, `chapters` field manga güncelleme tespiti için
+- IGDB: Twitch token ~60 gün, `cover.image_id` → URL prefix ekle
+- MAL OAuth: localhost:5050 redirect, single-user için yeterli
+- Web Push: `pywebpush` + `py-vapid`, VAPID keys config.json'da
+- CSS Donut chart: SVG `stroke-dasharray` veya `conic-gradient()` (kütüphane yok)
+- MangaDex API: auth yok, `/manga/{id}/feed` son chapter için
 
 ### ✅ Sohbet-1'de Tamamlananlar (14 Haz 2026)
 
