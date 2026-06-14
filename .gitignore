@@ -1,6 +1,9 @@
 memory/kurowatch.db
 memory/*.db
+backend/config.json
+downloads/
 __pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 .env
