@@ -1,0 +1,28 @@
+/*
+ * KuroWatch — style.css
+ *
+ * Bu dosya Faz B'de Tailwind CLI standalone tarafından doldurulacak.
+ * Şu an Tailwind CDN aktif olduğundan, sadece SPA için custom CSS variable
+ * tanımları burada tutulur.
+ *
+ * Faz B build komutu:
+ *   tailwindcss.exe -i tailwind-input.css --content "index.html" -o style.css --minify
+ */
+
+:root {
+  --kw-bg:               #0d0d1a;
+  --kw-surface:          #16213e;
+  --kw-surface-low:      #181933;
+  --kw-surface-high:     #272842;
+  --kw-card:             #1a1a2e;
+  --kw-accent:           #00d4ff;
+  --kw-accent-dim:       #3cd7ff;
+  --kw-secondary:        #bbc5eb;
+  --kw-tertiary:         #ffd9a1;
+  --kw-error:            #ffb4ab;
+  --kw-text:             #e1e0ff;
+  --kw-text-dim:         #9090b0;
+  --kw-text-variant:     #bbc9cf;
+  --kw-outline:          #859398;
+  --kw-outline-variant:  #3c494e;
+}

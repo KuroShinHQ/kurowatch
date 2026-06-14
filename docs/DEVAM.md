@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-4) · **Aktif sürüm:** v0.1.0 · **Son commit:** `f48f9f8`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-5) · **Aktif sürüm:** v0.1.0 · **Son commit:** `25812d2` + frontend (commit pending)
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,17 +10,37 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-4):
-✅ Stitch AI tamamlandı: 9 ekran üretildi
-   C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
-✅ Stitch çıktısı analiz edildi — 5 kritik sorun (CDN/renk/ayrı HTML/token/JS yok)
-✅ Mimari kesinleşti: PC + Termux bağımsız instance, JSON sync
-✅ Tüm MD'ler güncellendi (DEVAM + FEATURE_MAP + YAPI + DESIGN)
+EN SON YAPILAN (14 Haz sohbet-5) — FAZ-A + Faz-C + Faz-D Frontend Build TAMAM:
 
-SIRADAKİ GÖREV: PC Frontend Build
-frontend/index.html oluştur → 9 Stitch ekranını tek SPA'ya birleştir
-Detaylar: FEATURE_MAP.md "Frontend Build Checklist Faz A-D"
-Stitch dosyaları: C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+✅ frontend/ klasörü dolu (10 dosya):
+   - index.html      → 7 section + 2 modal SPA shell (75KB, Tailwind CDN ile çalışır)
+   - app.js          → navigasyon + 5 mock item + apiGet/apiPost (USE_MOCK=true)
+   - debug-logger.js → KuroLog overlay (?kurodev=1 veya logo 3x tık)
+   - i18n.js         → TR/EN data-i18n sistemi + localStorage.kw_lang
+   - locales/tr.json + en.json → 89 anahtar
+   - manifest.json   → PWA: theme #00d4ff, bg #0d0d1a
+   - sw.js           → cache-first shell + network-first /api/*
+   - style.css       → :root custom property tanımları (Faz B'de Tailwind CLI doldurur)
+   - icons/icon.svg  → KuroWatch göz logosu
+
+✅ Renk drift fix:
+   - archive/add/conflict/search → bg #0d0d1a (önceden #111125 / #0e1417 / #10112a)
+   - Tüm #a8e8ff → #00d4ff
+✅ TR çeviri: tüm UI Türkçe
+
+✅ HTTP server testi başarılı: tüm dosyalar 200 OK (app.js 21KB, sw.js 2.5KB, tr.json 3.3KB)
+
+SIRADAKI GÖREV (sohbet-6 / Faz B):
+1. Tarayıcıda görsel test: python -m http.server 8099 --directory frontend
+   → http://localhost:8099
+   → Kontrol: bottom nav 5 tab, add modal, conflict modal, archive back, stats chart animasyon
+2. Faz B — CDN kaldırma:
+   - Tailwind CLI standalone indir → tools/tailwindcss.exe
+   - tailwind-input.css + tailwind.config.js
+   - Material Symbols Outlined → 18 lokal SVG ikon (Phosphor/Heroicons)
+   - index.html'den CDN script/link satırları kaldır
+3. PWA icon PNG (192/512) — Python ile SVG → PNG
+4. Backend: backend/database.py + models.py + main.py (FastAPI :8099)
 
 KESİNLEŞEN KARARLAR (bu sohbette):
 - Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
