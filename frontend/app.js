@@ -185,7 +185,32 @@
   window.kuroNav = { show: showScreen, openModal: openModal, closeModal: closeModal };
 
   // ── Render: Home (Kütüphane Grid) ────────────────────────────────
-  let homeFilter = { type: 'all', status: 'all', query: '' };
+  let homeFilter = { type: 'all', status: 'all', genre: 'all', query: '' };
+
+  function _buildGenreChips(items) {
+    const row = document.getElementById('home-genre-row');
+    if (!row) return;
+    const genreSet = new Set();
+    items.forEach(function(it) { (it.genres || []).forEach(function(g) { genreSet.add(g); }); });
+    const genres = Array.from(genreSet).sort();
+    if (genres.length === 0) { row.classList.add('hidden'); return; }
+    row.classList.remove('hidden');
+    const chipClass = 'filter-genre shrink-0 font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow border';
+    const activeClass = 'bg-[#00d4ff]/15 border-[#00d4ff] text-[#00d4ff]';
+    const inactiveClass = 'bg-[#1c1d37] border-white/5 text-[#9090b0]';
+    const allActive = homeFilter.genre === 'all';
+    row.innerHTML = '<button class="' + chipClass + ' shrink-0 ' + (allActive ? 'bg-[#3b4665] border-[#3b4665] text-[#e1e0ff]' : inactiveClass) + '" data-genre="all">TÜM TÜRLER</button>' +
+      genres.map(function(g) {
+        const on = homeFilter.genre === g;
+        return '<button class="' + chipClass + ' ' + (on ? activeClass : inactiveClass) + '" data-genre="' + escapeHtml(g) + '">' + escapeHtml(g).toUpperCase() + '</button>';
+      }).join('');
+    row.querySelectorAll('.filter-genre').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        homeFilter.genre = this.dataset.genre;
+        renderHome();
+      });
+    });
+  }
 
   async function renderHome() {
     const grid = document.getElementById('home-library-grid');
@@ -199,10 +224,22 @@
       return;
     }
 
+    // Genre chip satırını doldur
+    _buildGenreChips(items);
+
+    // Background: genres boş ama external_id varsa otomatik patch
+    const needsPatch = items.some(function(it) { return it.external_id && (!it.genres || it.genres.length === 0); });
+    if (needsPatch) {
+      apiPost('/api/genres/patch-all', {}).then(function(res) {
+        if (res.patched > 0) renderHome();
+      }).catch(function() {});
+    }
+
     // Filtrele
     const filtered = items.filter(it => {
       if (homeFilter.type !== 'all' && it.type !== homeFilter.type) return false;
       if (homeFilter.status !== 'all' && it.status !== homeFilter.status) return false;
+      if (homeFilter.genre !== 'all' && !(it.genres || []).includes(homeFilter.genre)) return false;
       if (homeFilter.query && !it.title.toLowerCase().includes(homeFilter.query.toLowerCase())) return false;
       return true;
     });
@@ -758,6 +795,24 @@
     // Versiyon
     const verEl = document.getElementById('settings-version');
     if (verEl) verEl.textContent = 'v0.3.0 — Medya Takip Uygulaması';
+
+    // Türleri AniList'ten Güncelle butonu
+    const genresPatchBtn = document.getElementById('settings-genres-patch-btn');
+    if (genresPatchBtn) {
+      genresPatchBtn.onclick = async function() {
+        const icon = this.querySelector('.material-symbols-outlined');
+        const orig = this.querySelector('span.text-\\[\\#e1e0ff\\]');
+        if (orig) orig.textContent = 'Güncelleniyor...';
+        try {
+          const res = await apiPost('/api/genres/patch-all', {});
+          showToast(res.patched + ' içeriğe tür eklendi', res.patched > 0 ? 'success' : 'info');
+          if (orig) orig.textContent = 'Türleri AniList\'ten Güncelle';
+        } catch (e) {
+          showToast('Hata: ' + e.message, 'error');
+          if (orig) orig.textContent = 'Türleri AniList\'ten Güncelle';
+        }
+      };
+    }
 
     renderTagSettings();
     renderTagColorPicker();
