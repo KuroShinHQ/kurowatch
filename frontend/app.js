@@ -364,6 +364,83 @@
     }
 
     renderDetailTags(id, item.tags || []);
+
+    // ── AniList: Synopsis + nextAiringEpisode ─────────────────────
+    const synSec    = document.getElementById('detail-synopsis-section');
+    const naeEl     = document.getElementById('detail-next-airing');
+    const naeTxt    = document.getElementById('detail-next-airing-text');
+    const synWrap   = document.getElementById('detail-synopsis-wrap');
+    const synEl     = document.getElementById('detail-synopsis-text');
+    const synToggle = document.getElementById('detail-synopsis-toggle');
+
+    // Reset
+    if (synSec)    synSec.style.display    = 'none';
+    if (naeEl)     naeEl.style.display     = 'none';
+    if (synWrap)   synWrap.style.display   = 'none';
+    if (synToggle) synToggle.style.display = 'none';
+    if (synEl)     synEl.style.webkitLineClamp = '3';
+
+    if (item.external_id) {
+      apiGet('/api/content/' + id + '/anilist').then(function(al) {
+        var showSection = false;
+
+        // nextAiringEpisode
+        if (al.next_airing_episode && naeEl && naeTxt) {
+          var ms = al.next_airing_episode.airing_at * 1000 - Date.now();
+          if (ms > 0) {
+            var days  = Math.floor(ms / 86400000);
+            var hours = Math.floor((ms % 86400000) / 3600000);
+            var mins  = Math.floor((ms % 3600000) / 60000);
+            var timeStr;
+            if (days > 0)       timeStr = days + ' gün' + (hours > 0 ? ' ' + hours + ' saat' : '') + ' sonra';
+            else if (hours > 0) timeStr = hours + ' saat ' + mins + ' dk sonra';
+            else                timeStr = mins + ' dk sonra';
+            naeTxt.textContent = 'Bölüm ' + al.next_airing_episode.episode + ' — ' + timeStr + ' yayınlanıyor';
+            naeEl.style.display = 'flex';
+            showSection = true;
+          }
+        }
+
+        // Synopsis
+        if (al.synopsis && synEl && synWrap) {
+          var tmp = document.createElement('div');
+          tmp.innerHTML = al.synopsis;
+          var text = (tmp.textContent || tmp.innerText || '').trim();
+          if (text) {
+            synEl.textContent = text;
+            synWrap.style.display = 'flex';
+            showSection = true;
+            if (text.length > 200 && synToggle) {
+              synEl.style.webkitLineClamp = '3';
+              synEl.style.overflow = 'hidden';
+              synToggle.style.display = '';
+              var expanded = false;
+              synToggle.textContent = 'Devamını Gör';
+              synToggle.onclick = function() {
+                expanded = !expanded;
+                if (expanded) {
+                  synEl.style.webkitLineClamp = 'unset';
+                  synEl.style.overflow = 'visible';
+                  synEl.style.display = 'block';
+                  synToggle.textContent = 'Daha Az Göster';
+                } else {
+                  synEl.style.webkitLineClamp = '3';
+                  synEl.style.overflow = 'hidden';
+                  synEl.style.display = '-webkit-box';
+                  synToggle.textContent = 'Devamını Gör';
+                }
+              };
+            } else {
+              synEl.style.webkitLineClamp = 'unset';
+              synEl.style.overflow = 'visible';
+              synEl.style.display = 'block';
+            }
+          }
+        }
+
+        if (showSection && synSec) synSec.style.display = 'flex';
+      }).catch(function() {});
+    }
   }
 
   // ── Render: Updates ──────────────────────────────────────────────
