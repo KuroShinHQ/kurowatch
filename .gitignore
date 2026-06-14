@@ -1,0 +1,13 @@
+memory/kurowatch.db
+memory/*.db
+__pycache__/
+*.pyc
+*.pyo
+.env
+.venv/
+venv/
+node_modules/
+.DS_Store
+*.log
+dist/
+build/
