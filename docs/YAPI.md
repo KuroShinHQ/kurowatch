@@ -5,6 +5,121 @@ Kişisel **anime / manga / manhwa / oyun** takip uygulaması. 4 içerik tipini t
 
 ---
 
+## 🖥️ Frontend Mimarisi (14 Haz 2026 — Stitch Sonrası)
+
+### SPA Yapısı — Tek index.html
+```
+index.html
+  <head>
+    <link rel="stylesheet" href="style.css">     ← vanilla CSS, CDN YOK
+    <link rel="manifest" href="manifest.json">
+  </head>
+  <body>
+    <!-- 9 ekran, sadece biri görünür -->
+    <section id="screen-home"     class="screen active"> ... </section>
+    <section id="screen-detail"   class="screen hidden">  ... </section>
+    <section id="screen-search"   class="screen hidden">  ... </section>
+    <section id="screen-updates"  class="screen hidden">  ... </section>
+    <section id="screen-stats"    class="screen hidden">  ... </section>
+    <section id="screen-settings" class="screen hidden">  ... </section>
+    <section id="screen-archive"  class="screen hidden">  ... </section>
+
+    <!-- Overlay'ler (her zaman DOM'da, görünürlük CSS ile) -->
+    <div id="modal-add"      class="modal hidden"> ... </div>
+    <div id="modal-conflict" class="modal hidden"> ... </div>
+    <div id="modal-complete" class="modal hidden"> ... </div>
+
+    <!-- Alt navigasyon (mobil) -->
+    <nav id="bottom-nav"> ... </nav>
+
+    <script src="debug-logger.js"></script>   ← ilk yükle
+    <script src="i18n.js"></script>
+    <script src="app.js"></script>            ← son yükle
+  </body>
+```
+
+### CSS Değişken Sistemi (:root)
+```css
+:root {
+  --kw-bg:        #0d0d1a;
+  --kw-card:      #1a1a2e;
+  --kw-card-hov:  #22223b;
+  --kw-surface:   #16213e;
+  --kw-accent:    #00d4ff;
+  --kw-accent-12: rgba(0,212,255,0.12);
+  --kw-accent-50: rgba(0,212,255,0.5);
+  --kw-text:      #e0e0ff;
+  --kw-text-2:    #9090b0;
+  --kw-text-3:    #505070;
+  --kw-border:    rgba(255,255,255,0.07);
+  --kw-anime:     #3b82f6;
+  --kw-manga:     #f97316;
+  --kw-manhwa:    #a855f7;
+  --kw-game:      #22c55e;
+  --kw-ok:        #22c55e;
+  --kw-warn:      #eab308;
+  --kw-err:       #ef4444;
+}
+```
+
+### app.js Sorumlulukları
+```javascript
+// 1. Navigasyon
+function showScreen(id)            // section görünürlük toggle + URL hash
+function openModal(id)             // modal aç + backdrop
+function closeModal(id)            // modal kapat
+history.pushState / popstate       // Android back button desteği
+
+// 2. Mock Data (backend yokken)
+const MOCK_LIBRARY = [...]         // 5 örnek içerik
+const MOCK_UPDATES = [...]         // 5 örnek güncelleme
+
+// 3. API Layer (mock → gerçek API geçiş)
+async function apiGet(path)        // fetch + error handling
+async function apiPost(path, body) // fetch + error handling
+
+// 4. Render fonksiyonları
+function renderHome()
+function renderDetail(id)
+function renderUpdates()
+function renderStats()
+
+// 5. Event Listeners
+// Bottom nav tıklama, card tıklama, modal tetikleyiciler
+// Pull-to-refresh, swipe-to-dismiss, back gesture
+```
+
+### KuroLog — Debug Overlay (debug-logger.js)
+```javascript
+// Aktifleştirme: URL'ye ?kurodev=1 ekle VEYA logo'ya 3x hızlı tıkla
+// Kapatma: aynı şekilde
+
+const KuroLog = {
+  // Click: element.id / aria-label / textContent → mavi
+  // Fetch: URL + status + ms → cyan
+  // Error: mesaj + stack → kırmızı
+  // Nav:   from → to → mor
+  // localStorage'a son 100 event kaydedilir
+  // Overlay: sağ alt köşe, 300×400px, yarı saydam, zIndex 9999
+}
+```
+
+### PWA Stratejisi
+```
+manifest.json:
+  name: "KuroWatch" | short_name: "KuroWatch"
+  theme_color: "#00d4ff" | background_color: "#0d0d1a"
+  display: "standalone" | start_url: "/"
+
+sw.js (Cache-First):
+  CACHE_NAME = "kurowatch-v1"
+  Cache: index.html, style.css, app.js, i18n.js, locales/*.json, icons/*.svg
+  API çağrıları (fetch('/api/...')) → network-first (cache yok)
+  Offline → cached shell göster + "Çevrimdışı" banner
+```
+
+---
+
 ## 🔬 Araştırma Bulguları (14 Haz 2026)
 
 ### Mevcut Tracker Uygulamalarının Sorunları (MAL / AniList / Alternatifler)
@@ -258,10 +373,19 @@ kurowatch/
 │   │   ├── igdb.py          ← IGDB Twitch auth + cover URL fix
 │   │   └── chapter_check.py ← Regex heuristik scraper (MVP)
 │   └── requirements.txt
-├── frontend/               ← Stitch AI çıktısı buraya gelecek
-│   ├── index.html
-│   ├── style.css
-│   └── app.js
+├── frontend/               ← Stitch çıktısı + manuel JS
+│   ├── index.html          ← TEK SPA DOSYASI (9 ekran = 9 <section>)
+│   ├── style.css           ← Vanilla CSS (:root --kw-* + tüm componentler)
+│   ├── app.js              ← Navigasyon + event listeners + mock data
+│   ├── debug-logger.js     ← KuroLog: click/fetch/error overlay (dev only)
+│   ├── i18n.js             ← Çeviri sistemi (TR/EN)
+│   ├── locales/
+│   │   ├── tr.json
+│   │   └── en.json
+│   ├── icons/              ← SVG ikonlar (local, CDN yok)
+│   │   └── *.svg
+│   ├── manifest.json       ← PWA manifest
+│   └── sw.js               ← Service worker (cache-first)
 ├── docs/
 │   ├── DEVAM.md             ← Handoff (her commit sonrası güncelle)
 │   └── YAPI.md              ← Bu dosya
