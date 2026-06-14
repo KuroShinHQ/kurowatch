@@ -112,24 +112,35 @@ Yarım bırakma — ya tamamla ya `# TODO` ile işaretle.
 backend/
   main.py          → FastAPI app (port 8099), CORS, router kayıt, startup
   database.py      → AsyncEngine + AsyncSession factory (aiosqlite)
-  models.py        → ORM: Content, Site, Episode, Tag, ContentTag, TrackingSession
+  models.py        → ORM: Content, Site, Episode, Tag, ContentTag
+                     (TrackingSession → MVP DIŞI, FAZ-2+)
   routers/
-    content.py     → /api/content CRUD
-    tracking.py    → /api/track süre
+    content.py     → /api/content CRUD + /api/discover
+    episodes.py    → /api/episodes + /api/check-updates + /api/updates
     sites.py       → /api/sites
     tags.py        → /api/tags
-    episodes.py    → /api/episodes
-    sync.py        → /api/export + /api/import
+    sync.py        → /api/export + /api/import + /api/import/resolve
+    settings.py    → /api/settings GET/POST (config.json)
   scraper/
     anilist.py     → AniList GraphQL (önce)
-    mal.py         → MAL OAuth2 (fallback)
-    igdb.py        → IGDB Twitch auth (oyunlar)
+    mal.py         → MAL OAuth2 (fallback, FAZ-2)
+    igdb.py        → IGDB Twitch auth (oyunlar, FAZ-2)
     chapter_check.py → site scraper (son çare)
-frontend/          → Stitch AI çıktısı (henüz boş)
+  downloader/      → FAZ-3
+    stream_finder.py → embed iframe URL çıkarma (TR anime/dizi siteleri)
+    anime.py       → yt-dlp async wrapper
+    manga.py       → Madara admin-ajax.php + mangadex-downloader
+    manager.py     → kuyruk + WS progress
+  translator/      → FAZ-5 (sadece PC+GPU)
+    engine.py      → manga-image-translator subprocess wrapper
+    detect_gpu.py  → torch.cuda.is_available()
+frontend/          → Stitch AI çıktısı + manuel app.js
 docs/
-  DEVAM.md         → handoff
-  YAPI.md          → mimari + site listesi
-  DESIGN.md        → Stitch AI prompt (hazırlanacak)
+  DEVAM.md         → handoff (her commit sonrası güncelle)
+  YAPI.md          → mimari, veri modeli, FAZ-3/5 detayları
+  DESIGN.md        → Stitch AI prompt (tamamlandı) + tasarım kararları
+  FEATURE_MAP.md   → tüm özellikler + FAZ checklist
 memory/
   kurowatch.db     → SQLite (.gitignore'da)
+config.json        → IGDB creds + VAPID keys + download ayarları (.gitignore'da)
 ```
