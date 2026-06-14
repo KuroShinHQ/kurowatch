@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-5) · **Aktif sürüm:** v0.1.0 · **Son commit:** `25812d2` + frontend (commit pending)
+**Son güncelleme:** 14 Haziran 2026 (sohbet-6) · **Aktif sürüm:** v0.1.1 · **Son commit:** `eab4369`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,37 +10,36 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-5) — FAZ-A + Faz-C + Faz-D Frontend Build TAMAM:
+EN SON YAPILAN (14 Haz sohbet-6) — Faz-B CDN Kaldırma TAMAM (commit eab4369):
 
-✅ frontend/ klasörü dolu (10 dosya):
-   - index.html      → 7 section + 2 modal SPA shell (75KB, Tailwind CDN ile çalışır)
+✅ frontend/ klasörü dolu (13 dosya):
+   - index.html      → 7 section + 2 modal SPA shell, SIFIR CDN (68KB)
+   - tailwind.css    → Tailwind CLI v4.3.1 derlendi (42KB, lokal)
+   - style.css       → @font-face Material Symbols + :root --kw-* değişkenleri
    - app.js          → navigasyon + 5 mock item + apiGet/apiPost (USE_MOCK=true)
    - debug-logger.js → KuroLog overlay (?kurodev=1 veya logo 3x tık)
-   - i18n.js         → TR/EN data-i18n sistemi + localStorage.kw_lang
+   - i18n.js         → TR/EN data-i18n sistemi
    - locales/tr.json + en.json → 89 anahtar
    - manifest.json   → PWA: theme #00d4ff, bg #0d0d1a
    - sw.js           → cache-first shell + network-first /api/*
-   - style.css       → :root custom property tanımları (Faz B'de Tailwind CLI doldurur)
    - icons/icon.svg  → KuroWatch göz logosu
+   - icons/material-symbols.woff2 → lokal Material Symbols font (1.1MB)
+   - icons/icon-192.png + icon-512.png → PWA PNG ikonları (PIL ile üretildi)
 
-✅ Renk drift fix:
-   - archive/add/conflict/search → bg #0d0d1a (önceden #111125 / #0e1417 / #10112a)
-   - Tüm #a8e8ff → #00d4ff
-✅ TR çeviri: tüm UI Türkçe
+✅ Tailwind v4 build kurulumu:
+   - C:\Kuroshin\tools\tailwindcss.exe (v4.3.1, 107MB standalone)
+   - tailwind.config.js + tailwind-input.css (v4 @import + @theme + @layer utilities)
+   - Custom class'lar dahil: font-label-caps, text-display-lg, rounded-card, p-gutter vb.
+✅ SIFIR CDN bağımlılığı — PWA offline tamamen çalışır
+✅ HTTP test: tüm 13 dosya 200 OK
 
-✅ HTTP server testi başarılı: tüm dosyalar 200 OK (app.js 21KB, sw.js 2.5KB, tr.json 3.3KB)
-
-SIRADAKI GÖREV (sohbet-6 / Faz B):
-1. Tarayıcıda görsel test: python -m http.server 8099 --directory frontend
-   → http://localhost:8099
-   → Kontrol: bottom nav 5 tab, add modal, conflict modal, archive back, stats chart animasyon
-2. Faz B — CDN kaldırma:
-   - Tailwind CLI standalone indir → tools/tailwindcss.exe
-   - tailwind-input.css + tailwind.config.js
-   - Material Symbols Outlined → 18 lokal SVG ikon (Phosphor/Heroicons)
-   - index.html'den CDN script/link satırları kaldır
-3. PWA icon PNG (192/512) — Python ile SVG → PNG
-4. Backend: backend/database.py + models.py + main.py (FastAPI :8099)
+SIRADAKI GÖREV (sohbet-7 / Backend):
+1. backend/database.py → SQLite async engine (aiosqlite)
+2. backend/models.py → Content, Site, Episode, Tag ORM
+3. backend/main.py → FastAPI app (port 8099, CORS, router kayıt)
+4. backend/routers/content.py → CRUD (GET /api/content, POST, PATCH, DELETE)
+5. backend/routers/episodes.py → /api/check-updates
+6. Curl ile test: app.js'deki USE_MOCK=false yap → API uç noktaları doğrula
 
 KESİNLEŞEN KARARLAR (bu sohbette):
 - Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
@@ -97,6 +96,17 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 ---
 
 ## 🎯 NEREDE KALDIK
+
+### ✅ Sohbet-6'da Tamamlananlar (14 Haz 2026) — Faz-B CDN Kaldırma
+
+- **Tailwind CLI** `tools/tailwindcss.exe` (v4.3.1, standalone, Node.js'siz)
+- `tailwind.config.js` + `tailwind-input.css` → Tailwind v4 @import + @theme + @layer
+- `frontend/tailwind.css` derlendi (42KB, tüm custom class'lar dahil)
+- **Material Symbols WOFF2** indirildi → `frontend/icons/material-symbols.woff2` (1.1MB)
+- `style.css` → @font-face + `.material-symbols-outlined` lokal tanım
+- **index.html** → Tailwind CDN + Google Fonts CDN + inline script config TAMAMEN kaldırıldı
+- **PWA icon-192.png + icon-512.png** PIL ile üretildi (göz logosu tasarımı)
+- Commit: `eab4369`
 
 ### ✅ Sohbet-2'de Tamamlananlar (14 Haz 2026)
 
