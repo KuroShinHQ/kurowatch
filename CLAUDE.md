@@ -10,6 +10,15 @@ Nasıl kullanmalı:
 - Context dolunca → `docs/DEVAM.md` güncelle + commit + Lord'a rapor ver (Kuroshin ana projesi gibi)
 - Sonnet 4.6 adaptive thinking: karmaşık problem → otomatik daha çok düşünür; basit → hızlı gider
 
+### Sohbet Yönetimi (Araştırma — Kritik)
+Araştırma bulgusu: Claude Code uzun sohbette reasoning history kaybeder → garip kararlar, tekrar.
+```
+HER SOHBET:    1 modül = 1 sohbet (örn: database.py sohbeti, content router sohbeti)
+HER MODÜL:     Tamamlanınca commit + DEVAM.md güncelle
+RATE LIMIT:    Büyük refactor = ayrı sohbet; küçük fix = mevcut sohbet
+CONTEXT DOLU:  Sormadan DEVAM.md güncelle + commit + yeni sohbet talimatı ver
+```
+
 ---
 
 ## API Stratejisi (Araştırıldı — 14 Haz 2026)
