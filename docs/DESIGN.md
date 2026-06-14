@@ -177,6 +177,16 @@ const haptic = {
 | 38 | MAL fallback | **FAZ-2'ye ertelendi** |
 | 39 | IGDB / Oyun | **FAZ-2'ye ertelendi** |
 | 40 | Keşfet öneri alg. | **Araştırma gerekli, askıya alındı** |
+| 41 | İndirme kalitesi | **Global ayar** — 360p/480p/720p/1080p/best; tüm indirmeler bu kalitede (Netflix modeli) |
+| 42 | Daisy chain tetik | **%50** — bölüm/chapter yarısında N+1 otomatik indir |
+| 43 | Oto-sil | **config toggle** — false=modal; true=otomatik sil. Disk toplamı Settings'te |
+| 44 | TR anime/dizi siteler | stream_finder.py + embed iframe → yt-dlp (resmi extractor yok) |
+| 45 | TR manga siteler | Madara admin-ajax.php (tümü aynı endpoint) + mangadex-downloader |
+| 46 | Crunchyroll | Ücretsiz ✅ / Premium DRM ❌ → "🔒 Tarayıcıda Aç" butonu |
+| 47 | Manga çeviri | **Typesetting (B)** — YOLOv8+manga-ocr+LaMa+DeepL; **sadece PC+GPU** |
+| 48 | Çeviri kalite | DeepL → Google Translate → LibreTranslate (fallback zinciri); sayfa bağlamı |
+| 49 | Settings dil | TR varsayılan + EN; dropdown Settings Group 3'te |
+| 50 | Web Push | VAPID; Settings Group 4'te buton; izin sonrası "Enabled ✓" |
 
 ---
 
@@ -388,6 +398,7 @@ Grouped list:
   Group 1 — Sync:
     "Export Library" → downloads kurowatch_backup.json
     "Import Library" → file picker, uploads JSON, shows conflict resolution if needed
+    "Archive" → navigates to archived items list (soft-deleted content, restore button per item)
   Group 2 — API Credentials:
     IGDB Client ID: [input]
     IGDB Client Secret: [input]
@@ -398,7 +409,14 @@ Grouped list:
     Default chapter duration (Manhwa): number input
     Default session duration (Game): number input
     Update check: on app open toggle
-  Group 4 — About:
+    Language: dropdown [Türkçe / English] (changes all UI text via i18n.js)
+  Group 4 — Notifications:
+    "Enable Push Notifications" button → requests browser push permission (VAPID)
+    Status indicator: "Enabled ✓" or "Disabled" after permission granted/denied
+  Group 5 — App:
+    "Add to Home Screen" button → triggers PWA install prompt (navigator.standalone check)
+    Show only if app not already installed (window.matchMedia standalone check)
+  Group 6 — About:
     "KuroWatch v1.0.0" text
 
 ━━━ IMPORT CONFLICT RESOLUTION ━━━
