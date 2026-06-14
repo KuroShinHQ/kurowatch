@@ -8,7 +8,7 @@
 
   // ── Konfigürasyon ─────────────────────────────────────────────────
   const API_BASE = 'http://localhost:8099';
-  let USE_MOCK = true; // backend hazır olunca false yap
+  let USE_MOCK = false; // backend :8099 bağlı
 
   // ── Mock Data ─────────────────────────────────────────────────────
   const MOCK_LIBRARY = [
@@ -90,8 +90,15 @@
     return r.json();
   }
 
+  async function apiDelete(path) {
+    if (USE_MOCK) return { ok: true };
+    const r = await fetch(API_BASE + path, { method: 'DELETE' });
+    if (!r.ok && r.status !== 204) throw new Error('DELETE ' + path + ' → ' + r.status);
+    return true;
+  }
+
   // Expose
-  window.kuroAPI = { get: apiGet, post: apiPost, setMockMode: m => USE_MOCK = m };
+  window.kuroAPI = { get: apiGet, post: apiPost, del: apiDelete, setMockMode: m => USE_MOCK = m };
 
   // ── Navigasyon Sistemi ────────────────────────────────────────────
   function showScreen(id) {
@@ -107,6 +114,12 @@
     if (id === 'screen-home')    renderHome();
     if (id === 'screen-updates') renderUpdates();
     if (id === 'screen-stats')   renderStats();
+    if (id === 'screen-search') {
+      setTimeout(() => {
+        const inp = document.getElementById('search-discover-input');
+        if (inp) { inp.focus(); if (inp.value) renderSearch(inp.value); }
+      }, 100);
+    }
 
     // Scroll to top
     window.scrollTo(0, 0);
@@ -358,6 +371,114 @@
     document.getElementById('stats-avg-score').textContent = avg;
   }
 
+  // ── Render: Search / Discover ─────────────────────────────────────
+  let _searchTimer = null;
+
+  async function renderSearch(q) {
+    const results = document.getElementById('search-results');
+    if (!results) return;
+    if (!q || q.trim().length < 2) {
+      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">En az 2 karakter yaz...</div>';
+      return;
+    }
+    results.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> AniList\'te aranıyor...</div>';
+    try {
+      const items = await apiGet('/api/discover?q=' + encodeURIComponent(q.trim()) + '&type=anime');
+      if (!items || items.length === 0) {
+        results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Sonuç bulunamadı</div>';
+        return;
+      }
+      results.innerHTML = items.map(it => {
+        const typeLabel = it.type === 'manhwa' ? 'Manhwa' : it.type === 'manga' ? 'Manga' : 'Anime';
+        const cover = it.cover_url
+          ? `<img src="${it.cover_url}" class="w-full h-full object-cover" loading="lazy"/>`
+          : `<span class="text-[#9090b0] font-bold text-xs">${escapeHtml(it.title.slice(0,2).toUpperCase())}</span>`;
+        return `
+          <div class="interactive-card flex items-center gap-4 p-3 rounded-xl bg-[#1c1d37] border border-white/5 inner-glow group hover:border-[#00d4ff]/30 transition-colors">
+            <div class="w-[40px] h-[56px] shrink-0 rounded bg-[#31324d] overflow-hidden flex items-center justify-center">${cover}</div>
+            <div class="flex flex-col gap-0.5 flex-grow min-w-0">
+              <h4 class="font-bold text-[14px] text-[#e1e0ff] leading-tight truncate">${escapeHtml(it.title)}</h4>
+              <div class="flex items-center gap-2 text-[#9090b0] text-[12px]">
+                ${it.year ? '<span>' + it.year + '</span>' : ''}
+                <span class="px-1.5 py-0.5 rounded-full bg-[#00d4ff]/15 text-[#00d4ff] text-[10px] font-bold">${typeLabel}</span>
+              </div>
+            </div>
+            <button class="h-9 px-3 border border-[#00d4ff] text-[#00d4ff] rounded-full text-[13px] font-semibold flex items-center gap-1 hover:bg-[#00d4ff]/10 transition-colors flex-shrink-0 active:scale-[0.97]"
+              data-discover-add='${JSON.stringify({title: it.title, type: (it.type||"anime"), cover_url: it.cover_url||"", external_id: String(it.id||"")})}'
+            ><span class="material-symbols-outlined text-[16px]">add</span> Ekle</button>
+          </div>`;
+      }).join('');
+
+      results.querySelectorAll('[data-discover-add]').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const data = JSON.parse(this.dataset.discoverAdd);
+          prefillAddForm(data);
+          openModal('modal-add');
+        });
+      });
+    } catch (err) {
+      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Hata: ' + escapeHtml(err.message) + '</div>';
+    }
+  }
+
+  function prefillAddForm(data) {
+    const titleEl = document.getElementById('add-form-title');
+    if (titleEl) titleEl.value = data.title || '';
+    const coverEl = document.getElementById('add-form-cover');
+    if (coverEl) coverEl.value = data.cover_url || '';
+    const extInput = document.getElementById('add-form-external-id');
+    if (extInput) extInput.value = data.external_id || '';
+
+    // Tip seçimi
+    document.querySelectorAll('.add-type-btn').forEach(btn => {
+      const active = btn.dataset.addType === data.type;
+      btn.classList.toggle('bg-[#1a2123]', active);
+      btn.classList.toggle('text-[#00d4ff]', active);
+      btn.classList.toggle('border', active);
+      btn.classList.toggle('border-[#3c494e]/50', active);
+      btn.classList.toggle('text-[#9090b0]', !active);
+    });
+
+    // step-1 gizle, step-2 göster
+    const s1 = document.getElementById('add-step-1');
+    const s2 = document.getElementById('add-step-2');
+    if (s1) s1.classList.add('hidden');
+    if (s2) s2.classList.remove('hidden');
+  }
+
+  async function submitAddContent() {
+    const title = (document.getElementById('add-form-title') || {}).value || '';
+    if (!title.trim()) {
+      alert('Başlık gerekli');
+      return;
+    }
+    const activeType = document.querySelector('.add-type-btn.text-\\[\\#00d4ff\\]');
+    const type = activeType ? activeType.dataset.addType : 'anime';
+    const status = (document.getElementById('add-form-status') || {}).value || 'planning';
+    const cover_url = (document.getElementById('add-form-cover') || {}).value.trim() || null;
+    const note_text = (document.getElementById('add-form-note') || {}).value.trim() || null;
+    const external_id = (document.getElementById('add-form-external-id') || {}).value.trim() || null;
+    const starEl = document.querySelector('input[name="add-rating"]:checked');
+    const my_score = starEl ? parseFloat(starEl.value) : null;
+
+    const btn = document.getElementById('add-save-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
+
+    try {
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score });
+      closeModal('modal-add');
+      // Formu temizle
+      ['add-form-title','add-form-cover','add-form-note'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+      });
+      if (window.location.hash === '#screen-home' || !window.location.hash) renderHome();
+    } catch (err) {
+      alert('Kayıt hatası: ' + err.message);
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined">library_add</span> Kütüphaneye Ekle'; }
+    }
+  }
+
   // ── Yardımcı Fonksiyonlar ────────────────────────────────────────
   function escapeHtml(str) {
     return String(str)
@@ -402,6 +523,26 @@
     }
   });
 
+  // Add-form type butonları
+  document.addEventListener('click', function(e) {
+    const typeBtn = e.target.closest('.add-type-btn');
+    if (typeBtn) {
+      document.querySelectorAll('.add-type-btn').forEach(b => {
+        const active = b === typeBtn;
+        b.classList.toggle('bg-[#1a2123]', active);
+        b.classList.toggle('text-[#00d4ff]', active);
+        b.classList.toggle('border', active);
+        b.classList.toggle('border-[#3c494e]/50', active);
+        b.classList.toggle('text-[#9090b0]', !active);
+      });
+    }
+    // Save butonu
+    if (e.target.closest('#add-save-btn')) {
+      e.preventDefault();
+      submitAddContent();
+    }
+  });
+
   // ESC ile modal kapat
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
@@ -409,11 +550,16 @@
     }
   });
 
-  // Home arama
+  // Home arama + Discover arama
   document.addEventListener('input', function(e) {
     if (e.target.id === 'home-search-input') {
       homeFilter.query = e.target.value;
       renderHome();
+    }
+    if (e.target.id === 'search-discover-input') {
+      clearTimeout(_searchTimer);
+      const q = e.target.value;
+      _searchTimer = setTimeout(() => renderSearch(q), 400);
     }
   });
 

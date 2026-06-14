@@ -315,7 +315,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <section class="flex flex-col gap-4">
       <div class="relative w-full group">
         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
-        <input class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="KuroWatch'ta ara..." type="text" style="font-size:16px!important"/>
+        <input id="search-discover-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="AniList'te ara (anime/manga/manhwa)..." type="text" style="font-size:16px!important" autocomplete="off"/>
       </div>
     </section>
     <!-- Keşfet İçerik -->
@@ -655,22 +655,22 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
           </button>
         </div>
         <div class="flex-1 overflow-y-auto flex flex-col gap-6 pb-6 pr-1">
-          <div><label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Başlık</label><input class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" value="Cyber Genesis: Rebirth"/></div>
+          <div><label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Başlık</label><input id="add-form-title" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="Başlık girin..."/></div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Tür</label>
-            <div class="flex bg-[#242b2e] rounded-lg p-1 border border-[#3c494e] min-h-[44px]">
-              <button class="flex-1 py-1.5 min-h-[44px] rounded-md bg-[#1a2123] text-[#00d4ff] text-[14px] font-semibold shadow-sm border border-[#3c494e]/50 flex items-center justify-center gap-1">🎬 Anime</button>
-              <button class="flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors">📖 Manga</button>
-              <button class="flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors">📱 Manhwa</button>
-              <button class="flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors">🎮 Oyun</button>
+            <div class="flex bg-[#242b2e] rounded-lg p-1 border border-[#3c494e] min-h-[44px]" id="add-type-group">
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md bg-[#1a2123] text-[#00d4ff] text-[14px] font-semibold shadow-sm border border-[#3c494e]/50 flex items-center justify-center gap-1" data-add-type="anime">🎬 Anime</button>
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="manga">📖 Manga</button>
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="manhwa">📱 Manhwa</button>
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="game">🎮 Oyun</button>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Durum</label>
               <div class="relative">
-                <select class="w-full h-[44px] min-h-[44px] px-3 appearance-none bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50">
-                  <option>İzliyor</option><option>Tamamlandı</option><option>Planlanıyor</option><option>Bırakıldı</option>
+                <select id="add-form-status" class="w-full h-[44px] min-h-[44px] px-3 appearance-none bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50">
+                  <option value="watching">İzliyor</option><option value="completed">Tamamlandı</option><option value="planning">Planlanıyor</option><option value="on_hold">Bırakıldı</option>
                 </select>
                 <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#9090b0] pointer-events-none">expand_more</span>
               </div>
@@ -695,15 +695,15 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Kapak URL</label>
-            <input class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[12px] text-[#9090b0] font-mono focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="https://..."/>
+            <input id="add-form-cover" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[12px] text-[#9090b0] font-mono focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="https://..."/>
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Notlar</label>
-            <textarea class="w-full p-3 bg-[#1a1a2e] min-h-[88px] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50 resize-none" placeholder="Düşüncelerini ekle..." rows="3"></textarea>
+            <textarea id="add-form-note" class="w-full p-3 bg-[#1a1a2e] min-h-[88px] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50 resize-none" placeholder="Düşüncelerini ekle..." rows="3"></textarea>
           </div>
         </div>
         <div class="pt-4 mt-auto border-t border-[#3c494e]/30 pb-2">
-          <button class="w-full h-[44px] min-h-[44px] bg-[#00d4ff] hover:brightness-110 text-[#003642] font-bold text-[20px] rounded-lg transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.2)]" data-modal-close="modal-add">
+          <button id="add-save-btn" class="w-full h-[44px] min-h-[44px] bg-[#00d4ff] hover:brightness-110 text-[#003642] font-bold text-[20px] rounded-lg transition-all duration-200 active:scale-[0.97] flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.2)]">
             <span class="material-symbols-outlined">library_add</span> Kütüphaneye Ekle
           </button>
         </div>
