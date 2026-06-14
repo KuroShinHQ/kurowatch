@@ -425,15 +425,16 @@ backend/
 
 ## 🎯 Stitch AI Panel Planı
 
-### Araştırma Bulgusu
-- Stitch 2.0 (Mart 2026): **aynı anda max 5 ekran** üretiyor
-- 5 ekran = 1 generation sayılıyor (350/ay hakkın var)
-- Standard mod (Gemini Flash): ideation için
-- Experimental mod (Gemini Pro): final polish için (50/ay)
+### Araştırma Bulgusu (14 Haz 2026 — güncel)
+- **2026 I/O güncellemesi:** Stitch artık **streaming agent** — prompt yazarken canvas gerçek zamanlı render oluyor
+- Tek prompt → 5 ekrana kadar bağlantılı çıktı = **1 generation**
+- Canvas'ta manuel düzeltme (AI çağırmadan) = **generation SAYMAZ**
+- Edit mode + yeni prompt (büyük revizyon) = 1 daha harcar
+- Generation sistemi artık aylık cap değil, gün sonu sıfırlanan **kredi bazlı**
 
-### Bizim Planımız (7 ekran → 2 batch)
+### Bizim Planımız (8 ekran → 2 batch, 2 generation)
 
-**BATCH 1 — Ana Akış (Standard mod):**
+**BATCH 1 — Ana Akış (Standard mod) → 1 generation:**
 ```
 1. HOME     → poster grid + filter chips + content card
 2. DETAIL   → hero kapak + bilgi + sekmeler (bölüm/site/not)
@@ -442,27 +443,32 @@ backend/
 5. STATS    → özet kartlar + donut + bar chart
 ```
 
-**BATCH 2 — Yardımcı Ekranlar (Experimental mod):**
+**BATCH 2 — Yardımcı Ekranlar (Experimental mod) → 1 generation:**
 ```
-1. ADD MODAL    → bottom sheet + form + API arama
-2. SETTINGS     → listeli ayarlar sayfası
+1. ADD MODAL      → bottom sheet + form + API arama
+2. SETTINGS       → listeli ayarlar sayfası
 3. CONFLICT MODAL → import çakışma çözümü
 ```
 
-### Stitch'e Verme Stratejisi
+### Stitch'e Verme Stratejisi (güncel)
 ```
-Adım 1: BATCH 1 promptu ver (DESIGN.md "Stitch AI Final Prompt" bölümü)
-        Standard mod → 5 ekran birden üret
+Adım 1: DESIGN.md "Stitch AI Final Prompt" bölümünü TEK SEFERDE ver
+        Standard mod → 5 ekran birden üret (1 generation)
 
-Adım 2: Çıktıyı incele → beğenilmeyen kısımları yeniden prompt'la düzelt
-        (Canvas üzerinde annotation ekle, AI regenerate eder)
+Adım 2: Çıktıyı incele
+        ✅ Beğenildi → canvas'ta manuel düzelt (renk/metin/spacing) → generation SIFIR
+        ❌ Büyük sorun → edit mode + üstüne kısa prompt → 1 generation daha harcar
 
-Adım 3: BATCH 2 → Add Modal + Settings + Conflict Modal
-        Experimental mod (daha kaliteli)
+Adım 3: BATCH 2 → ayrı session, Add Modal + Settings + Conflict Modal
+        Experimental mod (daha kaliteli çıktı)
 
 Adım 4: HTML/CSS export al → frontend/ klasörüne koy
         Post-Stitch checklist uygula (DESIGN.md'de var)
 ```
+
+> FAZ-3 player + reader ekranları Stitch'e VERİLMEYECEK.
+> Bunlar JS-ağır ekranlar (video kontroller, ambient glow canvas, virtual scroll) →
+> Stitch çıktısı yine de sıfırdan yazılacaktı. Direkt Claude ile kodlanacak.
 
 ---
 
