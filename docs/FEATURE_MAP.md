@@ -283,7 +283,24 @@
 │ [D] Kontrol Zamanlaması                             │
 │     - "Açılışta güncelleme kontrol et" toggle       │
 │                                                     │
-│ [E] Hakkında                                        │
+│ [E] İndirici (FAZ-3)                                │
+│     - Kalite: [360p] [720p] [1080p] [En İyi]        │
+│       → config.json: default_quality (Netflix mod)  │
+│       → Seçilen kalite tüm indirmelere uygulanır    │
+│     - Eşzamanlı İndirme: [1] [2] [3]               │
+│       → config.json: max_concurrent_downloads       │
+│     - "İzledikten Sonra Otomatik Sil" toggle        │
+│       ON → modal yok, otomatik sil                  │
+│       OFF → "Dosyayı Sil?" modal (varsayılan)       │
+│       → config.json: auto_delete_after_watch        │
+│                                                     │
+│ [F] İndirilenler (FAZ-3)                            │
+│     - Toplam disk kullanımı: "2.3 GB / downloads/"  │
+│       → GET /api/download/stats                     │
+│     - "Tümünü Temizle" (onay modal ile)             │
+│     - Tamamlanmış seri → "Seriyi Temizle" toplu sil │
+│                                                     │
+│ [G] Hakkında                                        │
 │     - "KuroWatch v1.0.0"                            │
 └─────────────────────────────────────────────────────┘
 ```

@@ -158,8 +158,17 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
   "duration_manga_ch": 5,
   "duration_manhwa_ch": 3,
   "duration_game_session": 60,
-  "check_on_startup": true
+  "check_on_startup": true,
+  "default_quality": "720p",
+  "max_concurrent_downloads": 2,
+  "auto_delete_after_watch": false,
+  "daisy_chain_trigger_pct": 80
 }
+```
+- `default_quality`: Global kalite ayarı — tüm indirmeler bu kalitede yapılır
+- `max_concurrent_downloads`: Aynı anda max kaç indirme (1/2/3)
+- `auto_delete_after_watch`: true → modal yok, otomatik sil | false → "Dosyayı Sil?" modal
+- `daisy_chain_trigger_pct`: Bölümün yüzde kaçında N+1 indirme başlatılır (varsayılan %80)
 ```
 - `igdb_token` + `igdb_token_expires_at`: startup'ta kontrol et, expire olduysa Twitch'ten refresh
 - `vapid_*`: ilk çalıştırmada `py_vapid` ile otomatik üret, config'e yaz
@@ -510,31 +519,69 @@ downloads/
 
 **Backend download engine:**
 ```python
+# backend/downloader/stream_finder.py  ← YENİ (embed URL çıkarma katmanı)
+import re
+from curl_cffi import requests as cf_requests
+
+EMBED_HOSTS = ["vidmoly", "streamtape", "doodstream", "filemoon", "sibnet"]
+
+async def find_embed_url(page_url: str, referer: str = None) -> str | None:
+    headers = {"Referer": referer or page_url, "User-Agent": "Mozilla/5.0"}
+    r = cf_requests.get(page_url, headers=headers, impersonate="chrome131")
+    iframes = re.findall(r'<iframe[^>]*src=["\']([^"\']+)["\']', r.text, re.I)
+    for src in iframes:
+        if any(h in src for h in EMBED_HOSTS):
+            return src
+    return None  # → generic yt-dlp dene
+
 # backend/downloader/anime.py
 import subprocess, asyncio
 
-async def download_episode(content_id, ep_num, url, quality="best"):
+QUALITY_MAP = {"360p": 360, "720p": 720, "1080p": 1080, "best": None}
+
+async def download_episode(content_id, ep_num, url, quality="720p"):
+    # BUG FIX: quality string → sayı (yt-dlp height integer ister)
+    h = QUALITY_MAP.get(quality)
+    if h:
+        fmt = f"bestvideo[height<={h}]+bestaudio/best[height<={h}]/bestvideo+bestaudio/best"
+    else:
+        fmt = "bestvideo+bestaudio/best"
     out_dir = f"downloads/anime/{content_id}/ep_{ep_num}/"
     cmd = [
         "yt-dlp", url,
-        "-f", f"bestvideo[height<={quality}]+bestaudio/best",
+        "-f", fmt,
         "--write-subs", "--sub-lang", "tr,en",
+        "--embed-subs",
         "-o", f"{out_dir}video.%(ext)s",
-        "--progress",
+        "--newline",  # progress her satırda (WS parse için)
     ]
     proc = await asyncio.create_subprocess_exec(*cmd,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     return proc  # WebSocket'e % ilerleme gönderilir
 
-# backend/downloader/manga.py
-async def download_chapter(content_id, ch_num, url, source="gallery-dl"):
+# backend/downloader/manga.py  — ARAÇ KARAR TABLOSU:
+# MangaDex        → mangadex-downloader (resmi API, en stabil)
+# TR Madara site  → admin-ajax.php Python impl (gallery-dl Madara desteği kısmi)
+# Diğer siteler   → gallery-dl dene, fail → admin-ajax.php
+async def download_chapter(content_id, ch_num, url, source="madara"):
     out_dir = f"downloads/manga/{content_id}/ch_{ch_num}/"
     if source == "mangadex":
         cmd = ["mangadex-downloader", url, "--output", out_dir]
-    else:
+    elif source == "gallery-dl":
         cmd = ["gallery-dl", url, "-d", out_dir]
-    proc = await asyncio.create_subprocess_exec(*cmd, ...)
+    else:  # source == "madara" (varsayılan TR siteler)
+        # admin-ajax.php implementasyonu — aşağıda
+        return await _download_madara_chapter(url, out_dir)
+    proc = await asyncio.create_subprocess_exec(*cmd,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
     return proc
+
+async def _download_madara_chapter(chapter_url: str, out_dir: str):
+    # Madara WordPress AJAX endpoint (tüm TR manga siteleri)
+    # POST /wp-admin/admin-ajax.php action=manga_get_chapter_img_list&chapter_id={id}
+    # Response: {"status":"true","html":"<div><img src='...'/>..."}
+    # → HTML parse → resim URL listesi → asyncio.gather ile paralel indir
+    pass  # FAZ-3 implementasyonunda doldurulacak
 ```
 
 **Download manager — kuyruk + WebSocket progress:**
@@ -542,7 +589,8 @@ async def download_chapter(content_id, ch_num, url, source="gallery-dl"):
 # backend/downloader/manager.py
 # Max 2 eşzamanlı download (config.json: "max_concurrent_downloads": 2)
 # Her download: id, content_id, ep_num, status (queued/downloading/done/error), progress_%
-# WS: ws://localhost:9099/ws/download → {"id": X, "progress": 75, "status": "downloading"}
+# WS: ws://localhost:8099/ws/download → {"id": X, "progress": 75, "status": "downloading"}
+# BUG FIX: 9099 değil, 8099 (KuroWatch backend portu)
 ```
 
 ---
@@ -557,8 +605,12 @@ Download (indirme kuyruğu)
   progress_pct (int 0-100)
   file_path (text)        ← ininen dosya konumu
   file_size_mb (float)
-  quality (text)          ← '1080p', '720p', 'best'
-  auto_delete (bool)      ← izlendikten sonra otomatik sil
+  quality (text)          ← '360p', '720p', '1080p', 'best' (global config'den gelir)
+  trigger ('user' | 'daisy_chain' | 'batch')  ← YENİ: kim başlattı?
+    user        → kullanıcı manuel "İndir" dedi
+    daisy_chain → bölüm N oynarken N+1 otomatik eklendi
+    batch       → "Hepsini İndir" ile eklendi
+  auto_delete (bool)      ← global config'den override edilebilir
   queued_at, started_at, finished_at
 
 IntroTimestamp (Netflix intro/outro skip için)
@@ -738,21 +790,65 @@ kurowatch/
 ├── backend/
 │   ├── downloader/
 │   │   ├── __init__.py
-│   │   ├── anime.py         ← yt-dlp async wrapper
-│   │   ├── manga.py         ← gallery-dl / mangadex-downloader wrapper
-│   │   └── manager.py       ← kuyruk + WS progress (max 2 eşzamanlı)
+│   │   ├── stream_finder.py ← YENİ: embed iframe URL çıkarma (curl_cffi)
+│   │   │                       → DiziWatch/TrAnimeİzle/Dizibox için
+│   │   │                       → vidmoly/streamtape/doodstream iframe parse
+│   │   ├── anime.py         ← yt-dlp async wrapper (QUALITY_MAP fix dahil)
+│   │   ├── manga.py         ← madara admin-ajax.php + mangadex-downloader + gallery-dl
+│   │   └── manager.py       ← kuyruk + WS progress (max 2 eşzamanlı, daisy chain)
 │   └── routers/
-│       ├── download.py      ← /api/download + /ws/download
+│       ├── download.py      ← /api/download + /ws/download (port 8099)
 │       ├── player.py        ← /api/player (video bilgi + intro timestamps)
 │       └── reader.py        ← /api/reader (chapter görseller + static serve)
 ├── frontend/
 │   ├── player.html          ← video player (HTML5 <video> + custom controls)
-│   ├── player.js            ← auto-next + intro skip + geri sayım
+│   ├── player.js            ← auto-next + intro skip + geri sayım + daisy chain trigger
 │   ├── reader.html          ← manga/manhwa okuyucu
 │   └── reader.js            ← sayfa navigasyon + webtoon scroll + auto-next ch.
 └── downloads/               ← .gitignore'da
     ├── anime/
     └── manga/
+```
+
+### 3.9 Kalite Seçimi — Netflix Modeli
+
+```
+Global Ayar (config.json: "default_quality": "720p"):
+  → Tüm yeni indirmeler bu kaliteyi kullanır
+  → Settings > İndirici > Kalite dropdown: 360p / 720p / 1080p / En İyi
+
+yt-dlp format string (QUALITY_MAP):
+  "360p"  → bestvideo[height<=360]+bestaudio/best[height<=360]/bestvideo+bestaudio/best
+  "720p"  → bestvideo[height<=720]+bestaudio/best[height<=720]/bestvideo+bestaudio/best
+  "1080p" → bestvideo[height<=1080]+bestaudio/best[height<=1080]/bestvideo+bestaudio/best
+  "best"  → bestvideo+bestaudio/best
+
+NOT: Sabit kalite yoksa (site 720p sunmuyorsa) → bir alt kalite otomatik seçilir.
+ffmpeg gerekli (video+audio merge için).
+
+Crunchyroll Premium Uyarısı:
+  Premium içerik → DRM (Widevine) → yt-dlp indiremez
+  Kullanıcı Crunchyroll sitesi eklerse → indirme butonu yerine "🔒 DRM — Tarayıcıda Aç"
+  Sadece ücretsiz bölümler için "İndir" butonu göster
+```
+
+### 3.10 Oto-Sil Mantığı (Düzeltildi)
+
+```
+config.json: "auto_delete_after_watch": false
+
+false (varsayılan):
+  Bölüm bitti → "Dosyayı Sil? [Sil ve Devam] [Tut]" modal
+  → Kullanıcı kararı verir
+
+true:
+  Bölüm bitti + is_watched = true → otomatik sil (modal yok)
+  → Settings'te toggle: "İzledikten Sonra Otomatik Sil"
+
+Her iki durumda:
+  Settings > İndirilenler → toplam disk kullanımı (MB/GB)
+  Per-seri indirme listesi + "Tümünü Temizle" butonu
+  Completed seriler → "Seriyi Temizle" toplu sil seçeneği
 ```
 
 ---
