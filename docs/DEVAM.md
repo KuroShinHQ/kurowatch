@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-8) · **Aktif sürüm:** v0.3.0 · **Son commit:** `ba19261`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-9) · **Aktif sürüm:** v0.4.0 · **Son commit:** `2cb1a16`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,33 +10,31 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-8) — E2E bağlantı + Discover + Add form (commit ba19261):
+EN SON YAPILAN (14 Haz sohbet-9) — Detail cover+yıldız, Archive, Settings, check-updates (commit 2cb1a16):
 
-✅ USE_MOCK=false — frontend artık gerçek backend'e bağlı
-✅ POST /api/content/:id/progress → progress güncelleme endpoint (ProgressUpdate schema)
-✅ renderSearch() → search ekranında AniList arama (debounce 400ms, /api/discover çağrısı)
-✅ prefillAddForm() → Discover sonucundan modal'a otomatik title/type/cover/external_id doldur
-✅ submitAddContent() → form okur → POST /api/content → modal kapat + home refresh
-✅ apiDelete() eklendi (ileride kullanım için)
-✅ index.html form ID'leri: add-form-title/status/cover/note/external-id, add-save-btn
-✅ Kuroshin.bat [10] fix: WSL venv path (/root/kuroshin/venv), [1]=tam başlat + tarayıcı
+✅ ContentPatch'e external_id eklendi (PATCH ile AniList ID atanabilir)
+✅ apiPatch() eklendi (frontend)
+✅ renderDetail(): cover_url → bg-image; interaktif yıldız (hover+click → PATCH my_score)
+✅ renderArchive(): status=completed filtresi, cover/initials, "Geri Al" → PATCH watching
+✅ renderSettings(): config.json okuma, IGDB kaydet, auto-delete toggle, kalite butonları
+✅ Settings "Dışa Aktar" → GET /api/export → JSON indir
+✅ showScreen → archive/settings ekranı açılınca renderArchive/renderSettings tetikleniyor
+✅ index.html: archive-list/archive-count, settings element ID'leri
 
 Canlı kanıt:
-  GET /api/content → 3 kayıt (DB'deki gerçek veri) ✅
-  POST /api/content/1/progress {progress:460} → my_progress:460 ✅
-  GET /api/discover?q=naruto&type=anime → AniList Naruto ✅
-  GET /api/discover?q=jujutsu+kaisen&type=manga → Jujutsu Kaisen manga ✅
+  PATCH /api/content/3 {external_id:"87216", total_chapters:200} ✅
+  POST /api/check-updates → {checked:3, new_updates:7} ✅
+  GET /api/updates → 1 update (JJK 200→207, AniList) ✅
 
 BAŞLATMA KOMUTU:
-wsl -d Ubuntu-22.04 -u root -- bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
-(veya Kuroshin.bat [10] → [1])
+wsl -d Ubuntu-22.04 -u root -- bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
 
-SIRADAKI GÖREV (sohbet-9):
-1. /api/check-updates canlı test (external_id olan içerik → AniList yeni bölüm kontrolü)
-2. Detail ekranı: cover resmi göster, my_score yıldız UI çalışır hale getir
-3. Archive ekranı bağla (status=completed filtresi)
-4. Settings ekranı (config.json okuma/yazma frontend)
-5. PWA test (mobil Chrome'dan "Ana ekrana ekle")
+SIRADAKI GÖREV (sohbet-10):
+1. Updates ekranı → "Kontrol Et" butonu /api/check-updates çağırsın
+2. Updates ekranı → content_title alanı eksik (DB'den join gerekiyor)
+3. Home grid → cover resmi kart üzerinde göster
+4. Detail → "Siteler" ve "Notlar" tab içeriği bağla
+5. PWA test (mobil Chrome → "Ana ekrana ekle")
 
 KESİNLEŞEN KARARLAR (bu sohbette):
 - Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
