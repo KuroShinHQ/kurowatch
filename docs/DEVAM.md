@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-3) · **Aktif sürüm:** v0.1.0 · **Son commit:** `45272a5`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-4) · **Aktif sürüm:** v0.1.0 · **Son commit:** `f48f9f8`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -11,9 +11,25 @@
 KuroWatch DEVAM.md oku. Özet:
 
 EN SON YAPILAN (14 Haz sohbet-4):
-✅ Stitch AI tamamlandı: 9 ekran üretildi, C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
-✅ Stitch çıktısı analiz edildi — KRİTİK sorunlar tespit edildi (aşağıda)
-✅ DESIGN.md + FEATURE_MAP.md + YAPI.md güncellendi
+✅ Stitch AI tamamlandı: 9 ekran üretildi
+   C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+✅ Stitch çıktısı analiz edildi — 5 kritik sorun (CDN/renk/ayrı HTML/token/JS yok)
+✅ Mimari kesinleşti: PC + Termux bağımsız instance, JSON sync
+✅ Tüm MD'ler güncellendi (DEVAM + FEATURE_MAP + YAPI + DESIGN)
+
+SIRADAKİ GÖREV: PC Frontend Build
+frontend/index.html oluştur → 9 Stitch ekranını tek SPA'ya birleştir
+Detaylar: FEATURE_MAP.md "Frontend Build Checklist Faz A-D"
+Stitch dosyaları: C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+
+KESİNLEŞEN KARARLAR (bu sohbette):
+- Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
+- Telefon kurulum: USB + ADB ile Claude halleder (uygulama bittikten sonra)
+- Daisy chain: bölüm %50'de N+1 indir, N bitti → N-1 sil (ayarlanabilir)
+- Toplu indirme: tüm seri tek tuşla
+- Manhwa/manga için aynı sistem
+- Cover resimler: API'den otomatik, yoksa kullanıcı URL girer, hâlâ yoksa fallback SVG
+- PWA icon: KuroWatch logo (göz + yazı) — frontend build sırasında oluşturulacak
 
 STİTCH ÇIKTISI ANALİZİ — KRİTİK SORUNLAR:
 

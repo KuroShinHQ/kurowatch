@@ -120,6 +120,54 @@ sw.js (Cache-First):
 
 ---
 
+## 🖼️ Cover Resim + PWA Icon Sistemi (14 Haz — Kesinleşti)
+
+### Cover Resimleri — 3 Katmanlı Sistem
+```
+1. API'den otomatik (ekleme sırasında):
+   Anime/Manga/Manhwa → AniList: coverImage.large (CDN URL, dış link)
+   Oyun              → IGDB: images.igdb.com/igdb/image/upload/t_cover_big/{id}.jpg
+
+2. Manuel URL (kullanıcı girer):
+   Add Content formu → "Cover URL" alanı (opsiyonel override)
+   Detail ekranı → düzenle → yeni URL yaz
+
+3. Fallback (URL yoksa veya bozuksa):
+   <img onerror="this.src='/assets/no-cover.svg'">
+   no-cover.svg: koyu (#1a1a2e) + ortada soluk göz ikonu (#505070)
+   Her kart ve detay ekranında garantili görünür
+
+DB: cover_url TEXT nullable → null ise frontend fallback gösterir
+```
+
+### Stitch'teki Placeholder Resimler
+```
+Stitch tasarımında gördüğün gri/boş kareler = design-time placeholder
+Uygulama çalışınca bunların yerine:
+  → API'den çekilen gerçek kapak resimleri gelir
+  → Kullanıcı manuel eklerse girdiği URL gelir
+  → İkisi de yoksa no-cover.svg gelir
+Ayrıca yapılacak bir şey yok — bu otomatik.
+```
+
+### PWA + Telefon İcon Sistemi
+```
+manifest.json icons:
+  192×192 → telefon ana ekranı ikonu (PNG)
+  512×512 → splash screen + uygulama mağazası (PNG)
+  maskable → Android uyarlamalı ikon (yuvarlak/kare)
+
+İkon tasarımı: Stitch'in ürettiği göz ikonu (#00d4ff) + "KW" yazısı
+Oluşturma: frontend build sırasında SVG → PNG dönüştür
+  (Inkscape CLI veya sharp npm ile, tek komut)
+
+Telefon ana ekranında görünüm:
+  Android: Chrome "Ana Ekrana Ekle" → manifest icon kullanılır
+  Tam ekran app (no-URL-bar): display: "standalone"
+```
+
+---
+
 ## 🔬 Araştırma Bulguları (14 Haz 2026)
 
 ### Mevcut Tracker Uygulamalarının Sorunları (MAL / AniList / Alternatifler)
