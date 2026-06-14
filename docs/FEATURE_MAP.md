@@ -284,7 +284,7 @@
 │     - "Açılışta güncelleme kontrol et" toggle       │
 │                                                     │
 │ [E] İndirici (FAZ-3)                                │
-│     - Kalite: [360p] [720p] [1080p] [En İyi]        │
+│     - Kalite: [360p] [480p] [720p] [1080p] [En İyi] │
 │       → config.json: default_quality (Netflix mod)  │
 │       → Seçilen kalite tüm indirmelere uygulanır    │
 │     - Eşzamanlı İndirme: [1] [2] [3]               │
