@@ -572,6 +572,19 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </div>
     </div>
 
+    <!-- PWA Yükle -->
+    <div id="pwa-install-section" class="hidden bg-[#1a1a2e] rounded-xl inner-glow border border-[#00d4ff]/20 px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-[16px] font-bold text-[#e1e0ff]">Uygulamayı Yükle</div>
+          <div class="text-[12px] text-[#9090b0] mt-1">KuroWatch'ı ana ekrana ekle</div>
+        </div>
+        <button id="pwa-install-btn" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97] flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">install_mobile</span> Yükle
+        </button>
+      </div>
+    </div>
+
     <!-- Hakkında -->
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4">
       <div class="text-[16px] font-bold text-[#e1e0ff]">KuroWatch</div>
@@ -724,6 +737,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Kapak URL</label>
             <input id="add-form-cover" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[12px] text-[#9090b0] font-mono focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="https://..."/>
+            <input id="add-form-genres" type="hidden" value=""/>
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Notlar</label>
