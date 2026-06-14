@@ -93,7 +93,7 @@ Her içerik için birden fazla site eklenebilir. Birincil site (is_primary=true)
 ### Güncelleme Kontrolü
 - Uygulama açılışında otomatik kontrol (FastAPI startup event)
 - Manuel "Yenile" butonu (Updates sayfasında → `POST /api/check-updates`)
-- APScheduler arka plan: YOK (single user, uygulama açıkken yeterli)
+- APScheduler arka plan: YOK — startup event + manuel buton yeterli (single user)
 
 ### Bildirimler
 - Tarayıcı push (PWA Web Push API)
@@ -126,9 +126,19 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
 - ContentTag: many-to-many
 
 ### Keşfet Arama
-- AniList GraphQL: `media(search: "...", genre_in: [...])` 
-- IGDB: `search "..."; fields name,cover,genres;`
+- AniList GraphQL: `media(search: "...", genre_in: [...])`
+  - **Manhwa ayrımı:** AniList'te manhwa = `type: MANGA, countryOfOrigin: KR`
+  - Anime: `type: ANIME` | Manga: `type: MANGA, countryOfOrigin: JP` | Manhwa: `type: MANGA, countryOfOrigin: KR`
+  - **Rate limit: 90 req/dakika** → check-updates'te her istek arasına 0.7s delay ekle
+  - **⚠️ Manga nextChapter yok:** `nextAiringEpisode` sadece anime. Manga/manhwa güncelleme tespiti:
+    `API.chapters` > `DB.total_chapters` → yeni bölüm var (AniList günlük günceller, yeterli)
+- IGDB: `search "..."; fields name,cover.image_id,genres.name,rating;`
+  - ⚠️ Cover URL: `https://images.igdb.com/igdb/image/upload/t_cover_big/{image_id}.jpg`
+  - Token: `POST https://id.twitch.tv/oauth2/token?client_id=X&client_secret=Y&grant_type=client_credentials`
+  - **Token ömrü: ~60 gün** → config.json'a `igdb_token` + `igdb_token_expires_at` sakla, expire olunca refresh
 - Tür öneri: AniList genre listesi → click → top results
+- **MangaDex (FAZ-2 scraper):** `GET https://api.mangadex.org/manga?title=X` → id bul →
+  `GET https://api.mangadex.org/manga/{id}/feed?limit=1&order[chapter]=desc` → son chapter
 
 ### Import / Export
 - Format: JSON (`{ contents: [...], sites: [...], tags: [...], ... }`)
@@ -140,6 +150,10 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
 {
   "igdb_client_id": "",
   "igdb_client_secret": "",
+  "igdb_token": "",
+  "igdb_token_expires_at": 0,
+  "vapid_public_key": "",
+  "vapid_private_key": "",
   "duration_anime_ep": 24,
   "duration_manga_ch": 5,
   "duration_manhwa_ch": 3,
@@ -147,10 +161,38 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
   "check_on_startup": true
 }
 ```
+- `igdb_token` + `igdb_token_expires_at`: startup'ta kontrol et, expire olduysa Twitch'ten refresh
+- `vapid_*`: ilk çalıştırmada `py_vapid` ile otomatik üret, config'e yaz
 
 ### Notlar
 - `note_text`: plain text
 - `note_is_spoiler`: boolean → detail'de bulanık, "Göster" butonu
+
+### FastAPI Static File + Service Worker Kurulumu
+```python
+# main.py — SIRA ÖNEMLİ!
+app.include_router(content_router, prefix="/api")  # API route'ları ÖNCE
+app.include_router(episodes_router, prefix="/api")
+# ... diğer router'lar ...
+# SON OLARAK static files (catch-all — /api ile çakışmaz)
+app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
+```
+- `sw.js` → `frontend/sw.js` konumunda → `/sw.js` URL'i → scope = `/` (tüm uygulama)
+- Service worker `/api/*` isteklerini network-first yakalar, static dosyaları cache-first
+
+### Web Push (PWA Bildirimleri)
+- Kütüphane: `pywebpush` + `py-vapid`
+- VAPID key üretimi (ilk çalıştırmada otomatik):
+  ```python
+  from py_vapid import Vapid
+  v = Vapid()
+  v.generate_keys()
+  # config.json'a kaydet: private_key, public_key
+  ```
+- `vapid_claims = {"sub": "mailto:local@kurowatch.app"}` (local app için dummy email OK)
+- Push subscription: frontend `pushManager.subscribe({applicationServerKey: vapidPublicKey})`
+  → subscription JSON → `POST /api/push/subscribe` → config/db'ye kaydet
+- Yeni bölüm tespitinde: `webpush(subscription, json.dumps(payload), vapid_private_key=..., vapid_claims=...)`
 
 ---
 
@@ -158,20 +200,21 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
 ```
 kurowatch/
 ├── backend/
-│   ├── main.py              ← FastAPI app, CORS, startup
-│   ├── database.py          ← SQLite + SQLAlchemy async engine
-│   ├── models.py            ← ORM modelleri (Content, Site, Episode, Rating, Tag)
+│   ├── main.py              ← FastAPI app, CORS, startup (check-updates on_startup)
+│   ├── database.py          ← SQLite + SQLAlchemy async engine (aiosqlite)
+│   ├── models.py            ← ORM: Content, Site, Episode, Update, Tag, ContentTag
 │   ├── routers/
-│   │   ├── content.py       ← /api/content CRUD (anime/manga ekle/sil/güncelle)
-│   │   ├── tracking.py      ← /api/track (süre, puan, kişisel not)
-│   │   ├── sites.py         ← /api/sites (hangi sitelerde takip)
-│   │   ├── tags.py          ← /api/tags (etiket/kategori yönetimi)
-│   │   ├── episodes.py      ← /api/episodes (bölüm listesi, yeni bölüm flag)
-│   │   └── sync.py          ← /api/export + /api/import (JSON dosya sync)
+│   │   ├── content.py       ← /api/content CRUD + /api/discover
+│   │   ├── episodes.py      ← /api/episodes + /api/check-updates + /api/updates
+│   │   ├── sites.py         ← /api/sites
+│   │   ├── tags.py          ← /api/tags
+│   │   ├── sync.py          ← /api/export + /api/import + /api/import/resolve
+│   │   └── settings.py      ← /api/settings GET/POST (config.json)
 │   ├── scraper/
-│   │   ├── anilist.py       ← AniList GraphQL API (anime metadata)
-│   │   ├── mal.py           ← MyAnimeList API (alternatif)
-│   │   └── chapter_check.py ← Site scraper (yeni bölüm kontrolü)
+│   │   ├── anilist.py       ← AniList GraphQL (anime/manga/manhwa + countryOfOrigin)
+│   │   ├── mal.py           ← MAL OAuth2 PKCE fallback (localhost redirect)
+│   │   ├── igdb.py          ← IGDB Twitch auth + cover URL fix
+│   │   └── chapter_check.py ← Regex heuristik scraper (MVP)
 │   └── requirements.txt
 ├── frontend/               ← Stitch AI çıktısı buraya gelecek
 │   ├── index.html
@@ -187,58 +230,84 @@ kurowatch/
 ## Veri Modeli
 ```
 Content (içerik)
-  id, title, type (anime/manga/manhwa), cover_url
-  status (watching/reading/paused/dropped/completed)
+  id, title, type (anime/manga/manhwa/game), cover_url
+  external_id (AniList/IGDB id — nullable)
+  status (watching/completed/on_hold/dropped/planning/rewatching)
   total_episodes, total_chapters
-  my_score (1-10), my_note (text)
+  my_progress (int — kaçıncı bölüme kadar)
+  my_progress_pct (int 0-100 — oyunlar için, nullable)
+  my_score (REAL, nullable — 0.0–10.0, null = puan verilmemiş)
+  note_text (text, nullable)
+  note_is_spoiler (bool, default false)
   added_at, updated_at
 
 Site (izleme/okuma siteleri)
   id, content_id (FK), site_name, site_url
-  is_primary (ana site mi)
-  latest_known_episode/chapter
+  is_primary (bool)
+  latest_known_ep (int, nullable)  ← scraper günceller
 
-Episode (bölüm takip)
-  id, content_id (FK), site_id (FK)
-  number, title, url
-  is_watched/read, watched_at
-  is_new (flag — badge için)
+Episode (bölüm listesi — API/scraper'dan dolan)
+  id, content_id (FK)
+  number (int), title (text, nullable), url (text, nullable)
+  is_watched (bool, default false), watched_at (datetime, nullable)
+  is_new (bool, default false — badge için)
+
+Update (yeni bölüm bildirimleri)
+  id, content_id (FK)
+  episode_number (int), site_name (text)
+  detected_at (datetime), is_read (bool, default false)
 
 Tag (etiket)
-  id, name, color
+  id, name, tag_type ('api' | 'user'), color (text, nullable)
 
 ContentTag (many-to-many)
   content_id, tag_id
 
-TrackingSession (süre takip)
-  id, content_id, episode_id
-  started_at, ended_at, duration_minutes
+# TrackingSession → MVP KAPSAMI DIŞI
+# Süre hesabı: my_progress × config.duration_* (tahmini)
+# İleride eklenebilir (FAZ-2+)
 ```
 
 ## API Endpoints (planlanan)
 ```
-GET    /api/content          ← liste (filtre: type, status, tag)
-POST   /api/content          ← yeni içerik ekle
-GET    /api/content/{id}     ← detay + siteler + bölümler
-PATCH  /api/content/{id}     ← güncelle (puan, not, status)
-DELETE /api/content/{id}     ← sil
+# İçerik CRUD
+GET    /api/content               ← liste (filtre: type, status, tag, q)
+POST   /api/content               ← yeni içerik ekle
+GET    /api/content/{id}          ← detay + siteler + bölümler
+PATCH  /api/content/{id}          ← güncelle (puan, not, status, my_progress)
+DELETE /api/content/{id}          ← sil
 
+# Site
 POST   /api/content/{id}/sites    ← site ekle
 DELETE /api/sites/{id}            ← site sil
 
+# Bölümler
 GET    /api/content/{id}/episodes ← bölüm listesi
-PATCH  /api/episodes/{id}/read    ← okundu/izlendi işaretle
+PATCH  /api/episodes/{id}/watch   ← izlendi/okundu işaretle
 
-POST   /api/track/start      ← süre başlat
-POST   /api/track/stop       ← süre durdur
+# Güncelleme bildirimleri
+GET    /api/updates               ← tüm güncellemeler (yeniden eskiye)
+PATCH  /api/updates/{id}/read     ← okundu işaretle
+POST   /api/check-updates         ← manuel tara (tüm içerikler)
 
-GET    /api/tags             ← tüm etiketler
-POST   /api/tags             ← yeni etiket
+# Etiket
+GET    /api/tags                  ← tüm etiketler
+POST   /api/tags                  ← yeni etiket
 
-GET    /api/export           ← tüm veri JSON indir
-POST   /api/import           ← JSON yükle (merge: son değişiklik kazanır)
+# Keşfet (dış API proxy)
+GET    /api/discover?q=X&type=anime        ← AniList/IGDB arama
+GET    /api/discover?genre=action&type=anime ← tür bazlı öneri
 
-GET    /api/check-updates    ← tüm takip edilen içerikleri tara (yeni bölüm?)
+# Sync
+GET    /api/export                ← tüm veri JSON indir
+POST   /api/import                ← JSON yükle (çakışmaları tespit et, liste döndür)
+POST   /api/import/resolve        ← çakışma kararlarını uygula
+
+# Ayarlar
+GET    /api/settings              ← config.json oku
+POST   /api/settings              ← config.json yaz (IGDB creds + süreler)
+
+# TrackingSession → MVP DIŞI (removed)
 ```
 
 ## Sync Protokolü (PC ↔ Mobil)
@@ -248,11 +317,13 @@ GET    /api/check-updates    ← tüm takip edilen içerikleri tara (yeni bölü
 - Çakışma olmaz: tek kullanıcı
 
 ## Yeni Bölüm Tespiti
-1. **AniList API** → resmi bölüm sayısı çek
-2. **MAL API** → fallback
-3. **chapter_check.py scraper** → API bulamazsa site scraping
-4. Fark varsa → `is_new=True`, badge sayısı güncelle
-5. APScheduler ile her X saatte otomatik kontrol
+1. **AniList API** → resmi bölüm sayısı çek (`episodes` / `chapters` field)
+2. **MAL API** → fallback (AniList bulamazsa)
+3. **chapter_check.py scraper** → API'de yoksa kullanıcının eklediği site URL'sini tara
+   - **Strateji A (MVP):** Regex tabanlı heuristik — sayfada `Episode 1150`, `Chapter 445` kalıplarını ara
+   - **Strateji B (Gelecek):** MangaDex resmi API (ücretsiz, auth yok) ilk desteklenen site
+4. Fark varsa → `Update` tablosuna kayıt yaz + `Episode.is_new=True`, badge güncelle
+5. APScheduler: YOK — startup event + manuel "Kontrol Et" butonu yeterli
 
 ## Kuroshin.bat Entegrasyonu
 - `[6] KuroWatch` → backend başlat (`uvicorn backend.main:app --port 8099`)

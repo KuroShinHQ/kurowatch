@@ -484,17 +484,17 @@ FRONTEND (Stitch sonrası):
 [ ] SKELETON — shimmer loader
 
 BACKEND:
-[ ] database.py — SQLite async engine
-[ ] models.py — 6 ORM model
-[ ] routers/content.py — CRUD
-[ ] routers/episodes.py — bölüm + güncelleme
-[ ] routers/sites.py — site yönetimi
-[ ] routers/tags.py — etiket yönetimi
-[ ] routers/tracking.py — istatistik
-[ ] routers/sync.py — export/import/conflict
-[ ] routers/settings.py — config
-[ ] scraper/anilist.py — GraphQL
-[ ] scraper/mal.py — OAuth fallback
-[ ] scraper/igdb.py — Twitch auth
-[ ] scraper/chapter_check.py — genel scraper
+[ ] database.py — SQLite async engine (aiosqlite)
+[ ] models.py — ORM: Content, Site, Episode, Update, Tag, ContentTag
+    (TrackingSession → MVP DIŞI, FAZ-2'ye ertelendi)
+[ ] routers/content.py — /api/content CRUD + /api/discover
+[ ] routers/episodes.py — /api/episodes + /api/check-updates + /api/updates
+[ ] routers/sites.py — /api/sites
+[ ] routers/tags.py — /api/tags
+[ ] routers/sync.py — /api/export + /api/import + /api/import/resolve
+[ ] routers/settings.py — /api/settings GET/POST
+[ ] scraper/anilist.py — GraphQL (anime: ANIME / manga: MANGA+JP / manhwa: MANGA+KR)
+[ ] scraper/mal.py — OAuth2 PKCE fallback (localhost:5050 redirect)
+[ ] scraper/igdb.py — Twitch client_credentials token + cover URL prefix fix
+[ ] scraper/chapter_check.py — regex heuristik (MVP) + MangaDex API (FAZ-2)
 ```
