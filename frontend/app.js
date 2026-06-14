@@ -278,13 +278,99 @@
       `;
     }).join('');
 
-    // Kart tıklama → detay
+    // Kart tıklama + uzun bas menüsü
     grid.querySelectorAll('[data-content-id]').forEach(card => {
-      card.addEventListener('click', function() {
-        const id = parseInt(this.dataset.contentId, 10);
-        renderDetail(id);
-        showScreen('screen-detail');
-      });
+      _attachCardEvents(card);
+    });
+  }
+
+  // ── Context menü (Home kartları) ─────────────────────────────────
+  let _ctxMenu = null;
+  function _getCtxMenu() {
+    if (_ctxMenu) return _ctxMenu;
+    _ctxMenu = document.createElement('div');
+    _ctxMenu.id = 'home-ctx-menu';
+    _ctxMenu.className = 'fixed z-[9999] hidden flex-col rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#12132a]/95 backdrop-blur-xl min-w-[160px]';
+    _ctxMenu.innerHTML = `
+      <button id="ctx-detail" class="flex items-center gap-3 px-4 py-3 text-[14px] text-[#e1e0ff] hover:bg-white/10 transition-colors text-left">
+        <span class="material-symbols-outlined text-[18px] text-[#00d4ff]">open_in_new</span> Detay
+      </button>
+      <div class="h-px bg-white/10 mx-3"></div>
+      <button id="ctx-delete" class="flex items-center gap-3 px-4 py-3 text-[14px] text-red-400 hover:bg-red-500/10 transition-colors text-left">
+        <span class="material-symbols-outlined text-[18px]">delete</span> Sil
+      </button>`;
+    document.body.appendChild(_ctxMenu);
+    document.addEventListener('click', function(e) {
+      if (!_ctxMenu.contains(e.target)) _hideCtxMenu();
+    }, true);
+    return _ctxMenu;
+  }
+
+  function _showCtxMenu(x, y, contentId) {
+    const menu = _getCtxMenu();
+    menu.classList.remove('hidden');
+    menu.classList.add('flex');
+    // Ekran sınırı kontrolü
+    const mw = 180, mh = 110;
+    const px = Math.min(x, window.innerWidth - mw - 8);
+    const py = Math.min(y, window.innerHeight - mh - 8);
+    menu.style.left = px + 'px';
+    menu.style.top = py + 'px';
+    menu.querySelector('#ctx-detail').onclick = function() {
+      _hideCtxMenu();
+      renderDetail(contentId);
+      showScreen('screen-detail');
+    };
+    menu.querySelector('#ctx-delete').onclick = async function() {
+      _hideCtxMenu();
+      if (!confirm('Bu içeriği silmek istiyor musun?')) return;
+      try {
+        await apiDelete('/api/content/' + contentId);
+        renderHome();
+      } catch(e) { alert('Silinemedi: ' + e.message); }
+    };
+  }
+
+  function _hideCtxMenu() {
+    if (!_ctxMenu) return;
+    _ctxMenu.classList.add('hidden');
+    _ctxMenu.classList.remove('flex');
+  }
+
+  function _attachCardEvents(card) {
+    let pressTimer = null;
+    let longPressed = false;
+    const LONG_MS = 550;
+
+    function startPress(x, y) {
+      longPressed = false;
+      pressTimer = setTimeout(function() {
+        longPressed = true;
+        const id = parseInt(card.dataset.contentId, 10);
+        _showCtxMenu(x, y, id);
+        if (navigator.vibrate) navigator.vibrate(30);
+      }, LONG_MS);
+    }
+    function cancelPress() { clearTimeout(pressTimer); }
+
+    card.addEventListener('mousedown', function(e) {
+      if (e.button !== 0) return;
+      startPress(e.clientX, e.clientY);
+    });
+    card.addEventListener('mousemove', cancelPress);
+    card.addEventListener('mouseup', cancelPress);
+    card.addEventListener('mouseleave', cancelPress);
+    card.addEventListener('touchstart', function(e) {
+      const t = e.touches[0];
+      startPress(t.clientX, t.clientY);
+    }, { passive: true });
+    card.addEventListener('touchmove', cancelPress, { passive: true });
+    card.addEventListener('touchend', cancelPress);
+    card.addEventListener('click', function(e) {
+      if (longPressed) { e.preventDefault(); e.stopPropagation(); return; }
+      const id = parseInt(card.dataset.contentId, 10);
+      renderDetail(id);
+      showScreen('screen-detail');
     });
   }
 
