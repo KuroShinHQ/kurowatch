@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-2) · **Aktif sürüm:** v0.1.0 · **Son commit:** `2974da6`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-3) · **Aktif sürüm:** v0.1.0 · **Son commit:** `45272a5`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -36,6 +36,17 @@ SIRADAKI GÖREV (öncelik sırası):
    - backend/models.py (Content, Site, Episode, Update, Tag, ContentTag — TrackingSession MVP dışı)
    - backend/main.py (FastAPI app)
    - backend/routers/content.py (CRUD + /api/discover)
+
+FAZ-3 ARAŞTIRMA TAMAMLANDI (14 Haz sohbet-3) — YAPI.md 3.1-A ve 3.8-3.10:
+  Anime TR siteler: yt-dlp resmi extractor yok → stream_finder.py (curl_cffi) + embed iframe parse
+  Manga TR siteler: Madara WordPress → admin-ajax.php manga_get_chapter_img_list
+  Crunchyroll: ücretsiz ✅, premium DRM ❌ → "Tarayıcıda Aç" butonu
+  Daisy Chain: bölüm %80'de N+1 indirme başlar (config: daisy_chain_trigger_pct)
+  Global kalite: config.json default_quality="720p" (Netflix modeli, tüm indirmeler bu kalitede)
+  Oto-sil: config.json auto_delete_after_watch=false → modal | true → otomatik
+  Download.trigger: user/daisy_chain/batch (kaynak takibi)
+  stream_finder.py: yeni modül (downloader/ altında)
+  WS port düzeltildi: 9099 → 8099
 ```
 
 ---
