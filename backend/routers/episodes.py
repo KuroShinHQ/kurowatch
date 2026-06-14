@@ -143,6 +143,8 @@ async def list_updates(
             "id": u.id,
             "content_id": u.content_id,
             "content_title": u.content.title if u.content else "Bilinmiyor",
+            "content_cover_url": u.content.cover_url if u.content else None,
+            "content_type": u.content.type if u.content else None,
             "episode_number": u.episode_number,
             "site_name": u.site_name,
             "detected_at": u.detected_at.isoformat(),

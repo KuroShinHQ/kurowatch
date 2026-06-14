@@ -400,6 +400,22 @@
       };
     }
 
+    // Genres badge'leri
+    const genresRow = document.getElementById('detail-genres-row');
+    if (genresRow) {
+      const genres = item.genres || [];
+      if (genres.length) {
+        genresRow.classList.remove('hidden');
+        genresRow.classList.add('flex');
+        genresRow.innerHTML = genres.map(function(g) {
+          return '<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/30">' + escapeHtml(g) + '</span>';
+        }).join('');
+      } else {
+        genresRow.classList.add('hidden');
+        genresRow.classList.remove('flex');
+      }
+    }
+
     renderDetailTags(id, item.tags || []);
 
     // ── AniList: Synopsis + nextAiringEpisode ─────────────────────
@@ -500,10 +516,14 @@
     list.innerHTML = items.map(u => {
       const initials = u.content_title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
       const time = formatRelativeTime(u.detected_at);
+      const tc = TYPE_COLOR[u.content_type] || TYPE_COLOR.anime;
+      const coverHtml = u.content_cover_url
+        ? `<img src="${escapeHtml(u.content_cover_url)}" class="w-full h-full object-cover" loading="lazy"/>`
+        : `<span class="font-bold text-xs ${tc.text}">${initials}</span>`;
       if (u.is_read) {
         return `
           <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e]/60 border-l-[4px] border-transparent inner-glow cursor-pointer hover:bg-[#1a1a2e] transition-transform duration-200 opacity-70 hover:opacity-100 active:scale-[0.97]" data-content-id="${u.content_id}">
-            <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center text-white/40 font-bold text-sm grayscale-[50%]">${initials}</div>
+            <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden grayscale-[50%]">${coverHtml}</div>
             <div class="flex flex-col justify-center w-full min-w-0">
               <div class="flex justify-between items-center mb-0.5">
                 <h3 class="text-[16px] font-bold text-white/70 group-hover:text-white transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
@@ -519,7 +539,7 @@
       return `
         <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e] border-l-[4px] border-[#00d4ff] inner-glow cursor-pointer hover:bg-[#1a1a2e]/80 transition-transform duration-200 relative overflow-hidden active:scale-[0.97]" data-content-id="${u.content_id}">
           <div class="absolute inset-0 bg-gradient-to-r from-[#00d4ff]/5 to-transparent pointer-events-none"></div>
-          <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center text-[#00d4ff] font-bold text-sm">${initials}</div>
+          <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden">${coverHtml}</div>
           <div class="flex flex-col justify-center w-full min-w-0">
             <div class="flex justify-between items-center mb-0.5">
               <h3 class="text-[16px] font-bold text-white group-hover:text-[#00d4ff] transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
