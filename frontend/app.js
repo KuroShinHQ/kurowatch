@@ -61,6 +61,10 @@
     'dropped': 'Bırakıldı'
   };
 
+  const TAG_COLORS = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#ffb4ab', '#90e090', '#ff9a3c'];
+  let _selectedTagColor = TAG_COLORS[0];
+  let _tagPickerEl = null;
+
   // ── API Layer ─────────────────────────────────────────────────────
   function getMockData(path) {
     if (path === '/api/content')          return Promise.resolve(MOCK_LIBRARY);
@@ -323,6 +327,8 @@
       item.my_progress = v;
       apiPost('/api/content/' + id + '/progress', { progress: v });
     };
+
+    renderDetailTags(id, item.tags || []);
   }
 
   // ── Render: Updates ──────────────────────────────────────────────
@@ -385,6 +391,44 @@
         showScreen('screen-detail');
       });
     });
+  }
+
+  // ── Updates: Kontrol Et ──────────────────────────────────────────
+  async function runCheckUpdates() {
+    const btn = document.getElementById('updates-check-btn');
+    if (!btn || btn.disabled) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Kontrol ediliyor...';
+    try {
+      const res = await apiPost('/api/check-updates', {});
+      const msg = res.new_updates > 0
+        ? res.new_updates + ' yeni güncelleme bulundu!'
+        : 'Yeni güncelleme yok';
+      showToast(msg, res.new_updates > 0 ? 'success' : 'info');
+      renderUpdates();
+    } catch (err) {
+      showToast('Hata: ' + err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm">refresh</span> Kontrol Et';
+    }
+  }
+
+  // ── Toast ────────────────────────────────────────────────────────
+  function showToast(msg, type) {
+    const toast = document.getElementById('kw-toast');
+    if (!toast) return;
+    const colors = { success: '#90e090', error: '#ffb4ab', info: '#9090b0' };
+    toast.style.borderColor = colors[type] || colors.info;
+    toast.querySelector('.toast-msg').textContent = msg;
+    toast.classList.remove('hidden', 'opacity-0');
+    toast.classList.add('opacity-100');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function() {
+      toast.classList.remove('opacity-100');
+      toast.classList.add('opacity-0');
+      setTimeout(function() { toast.classList.add('hidden'); }, 300);
+    }, 3000);
   }
 
   // ── Render: Stats ────────────────────────────────────────────────
@@ -529,6 +573,147 @@
     // Versiyon
     const verEl = document.getElementById('settings-version');
     if (verEl) verEl.textContent = 'v0.3.0 — Medya Takip Uygulaması';
+
+    renderTagSettings();
+    renderTagColorPicker();
+  }
+
+  // ── Tag Yönetimi ─────────────────────────────────────────────────
+
+  function renderDetailTags(contentId, tags) {
+    const row = document.getElementById('detail-tags-row');
+    if (!row) return;
+    const chips = tags.map(function(t) {
+      const color = t.color || '#9090b0';
+      return '<span class="flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-bold border" style="color:' + color + ';border-color:' + color + '40;background:' + color + '15">' +
+        escapeHtml(t.name) +
+        '<button class="detail-tag-remove flex items-center opacity-60 hover:opacity-100 ml-0.5" data-tag-id="' + t.id + '" data-content-id="' + contentId + '">' +
+        '<span class="material-symbols-outlined text-[12px]">close</span></button></span>';
+    }).join('');
+    row.innerHTML = chips +
+      '<button id="detail-tag-add-btn" class="flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-bold border border-white/10 text-[#9090b0] hover:border-[#00d4ff]/50 hover:text-[#00d4ff] transition-colors" data-content-id="' + contentId + '">' +
+      '<span class="material-symbols-outlined text-[14px]">add</span> Etiket</button>';
+  }
+
+  async function openTagPicker(contentId, anchorEl) {
+    if (_tagPickerEl) { _tagPickerEl.remove(); _tagPickerEl = null; }
+
+    let allTags, contentData;
+    try { allTags = await apiGet('/api/tags'); } catch (e) { return; }
+    try { contentData = await apiGet('/api/content/' + contentId); } catch (e) { return; }
+    const assignedIds = new Set((contentData.tags || []).map(function(t) { return t.id; }));
+
+    const picker = document.createElement('div');
+    picker.id = 'tag-picker-popover';
+    picker.className = 'fixed z-[150] bg-[#1c1d37] border border-white/10 rounded-xl shadow-2xl min-w-[180px] max-h-[240px] overflow-y-auto py-2';
+
+    if (allTags.length === 0) {
+      picker.innerHTML = '<div class="px-4 py-3 text-[12px] text-[#9090b0]">Etiket yok — Ayarlar\'dan oluştur</div>';
+    } else {
+      picker.innerHTML = allTags.map(function(t) {
+        const color = t.color || '#9090b0';
+        const assigned = assignedIds.has(t.id);
+        return '<button class="tag-picker-item w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 transition-colors text-left" data-tag-id="' + t.id + '" data-content-id="' + contentId + '" data-assigned="' + assigned + '">' +
+          '<span class="w-3 h-3 rounded-full flex-shrink-0" style="background:' + color + '"></span>' +
+          '<span class="text-[13px] text-[#e1e0ff] flex-1">' + escapeHtml(t.name) + '</span>' +
+          (assigned ? '<span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span>' : '') +
+          '</button>';
+      }).join('');
+    }
+
+    document.body.appendChild(picker);
+    const rect = anchorEl.getBoundingClientRect();
+    picker.style.top = (rect.bottom + 8) + 'px';
+    picker.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+    _tagPickerEl = picker;
+
+    setTimeout(function() {
+      document.addEventListener('click', function closePickerOnce(e) {
+        if (!picker.contains(e.target) && e.target.id !== 'detail-tag-add-btn') {
+          picker.remove();
+          _tagPickerEl = null;
+          document.removeEventListener('click', closePickerOnce);
+        }
+      });
+    }, 0);
+  }
+
+  async function toggleTagOnContent(contentId, tagId, currentlyAssigned) {
+    try {
+      if (currentlyAssigned) {
+        await apiDelete('/api/content/' + contentId + '/tags/' + tagId);
+      } else {
+        await apiPost('/api/content/' + contentId + '/tags/' + tagId, {});
+      }
+      const updated = await apiGet('/api/content/' + contentId);
+      renderDetailTags(contentId, updated.tags || []);
+      if (_tagPickerEl) { _tagPickerEl.remove(); _tagPickerEl = null; }
+    } catch (e) {
+      showToast('Etiket hatası: ' + e.message, 'error');
+    }
+  }
+
+  async function renderTagSettings() {
+    const list = document.getElementById('tag-list-settings');
+    if (!list) return;
+    let tags;
+    try { tags = await apiGet('/api/tags'); } catch (e) { return; }
+    if (tags.length === 0) {
+      list.innerHTML = '<div class="px-4 py-4 text-[13px] text-[#9090b0]">Henüz etiket yok — Yeni butonu ile oluştur</div>';
+      return;
+    }
+    list.innerHTML = tags.map(function(t) {
+      const color = t.color || '#9090b0';
+      return '<div class="flex items-center gap-3 px-4 py-3">' +
+        '<span class="w-3 h-3 rounded-full flex-shrink-0" style="background:' + color + '"></span>' +
+        '<span class="flex-1 text-[14px] text-[#e1e0ff]">' + escapeHtml(t.name) + '</span>' +
+        '<span class="text-[10px] text-[#9090b0] uppercase font-bold mr-2">' + (t.tag_type === 'user' ? 'Kullanıcı' : 'API') + '</span>' +
+        '<button class="tag-delete-btn w-8 h-8 flex items-center justify-center text-[#9090b0] hover:text-[#ffb4ab] transition-colors rounded-lg hover:bg-white/5" data-tag-id="' + t.id + '">' +
+        '<span class="material-symbols-outlined text-[18px]">delete</span></button></div>';
+    }).join('');
+  }
+
+  function renderTagColorPicker() {
+    const picker = document.getElementById('tag-color-picker');
+    if (!picker) return;
+    picker.innerHTML = TAG_COLORS.map(function(c) {
+      const active = c === _selectedTagColor;
+      return '<button class="tag-color-dot w-6 h-6 rounded-full border-2 transition-all ' +
+        (active ? 'border-white scale-125' : 'border-transparent hover:scale-110') +
+        '" style="background:' + c + '" data-color="' + c + '"></button>';
+    }).join('');
+  }
+
+  async function submitCreateTag() {
+    const nameEl = document.getElementById('tag-name-input');
+    const name = nameEl ? nameEl.value.trim() : '';
+    if (!name) { showToast('Etiket adı gerekli', 'error'); return; }
+    const btn = document.getElementById('tag-save-btn');
+    if (btn) { btn.disabled = true; btn.textContent = 'Oluşturuluyor...'; }
+    try {
+      await apiPost('/api/tags', { name: name, color: _selectedTagColor, tag_type: 'user' });
+      if (nameEl) nameEl.value = '';
+      _selectedTagColor = TAG_COLORS[0];
+      renderTagColorPicker();
+      renderTagSettings();
+      showToast('"' + name + '" etiketi oluşturuldu', 'success');
+      const form = document.getElementById('tag-create-form');
+      if (form) { form.classList.add('hidden'); form.classList.remove('flex'); }
+    } catch (err) {
+      showToast(err.message.includes('409') ? 'Bu etiket zaten var' : 'Hata: ' + err.message, 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = 'Oluştur'; }
+    }
+  }
+
+  async function deleteTag(tagId) {
+    try {
+      await apiDelete('/api/tags/' + tagId);
+      renderTagSettings();
+      showToast('Etiket silindi', 'info');
+    } catch (e) {
+      showToast('Silme hatası', 'error');
+    }
   }
 
   // ── Render: Search / Discover ─────────────────────────────────────
@@ -767,6 +952,67 @@
         b.classList.toggle('text-[#9090b0]', !active);
       });
       renderHome();
+    }
+  });
+
+  // Updates + Tag click handlers
+  document.addEventListener('click', function(e) {
+    // Kontrol Et butonu
+    if (e.target.closest('#updates-check-btn')) {
+      runCheckUpdates();
+      return;
+    }
+    // Detail tag ekle butonu → picker aç
+    const addTagBtn = e.target.closest('#detail-tag-add-btn');
+    if (addTagBtn) {
+      const cid = parseInt(addTagBtn.dataset.contentId, 10);
+      openTagPicker(cid, addTagBtn);
+      return;
+    }
+    // Detail tag kaldır butonu
+    const removeTagBtn = e.target.closest('.detail-tag-remove');
+    if (removeTagBtn) {
+      e.stopPropagation();
+      const cid = parseInt(removeTagBtn.dataset.contentId, 10);
+      const tid = parseInt(removeTagBtn.dataset.tagId, 10);
+      toggleTagOnContent(cid, tid, true);
+      return;
+    }
+    // Tag picker öğesi → toggle
+    const pickerItem = e.target.closest('.tag-picker-item');
+    if (pickerItem) {
+      const cid = parseInt(pickerItem.dataset.contentId, 10);
+      const tid = parseInt(pickerItem.dataset.tagId, 10);
+      const assigned = pickerItem.dataset.assigned === 'true';
+      toggleTagOnContent(cid, tid, assigned);
+      return;
+    }
+    // Yeni etiket formu aç/kapat
+    if (e.target.closest('#tag-create-toggle')) {
+      const form = document.getElementById('tag-create-form');
+      if (!form) return;
+      const hidden = form.classList.contains('hidden');
+      form.classList.toggle('hidden', !hidden);
+      form.classList.toggle('flex', hidden);
+      return;
+    }
+    // Etiket oluştur
+    if (e.target.closest('#tag-save-btn')) {
+      submitCreateTag();
+      return;
+    }
+    // Etiket renk seç
+    const colorDot = e.target.closest('.tag-color-dot');
+    if (colorDot) {
+      _selectedTagColor = colorDot.dataset.color;
+      renderTagColorPicker();
+      return;
+    }
+    // Etiket sil
+    const deleteBtn = e.target.closest('.tag-delete-btn');
+    if (deleteBtn) {
+      deleteTag(parseInt(deleteBtn.dataset.tagId, 10));
+      return;
     }
   });
 

@@ -59,6 +59,16 @@ async def attach_tag(content_id: int, tag_id: int, db: AsyncSession = Depends(ge
     return {"ok": True}
 
 
+@router.delete("/tags/{tag_id}", status_code=204)
+async def delete_tag(tag_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Tag).where(Tag.id == tag_id))
+    tag = result.scalar_one_or_none()
+    if not tag:
+        raise HTTPException(404, "Etiket bulunamadı")
+    await db.delete(tag)
+    await db.commit()
+
+
 @router.delete("/content/{content_id}/tags/{tag_id}", status_code=204)
 async def detach_tag(content_id: int, tag_id: int, db: AsyncSession = Depends(get_db)):
     r = await db.execute(
