@@ -12,6 +12,62 @@
 - **Backend entegrasyonu yok:** Fetch call'lar placeholder olur → sonradan `/api/...` ile değiştirilecek.
 - **Mart 2026 kalite düşüşü:** Stitch güncellemesinden sonra rapor var. İlk çıktı beğenilmezse yeniden dene, veya component bazlı ayrı ayrı üret.
 
+---
+
+## 🔄 Stitch AI Çalışma Akışı (2026 — Araştırıldı)
+
+### Tek Prompt mu, İteratif mi?
+
+```
+ADIM 1 → TEK BÜYÜK PROMPT ver
+          5 ekrana kadar bağlantılı çıktı = 1 generation harcar
+          (BATCH 1: Home + Detail + Search + Updates + Stats → tek seferde)
+
+ADIM 2 → Canvas'ta beğenmediğin yerleri MANUEL düzelt
+          AI çağırmadan yapılan tüm canvas düzeltmeleri = generation SAYMAZ
+          (renk, metin, spacing → direkt tıkla düzelt)
+
+ADIM 3 → Büyük değişiklik lazımsa: Edit Mode → üstüne prompt yaz
+          AI tekrar devreye girer = yeni generation sayar
+          → Bunu mümkün olduğunca az kullan (Experimental quota kıymetli)
+
+ADIM 4 → BATCH 2 için ayrı session aç, yeni prompt ver (1 generation daha)
+```
+
+### 2026 Streaming Agent (I/O 2026 güncellemesi)
+
+Eski sistem: "yaz → bekle → gör → sıfırla" döngüsü.
+Yeni sistem: prompt yazarken canvas **gerçek zamanlı** render oluyor.
+
+- Generation **bitmeden** yönlendirebilirsin ("hayır oraya değil, şuraya")
+- Agent oturum boyunca "canlı" kalır — tek seferlik değil
+- Her düzeltme anında piksele yansıyor → döngü hızlanıyor
+
+### Generation Harcama Özeti
+
+| İşlem | Generation |
+|---|---|
+| 5 ekran birden üret (BATCH 1) | 1 |
+| Canvas'ta renk/metin/spacing düzelt | 0 |
+| Edit mode + yeni prompt (büyük revizyon) | 1 |
+| BATCH 2 yeni session (3 ekran) | 1 |
+| **Toplam hedef** | **2 generation** |
+
+### Bizim Sıramız
+
+```
+BATCH 1 (Standard mod):
+  → DESIGN.md "Stitch AI Final Prompt" bölümünü TEK SEFERDE ver
+  → 5 ekran çıkar: Home / Detail / Search / Updates / Stats
+  → Canvas manuel düzelt → generation yok
+  → HTML/CSS export → frontend/ klasörüne koy
+
+BATCH 2 (Experimental mod — kaliteli):
+  → Add Modal + Settings + Conflict Modal
+  → Ayrı session, yeni prompt
+  → Export + ekle
+```
+
 ### Kaç Panel Üretilecek? (Araştırma)
 - Stitch 2.0: **max 5 ekran / üretim** (5 ekran = 1 generation)
 - Standard mod (Gemini Flash): 350/ay → ideation
