@@ -90,6 +90,17 @@
     return r.json();
   }
 
+  async function apiPatch(path, body) {
+    if (USE_MOCK) return { ok: true };
+    const r = await fetch(API_BASE + path, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('PATCH ' + path + ' → ' + r.status);
+    return r.json();
+  }
+
   async function apiDelete(path) {
     if (USE_MOCK) return { ok: true };
     const r = await fetch(API_BASE + path, { method: 'DELETE' });
@@ -98,7 +109,7 @@
   }
 
   // Expose
-  window.kuroAPI = { get: apiGet, post: apiPost, del: apiDelete, setMockMode: m => USE_MOCK = m };
+  window.kuroAPI = { get: apiGet, post: apiPost, patch: apiPatch, del: apiDelete, setMockMode: m => USE_MOCK = m };
 
   // ── Navigasyon Sistemi ────────────────────────────────────────────
   function showScreen(id) {
@@ -111,9 +122,11 @@
     updateNavActive(id);
 
     // Ekran başına render
-    if (id === 'screen-home')    renderHome();
-    if (id === 'screen-updates') renderUpdates();
-    if (id === 'screen-stats')   renderStats();
+    if (id === 'screen-home')     renderHome();
+    if (id === 'screen-updates')  renderUpdates();
+    if (id === 'screen-stats')    renderStats();
+    if (id === 'screen-archive')  renderArchive();
+    if (id === 'screen-settings') renderSettings();
     if (id === 'screen-search') {
       setTimeout(() => {
         const inp = document.getElementById('search-discover-input');
@@ -254,21 +267,39 @@
     slider.value = cur;
     document.getElementById('detail-slider-max').textContent = total;
 
-    // Rating yıldızları
-    const score = item.my_score || 0;
-    const fullStars = Math.round(score);
+    // Rating yıldızları (interaktif — tıklanınca PATCH ile kaydet)
+    let currentScore = item.my_score || 0;
     const ratingEl = document.getElementById('detail-rating-container');
-    ratingEl.innerHTML = '';
-    for (let i = 1; i <= 10; i++) {
-      const span = document.createElement('span');
-      span.className = 'material-symbols-outlined cursor-pointer text-[28px] ' + (i <= fullStars ? 'text-[#00d4ff]' : 'text-[#31324d]');
-      span.style.fontVariationSettings = "'FILL' 1";
-      span.textContent = 'star';
-      ratingEl.appendChild(span);
+    function buildStars(highlighted) {
+      ratingEl.innerHTML = '';
+      for (let i = 1; i <= 10; i++) {
+        const span = document.createElement('span');
+        span.className = 'material-symbols-outlined cursor-pointer text-[28px] transition-colors ' + (i <= highlighted ? 'text-[#00d4ff]' : 'text-[#31324d]');
+        span.style.fontVariationSettings = "'FILL' 1";
+        span.textContent = 'star';
+        span.dataset.star = i;
+        span.addEventListener('mouseover', () => buildStars(i));
+        span.addEventListener('mouseleave', () => buildStars(currentScore));
+        span.addEventListener('click', async () => {
+          currentScore = i;
+          buildStars(i);
+          try { await apiPatch('/api/content/' + id, { my_score: i }); }
+          catch (e) { console.error('score save', e); }
+        });
+        ratingEl.appendChild(span);
+      }
     }
+    buildStars(currentScore);
 
-    // Cover bg (placeholder)
-    document.getElementById('detail-cover-bg').style.backgroundColor = '#16213e';
+    // Cover bg
+    const coverEl = document.getElementById('detail-cover-bg');
+    if (item.cover_url) {
+      coverEl.style.backgroundImage = 'url(' + item.cover_url + ')';
+      coverEl.style.backgroundColor = '';
+    } else {
+      coverEl.style.backgroundImage = '';
+      coverEl.style.backgroundColor = '#16213e';
+    }
 
     // Mark butonu
     document.getElementById('detail-mark-btn').onclick = function() {
@@ -369,6 +400,135 @@
       ? (scored.reduce((s, i) => s + i.my_score, 0) / scored.length).toFixed(1)
       : '—';
     document.getElementById('stats-avg-score').textContent = avg;
+  }
+
+  // ── Render: Archive ─────────────────────────────────────────────────
+  async function renderArchive() {
+    const list = document.getElementById('archive-list');
+    const countEl = document.getElementById('archive-count');
+    if (!list) return;
+
+    let items;
+    try { items = await apiGet('/api/content'); }
+    catch (err) {
+      list.innerHTML = '<div class="text-center text-[#9090b0] py-12">Yüklenemedi</div>';
+      return;
+    }
+
+    const archived = items.filter(i => i.status === 'completed');
+    if (countEl) countEl.textContent = archived.length + ' öğe';
+
+    if (archived.length === 0) {
+      list.innerHTML = '<div class="text-center text-[#9090b0] py-16 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">archive</span><p>Arşiv boş</p><p class="text-sm">Tamamlanan içerikler burada görünür</p></div>';
+      return;
+    }
+
+    list.innerHTML = archived.map(it => {
+      const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
+      const initials = it.title.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();
+      const cover = it.cover_url
+        ? `<img src="${it.cover_url}" class="w-full h-full object-cover" loading="lazy"/>`
+        : `<span class="text-[#9090b0] font-bold text-sm">${escapeHtml(initials)}</span>`;
+      const date = it.updated_at ? formatRelativeTime(it.updated_at) + ' tamamlandı' : 'Tamamlandı';
+      return `
+        <div class="flex items-center w-full h-[56px] bg-[#1a1a2e] rounded-lg px-2 gap-2 border border-[#31324d]/50 cursor-pointer hover:bg-[#1a1a2e]/80 transition-colors" data-content-id="${it.id}">
+          <div class="w-[40px] h-[40px] rounded overflow-hidden flex-shrink-0 bg-[#31324d] flex items-center justify-center">${cover}</div>
+          <div class="flex-1 min-w-0 flex flex-col justify-center gap-[2px]">
+            <div class="flex items-center gap-1">
+              <span class="font-bold text-[14px] text-[#e1e0ff] truncate">${escapeHtml(it.title)}</span>
+              <span class="${tc.bg} ${tc.text} text-[10px] font-bold px-1 py-[2px] rounded uppercase tracking-wider">${tc.label}</span>
+            </div>
+            <span class="text-[12px] text-[#9090b0] truncate">${date}</span>
+          </div>
+          <button class="archive-restore-btn h-[32px] px-3 rounded border border-[#00d4ff] text-[#00d4ff] text-[12px] font-semibold hover:bg-[#00d4ff]/10 active:scale-[0.97] whitespace-nowrap flex-shrink-0" data-id="${it.id}">Geri Al</button>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('[data-content-id]').forEach(card => {
+      card.addEventListener('click', function(e) {
+        if (e.target.closest('.archive-restore-btn')) return;
+        const cid = parseInt(this.dataset.contentId, 10);
+        renderDetail(cid);
+        showScreen('screen-detail');
+      });
+    });
+    list.querySelectorAll('.archive-restore-btn').forEach(btn => {
+      btn.addEventListener('click', async function(e) {
+        e.stopPropagation();
+        try {
+          await apiPatch('/api/content/' + this.dataset.id, { status: 'watching' });
+          renderArchive();
+        } catch(err) { alert('Hata: ' + err.message); }
+      });
+    });
+  }
+
+  // ── Render: Settings ────────────────────────────────────────────────
+  async function renderSettings() {
+    let cfg;
+    try { cfg = await apiGet('/api/settings'); }
+    catch (e) { console.error('settings load', e); return; }
+
+    // IGDB inputs
+    const igdbId = document.getElementById('settings-igdb-id');
+    const igdbSecret = document.getElementById('settings-igdb-secret');
+    if (igdbId) igdbId.value = cfg.igdb_client_id || '';
+    if (igdbSecret) igdbSecret.value = cfg.igdb_client_secret || '';
+
+    // Auto-delete toggle
+    const toggleDot = document.getElementById('settings-auto-delete-dot');
+    const toggleBg = document.getElementById('settings-auto-delete-bg');
+    function setToggle(val) {
+      if (toggleDot) toggleDot.classList.toggle('translate-x-4', val);
+      if (toggleBg) toggleBg.style.backgroundColor = val ? '#00d4ff' : '';
+    }
+    setToggle(cfg.auto_delete_after_watch);
+    const toggleWrap = document.getElementById('settings-auto-delete-wrap');
+    if (toggleWrap) {
+      toggleWrap.onclick = async function() {
+        cfg.auto_delete_after_watch = !cfg.auto_delete_after_watch;
+        setToggle(cfg.auto_delete_after_watch);
+        await apiPost('/api/settings', { auto_delete_after_watch: cfg.auto_delete_after_watch });
+      };
+    }
+
+    // Kalite butonları
+    const qualBtns = document.querySelectorAll('.settings-quality-btn');
+    function setQuality(q) {
+      qualBtns.forEach(b => {
+        const active = b.dataset.quality === q;
+        b.classList.toggle('bg-[#0d0d1a]', active);
+        b.classList.toggle('text-[#00d4ff]', active);
+        b.classList.toggle('text-[#9090b0]', !active);
+      });
+    }
+    setQuality(cfg.default_quality || '720p');
+    qualBtns.forEach(btn => {
+      btn.addEventListener('click', async function() {
+        cfg.default_quality = this.dataset.quality;
+        setQuality(cfg.default_quality);
+        await apiPost('/api/settings', { default_quality: cfg.default_quality });
+      });
+    });
+
+    // IGDB kaydet butonu
+    const igdbSaveBtn = document.getElementById('settings-igdb-save');
+    if (igdbSaveBtn) {
+      igdbSaveBtn.onclick = async function() {
+        try {
+          await apiPost('/api/settings', {
+            igdb_client_id: igdbId ? igdbId.value.trim() : '',
+            igdb_client_secret: igdbSecret ? igdbSecret.value.trim() : ''
+          });
+          this.textContent = 'Kaydedildi ✓';
+          setTimeout(() => { this.textContent = 'Token Yenile'; }, 2000);
+        } catch(e) { alert('Kayıt hatası: ' + e.message); }
+      };
+    }
+
+    // Versiyon
+    const verEl = document.getElementById('settings-version');
+    if (verEl) verEl.textContent = 'v0.3.0 — Medya Takip Uygulaması';
   }
 
   // ── Render: Search / Discover ─────────────────────────────────────
@@ -520,6 +680,21 @@
       e.preventDefault();
       closeModal(closeEl.dataset.modalClose);
       return;
+    }
+  });
+
+  // Dışa Aktar
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('#settings-export-btn')) {
+      apiGet('/api/export').then(data => {
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'kurowatch_export_' + new Date().toISOString().slice(0,10) + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      }).catch(e => alert('Export hatası: ' + e.message));
     }
   });
 
