@@ -359,3 +359,302 @@ POST   /api/settings              ← config.json yaz (IGDB creds + süreler)
 ## Kuroshin.bat Entegrasyonu
 - `[6] KuroWatch` → backend başlat (`uvicorn backend.main:app --port 8099`)
 - `[7] KuroWatch Stop` → taskkill
+
+---
+
+## 🎬 FAZ-3: KuroWatch Player — İndirici + Netflix Deneyimi
+
+> **Kapsam:** Takip edilen sitelerdeki bölümleri/chapter'ları indir →
+> uygulama içi oynat/oku → Netflix mekanizmaları → izle-sil döngüsü.
+> **Bağımlılık:** FAZ-1 (tracker) tamamlandıktan sonra başlanır.
+
+---
+
+### 3.1 İndirici Altyapısı
+
+**Araçlar (araştırıldı — 14 Haz 2026):**
+
+| Tür | Araç | Kapsam |
+|---|---|---|
+| Anime video | `yt-dlp` | 1000+ site, aktif geliştirme, Python subprocess |
+| Manga chapter | `gallery-dl` | MangaDex, Asura, Flame, 200+ site, Python subprocess |
+| Manga (MangaDex özel) | `mangadex-downloader` (PyPI) | Resmi API + yüksek kalite |
+
+**Kurulum:**
+```
+pip install yt-dlp gallery-dl mangadex-downloader
+```
+
+**Klasör yapısı (downloads/ — .gitignore'da):**
+```
+downloads/
+├── anime/
+│   └── {content_id}/
+│       └── ep_{number}/
+│           ├── video.mp4       ← veya .mkv (yt-dlp format)
+│           └── subs.vtt        ← subtitle (yt-dlp --write-subs)
+└── manga/
+    └── {content_id}/
+        └── ch_{number}/
+            ├── 001.jpg
+            ├── 002.jpg
+            └── ...
+```
+
+**Backend download engine:**
+```python
+# backend/downloader/anime.py
+import subprocess, asyncio
+
+async def download_episode(content_id, ep_num, url, quality="best"):
+    out_dir = f"downloads/anime/{content_id}/ep_{ep_num}/"
+    cmd = [
+        "yt-dlp", url,
+        "-f", f"bestvideo[height<={quality}]+bestaudio/best",
+        "--write-subs", "--sub-lang", "tr,en",
+        "-o", f"{out_dir}video.%(ext)s",
+        "--progress",
+    ]
+    proc = await asyncio.create_subprocess_exec(*cmd,
+        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    return proc  # WebSocket'e % ilerleme gönderilir
+
+# backend/downloader/manga.py
+async def download_chapter(content_id, ch_num, url, source="gallery-dl"):
+    out_dir = f"downloads/manga/{content_id}/ch_{ch_num}/"
+    if source == "mangadex":
+        cmd = ["mangadex-downloader", url, "--output", out_dir]
+    else:
+        cmd = ["gallery-dl", url, "-d", out_dir]
+    proc = await asyncio.create_subprocess_exec(*cmd, ...)
+    return proc
+```
+
+**Download manager — kuyruk + WebSocket progress:**
+```python
+# backend/downloader/manager.py
+# Max 2 eşzamanlı download (config.json: "max_concurrent_downloads": 2)
+# Her download: id, content_id, ep_num, status (queued/downloading/done/error), progress_%
+# WS: ws://localhost:9099/ws/download → {"id": X, "progress": 75, "status": "downloading"}
+```
+
+---
+
+### 3.2 Download Veri Modeli (FAZ-3 ek tabloları)
+
+```
+Download (indirme kuyruğu)
+  id, content_id (FK), episode_number
+  type ('anime' | 'manga')
+  status ('queued' | 'downloading' | 'done' | 'error' | 'deleted')
+  progress_pct (int 0-100)
+  file_path (text)        ← ininen dosya konumu
+  file_size_mb (float)
+  quality (text)          ← '1080p', '720p', 'best'
+  auto_delete (bool)      ← izlendikten sonra otomatik sil
+  queued_at, started_at, finished_at
+
+IntroTimestamp (Netflix intro/outro skip için)
+  id, content_id (FK), episode_number
+  intro_start (float, saniye), intro_end (float, saniye)
+  outro_start (float, saniye, nullable)
+  detection_method ('manual' | 'chromaprint' | 'fixed')
+  auto_skip (bool)        ← bu bölüm için otomatik atla
+```
+
+---
+
+### 3.3 FAZ-3 API Endpoints
+
+```
+# İndirici
+POST   /api/download              ← yeni indirme kuyruğa ekle
+GET    /api/download              ← kuyruk durumu listesi
+DELETE /api/download/{id}         ← iptal / sil
+POST   /api/download/{id}/retry   ← hata sonrası yeniden dene
+WS     /ws/download               ← gerçek zamanlı % ilerleme
+
+# Oynatıcı
+GET    /api/player/{content_id}/{ep_num} ← video dosya bilgisi + IntroTimestamp
+POST   /api/player/{content_id}/{ep_num}/intro ← intro timestamp kaydet/güncelle
+DELETE /api/download/{id}/file    ← dosyayı diskten sil (izledikten sonra)
+
+# Okuyucu
+GET    /api/reader/{content_id}/{ch_num} ← chapter görsel listesi (sıralı)
+```
+
+---
+
+### 3.4 Netflix Mekanizmaları (Araştırıldı)
+
+**Auto-next episode:**
+```javascript
+// player.js — video timeupdate event
+video.addEventListener('timeupdate', () => {
+  const remaining = video.duration - video.currentTime;
+  if (remaining <= 30 && !nextOverlayShown) {
+    showNextEpisodeOverlay();  // "Sonraki Bölüm" overlay
+    nextOverlayShown = true;
+  }
+  if (remaining <= 10) {
+    startCountdown(10, () => playNextEpisode());  // 10sn geri sayım + color wipe
+  }
+});
+
+// Color wipe: CSS animation, "Next Episode" butonunda dolum efekti
+// Kullanıcı tıklarsa → anında geçiş; iptal → clearTimeout
+```
+
+**Intro / Outro Skip:**
+```javascript
+// Timestamp DB'den yüklenir: { intro_start: 8.0, intro_end: 92.0, auto_skip: true }
+video.addEventListener('timeupdate', () => {
+  if (introTs && video.currentTime >= introTs.intro_start
+      && video.currentTime < introTs.intro_end) {
+    if (autoSkipEnabled || introTs.auto_skip) {
+      video.currentTime = introTs.intro_end;  // otomatik atla
+    } else {
+      showSkipButton('intro');  // "⏩ İntroyu Atla" butonu göster
+    }
+  }
+  // Outro için aynı mantık
+});
+```
+
+**İzin sistemi (Settings + per-series):**
+```
+Global: config.json → "auto_skip_intro": false, "auto_skip_outro": false
+Per-series: IntroTimestamp.auto_skip → bölüm bazlı override
+UI: Settings > Oynatıcı > "İntroyu Otomatik Atla" toggle
+    + Detail > Oynatıcı ayarları > "Bu seri için otomatik atla"
+```
+
+**Geri sayım animasyonu:**
+```css
+/* "Sonraki Bölüm" butonunda soldan sağa dolum */
+.next-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(0,212,255,0.3);
+  animation: fillRight 10s linear forwards;
+}
+@keyframes fillRight {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+```
+
+---
+
+### 3.5 Intro Tespit Yöntemleri
+
+| Yöntem | Karmaşıklık | Doğruluk | Karar |
+|---|---|---|---|
+| **Manuel (MVP)** | Düşük | %100 (kullanıcı girer) | ✅ MVP |
+| **Sabit skip (ör: ilk 90sn)** | Sıfır | Düşük (her seri farklı) | ❌ Kullanma |
+| **Chromaprint audio fingerprint** | Yüksek | Yüksek (%90+) | FAZ-4 |
+| **FFmpeg black frame detect** | Orta | Orta | FAZ-4 |
+| **AI vision (Gemini/Claude)** | Yüksek + ücretli | Çok yüksek | Yok |
+
+**MVP Akışı:**
+1. Bölüm oynatılır, kullanıcı "İntro başlıyor" → `[Başlangıç işaretle]` butonuna basar
+2. "İntro bitiyor" → `[Bitiş işaretle]` → timestamp DB'ye kaydedilir
+3. Aynı seri sonraki bölümde: "Bu bölüm için aynı timestamp dene?" → Evet → oto-uygula
+
+---
+
+### 3.6 Manga / Manhwa Okuyucu
+
+**Okuma modları:**
+```
+Webtoon (dikey scroll)  — manhwa için (uzun şerit)
+Sayfa bazlı (tek/çift) — manga için (soldan sağa)
+Tam ekran              — immersive mod
+```
+
+**Klavye / swipe:**
+```
+→ veya D          → sonraki sayfa
+← veya A          → önceki sayfa
+Space             → sonraki sayfa
+F                 → tam ekran toggle
+Ctrl+→            → sonraki chapter
+Mobil swipe left  → sonraki sayfa
+```
+
+**Auto-next chapter:**
+Son sayfada: "Sonraki Bölüm: Ch. {n+1}" overlay →
+5sn geri sayım → otomatik yükle (auto_next_chapter toggle)
+
+**Görüntü sunucu:**
+```python
+# backend/routers/reader.py
+@router.get("/api/reader/{content_id}/{ch_num}")
+async def get_chapter_images(content_id, ch_num):
+    path = f"downloads/manga/{content_id}/ch_{ch_num}/"
+    images = sorted(Path(path).glob("*.jpg"))
+    # /api/reader/files/{path} → static file serve
+    return {"images": [f"/api/reader/files/{img}" for img in images]}
+```
+
+---
+
+### 3.7 Kalite Seçimi ve İzle-Sil Döngüsü
+
+**Kalite seçenekleri (anime):**
+```
+360p  → mobil veri tasarrufu (~200MB/ep)
+720p  → standart (~700MB/ep)
+1080p → tam HD (~1.5GB/ep)
+best  → en iyi mevcut kalite (yt-dlp default)
+```
+
+**İzle-Sil döngüsü:**
+```
+İndir → İzle → Bölüm bitti → "Dosyayı Sil?" modal
+  [Sil ve Devam]  → dosya silinir, progress +1
+  [Tut]           → dosya kalır, sonra Settings > Downloads'tan sil
+  Auto: Download.auto_delete=True → izlendi işaretlenince otomatik sil
+```
+
+**Disk yönetimi:**
+- Settings > İndirilenler → toplam disk kullanımı göster
+- "Tümünü Temizle" butonu
+- Per-series download listesi (inip inmediği, boyutu)
+
+---
+
+### 3.8 FAZ-3 Klasör Yapısı Güncellemesi
+
+```
+kurowatch/
+├── backend/
+│   ├── downloader/
+│   │   ├── __init__.py
+│   │   ├── anime.py         ← yt-dlp async wrapper
+│   │   ├── manga.py         ← gallery-dl / mangadex-downloader wrapper
+│   │   └── manager.py       ← kuyruk + WS progress (max 2 eşzamanlı)
+│   └── routers/
+│       ├── download.py      ← /api/download + /ws/download
+│       ├── player.py        ← /api/player (video bilgi + intro timestamps)
+│       └── reader.py        ← /api/reader (chapter görseller + static serve)
+├── frontend/
+│   ├── player.html          ← video player (HTML5 <video> + custom controls)
+│   ├── player.js            ← auto-next + intro skip + geri sayım
+│   ├── reader.html          ← manga/manhwa okuyucu
+│   └── reader.js            ← sayfa navigasyon + webtoon scroll + auto-next ch.
+└── downloads/               ← .gitignore'da
+    ├── anime/
+    └── manga/
+```
+
+---
+
+### 3.9 FAZ Haritası (güncellendi)
+
+```
+FAZ-1 (MVP)     → Tracker: içerik ekle/takip et, Updates, Stats, i18n
+FAZ-2           → MAL OAuth, IGDB/Oyun, MangaDex scraper
+FAZ-3           → Player/Downloader: yt-dlp + gallery-dl + Netflix mekanizmaları
+FAZ-4           → Chromaprint otomatik intro tespiti, öneri algoritması
+```

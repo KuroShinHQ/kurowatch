@@ -452,49 +452,108 @@ Adım 4: HTML/CSS export al → frontend/ klasörüne koy
 ## ✅ Özellik Tamamlanma Durumu
 
 ```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-1 (MVP) — TRACKER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FRONTEND (Stitch sonrası):
-[ ] HOME — poster grid
-[ ] HOME — filter chips
-[ ] HOME — content card (tip şerit, badge, glow, progress)
+[ ] HOME — poster grid (virtual scroll kart listesi)
+[ ] HOME — filter chips (tek kaydırır satır: tip + durum)
+[ ] HOME — content card (tip şerit, badge, glow, progress, boş yıldız)
+[ ] HOME — uzun bas menüsü (Sonraki ✓ / Durum / Puan / Arşivle)
 [ ] HOME — boş durum
 [ ] SEARCH — kütüphanem sekmesi
-[ ] SEARCH — keşfet sekmesi (tür chip'leri)
+[ ] SEARCH — keşfet sekmesi (offline: yerel öneri)
 [ ] DETAIL — hero kapak + bilgi
-[ ] DETAIL — ★ interaktif puan
+[ ] DETAIL — ★ yıldız interaktif puan (sadece yıldız, slider yok)
 [ ] DETAIL — progress slider + "sonraki bölüm" butonu
-[ ] DETAIL — bölümler sekmesi
-[ ] DETAIL — siteler sekmesi
+[ ] DETAIL — bölümler sekmesi (virtual scroll, 1000+ bölüm)
+[ ] DETAIL — siteler sekmesi (yeni sekme açar)
 [ ] DETAIL — notlar + spoiler toggle
 [ ] UPDATES — liste + okundu/okunmadı
 [ ] UPDATES — "Şimdi Kontrol Et" butonu
-[ ] STATS — özet kartlar
-[ ] STATS — donut/bar chart (CSS/SVG)
-[ ] SETTINGS — export/import
-[ ] SETTINGS — API credentials
+[ ] STATS — özet kartlar (tahmini saat + bölüm sayısı ayrı)
+[ ] STATS — donut/bar chart (CSS/SVG, kütüphane yok)
+[ ] SETTINGS — export/import + arşiv sayfası
+[ ] SETTINGS — Web Push bildirim butonu (VAPID izni)
+[ ] SETTINGS — dil seçici dropdown (TR/EN)
+[ ] SETTINGS — PWA "Ana Ekrana Ekle" butonu
 [ ] SETTINGS — varsayılan süreler
-[ ] ADD MODAL — API arama
+[ ] ADD MODAL — API arama (AniList)
 [ ] ADD MODAL — form (site tekrarlı satır)
 [ ] CONFLICT MODAL — çakışma çözümü
+[ ] COMPLETE MODAL — seri bitti: Tamamlandı + puan sor
 [ ] NAV — mobil alt bar
 [ ] NAV — PC sol sidebar
+[ ] i18n — i18n.js + locales/tr.json + locales/en.json
 [ ] HAPTIC — 6 eylem eşleştirme
-[ ] PWA — manifest.json
-[ ] PWA — sw.js service worker
-[ ] ANIMASYON — spring curve library
-[ ] SKELETON — shimmer loader
+[ ] PWA — manifest.json + sw.js (cache-first + locale dosyaları)
+[ ] ANIMASYON — spring curve library + skeleton loader
 
-BACKEND:
+BACKEND (FAZ-1):
 [ ] database.py — SQLite async engine (aiosqlite)
 [ ] models.py — ORM: Content, Site, Episode, Update, Tag, ContentTag
-    (TrackingSession → MVP DIŞI, FAZ-2'ye ertelendi)
 [ ] routers/content.py — /api/content CRUD + /api/discover
 [ ] routers/episodes.py — /api/episodes + /api/check-updates + /api/updates
 [ ] routers/sites.py — /api/sites
 [ ] routers/tags.py — /api/tags
 [ ] routers/sync.py — /api/export + /api/import + /api/import/resolve
 [ ] routers/settings.py — /api/settings GET/POST
-[ ] scraper/anilist.py — GraphQL (anime: ANIME / manga: MANGA+JP / manhwa: MANGA+KR)
-[ ] scraper/mal.py — OAuth2 PKCE fallback (localhost:5050 redirect)
-[ ] scraper/igdb.py — Twitch client_credentials token + cover URL prefix fix
-[ ] scraper/chapter_check.py — regex heuristik (MVP) + MangaDex API (FAZ-2)
+[ ] scraper/anilist.py — GraphQL (anime/manga JP/manhwa KR)
+[ ] scraper/chapter_check.py — regex heuristik MVP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-2 — PLATFORM GENİŞLEME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] scraper/mal.py — MAL OAuth2 PKCE (localhost:5050)
+[ ] scraper/igdb.py — IGDB Twitch auth + oyun tipi
+[ ] scraper/chapter_check.py — MangaDex API entegrasyonu
+[ ] models.py — Game type desteği
+[ ] routers/content.py — oyun CRUD + IGDB arama
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-3 — PLAYER / DOWNLOADER (Netflix Deneyimi)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ANIME İNDİRİCİ + OYNATICI:
+[ ] downloader/anime.py — yt-dlp async subprocess wrapper
+[ ] downloader/manager.py — kuyruk + WS progress (max 2 eşzamanlı)
+[ ] models.py — Download + IntroTimestamp tabloları
+[ ] routers/download.py — /api/download CRUD + /ws/download WS
+[ ] routers/player.py — /api/player (video bilgi + intro timestamps)
+[ ] frontend/player.html — HTML5 <video> + custom kontroller
+[ ] frontend/player.js:
+    [ ] Auto-next episode (30sn kala overlay, 10sn geri sayım + color wipe)
+    [ ] Intro skip butonu ("⏩ İntroyu Atla" — manuel veya oto)
+    [ ] Outro skip (outro_start timestamp ile)
+    [ ] Timestamp işaret: [İntro Başlıyor] / [İntro Bitiyor] butonları
+    [ ] İzle-sil: izlendi → "Dosyayı Sil?" modal
+    [ ] Kalite seçimi: 360p / 720p / 1080p / best
+    [ ] Altyazı: VTT dosyası varsa subtitle track ekle
+
+MANGA / MANHWA OKUYUCU:
+[ ] downloader/manga.py — gallery-dl + mangadex-downloader wrapper
+[ ] routers/reader.py — /api/reader + static görsel serve
+[ ] frontend/reader.html — tam ekran okuyucu
+[ ] frontend/reader.js:
+    [ ] Webtoon modu (dikey scroll — manhwa)
+    [ ] Sayfa modu (tek/çift — manga)
+    [ ] Klavye navigasyon (→ ← Space F Ctrl+→)
+    [ ] Swipe (mobil)
+    [ ] Auto-next chapter (son sayfa → 5sn → sonraki bölüm)
+    [ ] Tam ekran toggle
+
+SETTINGS (FAZ-3 eklentileri):
+[ ] Settings — İndirilenler sayfası (disk kullanımı, tümünü temizle)
+[ ] Settings — Oynatıcı: "İntroyu Otomatik Atla" toggle (global)
+[ ] Settings — Oynatıcı: "Outro Otomatik Atla" toggle
+[ ] Settings — Oynatıcı: "İzledikten Sonra Otomatik Sil" toggle
+[ ] Settings — İndirici: max eşzamanlı indirme (1/2/3)
+[ ] Settings — İndirici: varsayılan kalite (360/720/1080/best)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-4 — OTOMATİK ALGI + ÖNERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] Chromaprint audio fingerprint — intro/outro otomatik tespiti
+[ ] FFmpeg black frame detect — sahne sınır tespiti
+[ ] Öneri algoritması — genre + tag bazlı kişiselleştirme (araştırma askıda)
 ```
