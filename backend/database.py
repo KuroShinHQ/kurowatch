@@ -22,5 +22,11 @@ async def get_db():
 
 async def init_db():
     from backend import models  # noqa: F401  — register models with Base
+    from sqlalchemy import text
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        # Migration: genres kolonu (mevcut DB'ye ekle)
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN genres TEXT"))
+        except Exception:
+            pass  # zaten var

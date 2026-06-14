@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -28,6 +29,7 @@ class ContentCreate(BaseModel):
     my_score: Optional[float] = None
     note_text: Optional[str] = None
     note_is_spoiler: bool = False
+    genres: Optional[List[str]] = None
 
 
 class ContentPatch(BaseModel):
@@ -42,9 +44,14 @@ class ContentPatch(BaseModel):
     note_is_spoiler: Optional[bool] = None
     total_episodes: Optional[int] = None
     total_chapters: Optional[int] = None
+    genres: Optional[List[str]] = None
 
 
 def _serialize(c: Content) -> dict:
+    try:
+        genres = json.loads(c.genres) if c.genres else []
+    except Exception:
+        genres = []
     return {
         "id": c.id,
         "title": c.title,
@@ -59,6 +66,7 @@ def _serialize(c: Content) -> dict:
         "my_score": c.my_score,
         "note_text": c.note_text,
         "note_is_spoiler": c.note_is_spoiler,
+        "genres": genres,
         "added_at": c.added_at.isoformat() if c.added_at else None,
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
         "sites": [
@@ -104,14 +112,16 @@ async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)
     if body.type not in ("anime", "manga", "manhwa", "game"):
         raise HTTPException(400, "Geçersiz içerik tipi")
 
-    c = Content(**body.model_dump())
+    data = body.model_dump()
+    genres_list = data.pop("genres", None)
+    c = Content(**data)
+    c.genres = json.dumps(genres_list) if genres_list else None
     c.added_at = datetime.utcnow()
     c.updated_at = datetime.utcnow()
     db.add(c)
     await db.commit()
     await db.refresh(c)
     new_id = c.id
-    # İlişkileri yüklemek için yeniden sorgula
     return await get_content(new_id, db)
 
 
@@ -145,7 +155,10 @@ async def patch_content(content_id: int, body: ContentPatch, db: AsyncSession = 
         raise HTTPException(404, "Bulunamadı")
 
     for field, val in body.model_dump(exclude_none=True).items():
-        setattr(c, field, val)
+        if field == "genres":
+            setattr(c, field, json.dumps(val))
+        else:
+            setattr(c, field, val)
     c.updated_at = datetime.utcnow()
     await db.commit()
     return await get_content(content_id, db)

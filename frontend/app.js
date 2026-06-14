@@ -975,6 +975,13 @@
         const cover = it.cover_url
           ? `<img src="${it.cover_url}" class="w-full h-full object-cover" loading="lazy"/>`
           : `<span class="text-[#9090b0] font-bold text-xs">${escapeHtml(it.title.slice(0,2).toUpperCase())}</span>`;
+        const discoverData = JSON.stringify({
+          title: it.title,
+          type: it.type || 'anime',
+          cover_url: it.cover_url || '',
+          external_id: String(it.id || ''),
+          genres: it.genres || []
+        });
         return `
           <div class="interactive-card flex items-center gap-4 p-3 rounded-xl bg-[#1c1d37] border border-white/5 inner-glow group hover:border-[#00d4ff]/30 transition-colors">
             <div class="w-[40px] h-[56px] shrink-0 rounded bg-[#31324d] overflow-hidden flex items-center justify-center">${cover}</div>
@@ -986,7 +993,7 @@
               </div>
             </div>
             <button class="h-9 px-3 border border-[#00d4ff] text-[#00d4ff] rounded-full text-[13px] font-semibold flex items-center gap-1 hover:bg-[#00d4ff]/10 transition-colors flex-shrink-0 active:scale-[0.97]"
-              data-discover-add='${JSON.stringify({title: it.title, type: (it.type||"anime"), cover_url: it.cover_url||"", external_id: String(it.id||"")})}'
+              data-discover-add='${discoverData}'
             ><span class="material-symbols-outlined text-[16px]">add</span> Ekle</button>
           </div>`;
       }).join('');
@@ -1010,6 +1017,8 @@
     if (coverEl) coverEl.value = data.cover_url || '';
     const extInput = document.getElementById('add-form-external-id');
     if (extInput) extInput.value = data.external_id || '';
+    const genresInput = document.getElementById('add-form-genres');
+    if (genresInput) genresInput.value = JSON.stringify(data.genres || []);
 
     // Tip seçimi
     document.querySelectorAll('.add-type-btn').forEach(btn => {
@@ -1042,12 +1051,15 @@
     const external_id = (document.getElementById('add-form-external-id') || {}).value.trim() || null;
     const starEl = document.querySelector('input[name="add-rating"]:checked');
     const my_score = starEl ? parseFloat(starEl.value) : null;
+    const genresRaw = (document.getElementById('add-form-genres') || {}).value || '[]';
+    let genres = [];
+    try { genres = JSON.parse(genresRaw); } catch (e) { genres = []; }
 
     const btn = document.getElementById('add-save-btn');
     if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
 
     try {
-      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score });
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined });
       closeModal('modal-add');
       // Formu temizle
       ['add-form-title','add-form-cover','add-form-note'].forEach(id => {
@@ -1251,6 +1263,35 @@
       deleteTag(parseInt(deleteBtn.dataset.tagId, 10));
       return;
     }
+  });
+
+  // ── PWA Install ───────────────────────────────────────────────────
+  let _pwaInstallPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    _pwaInstallPrompt = e;
+    const sec = document.getElementById('pwa-install-section');
+    if (sec) sec.classList.remove('hidden');
+  });
+
+  window.addEventListener('appinstalled', function() {
+    _pwaInstallPrompt = null;
+    const sec = document.getElementById('pwa-install-section');
+    if (sec) sec.classList.add('hidden');
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#pwa-install-btn')) return;
+    if (!_pwaInstallPrompt) return;
+    _pwaInstallPrompt.prompt();
+    _pwaInstallPrompt.userChoice.then(function(result) {
+      if (result.outcome === 'accepted') {
+        const sec = document.getElementById('pwa-install-section');
+        if (sec) sec.classList.add('hidden');
+      }
+      _pwaInstallPrompt = null;
+    });
   });
 
   // ── Service Worker Kaydı ─────────────────────────────────────────
