@@ -3,6 +3,34 @@
 ## Proje Amacı
 Kişisel anime/manga/manhwa takip uygulaması. Birden fazla siteyi izler, yeni bölüm gelince bildirim verir, kişisel puan/süre/etiket takibi yapar.
 
+---
+
+## 📺 Takip Edilen Siteler
+
+Her içerik için birden fazla site eklenebilir. Birincil site (is_primary=true) tıklandığında açılır; diğerleri alternatif olarak listelenir.
+
+### Anime İzleme Siteleri
+<!-- Buraya izlediğin anime sitelerini ekle -->
+| Site Adı | URL | Notlar |
+|---|---|---|
+|  |  |  |
+
+### Manga / Manhwa Okuma Siteleri
+<!-- Buraya okuduğun manga/manhwa sitelerini ekle -->
+| Site Adı | URL | Notlar |
+|---|---|---|
+|  |  |  |
+
+### Yeni Bölüm Kontrolü — Scraper Önceliği
+```
+1. AniList API     → resmi veri (anime için en güvenilir)
+2. MAL API         → alternatif metadata
+3. chapter_check.py scraper → API'de yoksa bu siteleri tara:
+   - (sen ekleyeceksin)
+```
+
+---
+
 ## Klasör Yapısı
 ```
 kurowatch/
