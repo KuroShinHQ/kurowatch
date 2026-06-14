@@ -10,43 +10,52 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-1):
-✅ GitHub repo oluşturuldu: github.com/KuroShinHQ/kurowatch (private)
-✅ Klasör yapısı kuruldu: C:\Kuroshin\kurowatch\
-✅ gh CLI kuruldu: C:\Kuroshin\tools\gh.exe
-✅ Kuroshin.bat [10]: KuroWatch başlat (port 8099)
-✅ Tüm tasarım kararları netleşti (30 karar)
-✅ Araştırma tamamlandı: Stitch AI, Claude Code, tracker şikayetleri, Netflix animasyon
+EN SON YAPILAN (14 Haz sohbet-4):
+✅ Stitch AI tamamlandı: 9 ekran üretildi, C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+✅ Stitch çıktısı analiz edildi — KRİTİK sorunlar tespit edildi (aşağıda)
+✅ DESIGN.md + FEATURE_MAP.md + YAPI.md güncellendi
 
-OLUŞTURULAN DOSYALAR:
-- CLAUDE.md          → Sonnet 4.6 direktifleri, API stratejisi, bug önleme
-- docs/DEVAM.md      → bu dosya
-- docs/YAPI.md       → mimari, veri modeli, backend kararları
-- docs/DESIGN.md     → Stitch AI final prompt (BATCH 1 ve BATCH 2)
-- docs/FEATURE_MAP.md → tüm özelliklerin diyagramı, dosya eşleştirme, checklist
+STİTCH ÇIKTISI ANALİZİ — KRİTİK SORUNLAR:
+
+❌ CDN BAĞIMLILIĞI (offline'da ÇALIŞMAZ):
+   - cdn.tailwindcss.com → Tailwind CDN (internet kesince app ölür)
+   - fonts.googleapis.com/css2?family=Material+Symbols+Outlined → Google Fonts CDN
+
+❌ 9 AYRI HTML DOSYASI (SPA değil):
+   - Her ekran ayrı dosya, sayfa yenilenerek geçiş yapıyor
+   - Tek index.html'de section'lara dönüştürülmeli
+
+❌ RENK TUTARSIZLIĞI (ekranlar arası sürükleme):
+   - Home bg: #0d0d1a ✅
+   - Add Content bg: #0e1417 ❌ (farklı!)
+   - Material Design token drift — her ekran farklı generate edildi
+
+❌ MATERIAL DESIGN TOKEN İSİMLERİ:
+   - surface-container-high, on-tertiary, on-surface-variant vb.
+   - Bunlar Tailwind config'de, CSS variable değil
+   - --kw-* custom property'lere dönüştürülmeli
+
+❌ JS YOK: Tüm butonlar statik HTML
 
 SIRADAKI GÖREV (öncelik sırası):
-1. Stitch AI'a git → DESIGN.md "Stitch AI Final Prompt" bölümünü kopyala
-   BATCH 1 (Standard mod): Home + Detail + Search + Updates + Stats
-   BATCH 2 (Experimental mod): Add Modal + Settings + Conflict Modal
-2. Stitch çıktısı gelince → frontend/ klasörüne koy
-3. Post-Stitch checklist uygula (DESIGN.md'de var)
-4. Backend yazmaya başla:
-   - backend/database.py (SQLite async engine + aiosqlite)
-   - backend/models.py (Content, Site, Episode, Update, Tag, ContentTag — TrackingSession MVP dışı)
-   - backend/main.py (FastAPI app)
-   - backend/routers/content.py (CRUD + /api/discover)
+1. frontend/ klasörü kur → 9 code.html'yi tek index.html'ye birleştir
+2. CDN'leri kaldır → Tailwind yerine vanilla CSS, Material Symbols yerine SVG icon
+3. Renk drift'ini düzelt → tüm ekranlarda #0d0d1a bg
+4. app.js yaz → navigasyon + mock data (backend olmadan çalışsın)
+5. debug-logger.js yaz → click/fetch/error yakalayan overlay
+6. UX eksikliklerini ekle (back button, pull-to-refresh, swipe dismiss, loading state)
 
-FAZ-3 ARAŞTIRMA TAMAMLANDI (14 Haz sohbet-3) — YAPI.md 3.1-A ve 3.8-3.10:
-  Anime TR siteler: yt-dlp resmi extractor yok → stream_finder.py (curl_cffi) + embed iframe parse
-  Manga TR siteler: Madara WordPress → admin-ajax.php manga_get_chapter_img_list
-  Crunchyroll: ücretsiz ✅, premium DRM ❌ → "Tarayıcıda Aç" butonu
-  Daisy Chain: bölüm %80'de N+1 indirme başlar (config: daisy_chain_trigger_pct)
-  Global kalite: config.json default_quality="720p" (Netflix modeli, tüm indirmeler bu kalitede)
-  Oto-sil: config.json auto_delete_after_watch=false → modal | true → otomatik
-  Download.trigger: user/daisy_chain/batch (kaynak takibi)
-  stream_finder.py: yeni modül (downloader/ altında)
-  WS port düzeltildi: 9099 → 8099
+STITCH DOSYA KONUMLARI:
+C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+  kurowatch_home_refined\code.html       → HOME (227KB — Tailwind inline)
+  content_detail_refined\code.html       → DETAIL
+  search_discover_refined\code.html      → SEARCH
+  updates_refined\code.html             → UPDATES
+  library_stats_refined\code.html       → STATS
+  add_content_overlay\code.html          → ADD MODAL
+  archive\code.html                      → ARCHIVE
+  import_conflict_modal\code.html        → CONFLICT MODAL
+  kurowatch_1\DESIGN.md                  → Stitch tasarım özeti (yedek)
 ```
 
 ---
@@ -94,21 +103,30 @@ FAZ-3 ARAŞTIRMA TAMAMLANDI (14 Haz sohbet-3) — YAPI.md 3.1-A ve 3.8-3.10:
 - Tracker şikayetleri: MAL/AniList eksiklerinin KuroWatch'ta nasıl çözüldüğü tablosu
 - Premium animasyon: Netflix spring curves, Web Vibration API haptic sistemi
 
+### ✅ Sohbet-4'te Tamamlananlar (14 Haz 2026)
+- Stitch AI 9 ekran üretildi (Home/Detail/Search/Updates/Stats/Add/Archive/Conflict/Settings)
+- Stitch çıktısı analiz edildi — 5 kritik sorun tespit edildi
+- DEVAM.md + FEATURE_MAP.md + YAPI.md frontend build planıyla güncellendi
+
 ### 🔴 Sıradaki (Öncelik Sırası)
 
-**ÖNCE: Stitch AI Frontend**
-1. stitch.google.com → DESIGN.md "Stitch AI Final Prompt" bölümü → BATCH 1
-2. Çıktıyı `frontend/` klasörüne koy
-3. DESIGN.md post-Stitch checklist uygula (Google token temizle, app.js yaz, manifest ekle)
-4. BATCH 2 → Add Modal + Settings + Conflict Modal
+**ÖNCE: Frontend Build (backend olmadan tam çalışacak)**
+1. `frontend/index.html` → 9 code.html'yi tek dosyada birleştir (section'lar)
+2. CDN'leri kaldır:
+   - Tailwind CDN → vanilla CSS (class'ları dönüştür)
+   - Google Fonts CDN → SVG ikonlar (Heroicons/Phosphor local)
+3. Renk tutarsızlıklarını düzelt (tüm ekranlarda #0d0d1a)
+4. `frontend/app.js` → navigasyon + mock data (API olmadan)
+5. `frontend/debug-logger.js` → click/fetch/error overlay logger
+6. UX eksiklikleri: back button, pull-to-refresh, swipe-dismiss, loading state, error state
 
 **SONRA: Backend**
-5. `backend/database.py` → SQLite async engine
-6. `backend/models.py` → Content, Site, Episode, Tag, Update, Config
-7. `backend/main.py` → FastAPI app (port 8099, CORS, startup)
-8. `backend/routers/content.py` → CRUD
-9. `backend/routers/sync.py` → export/import/conflict
-10. `backend/scraper/anilist.py` → AniList GraphQL
+7. `backend/database.py` → SQLite async engine
+8. `backend/models.py` → Content, Site, Episode, Tag, Update, Config
+9. `backend/main.py` → FastAPI app (port 8099, CORS, startup)
+10. `backend/routers/content.py` → CRUD
+11. `backend/routers/sync.py` → export/import/conflict
+12. `backend/scraper/anilist.py` → AniList GraphQL
 
 ---
 

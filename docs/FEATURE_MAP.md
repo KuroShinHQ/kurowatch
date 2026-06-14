@@ -472,6 +472,136 @@ Adım 4: HTML/CSS export al → frontend/ klasörüne koy
 
 ---
 
+## 🔍 Stitch Çıktısı Analizi (14 Haz 2026)
+
+### Kritik Sorunlar — Frontend Build Öncesi Çözülmeli
+
+```
+❌ 1. CDN BAĞIMLILIĞI — OFFLINE KILLER
+   cdn.tailwindcss.com → Tailwind CSS CDN
+   fonts.googleapis.com → Material Symbols Outlined
+   → App internet olmadan TAMAMEN ölür (PWA amacına aykırı)
+   → FIX: Tailwind kaldır, vanilla CSS yaz | Material Symbols → SVG ikonlar
+
+❌ 2. 9 AYRI HTML DOSYASI — SPA DEĞİL
+   Her ekran ayrı dosya → sayfa yenilenerek geçiş (app hissi yok)
+   → FIX: Tek index.html, her ekran <section id="screen-X" class="screen hidden">
+   → app.js showScreen('home') ile CSS toggle
+
+❌ 3. RENK TUTARSIZLIĞI (Material token drift)
+   Home bg: #0d0d1a | Add Content bg: #0e1417 (FARKLI!)
+   Her ekran bağımsız generate → Material Design token değerleri kaydı
+   → FIX: Tüm ekranlarda :root değişkenleri zorla, inline renk yok
+
+❌ 4. MATERIAL DESIGN TOKEN İSİMLERİ
+   surface-container-high, on-tertiary, on-surface-variant, on-primary-container...
+   Tailwind config'de string, CSS variable değil
+   → FIX: Tek :root { --kw-bg: #0d0d1a; --kw-card: #1a1a2e; ... } bloğu
+
+❌ 5. JAVASCRIPT YOK
+   Tüm butonlar statik HTML, click handler yok
+   → FIX: app.js — navigasyon + event listener + mock data
+```
+
+### Stitch Dosya Konumları
+```
+C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
+  kurowatch_home_refined\code.html       → HOME   (227KB, Tailwind inline)
+  content_detail_refined\code.html       → DETAIL
+  search_discover_refined\code.html      → SEARCH
+  updates_refined\code.html             → UPDATES
+  library_stats_refined\code.html       → STATS
+  add_content_overlay\code.html          → ADD MODAL
+  archive\code.html                      → ARCHIVE
+  import_conflict_modal\code.html        → CONFLICT MODAL
+  ⚠️ SETTINGS ekranı ayrı dosya değil — kurowatch_home_refined içinde gömülü
+```
+
+---
+
+## 📋 Frontend Build Checklist (Backend Öncesi)
+
+### Faz A — Birleştirme + CDN Temizliği
+```
+[ ] frontend/index.html oluştur
+    [ ] 9 ekranı <section id="screen-*"> olarak ekle
+    [ ] Tailwind CDN kaldır → vanilla CSS'e geç
+    [ ] Google Fonts CDN kaldır → SVG ikonlar (local)
+    [ ] Tek <style> bloğu: :root { --kw-* } değişkenleri
+    [ ] Tüm renkleri #0d0d1a / #1a1a2e / #16213e / #00d4ff ile eşle
+    [ ] manifest.json referansı ekle
+```
+
+### Faz B — Navigasyon + Etkileşim
+```
+[ ] frontend/app.js — navigasyon motoru
+    [ ] showScreen(id) → active section toggle + URL hash
+    [ ] Bottom nav tıklama → screen geçişi
+    [ ] Back button / Android geri tuşu → popstate event
+    [ ] Modal aç/kapat (Add, Conflict, Complete)
+    [ ] Bottom sheet swipe-to-dismiss (touch events)
+    [ ] Mock data — API olmadan ekranlar dolsun:
+        5 örnek içerik (Solo Leveling / Jujutsu Kaisen / Spy×Family...)
+        5 örnek güncelleme
+        Stats mock sayıları
+```
+
+### Faz C — Debug Logger (KuroLog)
+```
+[ ] frontend/debug-logger.js
+    [ ] Click interceptor: document.addEventListener('click', ..., true)
+    [ ] Fetch interceptor: window.fetch = patchedFetch
+    [ ] Error handler: window.onerror + unhandledrejection
+    [ ] localStorage kayıt (son 100 event)
+    [ ] Overlay panel:
+        - ?kurodev=1 URL param veya logo triple-tap ile aç/kapat
+        - Sağ alt köşe, yarı saydam, zIndex 9999
+        - Son 15 event listesi (tip=renk: click=mavi, fetch=cyan, error=kırmızı, nav=mor)
+        - Timestamp (saniye önce)
+        - "Clear" butonu
+    [ ] Button click → element.id / aria-label / textContent logla
+    [ ] Fetch → URL + method + status + süre (ms) logla
+    [ ] Nav → from/to screen logla
+```
+
+### Faz D — UX Eksiklikleri (Araştırma Bulguları)
+```
+[ ] Back button / Android back gesture
+    history.pushState her screen geçişinde
+    window.addEventListener('popstate') → önceki ekrana dön
+    Modal açıksa → modal kapat (app'ten çıkma değil!)
+
+[ ] Loading state — "butona bastım ama hiçbir şey olmadı" sorunu
+    Her async buton: click → disabled + spinner → done → re-enable
+    Skeleton loader: kart yüklenirken shimmer animasyon
+
+[ ] Error state — backend down / network offline
+    fetch fail → inline error banner (kırmızı, 4sn, dismiss)
+    navigator.onLine = false → sticky "Çevrimdışı" banner
+
+[ ] Pull-to-refresh — Updates + Home ekranı
+    touchstart → touchmove → %60 aşınca → refresh trigger + spinner
+
+[ ] Swipe-to-dismiss — Bottom sheet (Add Modal)
+    touchstart Y → touchmove → 120px aşınca → kapan animasyonu
+
+[ ] Virtual scroll — Detail > Episodes sekmesi
+    1000+ bölüm DOM'a eklenmez → sadece görünür 20 satır render
+    IntersectionObserver veya basit scroll handler ile
+
+[ ] Empty state — tüm ekranlarda:
+    Home: kütüphane boş → göz ikonu + "İlk içeriğini ekle"
+    Updates: güncelleme yok → "Henüz güncelleme yok"
+    Search: sonuç yok → "Bulunamadı"
+    Archive: boş → "Arşiv boş"
+
+[ ] Complete Modal — seri bitti:
+    Son bölüm izlenince → "🎉 Tamamlandı! Puan ver:"
+    Durum otomatik Tamamlandı → puan seçtir → kaydet
+```
+
+---
+
 ## ✅ Özellik Tamamlanma Durumu
 
 ```
