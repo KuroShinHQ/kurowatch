@@ -544,6 +544,7 @@ ANIME İNDİRİCİ + OYNATICI:
 [ ] routers/player.py — /api/player (video bilgi + intro timestamps)
 [ ] frontend/player.html — HTML5 <video> + custom kontroller
 [ ] frontend/player.js:
+    [ ] Daisy chain (%50'de N+1 indir — timeupdate handler, trigger:'daisy_chain')
     [ ] Auto-next episode (30sn kala overlay, 10sn geri sayım + color wipe)
     [ ] Intro skip butonu ("⏩ İntroyu Atla" — manuel veya oto)
     [ ] Outro skip (outro_start timestamp ile)
@@ -562,6 +563,7 @@ MANGA / MANHWA OKUYUCU:
     [ ] Sayfa modu (tek/çift — manga)
     [ ] Klavye navigasyon (→ ← Space F Ctrl+→)
     [ ] Swipe (mobil)
+    [ ] Daisy chain (%50 sayfada N+1 chapter indir, trigger:'daisy_chain')
     [ ] Auto-next chapter (son sayfa → 5sn → sonraki bölüm)
     [ ] Tam ekran toggle
 
