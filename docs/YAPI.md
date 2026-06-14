@@ -162,13 +162,13 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
   "default_quality": "720p",
   "max_concurrent_downloads": 2,
   "auto_delete_after_watch": false,
-  "daisy_chain_trigger_pct": 80
+  "daisy_chain_trigger_pct": 50
 }
 ```
-- `default_quality`: Global kalite ayarı — tüm indirmeler bu kalitede yapılır
+- `default_quality`: Global kalite ayarı — tüm indirmeler bu kalitede yapılır (360p/480p/720p/1080p/best)
 - `max_concurrent_downloads`: Aynı anda max kaç indirme (1/2/3)
 - `auto_delete_after_watch`: true → modal yok, otomatik sil | false → "Dosyayı Sil?" modal
-- `daisy_chain_trigger_pct`: Bölümün yüzde kaçında N+1 indirme başlatılır (varsayılan %80)
+- `daisy_chain_trigger_pct`: Bölümün/chapter'ın yüzde kaçında N+1 indirme başlatılır (Lord direktifi: %50)
 ```
 - `igdb_token` + `igdb_token_expires_at`: startup'ta kontrol et, expire olduysa Twitch'ten refresh
 - `vapid_*`: ilk çalıştırmada `py_vapid` ile otomatik üret, config'e yaz
@@ -537,7 +537,7 @@ async def find_embed_url(page_url: str, referer: str = None) -> str | None:
 # backend/downloader/anime.py
 import subprocess, asyncio
 
-QUALITY_MAP = {"360p": 360, "720p": 720, "1080p": 1080, "best": None}
+QUALITY_MAP = {"360p": 360, "480p": 480, "720p": 720, "1080p": 1080, "best": None}
 
 async def download_episode(content_id, ep_num, url, quality="720p"):
     # BUG FIX: quality string → sayı (yt-dlp height integer ister)
@@ -819,6 +819,7 @@ Global Ayar (config.json: "default_quality": "720p"):
 
 yt-dlp format string (QUALITY_MAP):
   "360p"  → bestvideo[height<=360]+bestaudio/best[height<=360]/bestvideo+bestaudio/best
+  "480p"  → bestvideo[height<=480]+bestaudio/best[height<=480]/bestvideo+bestaudio/best
   "720p"  → bestvideo[height<=720]+bestaudio/best[height<=720]/bestvideo+bestaudio/best
   "1080p" → bestvideo[height<=1080]+bestaudio/best[height<=1080]/bestvideo+bestaudio/best
   "best"  → bestvideo+bestaudio/best
