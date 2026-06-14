@@ -168,6 +168,37 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
 - `note_text`: plain text
 - `note_is_spoiler`: boolean → detail'de bulanık, "Göster" butonu
 
+### i18n (TR/EN Çoklu Dil — KRİTİK, hardcode olmayacak)
+```
+Yaklaşım: data-i18n HTML attribute + JSON locale dosyaları
+  - frontend/locales/tr.json  → {"home": "Ana Sayfa", "add": "Ekle", ...}
+  - frontend/locales/en.json  → {"home": "Home", "add": "Add", ...}
+  - Varsayılan: TR (localStorage'a kayıtlı)
+  - Service worker her iki locale dosyasını cache'ler (offline çalışır)
+
+i18n.js (~40 satır, CDN yok):
+  const LOCALES = {};
+  let LANG = localStorage.getItem('kw_lang') || 'tr';
+
+  async function loadLocale(lang) {
+    if (!LOCALES[lang]) LOCALES[lang] = await fetch(`/locales/${lang}.json`).then(r=>r.json());
+    LANG = lang;
+    localStorage.setItem('kw_lang', lang);
+    applyTranslations();
+  }
+  function t(key) { return LOCALES[LANG]?.[key] ?? key; }
+  function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.dataset.i18n);
+    });
+  }
+
+HTML kullanımı:
+  <button data-i18n="add_content">Ekle</button>  ← otomatik çevrilir
+
+Settings UI: <select id="lang-select"><option value="tr">Türkçe</option><option value="en">English</option></select>
+```
+
 ### FastAPI Static File + Service Worker Kurulumu
 ```python
 # main.py — SIRA ÖNEMLİ!
