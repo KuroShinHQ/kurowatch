@@ -133,7 +133,7 @@ const haptic = {
 
 ---
 
-## Tüm Tasarım Kararları
+## Tüm Tasarım Kararları (Sohbet-1 + Sohbet-2 soru-cevap)
 
 | # | Karar | Seçim |
 |---|---|---|
@@ -141,32 +141,42 @@ const haptic = {
 | 2 | Layout | Grid 2:3 dikey poster, Netflix/MAL stili |
 | 3 | Tip ayrımı | Sol renkli şerit + ikon badge |
 | 4 | Navigasyon | Mobil: alt bar / PC: sol sidebar |
-| 5 | Puan | ★ + ondalıklı sayı (9.2) |
+| 5 | **Puan** | **Sadece ★ yıldız** (10 yarım yıldız interaktif) — slider YOK |
 | 6 | Badge | "+N SiteAdı" + border glow |
 | 7 | Progress | İnce bar + EP 87/139 |
 | 8 | Arama | Ayrı ekran, 2 sekme: Kütüphanem / Keşfet |
 | 9 | Vurgu | Cyan #00d4ff |
 | 10 | Kart tık | Detay sayfası açılır |
-| 11 | Süre | Otomatik: bölüm × ortalama süre |
+| 11 | Süre hesabı | Tahmini: progress × duration + bölüm sayısı — Stats'ta ikisi ayrı gösterilir |
 | 12 | Çoklu site | Yeni bölüm olan site açılır |
-| 13 | Oyun | Durum + isteğe bağlı % |
+| 13 | Oyun | FAZ-2 (IGDB ertelendi) |
 | 14 | Durum | 6: İzliyor / Tamamlandı / Askıda / Bıraktım / Planlıyorum / Yeniden İzliyor |
 | 15 | Etiket | API türleri + kendi etiketleri |
-| 16 | Keşfet | Arama + türe göre öneri |
-| 17 | Import çakışma | Çakışanları listele, kullanıcı seçsin |
-| 18 | Puan hassasiyet | Ondalıklı slider (7.3, 9.1) |
+| 16 | Keşfet | Arama + tür öneri; **offline → kendi kütüphanenden öner** |
+| 17 | Import çakışma | Yeni item otomatik ekle, çakışanları listele kullanıcı seçsin |
+| 18 | Puan yok gösterimi | **Boş yıldızlar ☆☆☆☆☆☆☆☆☆☆** |
 | 19 | Kapak | URL ile değiştirilebilir (dosya yok) |
 | 20 | Notlar | Yorum + spoiler toggle |
 | 21 | Telegram | Yok |
-| 22 | Bildirim | Badge + ayrı "Güncellemeler" sayfası |
+| 22 | Bildirim MVP | **Web Push (VAPID) + in-app badge** — izin Settings'teki butonla |
 | 23 | Devam | "İzliyor" filtresi ile |
 | 24 | Başlık dili | İngilizce her zaman |
-| 25 | Varsayılan sıra | Puana göre (en yüksek önce) |
+| 25 | Varsayılan sıra | **Sadece puana göre (en yüksek önce) — MVP** |
 | 26 | Boş durum | Direkt boş liste + "Ekle" butonu |
 | 27 | Logo | Göz ikonu + KuroWatch yazısı |
-| 28 | Scraper | Genel altyapı, kullanıcı URL girer |
-| 29 | Bölüm işaret | Slider (toplu) + tek tek checkbox |
-| 30 | Bildirim türü | Tarayıcı push + uygulama içi |
+| 28 | Bölüm verisi | **AniList sayısı + chapter_check.py başlıkları** |
+| 29 | Bölüm işaret | Slider (toplu) + tek tek checkbox; **virtual scroll (1000+ bölüm)** |
+| 30 | Silme | **Soft delete / Arşiv** — Settings > Arşiv sayfasında geri yükleme |
+| 31 | **Uzun bas menüsü** | Sonraki Bölüm ✓ / Durum Değiştir / Puan Güncelle / **Arşivle 🗄️** |
+| 32 | Seri bitti | Durum otomatik 'Tamamlandı' + **puan sor mini modal** |
+| 33 | **Dil (i18n)** | TR varsayılan + EN desteği; data-i18n attrs + JSON locale; Settings > dropdown |
+| 34 | Filter chip'ler | **Tek kaydırır satır** (tip + durum birlikte) |
+| 35 | Site açılış | **Yeni sekmede** (window.open '_blank') |
+| 36 | Başlangıç sayfası | **Son sayfayı hatırla** (localStorage) |
+| 37 | PWA install | **Sadece Settings'te buton** — otomatik prompt yok |
+| 38 | MAL fallback | **FAZ-2'ye ertelendi** |
+| 39 | IGDB / Oyun | **FAZ-2'ye ertelendi** |
+| 40 | Keşfet öneri alg. | **Araştırma gerekli, askıya alındı** |
 
 ---
 
