@@ -581,4 +581,31 @@ FAZ-4 — OTOMATİK ALGI + ÖNERİ
 [ ] Chromaprint audio fingerprint — intro/outro otomatik tespiti
 [ ] FFmpeg black frame detect — sahne sınır tespiti
 [ ] Öneri algoritması — genre + tag bazlı kişiselleştirme (araştırma askıda)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-5 — MANGA TYPESETTİNG ÇEVİRİSİ (sadece PC + GPU)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Araç: zyddnys/manga-image-translator (GitHub)
+Pipeline: YOLOv8 balon tespiti → manga-ocr/PaddleOCR → DeepL → LaMa inpaint → render
+Kısıt: NVIDIA GPU + CUDA zorunlu → mobil/PWA'da "🌐 Türkçe Çevir" butonu gizli
+
+BACKEND:
+[ ] translator/engine.py — manga-image-translator subprocess wrapper (GPU, --lang TRK)
+[ ] translator/detect_gpu.py — torch.cuda.is_available() + VRAM kontrolü
+[ ] routers/translate.py — POST/GET /api/translate/{content_id}/{ch_num}
+[ ] routers/translate.py — GET /api/system/gpu (PC tespiti)
+[ ] models.py — Translation tablosu (status, source_lang, translator_used)
+[ ] config.json — "deepl_api_key" alanı (500K/ay ücretsiz)
+
+FRONTEND (reader.js / reader.html):
+[ ] GPU tespiti: başlangıçta GET /api/system/gpu → sonuç localStorage'a kaydet
+[ ] "🌐 Türkçe Çevir" butonu — sadece GPU varsa göster (PC)
+[ ] Çeviri progress: WS üzerinden sayfa sayfa % güncelleme
+[ ] Çeviri tamamlanınca reader ch_{n}_tr/ klasörünü yükler
+[ ] Dil toggle: [Orijinal] [Türkçe] — her ikisi indiyse geçiş yapılabilir
+
+ÇEVİRİ KALİTESİ:
+[ ] Sayfa bazlı bağlam: tüm balonlar birlikte DeepL'e gönderilir
+[ ] Fallback zinciri: DeepL → Google Translate → LibreTranslate
+[ ] Balon okuma sırası: Japonca sağdan sola, manhwa yukarıdan aşağıya
 ```
