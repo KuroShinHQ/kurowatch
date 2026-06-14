@@ -39,6 +39,7 @@ query ($id: Int) {
     genres
     countryOfOrigin
     coverImage { large }
+    description
     nextAiringEpisode { episode airingAt }
     streamingEpisodes { title url thumbnail }
   }
@@ -96,6 +97,7 @@ def _format(m: dict) -> dict:
         {"title": se.get("title", ""), "url": se.get("url", ""), "thumbnail": se.get("thumbnail", "")}
         for se in (m.get("streamingEpisodes") or [])
     ]
+    nae = m.get("nextAiringEpisode")
     return {
         "external_id": str(m["id"]),
         "title": title,
@@ -108,4 +110,6 @@ def _format(m: dict) -> dict:
         "year": m.get("seasonYear"),
         "score": m.get("averageScore"),
         "streaming_episodes": streaming,
+        "synopsis": m.get("description") or "",
+        "next_airing_episode": {"episode": nae["episode"], "airing_at": nae["airingAt"]} if nae else None,
     }

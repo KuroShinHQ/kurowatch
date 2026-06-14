@@ -191,6 +191,22 @@ async def delete_content(content_id: int, db: AsyncSession = Depends(get_db)):
     await db.commit()
 
 
+# ── AniList Canlı Veri (synopsis + nextAiringEpisode) ────────────────
+
+@router.get("/content/{content_id}/anilist")
+async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "Bulunamadı")
+    if not c.external_id:
+        raise HTTPException(404, "AniList ID yok")
+    detail = await anilist.get_detail(c.external_id)
+    if not detail:
+        raise HTTPException(503, "AniList verisi alınamadı")
+    return detail
+
+
 # ── Discover (AniList proxy) ─────────────────────────────────────────
 
 @router.get("/discover")

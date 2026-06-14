@@ -258,6 +258,18 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <span class="material-symbols-outlined font-bold">check</span>
   </button>
 </div>
+<!-- Synopsis + Next Airing -->
+<div id="detail-synopsis-section" style="display:none" class="px-4 pb-3 flex flex-col gap-2">
+  <div id="detail-next-airing" style="display:none" class="px-3 py-2 bg-[#00d4ff]/10 border border-[#00d4ff]/30 rounded-xl text-[#00d4ff] text-[13px] font-semibold flex items-center gap-2">
+    <span class="material-symbols-outlined text-[16px]">schedule</span>
+    <span id="detail-next-airing-text"></span>
+  </div>
+  <div id="detail-synopsis-wrap" style="display:none" class="flex flex-col gap-1">
+    <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Özet</span>
+    <p id="detail-synopsis-text" class="text-[13px] text-[#9090b0] leading-relaxed" style="overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;"></p>
+    <button id="detail-synopsis-toggle" style="display:none" class="text-left text-[12px] text-[#00d4ff] font-semibold mt-1">Devamını Gör</button>
+  </div>
+</div>
 <!-- Etiketler -->
 <div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
 <!-- Tabs -->
