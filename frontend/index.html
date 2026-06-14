@@ -497,7 +497,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <!-- Dışa/İçe Aktar -->
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
       <div class="px-4 py-3 border-b border-white/5"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Veri</span></div>
-      <button class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
+      <button id="settings-export-btn" class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
         <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#00d4ff]">upload</span><span class="text-[16px] font-medium text-[#e1e0ff]">Dışa Aktar (JSON)</span></div>
         <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
       </button>
@@ -514,13 +514,13 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       <div class="px-4 py-4 flex flex-col gap-3">
         <div>
           <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">IGDB Client ID</label>
-          <input class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client ID" type="text"/>
+          <input id="settings-igdb-id" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client ID" type="text"/>
         </div>
         <div>
           <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">IGDB Client Secret</label>
-          <input class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client Secret" type="password"/>
+          <input id="settings-igdb-secret" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client Secret" type="password"/>
         </div>
-        <button class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
+        <button id="settings-igdb-save" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
       </div>
     </div>
 
@@ -528,17 +528,17 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
       <div class="px-4 py-3 border-b border-white/5"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">İndirme (FAZ-3)</span></div>
       <div class="px-4 py-4 flex flex-col gap-4">
-        <div class="flex items-center justify-between min-h-[44px]">
+        <div id="settings-auto-delete-wrap" class="flex items-center justify-between min-h-[44px] cursor-pointer">
           <div><div class="text-[16px] font-medium text-[#e1e0ff]">Otomatik Sil</div><div class="text-[12px] text-[#9090b0]">İzlenen bölüm N-1 silinir</div></div>
-          <div class="relative"><div class="block bg-[#31324d] w-10 h-6 rounded-full border border-white/10 cursor-pointer"></div><div class="dot absolute left-1 top-1 bg-[#9090b0] w-4 h-4 rounded-full transition transform"></div></div>
+          <div class="relative"><div id="settings-auto-delete-bg" class="block bg-[#31324d] w-10 h-6 rounded-full border border-white/10 transition-colors"></div><div id="settings-auto-delete-dot" class="dot absolute left-1 top-1 bg-[#9090b0] w-4 h-4 rounded-full transition transform"></div></div>
         </div>
         <div class="border-t border-white/5"></div>
         <div>
           <label class="block text-[12px] text-[#9090b0] mb-2 uppercase tracking-wider font-semibold">Video Kalitesi</label>
           <div class="flex bg-[#272842] rounded-lg p-1 border border-white/5">
-            <button class="flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5">720p</button>
-            <button class="flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors">1080p</button>
-            <button class="flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors">En İyi</button>
+            <button class="settings-quality-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="720p">720p</button>
+            <button class="settings-quality-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
+            <button class="settings-quality-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="best">En İyi</button>
           </div>
         </div>
       </div>
@@ -547,7 +547,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <!-- Hakkında -->
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4">
       <div class="text-[16px] font-bold text-[#e1e0ff]">KuroWatch</div>
-      <div class="text-[12px] text-[#9090b0] mt-1">v0.1.0 — Medya Takip Uygulaması</div>
+      <div id="settings-version" class="text-[12px] text-[#9090b0] mt-1">v0.3.0 — Medya Takip Uygulaması</div>
     </div>
   </div>
 </section>
@@ -563,10 +563,10 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     </button>
     <h1 class="text-[20px] font-bold text-[#e1e0ff]">Arşiv</h1>
     <div class="h-[44px] flex items-center justify-center px-2">
-      <span class="bg-[#1e1e32] text-[#9090b0] text-[10px] font-bold py-1 px-2 rounded-full">3 öğe</span>
+      <span id="archive-count" class="bg-[#1e1e32] text-[#9090b0] text-[10px] font-bold py-1 px-2 rounded-full">—</span>
     </div>
   </header>
-  <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-4 flex flex-col gap-2 pb-safe-nav lg:pb-8">
+  <main id="archive-list" class="flex-1 w-full max-w-3xl mx-auto px-4 py-4 flex flex-col gap-2 pb-safe-nav lg:pb-8">
     <!-- Arşiv Öğe 1 -->
     <div class="flex items-center w-full h-[56px] bg-[#1a1a2e] rounded-lg px-2 gap-2 active-scale border border-[#31324d]/50">
       <div class="w-[40px] h-[40px] rounded overflow-hidden flex-shrink-0 bg-[#31324d] relative flex items-center justify-center text-[#9090b0] font-bold text-sm">NG</div>

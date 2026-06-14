@@ -34,6 +34,7 @@ class ContentPatch(BaseModel):
     title: Optional[str] = None
     status: Optional[str] = None
     cover_url: Optional[str] = None
+    external_id: Optional[str] = None
     my_progress: Optional[int] = None
     my_progress_pct: Optional[int] = None
     my_score: Optional[float] = None
