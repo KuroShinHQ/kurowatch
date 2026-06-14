@@ -207,6 +207,32 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
     return detail
 
 
+# ── Genres Otopatch ─────────────────────────────────────────────────
+
+@router.post("/genres/patch-all")
+async def patch_all_genres(db: AsyncSession = Depends(get_db)):
+    """external_id'si olan ama genres'i boş içeriklere AniList'ten genres çeker."""
+    stmt = select(Content).where(
+        Content.external_id.isnot(None),
+        or_(Content.genres.is_(None), Content.genres == "[]", Content.genres == ""),
+    )
+    result = await db.execute(stmt)
+    items = result.scalars().all()
+
+    patched = 0
+    failed = 0
+    for c in items:
+        detail = await anilist.get_detail(c.external_id)
+        if detail and detail.get("genres"):
+            c.genres = json.dumps(detail["genres"])
+            patched += 1
+        else:
+            failed += 1
+
+    await db.commit()
+    return {"patched": patched, "failed": failed, "total": len(items)}
+
+
 # ── Discover (AniList proxy) ─────────────────────────────────────────
 
 @router.get("/discover")
