@@ -472,13 +472,86 @@
     try { items = await apiGet('/api/content'); }
     catch (err) { console.error('renderStats', err); return; }
 
-    document.getElementById('stats-library-count').textContent = items.length;
+    const countEl = document.getElementById('stats-library-count');
+    if (countEl) countEl.textContent = items.length;
 
     const scored = items.filter(i => i.my_score != null);
     const avg = scored.length
       ? (scored.reduce((s, i) => s + i.my_score, 0) / scored.length).toFixed(1)
       : '—';
-    document.getElementById('stats-avg-score').textContent = avg;
+    const avgEl = document.getElementById('stats-avg-score');
+    if (avgEl) avgEl.textContent = avg;
+
+    // ── Tahmini saat ──────────────────────────────────────────────
+    const hoursEl = document.getElementById('stats-hours');
+    if (hoursEl) {
+      let totalMins = 0;
+      items.forEach(function(it) {
+        if (it.type === 'anime')        totalMins += (it.my_progress || 0) * 24;
+        else if (it.type === 'manga')   totalMins += (it.my_progress || 0) * 5;
+        else if (it.type === 'manhwa')  totalMins += (it.my_progress || 0) * 3;
+      });
+      const h = Math.round(totalMins / 60);
+      hoursEl.innerHTML = h.toLocaleString('tr-TR') + '<span class="text-[20px] font-bold text-[#9090b0] ml-2">s</span>';
+    }
+
+    // ── Donut chart ───────────────────────────────────────────────
+    const CIRC = 251.33;
+    const typeCounts = { anime: 0, manga: 0, manhwa: 0, game: 0 };
+    items.forEach(function(it) { if (it.type in typeCounts) typeCounts[it.type]++; });
+    const total = items.length || 1;
+    const typeKeys = ['anime', 'manga', 'manhwa', 'game'];
+    const donutIds = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-game'];
+    let offset = 0;
+    donutIds.forEach(function(id, i) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const count = typeCounts[typeKeys[i]];
+      const dash = count > 0 ? Math.max(2, (count / total) * CIRC) : 0;
+      el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + CIRC);
+      el.setAttribute('stroke-dashoffset', offset.toFixed(1));
+      offset -= dash;
+    });
+    const topType = typeKeys.reduce(function(a, b) { return typeCounts[a] >= typeCounts[b] ? a : b; });
+    const topPct = Math.round((typeCounts[topType] / total) * 100);
+    const centerPct = document.getElementById('stat-donut-center-pct');
+    const centerType = document.getElementById('stat-donut-center-type');
+    if (centerPct) centerPct.textContent = topPct + '%';
+    if (centerType) centerType.textContent = (TYPE_COLOR[topType] || {}).label || topType;
+
+    // ── Bar chart ─────────────────────────────────────────────────
+    const statusCounts = { watching: 0, completed: 0, on_hold: 0, dropped: 0 };
+    items.forEach(function(it) { if (it.status in statusCounts) statusCounts[it.status]++; });
+    const maxCount = Math.max(1, statusCounts.watching, statusCounts.completed, statusCounts.on_hold, statusCounts.dropped);
+    const BASE_Y = 140, MAX_H = 120;
+    [['stat-bar-watching','watching'], ['stat-bar-completed','completed'], ['stat-bar-on-hold','on_hold'], ['stat-bar-dropped','dropped']].forEach(function(pair) {
+      const el = document.getElementById(pair[0]);
+      if (!el) return;
+      const h = Math.max(2, Math.round((statusCounts[pair[1]] / maxCount) * MAX_H));
+      el.setAttribute('height', h);
+      el.setAttribute('y', BASE_Y - h);
+    });
+
+    // ── Türler ───────────────────────────────────────────────────
+    const genreMap = {};
+    items.forEach(function(it) {
+      (it.genres || []).forEach(function(g) { genreMap[g] = (genreMap[g] || 0) + 1; });
+    });
+    const genresEl = document.getElementById('stats-genres');
+    if (genresEl) {
+      const sorted = Object.entries(genreMap).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
+      if (sorted.length === 0) {
+        genresEl.innerHTML = '<span class="text-[14px] text-[#9090b0]">Henüz tür verisi yok</span>';
+      } else {
+        const colors = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#ffb4ab', '#90e090', '#ff9a3c', '#a0a0d0', '#9090b0'];
+        genresEl.innerHTML = sorted.map(function(entry, i) {
+          const color = colors[i] || '#9090b0';
+          return '<span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold interactive cursor-pointer" ' +
+            'style="background:' + color + '20;color:' + color + ';border:1px solid ' + color + '40">' +
+            escapeHtml(entry[0]) + ' (' + entry[1] + ')</span>';
+        }).join('');
+      }
+    }
   }
 
   // ── Render: Archive ─────────────────────────────────────────────────
@@ -616,11 +689,15 @@
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
 
   function renderDetailEpisodes(el, episodes, contentId) {
+    const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 text-[12px] text-[#9090b0] hover:text-[#00d4ff] transition-colors mb-3" data-content-id="' + contentId + '">' +
+      '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle</button>';
+
     if (!episodes.length) {
-      el.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm kaydı yok</p></div>';
+      el.innerHTML = syncBtn + '<div class="text-center text-[#9090b0] py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm kaydı yok</p></div>';
+      el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
       return;
     }
-    el.innerHTML = episodes.map(function(e) {
+    el.innerHTML = syncBtn + episodes.map(function(e) {
       if (e.is_watched) {
         return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">' +
           '<div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm ' + e.number + '</span>' +
@@ -649,6 +726,25 @@
         } catch(e) { console.error('ep watch', e); }
       });
     });
+    const syncBtnEl = el.querySelector('.ep-anilist-sync-btn');
+    if (syncBtnEl) syncBtnEl.addEventListener('click', syncEpisodesFromAniList);
+  }
+
+  async function syncEpisodesFromAniList(e) {
+    const btn = e.currentTarget;
+    const cid = parseInt(btn.dataset.contentId, 10);
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span> Yükleniyor...';
+    try {
+      const res = await apiPost('/api/content/' + cid + '/episodes/sync', {});
+      const msg = res.synced > 0 ? res.synced + ' bölüm yüklendi' : 'Yeni bölüm yok';
+      showToast(msg, res.synced > 0 ? 'success' : 'info');
+      renderDetail(cid);
+    } catch (err) {
+      showToast('Yükleme hatası: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle';
+    }
   }
 
   function renderDetailSites(el, sites, contentId) {

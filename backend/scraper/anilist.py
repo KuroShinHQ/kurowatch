@@ -40,6 +40,7 @@ query ($id: Int) {
     countryOfOrigin
     coverImage { large }
     nextAiringEpisode { episode airingAt }
+    streamingEpisodes { title url thumbnail }
   }
 }
 """
@@ -91,6 +92,10 @@ def _format(m: dict) -> dict:
     ctype = "anime" if m["type"] == "ANIME" else (
         "manhwa" if m.get("countryOfOrigin") == "KR" else "manga"
     )
+    streaming = [
+        {"title": se.get("title", ""), "url": se.get("url", ""), "thumbnail": se.get("thumbnail", "")}
+        for se in (m.get("streamingEpisodes") or [])
+    ]
     return {
         "external_id": str(m["id"]),
         "title": title,
@@ -102,4 +107,5 @@ def _format(m: dict) -> dict:
         "genres": m.get("genres", []),
         "year": m.get("seasonYear"),
         "score": m.get("averageScore"),
+        "streaming_episodes": streaming,
     }
