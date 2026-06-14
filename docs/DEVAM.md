@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-7) · **Aktif sürüm:** v0.2.0 · **Son commit:** `834b8ab`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-8) · **Aktif sürüm:** v0.3.0 · **Son commit:** `ba19261`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,43 +10,33 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-7) — Backend FAZ-1 TAMAM (commit 834b8ab):
+EN SON YAPILAN (14 Haz sohbet-8) — E2E bağlantı + Discover + Add form (commit ba19261):
 
-✅ backend/ — FastAPI :8099 tam çalışıyor:
-   - database.py    → SQLite async engine (aiosqlite), get_db dependency, init_db
-   - models.py      → Content / Site / Episode / Update / Tag / ContentTag ORM
-   - main.py        → FastAPI CORS + lifespan (init_db + startup check-updates) + static catch-all
-   - routers/content.py   → GET/POST/PATCH/DELETE /api/content + GET /api/discover
-   - routers/episodes.py  → /api/episodes, /api/updates, POST /api/check-updates (AniList)
-   - routers/sites.py     → /api/sites CRUD
-   - routers/tags.py      → /api/tags CRUD + içerik-etiket bağlama
-   - routers/settings.py  → /api/settings GET/POST (config.json auto-create)
-   - routers/sync.py      → /api/export + /api/import + /api/import/resolve
-   - scraper/anilist.py   → AniList GraphQL (manhwa: countryOfOrigin KR)
+✅ USE_MOCK=false — frontend artık gerçek backend'e bağlı
+✅ POST /api/content/:id/progress → progress güncelleme endpoint (ProgressUpdate schema)
+✅ renderSearch() → search ekranında AniList arama (debounce 400ms, /api/discover çağrısı)
+✅ prefillAddForm() → Discover sonucundan modal'a otomatik title/type/cover/external_id doldur
+✅ submitAddContent() → form okur → POST /api/content → modal kapat + home refresh
+✅ apiDelete() eklendi (ileride kullanım için)
+✅ index.html form ID'leri: add-form-title/status/cover/note/external-id, add-save-btn
+✅ Kuroshin.bat [10] fix: WSL venv path (/root/kuroshin/venv), [1]=tam başlat + tarayıcı
 
-✅ Canlı kanıt (venv + curl):
-   GET  /api/content → 200 []
-   POST /api/content → 201 {id, title, ...}
-   PATCH /api/content/1 → 200 güncellendi
-   DELETE /api/content/1 → 204
-   GET / → 200 (index.html static)
-   GET /api/settings → 200, config.json oluştu
-   GET /api/tags + /api/updates → 200
-
-✅ .gitignore: backend/config.json + downloads/ + **/__pycache__/ eklendi
-
-⚠️ USE_MOCK=true (app.js satır 9) — backend hazır, false yapılabilir
-⚠️ Kuroshin venv gerekli: source /root/kuroshin/venv/bin/activate
+Canlı kanıt:
+  GET /api/content → 3 kayıt (DB'deki gerçek veri) ✅
+  POST /api/content/1/progress {progress:460} → my_progress:460 ✅
+  GET /api/discover?q=naruto&type=anime → AniList Naruto ✅
+  GET /api/discover?q=jujutsu+kaisen&type=manga → Jujutsu Kaisen manga ✅
 
 BAŞLATMA KOMUTU:
-cd C:\Kuroshin\kurowatch
 wsl -d Ubuntu-22.04 -u root -- bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
+(veya Kuroshin.bat [10] → [1])
 
-SIRADAKI GÖREV (sohbet-8):
-1. app.js'de USE_MOCK=false yapıp tam E2E testi (frontend → backend)
-2. Discover ekranı AniList araması (frontend → /api/discover → AniList GraphQL)
-3. Güncelleme tespiti canlı test (içerik ekle external_id ile → /api/check-updates)
-4. Kuroshin.bat [10] → KuroWatch backend başlatma komutu düzelt (venv path)
+SIRADAKI GÖREV (sohbet-9):
+1. /api/check-updates canlı test (external_id olan içerik → AniList yeni bölüm kontrolü)
+2. Detail ekranı: cover resmi göster, my_score yıldız UI çalışır hale getir
+3. Archive ekranı bağla (status=completed filtresi)
+4. Settings ekranı (config.json okuma/yazma frontend)
+5. PWA test (mobil Chrome'dan "Ana ekrana ekle")
 
 KESİNLEŞEN KARARLAR (bu sohbette):
 - Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
