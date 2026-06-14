@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-6) · **Aktif sürüm:** v0.1.1 · **Son commit:** `eab4369`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-7) · **Aktif sürüm:** v0.2.0 · **Son commit:** `834b8ab`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,36 +10,43 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-6) — Faz-B CDN Kaldırma TAMAM (commit eab4369):
+EN SON YAPILAN (14 Haz sohbet-7) — Backend FAZ-1 TAMAM (commit 834b8ab):
 
-✅ frontend/ klasörü dolu (13 dosya):
-   - index.html      → 7 section + 2 modal SPA shell, SIFIR CDN (68KB)
-   - tailwind.css    → Tailwind CLI v4.3.1 derlendi (42KB, lokal)
-   - style.css       → @font-face Material Symbols + :root --kw-* değişkenleri
-   - app.js          → navigasyon + 5 mock item + apiGet/apiPost (USE_MOCK=true)
-   - debug-logger.js → KuroLog overlay (?kurodev=1 veya logo 3x tık)
-   - i18n.js         → TR/EN data-i18n sistemi
-   - locales/tr.json + en.json → 89 anahtar
-   - manifest.json   → PWA: theme #00d4ff, bg #0d0d1a
-   - sw.js           → cache-first shell + network-first /api/*
-   - icons/icon.svg  → KuroWatch göz logosu
-   - icons/material-symbols.woff2 → lokal Material Symbols font (1.1MB)
-   - icons/icon-192.png + icon-512.png → PWA PNG ikonları (PIL ile üretildi)
+✅ backend/ — FastAPI :8099 tam çalışıyor:
+   - database.py    → SQLite async engine (aiosqlite), get_db dependency, init_db
+   - models.py      → Content / Site / Episode / Update / Tag / ContentTag ORM
+   - main.py        → FastAPI CORS + lifespan (init_db + startup check-updates) + static catch-all
+   - routers/content.py   → GET/POST/PATCH/DELETE /api/content + GET /api/discover
+   - routers/episodes.py  → /api/episodes, /api/updates, POST /api/check-updates (AniList)
+   - routers/sites.py     → /api/sites CRUD
+   - routers/tags.py      → /api/tags CRUD + içerik-etiket bağlama
+   - routers/settings.py  → /api/settings GET/POST (config.json auto-create)
+   - routers/sync.py      → /api/export + /api/import + /api/import/resolve
+   - scraper/anilist.py   → AniList GraphQL (manhwa: countryOfOrigin KR)
 
-✅ Tailwind v4 build kurulumu:
-   - C:\Kuroshin\tools\tailwindcss.exe (v4.3.1, 107MB standalone)
-   - tailwind.config.js + tailwind-input.css (v4 @import + @theme + @layer utilities)
-   - Custom class'lar dahil: font-label-caps, text-display-lg, rounded-card, p-gutter vb.
-✅ SIFIR CDN bağımlılığı — PWA offline tamamen çalışır
-✅ HTTP test: tüm 13 dosya 200 OK
+✅ Canlı kanıt (venv + curl):
+   GET  /api/content → 200 []
+   POST /api/content → 201 {id, title, ...}
+   PATCH /api/content/1 → 200 güncellendi
+   DELETE /api/content/1 → 204
+   GET / → 200 (index.html static)
+   GET /api/settings → 200, config.json oluştu
+   GET /api/tags + /api/updates → 200
 
-SIRADAKI GÖREV (sohbet-7 / Backend):
-1. backend/database.py → SQLite async engine (aiosqlite)
-2. backend/models.py → Content, Site, Episode, Tag ORM
-3. backend/main.py → FastAPI app (port 8099, CORS, router kayıt)
-4. backend/routers/content.py → CRUD (GET /api/content, POST, PATCH, DELETE)
-5. backend/routers/episodes.py → /api/check-updates
-6. Curl ile test: app.js'deki USE_MOCK=false yap → API uç noktaları doğrula
+✅ .gitignore: backend/config.json + downloads/ + **/__pycache__/ eklendi
+
+⚠️ USE_MOCK=true (app.js satır 9) — backend hazır, false yapılabilir
+⚠️ Kuroshin venv gerekli: source /root/kuroshin/venv/bin/activate
+
+BAŞLATMA KOMUTU:
+cd C:\Kuroshin\kurowatch
+wsl -d Ubuntu-22.04 -u root -- bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
+
+SIRADAKI GÖREV (sohbet-8):
+1. app.js'de USE_MOCK=false yapıp tam E2E testi (frontend → backend)
+2. Discover ekranı AniList araması (frontend → /api/discover → AniList GraphQL)
+3. Güncelleme tespiti canlı test (içerik ekle external_id ile → /api/check-updates)
+4. Kuroshin.bat [10] → KuroWatch backend başlatma komutu düzelt (venv path)
 
 KESİNLEŞEN KARARLAR (bu sohbette):
 - Mimari: PC + Telefon (Termux) bağımsız, JSON export/import sync
@@ -96,6 +103,16 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 ---
 
 ## 🎯 NEREDE KALDIK
+
+### ✅ Sohbet-7'de Tamamlananlar (14 Haz 2026) — Backend FAZ-1
+
+- **database.py**: SQLite async engine, aiosqlite, get_db dependency
+- **models.py**: Content/Site/Episode/Update/Tag/ContentTag SQLAlchemy ORM
+- **main.py**: FastAPI app, CORS, lifespan (init_db + startup check-updates), static catch-all
+- **6 router**: content (CRUD+discover), episodes (check-updates), sites, tags, settings, sync
+- **scraper/anilist.py**: AniList GraphQL search + get_detail, manhwa = countryOfOrigin KR
+- **.gitignore**: backend/config.json + downloads/ + **/__pycache__/ eklendi
+- Commit: `834b8ab`
 
 ### ✅ Sohbet-6'da Tamamlananlar (14 Haz 2026) — Faz-B CDN Kaldırma
 
@@ -154,25 +171,13 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 - Stitch çıktısı analiz edildi — 5 kritik sorun tespit edildi
 - DEVAM.md + FEATURE_MAP.md + YAPI.md frontend build planıyla güncellendi
 
-### 🔴 Sıradaki (Öncelik Sırası)
+### 🔴 Sıradaki (Öncelik Sırası) — sohbet-8
 
-**ÖNCE: Frontend Build (backend olmadan tam çalışacak)**
-1. `frontend/index.html` → 9 code.html'yi tek dosyada birleştir (section'lar)
-2. CDN'leri kaldır:
-   - Tailwind CDN → vanilla CSS (class'ları dönüştür)
-   - Google Fonts CDN → SVG ikonlar (Heroicons/Phosphor local)
-3. Renk tutarsızlıklarını düzelt (tüm ekranlarda #0d0d1a)
-4. `frontend/app.js` → navigasyon + mock data (API olmadan)
-5. `frontend/debug-logger.js` → click/fetch/error overlay logger
-6. UX eksiklikleri: back button, pull-to-refresh, swipe-dismiss, loading state, error state
-
-**SONRA: Backend**
-7. `backend/database.py` → SQLite async engine
-8. `backend/models.py` → Content, Site, Episode, Tag, Update, Config
-9. `backend/main.py` → FastAPI app (port 8099, CORS, startup)
-10. `backend/routers/content.py` → CRUD
-11. `backend/routers/sync.py` → export/import/conflict
-12. `backend/scraper/anilist.py` → AniList GraphQL
+1. `app.js` USE_MOCK=false → E2E test (frontend → /api/content → DB)
+2. Discover ekranı AniList araması bağlantısı (frontend renderSearch → /api/discover)
+3. `Add Content` formu → /api/content POST gerçek çağrı
+4. `/api/check-updates` canlı test (AniList external_id'li içerikle)
+5. Kuroshin.bat [10] → venv path fix
 
 ---
 
