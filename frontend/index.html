@@ -333,16 +333,29 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
 <!-- EKRAN: SEARCH — Keşfet                                          -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-search" class="screen hidden w-full lg:ml-[240px] pt-16 lg:pt-8 pb-safe-nav lg:pb-8 px-4 lg:px-8 max-w-7xl mx-auto">
-  <div class="flex flex-col gap-8 mt-4">
-    <!-- Arama Başlığı -->
-    <section class="flex flex-col gap-4">
-      <div class="relative w-full group">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
-        <input id="search-discover-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="AniList'te ara (anime/manga/manhwa)..." type="text" style="font-size:16px!important" autocomplete="off"/>
+  <div class="flex flex-col gap-4 mt-4">
+    <!-- Sekme Seçici -->
+    <div class="flex bg-[#1c1d37] rounded-xl p-1 border border-white/5">
+      <button id="search-tab-library" class="search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all bg-[#00d4ff]/15 text-[#00d4ff]">
+        <span class="material-symbols-outlined text-[16px] align-middle mr-1">library_books</span>Kütüphanem
+      </button>
+      <button id="search-tab-discover" class="search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all text-[#9090b0] hover:text-[#e1e0ff]">
+        <span class="material-symbols-outlined text-[16px] align-middle mr-1">travel_explore</span>Keşfet
+      </button>
+    </div>
+    <!-- Arama Kutusu (ortak) -->
+    <div class="relative w-full group">
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
+      <input id="search-discover-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" style="font-size:16px!important" autocomplete="off"/>
+    </div>
+    <!-- Kütüphanem Panel -->
+    <div id="search-panel-library" class="flex flex-col gap-3">
+      <div id="library-search-results" class="flex flex-col gap-2">
+        <div class="text-center text-[#9090b0] py-8 text-[13px]">Kütüphanende aramak için yaz...</div>
       </div>
-    </section>
-    <!-- Keşfet İçerik -->
-    <div class="flex flex-col gap-6">
+    </div>
+    <!-- Keşfet Panel -->
+    <div id="search-panel-discover" class="hidden flex-col gap-6">
       <!-- Türler -->
       <div class="flex flex-col gap-3" id="discover-genre-section">
         <h3 class="text-[14px] font-bold text-[#9090b0] uppercase tracking-wider">Popüler Türler</h3>
@@ -350,15 +363,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </div>
       <!-- Sonuç Listesi -->
       <div class="flex flex-col gap-4" id="search-results">
-        <div class="interactive-card flex items-center gap-4 p-3 rounded-card bg-[#1c1d37] border border-white/5 inner-glow group hover:border-[#00d4ff]/30 transition-colors cursor-pointer">
-          <div class="w-16 h-24 shrink-0 rounded bg-[#31324d] overflow-hidden"></div>
-          <div class="flex flex-col gap-1 flex-grow">
-            <h4 class="font-headline-sm text-headline-sm text-[#e1e0ff] leading-tight font-bold">AniList'ten ara...</h4>
-            <div class="flex items-center gap-2 text-[#9090b0] font-body-md text-body-md">
-              <span>Başlamak için bir şey yaz</span>
-            </div>
-          </div>
-        </div>
+        <div class="text-center text-[#9090b0] py-8 text-[13px]">Bir tür seç veya AniList'te ara...</div>
       </div>
     </div>
   </div>

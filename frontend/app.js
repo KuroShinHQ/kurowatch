@@ -133,9 +133,9 @@
     if (id === 'screen-settings') renderSettings();
     if (id === 'screen-search') {
       setTimeout(() => {
-        _buildDiscoverGenreChips();
+        _initSearchTabs();
         const inp = document.getElementById('search-discover-input');
-        if (inp) { inp.focus(); if (inp.value || _discoverGenre) renderSearch(inp.value); }
+        if (inp) { inp.focus(); }
       }, 100);
     }
 
@@ -1276,6 +1276,91 @@
   // ── Render: Search / Discover ─────────────────────────────────────
   let _searchTimer = null;
   let _discoverGenre = null;
+  let _activeSearchTab = 'library';
+
+  function _initSearchTabs() {
+    const tabLib = document.getElementById('search-tab-library');
+    const tabDis = document.getElementById('search-tab-discover');
+    const panelLib = document.getElementById('search-panel-library');
+    const panelDis = document.getElementById('search-panel-discover');
+    const inp = document.getElementById('search-discover-input');
+    if (!tabLib || !tabDis) return;
+
+    function switchTab(tab) {
+      _activeSearchTab = tab;
+      const isLib = tab === 'library';
+      tabLib.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all ' + (isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#9090b0] hover:text-[#e1e0ff]');
+      tabDis.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all ' + (!isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#9090b0] hover:text-[#e1e0ff]');
+      if (panelLib) { panelLib.classList.toggle('hidden', !isLib); }
+      if (panelDis) {
+        panelDis.classList.toggle('hidden', isLib);
+        panelDis.classList.toggle('flex', !isLib);
+      }
+      if (inp) inp.placeholder = isLib ? 'Kütüphanende ara...' : 'AniList\'te ara (anime/manga/manhwa)...';
+      if (inp && inp.value) {
+        isLib ? renderLibrarySearch(inp.value) : renderSearch(inp.value);
+      } else if (!isLib) {
+        _buildDiscoverGenreChips();
+        if (_discoverGenre) renderSearch('');
+      }
+    }
+
+    tabLib.onclick = function() { switchTab('library'); };
+    tabDis.onclick = function() { switchTab('discover'); };
+
+    if (inp) {
+      inp.oninput = function() {
+        clearTimeout(_searchTimer);
+        _searchTimer = setTimeout(function() {
+          if (_activeSearchTab === 'library') renderLibrarySearch(inp.value);
+          else renderSearch(inp.value);
+        }, 300);
+      };
+    }
+
+    switchTab(_activeSearchTab);
+  }
+
+  async function renderLibrarySearch(q) {
+    const box = document.getElementById('library-search-results');
+    if (!box) return;
+    if (!q || q.trim().length < 1) {
+      box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Kütüphanende aramak için yaz...</div>';
+      return;
+    }
+    try {
+      const items = await apiGet('/api/content?q=' + encodeURIComponent(q.trim()));
+      if (!items || !items.length) {
+        box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Sonuç bulunamadı</div>';
+        return;
+      }
+      box.innerHTML = items.map(function(it) {
+        const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
+        const cover = it.cover_url
+          ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
+          : '<span class="font-bold text-xs ' + tc.text + '">' + escapeHtml((it.title||'?').split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase()) + '</span>';
+        const status = STATUS_LABEL[it.status] || it.status || '';
+        return '<div class="flex items-center gap-3 px-3 h-[64px] rounded-xl bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/30 cursor-pointer transition-colors active:scale-[0.97]" data-content-id="' + it.id + '">' +
+          '<div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden">' + cover + '</div>' +
+          '<div class="flex flex-col justify-center min-w-0 flex-1">' +
+          '<h3 class="text-[14px] font-bold text-[#e1e0ff] truncate">' + escapeHtml(it.title || '') + '</h3>' +
+          '<div class="flex items-center gap-2 mt-0.5">' +
+          '<span class="text-[11px] font-bold ' + tc.text + '">' + tc.label + '</span>' +
+          '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(status) + '</span>' +
+          '</div></div>' +
+          (it.my_score != null ? '<span class="text-[13px] font-bold text-[#00d4ff] flex-shrink-0">' + it.my_score.toFixed(1) + '</span>' : '') +
+          '</div>';
+      }).join('');
+      box.querySelectorAll('[data-content-id]').forEach(function(row) {
+        row.addEventListener('click', function() {
+          renderDetail(parseInt(this.dataset.contentId, 10));
+          showScreen('screen-detail');
+        });
+      });
+    } catch(e) {
+      box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Hata: ' + escapeHtml(e.message) + '</div>';
+    }
+  }
 
   const DISCOVER_GENRES = ['Action','Adventure','Comedy','Drama','Fantasy','Horror','Mecha','Mystery','Romance','Sci-Fi','Slice of Life','Sports','Supernatural','Thriller'];
 
@@ -1565,11 +1650,7 @@
       homeFilter.query = e.target.value;
       renderHome();
     }
-    if (e.target.id === 'search-discover-input') {
-      clearTimeout(_searchTimer);
-      const q = e.target.value;
-      _searchTimer = setTimeout(() => renderSearch(q), 400);
-    }
+    // search-discover-input: _initSearchTabs tarafından yönetiliyor
   });
 
   // Home filtre chips
