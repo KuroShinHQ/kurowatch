@@ -132,11 +132,37 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ## 🛠️ KRİTİK BİLGİLER
 
+### Deployment Mimarisi (Kesinleşti — 14 Haz)
+```
+PC (Windows) — kendi bağımsız instance:
+  uvicorn backend.main:app --port 8099
+  İndirmeler → C:\Users\...\Downloads\KuroWatch\
+  SQLite    → kurowatch/memory/kurowatch.db
+
+Telefon (Android, Termux kurulu ✅, USB debug açık ✅):
+  uvicorn backend.main:app --port 8099
+  İndirmeler → /sdcard/Download/KuroWatch/
+  SQLite    → ~/kurowatch/memory/kurowatch.db
+
+Sync: Settings > Export JSON → diğer cihazda Import
+Dışarıdan erişim + HTTPS + bildirim: Cloudflare Tunnel (Termux'ta)
+```
+
+### İndirme Davranışı (FAZ-3 — Kesinleşti)
+```
+Daisy chain:   Bölüm %50'de → N+1 arkaplanda inmeye başlar
+               N+1 başlayınca → N+2 başlar (zincir devam)
+Auto-delete:   N bitti → N-1 silindi (config: auto_delete=true/false)
+Toplu indirme: Tüm seri → baştan sona seçili kalitede
+Kalite:        Global ayar (360p/720p/1080p/best) — config.json
+Aynısı manhwa/manga için geçerli (chapter bazlı)
+```
+
 ### Stack
 - Backend: Python FastAPI + SQLAlchemy async + SQLite (aiosqlite)
 - Frontend: Stitch AI çıktısı → HTML/CSS + Manuel vanilla app.js
 - Mobil: PWA (manifest.json + sw.js)
-- Port: 8099
+- Port: 8099 (hem PC hem Termux)
 
 ### API Stratejisi
 | İçerik | Birincil | Fallback |
