@@ -1,0 +1,474 @@
+// ═══════════════════════════════════════════════════════════════════
+// KuroWatch SPA — Ana JavaScript
+// Navigasyon + Mock Data + API Layer + Render Fonksiyonları
+// ═══════════════════════════════════════════════════════════════════
+
+(function() {
+  'use strict';
+
+  // ── Konfigürasyon ─────────────────────────────────────────────────
+  const API_BASE = 'http://localhost:8099';
+  let USE_MOCK = true; // backend hazır olunca false yap
+
+  // ── Mock Data ─────────────────────────────────────────────────────
+  const MOCK_LIBRARY = [
+    {
+      id: 1, title: 'Magic Emperor', type: 'manhwa', status: 'watching',
+      my_progress: 457, total_chapters: 600, my_score: 9.0, cover_url: null,
+      country: 'KR', year: 2018, genres: ['Fantasy','Action']
+    },
+    {
+      id: 2, title: 'Jujutsu Kaisen', type: 'manga', status: 'watching',
+      my_progress: 270, total_chapters: 300, my_score: 8.5, cover_url: null,
+      country: 'JP', year: 2018, genres: ['Action','Supernatural']
+    },
+    {
+      id: 3, title: 'Spy×Family', type: 'anime', status: 'watching',
+      my_progress: 2, total_chapters: 24, my_score: 8.0, cover_url: null,
+      country: 'JP', year: 2022, genres: ['Comedy','Action']
+    },
+    {
+      id: 4, title: 'Solo Leveling', type: 'manhwa', status: 'completed',
+      my_progress: 200, total_chapters: 200, my_score: 9.5, cover_url: null,
+      country: 'KR', year: 2018, genres: ['Action','Fantasy']
+    },
+    {
+      id: 5, title: 'Elden Ring', type: 'game', status: 'on_hold',
+      my_progress_pct: 60, my_score: null, cover_url: null,
+      year: 2022, genres: ['RPG','Action']
+    }
+  ];
+
+  const MOCK_UPDATES = [
+    { id:1, content_id:1, content_title:'Magic Emperor',  episode_number:458, site_name:'MangaOkuTR',  detected_at:'2026-06-14T10:00:00', is_read:false },
+    { id:2, content_id:2, content_title:'Jujutsu Kaisen', episode_number:271, site_name:'MangaTR',     detected_at:'2026-06-13T18:00:00', is_read:true  },
+    { id:3, content_id:3, content_title:'Spy×Family',     episode_number:3,   site_name:'Crunchyroll', detected_at:'2026-06-12T22:00:00', is_read:false }
+  ];
+
+  // Tip rozetleri için renkler
+  const TYPE_COLOR = {
+    'anime':  { bg:'bg-[#00d4ff]/10', text:'text-[#00d4ff]', border:'border-[#00d4ff]/20', bar:'bg-[#00d4ff]', label:'Anime' },
+    'manga':  { bg:'bg-[#ffd9a1]/10', text:'text-[#ffd9a1]', border:'border-[#ffd9a1]/20', bar:'bg-[#ffd9a1]', label:'Manga' },
+    'manhwa': { bg:'bg-[#bbc5eb]/10', text:'text-[#bbc5eb]', border:'border-[#bbc5eb]/20', bar:'bg-[#bbc5eb]', label:'Manhwa' },
+    'game':   { bg:'bg-[#ffb4ab]/10', text:'text-[#ffb4ab]', border:'border-[#ffb4ab]/20', bar:'bg-[#ffb4ab]', label:'Oyun' }
+  };
+
+  const STATUS_LABEL = {
+    'watching': 'İzliyor',
+    'completed': 'Tamamlandı',
+    'on_hold': 'Beklemede',
+    'plan_to_watch': 'Planlı',
+    'dropped': 'Bırakıldı'
+  };
+
+  // ── API Layer ─────────────────────────────────────────────────────
+  function getMockData(path) {
+    if (path === '/api/content')          return Promise.resolve(MOCK_LIBRARY);
+    if (path === '/api/updates')          return Promise.resolve(MOCK_UPDATES);
+    if (path.startsWith('/api/content/')) {
+      const id = parseInt(path.split('/').pop(), 10);
+      return Promise.resolve(MOCK_LIBRARY.find(c => c.id === id) || null);
+    }
+    return Promise.resolve(null);
+  }
+
+  async function apiGet(path) {
+    if (USE_MOCK) return getMockData(path);
+    const r = await fetch(API_BASE + path);
+    if (!r.ok) throw new Error('GET ' + path + ' → ' + r.status);
+    return r.json();
+  }
+
+  async function apiPost(path, body) {
+    if (USE_MOCK) return { ok: true };
+    const r = await fetch(API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('POST ' + path + ' → ' + r.status);
+    return r.json();
+  }
+
+  // Expose
+  window.kuroAPI = { get: apiGet, post: apiPost, setMockMode: m => USE_MOCK = m };
+
+  // ── Navigasyon Sistemi ────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => {
+      const isTarget = s.id === id;
+      s.classList.toggle('active', isTarget);
+      s.classList.toggle('hidden', !isTarget);
+    });
+    history.replaceState({ screen: id }, '', '#' + id);
+    updateNavActive(id);
+
+    // Ekran başına render
+    if (id === 'screen-home')    renderHome();
+    if (id === 'screen-updates') renderUpdates();
+    if (id === 'screen-stats')   renderStats();
+
+    // Scroll to top
+    window.scrollTo(0, 0);
+
+    if (window.kuroLog) window.kuroLog.nav(id);
+  }
+
+  function updateNavActive(id) {
+    // Sidebar nav
+    document.querySelectorAll('#sidebar-nav .nav-item').forEach(item => {
+      const isActive = item.dataset.nav === id;
+      item.classList.toggle('active-nav', isActive);
+    });
+    // Bottom nav
+    document.querySelectorAll('#bottom-nav .bottom-nav-item').forEach(item => {
+      const isActive = item.dataset.nav === id;
+      item.classList.toggle('active-nav', isActive);
+    });
+  }
+
+  function openModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.remove('hidden');
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (window.kuroLog) window.kuroLog.nav('modal-open:' + id);
+  }
+
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('hidden');
+    el.classList.remove('open');
+    document.body.style.overflow = '';
+    if (window.kuroLog) window.kuroLog.nav('modal-close:' + id);
+  }
+
+  // Geri/ileri
+  window.addEventListener('popstate', function(e) {
+    const screen = (e.state && e.state.screen) || 'screen-home';
+    showScreen(screen);
+  });
+
+  // Expose
+  window.kuroNav = { show: showScreen, openModal: openModal, closeModal: closeModal };
+
+  // ── Render: Home (Kütüphane Grid) ────────────────────────────────
+  let homeFilter = { type: 'all', status: 'all', query: '' };
+
+  async function renderHome() {
+    const grid = document.getElementById('home-library-grid');
+    if (!grid) return;
+
+    let items;
+    try {
+      items = await apiGet('/api/content');
+    } catch (err) {
+      grid.innerHTML = '<div class="col-span-full text-center text-[#9090b0] py-12">Yüklenemedi: ' + err.message + '</div>';
+      return;
+    }
+
+    // Filtrele
+    const filtered = items.filter(it => {
+      if (homeFilter.type !== 'all' && it.type !== homeFilter.type) return false;
+      if (homeFilter.status !== 'all' && it.status !== homeFilter.status) return false;
+      if (homeFilter.query && !it.title.toLowerCase().includes(homeFilter.query.toLowerCase())) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="col-span-full text-center text-[#9090b0] py-12 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">inbox</span><p>Eşleşen içerik yok</p></div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(it => {
+      const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
+      const total = it.total_chapters || 1;
+      const pct = it.my_progress_pct != null
+        ? it.my_progress_pct
+        : Math.round((it.my_progress || 0) / total * 100);
+      const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
+      const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+
+      return `
+        <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" data-content-id="${it.id}">
+          <div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
+          <div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg">${score}</div>
+          <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
+            <span class="text-[10px] font-bold ${tc.text} ${tc.bg} w-fit px-1.5 py-0.5 rounded uppercase border ${tc.border} leading-none">${tc.label}</span>
+            <h3 class="text-[13px] font-bold text-[#e1e0ff] line-clamp-2 leading-tight">${escapeHtml(it.title)}</h3>
+            <div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden">
+              <div class="${tc.bar} h-full shadow-[0_0_8px_rgba(0,212,255,0.6)]" style="width:${pct}%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Kart tıklama → detay
+    grid.querySelectorAll('[data-content-id]').forEach(card => {
+      card.addEventListener('click', function() {
+        const id = parseInt(this.dataset.contentId, 10);
+        renderDetail(id);
+        showScreen('screen-detail');
+      });
+    });
+  }
+
+  // ── Render: Detail ───────────────────────────────────────────────
+  async function renderDetail(id) {
+    let item;
+    try { item = await apiGet('/api/content/' + id); }
+    catch (err) { console.error('renderDetail', err); return; }
+    if (!item) return;
+
+    const tc = TYPE_COLOR[item.type] || TYPE_COLOR.anime;
+    const total = item.total_chapters || 100;
+    const cur = item.my_progress || 0;
+    const pct = item.my_progress_pct != null ? item.my_progress_pct : Math.round(cur / total * 100);
+
+    document.getElementById('detail-title').textContent = item.title;
+    document.getElementById('detail-type-badge').textContent = (item.type || '').toUpperCase();
+    document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">play_circle</span> ${STATUS_LABEL[item.status] || item.status}`;
+    document.getElementById('detail-progress-current').textContent = cur;
+    document.getElementById('detail-progress-total').textContent = '/ ' + total;
+    document.getElementById('detail-progress-pct').textContent = pct + '%';
+    document.getElementById('detail-progress-bar').style.width = pct + '%';
+    const slider = document.getElementById('detail-progress-slider');
+    slider.max = total;
+    slider.value = cur;
+    document.getElementById('detail-slider-max').textContent = total;
+
+    // Rating yıldızları
+    const score = item.my_score || 0;
+    const fullStars = Math.round(score);
+    const ratingEl = document.getElementById('detail-rating-container');
+    ratingEl.innerHTML = '';
+    for (let i = 1; i <= 10; i++) {
+      const span = document.createElement('span');
+      span.className = 'material-symbols-outlined cursor-pointer text-[28px] ' + (i <= fullStars ? 'text-[#00d4ff]' : 'text-[#31324d]');
+      span.style.fontVariationSettings = "'FILL' 1";
+      span.textContent = 'star';
+      ratingEl.appendChild(span);
+    }
+
+    // Cover bg (placeholder)
+    document.getElementById('detail-cover-bg').style.backgroundColor = '#16213e';
+
+    // Mark butonu
+    document.getElementById('detail-mark-btn').onclick = function() {
+      const next = (item.my_progress || 0) + 1;
+      if (next > total) return;
+      item.my_progress = next;
+      apiPost('/api/content/' + id + '/progress', { progress: next });
+      renderDetail(id);
+    };
+
+    // Slider değişimi
+    slider.oninput = function() {
+      const v = parseInt(this.value, 10);
+      document.getElementById('detail-progress-current').textContent = v;
+      const newPct = Math.round(v / total * 100);
+      document.getElementById('detail-progress-pct').textContent = newPct + '%';
+      document.getElementById('detail-progress-bar').style.width = newPct + '%';
+    };
+    slider.onchange = function() {
+      const v = parseInt(this.value, 10);
+      item.my_progress = v;
+      apiPost('/api/content/' + id + '/progress', { progress: v });
+    };
+  }
+
+  // ── Render: Updates ──────────────────────────────────────────────
+  async function renderUpdates() {
+    const list = document.getElementById('updates-list');
+    if (!list) return;
+
+    let items;
+    try { items = await apiGet('/api/updates'); }
+    catch (err) {
+      list.innerHTML = '<div class="text-center text-[#9090b0] py-12">Yüklenemedi: ' + err.message + '</div>';
+      return;
+    }
+
+    if (items.length === 0) {
+      list.innerHTML = '<div class="text-center text-[#9090b0] py-12 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">notifications_off</span><p>Henüz güncelleme yok</p></div>';
+      return;
+    }
+
+    list.innerHTML = items.map(u => {
+      const initials = u.content_title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+      const time = formatRelativeTime(u.detected_at);
+      if (u.is_read) {
+        return `
+          <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e]/60 border-l-[4px] border-transparent inner-glow cursor-pointer hover:bg-[#1a1a2e] transition-transform duration-200 opacity-70 hover:opacity-100 active:scale-[0.97]" data-content-id="${u.content_id}">
+            <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center text-white/40 font-bold text-sm grayscale-[50%]">${initials}</div>
+            <div class="flex flex-col justify-center w-full min-w-0">
+              <div class="flex justify-between items-center mb-0.5">
+                <h3 class="text-[16px] font-bold text-white/70 group-hover:text-white transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
+                <span class="text-[10px] text-white/40 font-medium whitespace-nowrap ml-2">${time}</span>
+              </div>
+              <div class="flex items-center gap-2 text-white/50 text-[12px]">
+                <span class="px-1.5 py-0.5 rounded bg-[#16213e]/50 text-white/60 text-[9px] uppercase font-bold tracking-wider">BÖL ${u.episode_number}</span>
+                <span class="truncate">${escapeHtml(u.site_name)} üzerinde</span>
+              </div>
+            </div>
+          </div>`;
+      }
+      return `
+        <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e] border-l-[4px] border-[#00d4ff] inner-glow cursor-pointer hover:bg-[#1a1a2e]/80 transition-transform duration-200 relative overflow-hidden active:scale-[0.97]" data-content-id="${u.content_id}">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#00d4ff]/5 to-transparent pointer-events-none"></div>
+          <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center text-[#00d4ff] font-bold text-sm">${initials}</div>
+          <div class="flex flex-col justify-center w-full min-w-0">
+            <div class="flex justify-between items-center mb-0.5">
+              <h3 class="text-[16px] font-bold text-white group-hover:text-[#00d4ff] transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
+              <span class="text-[10px] text-[#00d4ff] font-medium whitespace-nowrap ml-2">${time}</span>
+            </div>
+            <div class="flex items-center gap-2 text-white/60 text-[12px]">
+              <span class="px-1.5 py-0.5 rounded bg-[#16213e] text-[#00d4ff] text-[9px] uppercase font-bold tracking-wider">BÖL ${u.episode_number}</span>
+              <span class="truncate">${escapeHtml(u.site_name)} üzerinde</span>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('[data-content-id]').forEach(card => {
+      card.addEventListener('click', function() {
+        const id = parseInt(this.dataset.contentId, 10);
+        renderDetail(id);
+        showScreen('screen-detail');
+      });
+    });
+  }
+
+  // ── Render: Stats ────────────────────────────────────────────────
+  async function renderStats() {
+    let items;
+    try { items = await apiGet('/api/content'); }
+    catch (err) { console.error('renderStats', err); return; }
+
+    document.getElementById('stats-library-count').textContent = items.length;
+
+    const scored = items.filter(i => i.my_score != null);
+    const avg = scored.length
+      ? (scored.reduce((s, i) => s + i.my_score, 0) / scored.length).toFixed(1)
+      : '—';
+    document.getElementById('stats-avg-score').textContent = avg;
+  }
+
+  // ── Yardımcı Fonksiyonlar ────────────────────────────────────────
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function formatRelativeTime(iso) {
+    const d = new Date(iso);
+    const now = new Date();
+    const diff = (now - d) / 1000;
+    if (diff < 60) return 'şimdi';
+    if (diff < 3600) return Math.floor(diff/60) + ' dk önce';
+    if (diff < 86400) return Math.floor(diff/3600) + ' saat önce';
+    if (diff < 86400*2) return 'Dün';
+    if (diff < 86400*7) return Math.floor(diff/86400) + ' gün önce';
+    return d.toLocaleDateString('tr-TR');
+  }
+
+  // ── Event Binders ────────────────────────────────────────────────
+  document.addEventListener('click', function(e) {
+    const navEl = e.target.closest('[data-nav]');
+    if (navEl) {
+      e.preventDefault();
+      showScreen(navEl.dataset.nav);
+      return;
+    }
+    const openEl = e.target.closest('[data-modal-open]');
+    if (openEl) {
+      e.preventDefault();
+      openModal(openEl.dataset.modalOpen);
+      return;
+    }
+    const closeEl = e.target.closest('[data-modal-close]');
+    if (closeEl) {
+      e.preventDefault();
+      closeModal(closeEl.dataset.modalClose);
+      return;
+    }
+  });
+
+  // ESC ile modal kapat
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+    }
+  });
+
+  // Home arama
+  document.addEventListener('input', function(e) {
+    if (e.target.id === 'home-search-input') {
+      homeFilter.query = e.target.value;
+      renderHome();
+    }
+  });
+
+  // Home filtre chips
+  document.addEventListener('click', function(e) {
+    const t = e.target.closest('.filter-type');
+    if (t) {
+      homeFilter.type = t.dataset.filterType;
+      document.querySelectorAll('.filter-type').forEach(b => {
+        const active = b === t;
+        b.classList.toggle('bg-[#00d4ff]/15', active);
+        b.classList.toggle('border-[#00d4ff]', active);
+        b.classList.toggle('text-[#00d4ff]', active);
+        b.classList.toggle('bg-[#1c1d37]', !active);
+        b.classList.toggle('border-white/5', !active);
+        b.classList.toggle('text-[#9090b0]', !active);
+      });
+      renderHome();
+    }
+    const s = e.target.closest('.filter-status');
+    if (s) {
+      homeFilter.status = s.dataset.filterStatus;
+      document.querySelectorAll('.filter-status').forEach(b => {
+        const active = b === s;
+        b.classList.toggle('bg-[#3b4665]', active);
+        b.classList.toggle('border-[#3b4665]', active);
+        b.classList.toggle('text-[#e1e0ff]', active);
+        b.classList.toggle('bg-[#1c1d37]', !active);
+        b.classList.toggle('border-white/5', !active);
+        b.classList.toggle('text-[#9090b0]', !active);
+      });
+      renderHome();
+    }
+  });
+
+  // ── Service Worker Kaydı ─────────────────────────────────────────
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').catch(err => {
+        console.warn('SW kayıt hatası:', err);
+      });
+    });
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+    // İlk hash'e göre ekran aç
+    const initial = (location.hash || '').replace('#','') || 'screen-home';
+    const valid = ['screen-home','screen-detail','screen-search','screen-updates','screen-stats','screen-settings','screen-archive'];
+    showScreen(valid.includes(initial) ? initial : 'screen-home');
+
+    // i18n uygula (varsa)
+    if (window.kuroI18n && typeof window.kuroI18n.apply === 'function') {
+      window.kuroI18n.apply();
+    }
+  });
+
+})();
