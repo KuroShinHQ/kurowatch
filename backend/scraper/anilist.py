@@ -4,9 +4,9 @@ import asyncio
 ANILIST_URL = "https://graphql.anilist.co"
 
 _SEARCH_QUERY = """
-query ($search: String, $type: MediaType, $countryOfOrigin: CountryCode, $page: Int) {
-  Page(page: $page, perPage: 10) {
-    media(search: $search, type: $type, countryOfOrigin: $countryOfOrigin, sort: SEARCH_MATCH) {
+query ($search: String, $type: MediaType, $countryOfOrigin: CountryCode, $genre: String, $page: Int) {
+  Page(page: $page, perPage: 12) {
+    media(search: $search, type: $type, countryOfOrigin: $countryOfOrigin, genre: $genre, sort: SEARCH_MATCH) {
       id
       title { english romaji }
       type
@@ -65,12 +65,16 @@ def _media_type(content_type: str) -> tuple[str, str | None]:
     return "MANGA", None
 
 
-async def search(q: str, content_type: str, page: int = 1) -> list[dict]:
-    """AniList arama → liste döndür"""
+async def search(q: str | None, content_type: str, page: int = 1, genre: str | None = None) -> list[dict]:
+    """AniList arama → liste döndür. q veya genre en az biri gerekli."""
     mtype, country = _media_type(content_type)
-    vars_ = {"search": q, "type": mtype, "page": page}
+    vars_: dict = {"type": mtype, "page": page}
+    if q:
+        vars_["search"] = q
     if country:
         vars_["countryOfOrigin"] = country
+    if genre:
+        vars_["genre"] = genre
     try:
         data = await _post(_SEARCH_QUERY, vars_)
         return [_format(m) for m in data["data"]["Page"]["media"]]
