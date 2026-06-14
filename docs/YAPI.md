@@ -162,7 +162,9 @@ STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching
   "default_quality": "720p",
   "max_concurrent_downloads": 2,
   "auto_delete_after_watch": false,
-  "daisy_chain_trigger_pct": 50
+  "daisy_chain_trigger_pct": 50,
+  "deepl_api_key": "",
+  "translation_fallback": "google"
 }
 ```
 - `default_quality`: Global kalite ayarı — tüm indirmeler bu kalitede yapılır (360p/480p/720p/1080p/best)
@@ -901,4 +903,133 @@ FAZ-1 (MVP)     → Tracker: içerik ekle/takip et, Updates, Stats, i18n
 FAZ-2           → MAL OAuth, IGDB/Oyun, MangaDex scraper
 FAZ-3           → Player/Downloader: yt-dlp + gallery-dl + Netflix mekanizmaları
 FAZ-4           → Chromaprint otomatik intro tespiti, öneri algoritması
+FAZ-5           → Manga Typesetting Çevirisi (sadece PC, GPU)
+```
+
+---
+
+## 🌐 FAZ-5: Manga Typesetting Çevirisi (sadece PC)
+
+> **Lord Direktifi:** Typesetting (B seçeneği) — balon içi silinip Türkçe yazılıyor.
+> **Kısıt:** GPU gerektirir → sadece PC'de aktif. Mobil/PWA'da gösterilmez.
+> **Hedef:** İndirilmiş raw (JP/KR) chapter'ları otomatik Türkçe'ye çevir.
+
+### 5.1 Pipeline (manga-image-translator)
+
+```
+[chapter görüntüsü]
+        ↓
+1. BALON TESPİTİ    → YOLOv8 (speech bubble bounding box)
+        ↓
+2. OCR              → manga-ocr (Japonca) / PaddleOCR (Korece)
+        ↓
+3. ÇEVİRİ           → DeepL API (en kaliteli) + sayfa bağlamı birlikte gönder
+        ↓
+4. INPAİNTİNG       → LaMa (orijinal metni resimden sil)
+        ↓
+5. RENDER           → Türkçe metin balonun içine yerleştir
+        ↓
+[Türkçe typeset manga sayfası]
+
+Araç: zyddnys/manga-image-translator (GitHub)
+  - Python 3.10+, PyTorch + CUDA (GPU zorunlu)
+  - Docker image: ~15 GB (tüm modeller dahil)
+  - Komut: python -m manga_translator --use-gpu -l TRK --translator deepl
+```
+
+### 5.2 Entegrasyon Mimarisi
+
+```
+PC'de KuroWatch açık:
+  Reader → chapter görüntüleri yüklenir
+  "🌐 Türkçe Çevir" butonu görünür (sadece PC + GPU varsa)
+        ↓
+  POST /api/translate/{content_id}/{ch_num}
+        ↓
+  backend/translator/engine.py:
+    → manga-image-translator subprocess başlat
+    → downloads/manga/{id}/ch_{n}/ → downloads/manga/{id}/ch_{n}_tr/
+    → WS ile %ilerleme gönder
+        ↓
+  Reader çevrilmiş klasörü yükler (ch_{n}_tr/)
+
+Mobil/PWA:
+  "🌐 Türkçe Çevir" butonu HİÇ gösterilmez
+  (userAgent veya /api/system/gpu endpoint ile PC tespiti)
+```
+
+### 5.3 Çeviri Kalitesi Stratejisi
+
+```
+BAĞLAM SORUNU: Tek balon çevirmek anlamsız olabilir ("O güçlü!" → kim, neyin?)
+ÇÖZÜM: Sayfadaki TÜM balonları tek seferde DeepL'e gönder:
+  ["セリフ1", "セリフ2", "セリフ3"] → ["Diyalog1_TR", "Diyalog2_TR", "Diyalog3_TR"]
+
+SIRALAMA: Balon sırası = okuma sırası (sağdan sola Japonca, yukarıdan aşağıya manhwa)
+
+FALLBACK:
+  DeepL API kotası bittiyse → Google Translate API
+  API yoksa → LibreTranslate (local, ücretsiz, düşük kalite)
+
+KALİTE HİYERARŞİSİ:
+  1. DeepL (Türkçe destekli, en bağlamlı)
+  2. Google Translate (geniş dil, kabul edilebilir)
+  3. LibreTranslate (offline, yedeğin yedeği)
+```
+
+### 5.4 Veri Modeli (FAZ-5 eklentisi)
+
+```
+Translation (çeviri durumu)
+  id, content_id (FK), chapter_number
+  status ('pending' | 'processing' | 'done' | 'error')
+  source_lang ('ja' | 'ko' | 'zh')
+  target_lang ('tr', varsayılan)
+  translator_used ('deepl' | 'google' | 'libretranslate')
+  page_count (int)
+  created_at, finished_at
+```
+
+### 5.5 Yeni API Endpoints (FAZ-5)
+
+```
+POST   /api/translate/{content_id}/{ch_num}  ← çeviri başlat
+GET    /api/translate/{content_id}/{ch_num}  ← çeviri durumu
+GET    /api/system/gpu                       ← GPU var mı? (PC tespiti için)
+GET    /api/reader/{content_id}/{ch_num}?lang=tr ← çevrilmiş klasörü döndür
+```
+
+### 5.6 Klasör Yapısı (FAZ-5 eklentisi)
+
+```
+kurowatch/
+├── backend/
+│   ├── translator/
+│   │   ├── __init__.py
+│   │   ├── engine.py      ← manga-image-translator subprocess wrapper
+│   │   └── detect_gpu.py  ← torch.cuda.is_available() + VRAM kontrolü
+│   └── routers/
+│       └── translate.py   ← /api/translate + /api/system/gpu
+└── downloads/
+    └── manga/
+        └── {content_id}/
+            ├── ch_{n}/      ← orijinal raw görüntüler
+            └── ch_{n}_tr/   ← Türkçe typeset görüntüler (FAZ-5 üretir)
+```
+
+### 5.7 Kurulum Gereksinimleri (Kullanıcı Tarafı)
+
+```
+1. NVIDIA GPU (CUDA destekli) — zorunlu
+2. CUDA Toolkit (PyTorch versiyonuyla eşleşen)
+3. manga-image-translator:
+   git clone https://github.com/zyddnys/manga-image-translator
+   pip install -r requirements.txt  (PyTorch + CUDA dahil)
+   python -m manga_translator --use-gpu --download  # modelleri indir (~4GB)
+4. DeepL API Key (ücretsiz: 500K karakter/ay)
+   → config.json: "deepl_api_key": "..."
+
+KuroWatch kurulumda otomatik kontrol:
+  /api/system/gpu → torch.cuda.is_available() → true/false
+  GPU yoksa → "🌐 Türkçe Çevir" butonu gizli
 ```
