@@ -162,6 +162,14 @@
     const el = document.getElementById(id);
     if (!el) return;
     el.classList.remove('hidden');
+    // Add modal: her açılışta step-1'den başla, step-2 gizle
+    if (id === 'modal-add') {
+      const s1 = document.getElementById('add-step-1');
+      const s2 = document.getElementById('add-step-2');
+      if (s1) s1.classList.remove('hidden');
+      if (s2) s2.classList.add('hidden');
+      _initAddSearch();
+    }
     el.classList.add('open');
     document.body.style.overflow = 'hidden';
     if (window.kuroLog) window.kuroLog.nav('modal-open:' + id);
@@ -1348,6 +1356,58 @@
     } catch (err) {
       results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Hata: ' + escapeHtml(err.message) + '</div>';
     }
+  }
+
+  // ── Add Modal Step-1: AniList Arama ──────────────────────────────
+  let _addSearchTimer = null;
+  function _initAddSearch() {
+    const inp = document.querySelector('#add-step-1 input[type="text"]');
+    const resultsBox = document.querySelector('#add-step-1 .flex-1.overflow-y-auto');
+    if (!inp || !resultsBox) return;
+    inp.value = '';
+    resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Başlık yaz, AniList\'te ara...</div>';
+    inp.oninput = function() {
+      clearTimeout(_addSearchTimer);
+      const q = this.value.trim();
+      if (q.length < 2) {
+        resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">En az 2 karakter yaz...</div>';
+        return;
+      }
+      resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-6 text-[13px] flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Aranıyor...</div>';
+      _addSearchTimer = setTimeout(async function() {
+        try {
+          const items = await apiGet('/api/discover?q=' + encodeURIComponent(q) + '&type=anime');
+          if (!items || !items.length) {
+            resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Sonuç bulunamadı</div>';
+            return;
+          }
+          resultsBox.innerHTML = items.map(function(it) {
+            const cover = it.cover_url
+              ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
+              : '<span class="font-bold text-xs text-[#9090b0]">' + escapeHtml((it.title || '?').slice(0,2).toUpperCase()) + '</span>';
+            const yr = it.year || '';
+            const tp = (it.type || 'anime').charAt(0).toUpperCase() + (it.type || '').slice(1);
+            return '<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-[#2f3639] transition-transform active:scale-[0.97] etched-border bg-[#0e1417]" data-add-pick=\'' + JSON.stringify(it).replace(/'/g, '&#39;') + '\'>' +
+              '<div class="w-[40px] h-[56px] bg-[#2f3639] rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center">' + cover + '</div>' +
+              '<div class="flex-1 min-w-0 flex flex-col justify-center">' +
+              '<h3 class="text-[13px] font-bold text-[#dde3e7] truncate">' + escapeHtml(it.title || '') + '</h3>' +
+              '<div class="flex items-center gap-2 mt-0.5"><span class="text-[12px] text-[#9090b0]">' + yr + '</span><span class="px-1.5 py-0.5 rounded-full bg-[#00d4ff]/20 text-[#00d4ff] text-[10px] font-bold">' + tp + '</span></div>' +
+              '</div>' +
+              '<button class="h-11 min-h-[44px] px-3 border border-[#00d4ff] text-[#00d4ff] rounded-full text-[14px] font-semibold flex items-center gap-1 hover:bg-[#00d4ff]/10 transition-colors flex-shrink-0 active:scale-[0.97]">' +
+              '<span class="material-symbols-outlined text-[16px]">add</span></button>' +
+              '</div>';
+          }).join('');
+          resultsBox.querySelectorAll('[data-add-pick]').forEach(function(row) {
+            row.querySelector('button').addEventListener('click', function() {
+              const data = JSON.parse(row.dataset.addPick);
+              prefillAddForm(data);
+            });
+          });
+        } catch(e) {
+          resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Hata: ' + escapeHtml(e.message) + '</div>';
+        }
+      }, 350);
+    };
   }
 
   function prefillAddForm(data) {
