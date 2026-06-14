@@ -254,7 +254,18 @@
     });
 
     if (filtered.length === 0) {
-      grid.innerHTML = '<div class="col-span-full text-center text-[#9090b0] py-12 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">inbox</span><p>Eşleşen içerik yok</p></div>';
+      const isEmpty = items.length === 0;
+      grid.innerHTML = isEmpty
+        ? '<div class="col-span-full flex flex-col items-center gap-5 py-16">' +
+            '<span class="material-symbols-outlined text-[64px] text-[#31324d]">video_library</span>' +
+            '<div class="text-center"><p class="text-[18px] font-bold text-[#e1e0ff] mb-1">Kütüphanen boş</p>' +
+            '<p class="text-[13px] text-[#9090b0]">İlk içeriğini eklemek için aşağıdaki + butonuna bas</p></div>' +
+            '<button class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[#00d4ff] text-[#003642] font-bold text-[14px] active:scale-[0.97] transition-transform" data-modal-open="modal-add">' +
+            '<span class="material-symbols-outlined">add</span> İçerik Ekle</button>' +
+          '</div>'
+        : '<div class="col-span-full text-center text-[#9090b0] py-12 flex flex-col items-center gap-2">' +
+            '<span class="material-symbols-outlined text-4xl">filter_list_off</span>' +
+            '<p>Bu filtreyle eşleşen içerik yok</p></div>';
       return;
     }
 
