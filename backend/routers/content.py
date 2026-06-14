@@ -237,11 +237,14 @@ async def patch_all_genres(db: AsyncSession = Depends(get_db)):
 
 @router.get("/discover")
 async def discover(
-    q: str = Query(..., min_length=1),
+    q: Optional[str] = Query(None),
     type: str = Query("anime"),
+    genre: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
 ):
+    if not q and not genre:
+        raise HTTPException(400, "q veya genre parametresi gerekli")
     if type not in ("anime", "manga", "manhwa"):
         raise HTTPException(400, "Geçersiz tip (anime/manga/manhwa)")
-    results = await anilist.search(q, type, page)
+    results = await anilist.search(q, type, page, genre)
     return results

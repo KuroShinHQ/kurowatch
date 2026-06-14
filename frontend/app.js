@@ -133,8 +133,9 @@
     if (id === 'screen-settings') renderSettings();
     if (id === 'screen-search') {
       setTimeout(() => {
+        _buildDiscoverGenreChips();
         const inp = document.getElementById('search-discover-input');
-        if (inp) { inp.focus(); if (inp.value) renderSearch(inp.value); }
+        if (inp) { inp.focus(); if (inp.value || _discoverGenre) renderSearch(inp.value); }
       }, 100);
     }
 
@@ -1107,17 +1108,45 @@
 
   // ── Render: Search / Discover ─────────────────────────────────────
   let _searchTimer = null;
+  let _discoverGenre = null;
+
+  const DISCOVER_GENRES = ['Action','Adventure','Comedy','Drama','Fantasy','Horror','Mecha','Mystery','Romance','Sci-Fi','Slice of Life','Sports','Supernatural','Thriller'];
+
+  function _buildDiscoverGenreChips() {
+    const row = document.getElementById('discover-genre-row');
+    if (!row) return;
+    row.innerHTML = DISCOVER_GENRES.map(function(g) {
+      const active = _discoverGenre === g;
+      return '<button class="discover-genre-chip shrink-0 font-label-caps text-label-caps px-4 min-h-[44px] rounded-full transition-all inner-glow border ' +
+        (active ? 'bg-[#00d4ff]/15 border-[#00d4ff] text-[#00d4ff]' : 'bg-[#1c1d37] border-white/5 text-[#9090b0] hover:text-[#e1e0ff] hover:border-white/20') +
+        '" data-genre="' + g + '">' + g.toUpperCase() + '</button>';
+    }).join('');
+    row.querySelectorAll('.discover-genre-chip').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const g = this.dataset.genre;
+        _discoverGenre = (_discoverGenre === g) ? null : g;
+        _buildDiscoverGenreChips();
+        const inp = document.getElementById('search-discover-input');
+        renderSearch(inp ? inp.value : '');
+      });
+    });
+  }
 
   async function renderSearch(q) {
     const results = document.getElementById('search-results');
     if (!results) return;
-    if (!q || q.trim().length < 2) {
-      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">En az 2 karakter yaz...</div>';
+    _buildDiscoverGenreChips();
+    const hasQ = q && q.trim().length >= 2;
+    if (!hasQ && !_discoverGenre) {
+      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">En az 2 karakter yaz veya bir tür seç...</div>';
       return;
     }
     results.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> AniList\'te aranıyor...</div>';
+    let url = '/api/discover?type=anime';
+    if (hasQ) url += '&q=' + encodeURIComponent(q.trim());
+    if (_discoverGenre) url += '&genre=' + encodeURIComponent(_discoverGenre);
     try {
-      const items = await apiGet('/api/discover?q=' + encodeURIComponent(q.trim()) + '&type=anime');
+      const items = await apiGet(url);
       if (!items || items.length === 0) {
         results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Sonuç bulunamadı</div>';
         return;
