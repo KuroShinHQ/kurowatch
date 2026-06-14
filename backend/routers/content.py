@@ -150,6 +150,23 @@ async def patch_content(content_id: int, body: ContentPatch, db: AsyncSession = 
     return await get_content(content_id, db)
 
 
+class ProgressUpdate(BaseModel):
+    progress: int
+
+
+@router.post("/content/{content_id}/progress", status_code=200)
+async def update_progress(content_id: int, body: ProgressUpdate, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Content).where(Content.id == content_id).options(selectinload(Content.sites), selectinload(Content.tags)))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "Bulunamadı")
+    c.my_progress = body.progress
+    c.updated_at = datetime.utcnow()
+    await db.commit()
+    await db.refresh(c)
+    return _serialize(c)
+
+
 @router.delete("/content/{content_id}", status_code=204)
 async def delete_content(content_id: int, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Content).where(Content.id == content_id))
