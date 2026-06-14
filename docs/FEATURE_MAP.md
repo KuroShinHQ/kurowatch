@@ -515,7 +515,12 @@ FAZ-3 — PLAYER / DOWNLOADER (Netflix Deneyimi)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ANIME İNDİRİCİ + OYNATICI:
-[ ] downloader/anime.py — yt-dlp async subprocess wrapper
+    Site uyumluluğu (araştırıldı — 14 Haz 2026):
+    - Crunchyroll: yt-dlp resmi extractor ✅ (ücretsiz bölüm), premium DRM ❌
+    - DiziWatch/TrAnimeİzle: resmi extractor YOK → yt-dlp generic + embed iframe parse
+    - Dizibox/YabancıDizi/HDFilmCehennemi: embed player URL yakala → yt-dlp
+    - Tüm Türkçe manga siteleri: Madara WordPress teması → admin-ajax.php
+[ ] downloader/anime.py — yt-dlp async subprocess wrapper (generic extractor + embed parse)
 [ ] downloader/manager.py — kuyruk + WS progress (max 2 eşzamanlı)
 [ ] models.py — Download + IntroTimestamp tabloları
 [ ] routers/download.py — /api/download CRUD + /ws/download WS
@@ -531,7 +536,8 @@ ANIME İNDİRİCİ + OYNATICI:
     [ ] Altyazı: VTT dosyası varsa subtitle track ekle
 
 MANGA / MANHWA OKUYUCU:
-[ ] downloader/manga.py — gallery-dl + mangadex-downloader wrapper
+[ ] downloader/manga.py — Madara admin-ajax.php parser + gallery-dl + mangadex-downloader wrapper
+    (Madara: POST /wp-admin/admin-ajax.php action=manga_get_chapter_img_list — TÜM TR Madara siteleri)
 [ ] routers/reader.py — /api/reader + static görsel serve
 [ ] frontend/reader.html — tam ekran okuyucu
 [ ] frontend/reader.js:

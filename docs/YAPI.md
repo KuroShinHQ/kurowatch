@@ -385,6 +385,113 @@ POST   /api/settings              ← config.json yaz (IGDB creds + süreler)
 pip install yt-dlp gallery-dl mangadex-downloader
 ```
 
+---
+
+### 3.1-A Site Uyumluluk Analizi (Araştırıldı — 14 Haz 2026)
+
+#### ANİME SİTELERİ
+
+**Crunchyroll** (`crunchyroll.com`)
+```
+Durum: yt-dlp resmi extractor VAR (crunchyroll.py)
+Ücretsiz içerik: ✅ Çalışıyor
+Premium DRM içerik: ❌ ÇALIŞMIYOR — DRM korumalı (Widevine)
+TR altyazı: yt-dlp --write-subs --sub-lang tr,en (varsa çalışır)
+Sonuç: Ücretsiz bölümler için yt-dlp yeterli; premium = DRM duvarı
+```
+
+**DiziWatch / TrAnimeİzle** (`diziwatch.net`, `tranimeizle.co/.top`)
+```
+Durum: yt-dlp'de RESMİ extractor YOK
+Alternatif: CloudStream (Android app) Türkçe repo var
+  → keyiflerolsun/Kekik-cloudstream (GitHub)
+  → DiziWatch + TrAnimeİzle extension'ları aktif (2025-2026)
+Strateji: yt-dlp generic extractor dene:
+  1. Sayfa HTML'inde embed player iframe yakala (vidmoly, streamtape, vb.)
+  2. yt-dlp bu embed siteleri destekliyor → iframe URL'ini doğrudan ver
+  3. --add-headers "Referer: https://diziwatch.net" gerekebilir
+  4. m3u8 stream otomatik tespit (HLS support aktif yt-dlp'de)
+Referans: HiAnime için pratikpatel8982/yt-dlp-hianime → custom extractor örneği
+```
+
+**TrAnimacı** (`tranimaci.com`)
+```
+Durum: yt-dlp'de extractor yok — generic + embed yakalaması dene
+Strateji: DiziWatch ile aynı yaklaşım
+```
+
+#### DİZİ / FİLM SİTELERİ
+
+**Dizibox / YabancıDizi / HDFilmCehennemi**
+```
+Durum: yt-dlp'de RESMİ extractor YOK
+Strateji: Bu siteler embed player kullanır (vidmoly, doodstream, streamtape, filemoon…)
+  → yt-dlp bu embed sitelerin ÇOĞUNU destekler
+  → Adım 1: Site sayfasından embed iframe URL'ini parse et
+  → Adım 2: Bu URL'i yt-dlp'ye ver → video iner
+  → Fallback: m3u8 URL'ini DevTools'tan bul → doğrudan yt-dlp'ye ver
+```
+
+#### MANGA / MANHWA SİTELERİ
+
+**Madara WordPress Temalı Siteler** (MangaOkuTR, MangaGezgini, MangaŞehri, MangaTR, RüyaManga, TurkceMangaOku, MerlinScans, GölgeBahçesi, MangaWow…)
+```
+TÜM Bu siteler Madara WordPress teması kullanıyor (araştırma doğruladı).
+
+AJAX Endpoint (tüm Madara siteleri için geçerli):
+  POST https://{site}/wp-admin/admin-ajax.php
+  Body: action=manga_get_chapter_img_list&chapter_id={chapter_id}
+  Response: JSON → { "status": "true", "html": "<div><img src='...'/>..." }
+  → HTML parse ile resim URL'leri çıkarılır
+
+Alternatif (bazı Madara sürümlerinde):
+  GET https://{site}/manga/{slug}/chapter-{n}/
+  → Sayfa HTML'inde data-src= attribute'larına bak (lazy load)
+
+Referans uygulamalar:
+  TUVIMEN/wordpress-madara-scraper (GitHub bash script)
+  ThuGie/Ultimate-Manga-Scraper--Madara-Enhancements
+
+gallery-dl Madara desteği: Kısmi (bazı siteler için rule var, Türkçe siteler için muhtemelen yok)
+Karar: admin-ajax.php Python implementation daha güvenilir
+```
+
+**MangaDex** (`mangadex.org`)
+```
+Durum: gallery-dl ✅ + mangadex-downloader ✅ + resmi API ✅
+Tercih: mangadex-downloader (PyPI) — en stabil
+```
+
+**AsuraScans TR** (`asurascans.com.tr`)
+```
+gallery-dl'de Asura Scans desteği var (EN sürümü için)
+TR domain için: Madara AJAX dene önce
+```
+
+#### AKTİF İNDİRME STRATEJİSİ (Lord Direktifi)
+
+```
+ANİME — Daisy Chain:
+  Bölüm N oynarken → N+1 indirmeyi kuyruğa ekle (arka plan)
+  N+1 başlayınca → N+2 kuyruğa ekle
+  Uygulama: download_manager.py → video player "timeupdate" eventi
+    → kalan 5dk kala N+1 indirme başlatılır
+
+MANGA — Preload:
+  Chapter N okunurken → N+1 indir (arka plan)
+  N+1 açılınca → N+2 başlar
+
+"HEPSİNİ İNDİR":
+  Seri detay sayfasında "📥 Tümünü İndir [720p]" butonu
+  → Tüm bölümleri sıraya ekle, seçili kalitede
+  → download_manager kuyruk yönetir (max 2 eşzamanlı)
+
+OTO-SİL:
+  İzlendi/okundu → "Dosyayı Sil?" modal
+  VEYA auto_delete=True → otomatik sil
+  Settings: toplam disk kullanımı göster + "Tümünü Temizle"
+```
+
 **Klasör yapısı (downloads/ — .gitignore'da):**
 ```
 downloads/
