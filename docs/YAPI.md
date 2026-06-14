@@ -667,6 +667,70 @@ GET    /api/reader/{content_id}/{ch_num} ← chapter görsel listesi (sıralı)
 
 ### 3.4 Netflix Mekanizmaları (Araştırıldı)
 
+**Ambient Mode (YouTube tarzı — video-ambient-glow):**
+```javascript
+// player.js — video başlayınca ambient canvas başlatılır
+// Kaynak: mike-at-redspace/video-ambient-glow (~5.8KB, zero deps)
+import AmbientGlow from './vendor/video-ambient-glow.min.js';
+
+const ambient = new AmbientGlow(videoEl, {
+  blur: 96,        // blur miktarı (px)
+  opacity: 0.65,   // arka plan saydamlığı
+  brightness: 1.1, // parlaklık
+  saturate: 1.2,   // renk doygunluğu
+});
+// Nasıl çalışır: video frame → 10×6px canvas → blur → video arkasına konumlanır
+// Sahne değişince renkler yumuşakça geçiş yapar (requestAnimationFrame döngüsü)
+// Settings toggle: "🌅 Ambient Aydınlatma" → ambientEnabled (config.json)
+```
+
+**Theater Mode + Picture-in-Picture + Mini Player:**
+```javascript
+// Theater Mode — T tuşu
+function toggleTheater() {
+  document.body.classList.toggle('theater-mode');
+  // CSS: .theater-mode .player-container { width: 100vw; margin: 0 -16px; }
+  //       .theater-mode nav, .sidebar { display: none; }
+}
+
+// Picture-in-Picture — I tuşu (native browser API, kütüphane yok)
+async function togglePiP() {
+  if (document.pictureInPictureElement) {
+    await document.exitPictureInPicture();
+  } else {
+    await videoEl.requestPictureInPicture();
+  }
+}
+
+// Mini Player — M tuşu (sayfada küçük köşe pencere)
+function toggleMini() {
+  document.querySelector('.player-wrap').classList.toggle('mini-player');
+  // CSS: .mini-player { position: fixed; bottom: 16px; right: 16px;
+  //                     width: 320px; z-index: 9999; border-radius: 8px; }
+}
+```
+
+**Tam Klavye Shortcut Seti (YouTube tarzı):**
+```javascript
+// player.js keydown listener
+const SHORTCUTS = {
+  ' ': togglePlay,   'k': togglePlay,
+  'f': toggleFullscreen,
+  't': toggleTheater,
+  'i': togglePiP,
+  'm': toggleMini,
+  'arrowleft': () => seek(-5),   'j': () => seek(-10),
+  'arrowright': () => seek(5),   'l': () => seek(10),
+  '[': () => changeSpeed(-0.25),
+  ']': () => changeSpeed(+0.25),
+  '1': () => jumpTo(0.1),  '2': () => jumpTo(0.2),  '3': () => jumpTo(0.3),
+  '4': () => jumpTo(0.4),  '5': () => jumpTo(0.5),  '6': () => jumpTo(0.6),
+  '7': () => jumpTo(0.7),  '8': () => jumpTo(0.8),  '9': () => jumpTo(0.9),
+};
+// jumpTo(pct): video.currentTime = video.duration * pct
+// changeSpeed: [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0]
+```
+
 **Auto-next episode + Daisy Chain (tek timeupdate handler):**
 ```javascript
 // player.js — video timeupdate event — TÜM tetikler burada
@@ -901,9 +965,106 @@ Her iki durumda:
 ```
 FAZ-1 (MVP)     → Tracker: içerik ekle/takip et, Updates, Stats, i18n
 FAZ-2           → MAL OAuth, IGDB/Oyun, MangaDex scraper
-FAZ-3           → Player/Downloader: yt-dlp + gallery-dl + Netflix mekanizmaları
+FAZ-3           → Player/Downloader: yt-dlp + Netflix mekanizmaları
+                   + Ambient Mode, Theater/PiP/Mini, tam klavye set
 FAZ-4           → Chromaprint otomatik intro tespiti, öneri algoritması
 FAZ-5           → Manga Typesetting Çevirisi (sadece PC, GPU)
+                   + Çok sayfa bağlam (Seviye 2), karakter listesi (Seviye 3)
+FAZ-6           → Browser Extension: MAL-Sync tarzı otomatik progress
+                   diziwatch/tranimeizle/mangasite → KuroWatch'a otomatik sync
+```
+
+---
+
+## 🌐 FAZ-6: Browser Extension (MAL-Sync Tarzı)
+
+> Kullanıcı tarayıcıda anime/manga sitesinde hangi bölümü açtıysa
+> → KuroWatch'a otomatik progress yazar (el ile işaret etme gerekmez).
+
+### 6.1 Mimari
+
+```
+[Tarayıcı Extension (Chrome/Firefox)]
+        ↓
+URL parse: "diziwatch.net/anime/solo-leveling/episode-5"
+        ↓
+Anime: "Solo Leveling", Bölüm: 5
+        ↓
+POST http://localhost:8099/api/progress/auto
+  { "title": "Solo Leveling", "episode": 5, "source": "diziwatch" }
+        ↓
+KuroWatch backend: içeriği bul (title match) → my_progress = 5 güncelle
+```
+
+### 6.2 Desteklenecek Siteler (öncelik sırası)
+
+```
+ANİME: diziwatch.net, tranimeizle.co, tranimaci.com, crunchyroll.com
+MANGA: mangaokutr.com, mangagezgini.com, manga-sehri.net
+       (Madara temalı siteler = URL pattern aynı: /manga/{slug}/chapter-{n}/)
+DİZİ:  yabancidizi.pro, dizibox.so
+```
+
+### 6.3 URL Pattern Parse
+
+```javascript
+// extension/content.js (her sayfada çalışır)
+const PATTERNS = [
+  // Anime
+  { regex: /diziwatch\.net\/anime\/([^/]+)\/episode-(\d+)/,
+    type: 'anime', titleSlug: 1, episode: 2 },
+  { regex: /tranimeizle\.[a-z]+\/([^/]+)-(\d+)\./,
+    type: 'anime', titleSlug: 1, episode: 2 },
+  { regex: /crunchyroll\.com\/watch\/[A-Z0-9]+\/([^?]+)/,
+    type: 'anime', titleSlug: 1, episode: null },  // CR başlıktan parse
+
+  // Manga (Madara: /manga/{slug}/chapter-{n}/)
+  { regex: /\/manga\/([^/]+)\/chapter-(\d+(?:\.\d+)?)\//,
+    type: 'manga', titleSlug: 1, chapter: 2 },
+];
+
+function detectProgress() {
+  for (const p of PATTERNS) {
+    const m = location.href.match(p.regex);
+    if (m) {
+      const slug = m[p.titleSlug].replace(/-/g, ' ');
+      const ep = p.episode ? parseInt(m[p.episode]) : null;
+      return { type: p.type, slug, episode: ep };
+    }
+  }
+  return null;
+}
+
+// Tespit edince KuroWatch local API'ye bildir:
+const result = detectProgress();
+if (result) {
+  fetch('http://localhost:8099/api/progress/auto', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(result)
+  });
+}
+```
+
+### 6.4 Yeni Backend Endpoint (FAZ-6)
+
+```
+POST /api/progress/auto
+  Body: { "type": "anime", "slug": "solo leveling", "episode": 5, "source": "diziwatch" }
+  → Fuzzy title match (difflib.SequenceMatcher ≥ 0.7)
+  → Bulunursa: my_progress = max(current, episode)
+  → Bulunamazsa: 404 (extension sessizce geçer)
+  → Güncelleme: Update tablosuna "auto-sync" kaydı
+```
+
+### 6.5 Kurulum (Kullanıcı İçin)
+
+```
+Chrome: chrome://extensions → Developer mode → Load unpacked → kurowatch-extension/
+Firefox: about:debugging → Load Temporary Add-on → manifest.json
+
+Gereksinim: KuroWatch backend çalışıyor olmalı (localhost:8099)
+Permissions: activeTab, host_permissions: ["*://*.diziwatch.net/*", ...]
 ```
 
 ---
@@ -958,23 +1119,52 @@ Mobil/PWA:
   (userAgent veya /api/system/gpu endpoint ile PC tespiti)
 ```
 
-### 5.3 Çeviri Kalitesi Stratejisi
+### 5.3 Çeviri Kalitesi Stratejisi (Lord direktifi: bağlam + karışmama)
 
 ```
-BAĞLAM SORUNU: Tek balon çevirmek anlamsız olabilir ("O güçlü!" → kim, neyin?)
-ÇÖZÜM: Sayfadaki TÜM balonları tek seferde DeepL'e gönder:
-  ["セリフ1", "セリフ2", "セリフ3"] → ["Diyalog1_TR", "Diyalog2_TR", "Diyalog3_TR"]
+BALON KARIIŞMAMASI (kritik):
+  YOLOv8 her balonun bounding box'ını ayrı tespiti eder
+  LaMa inpainting YALNIZCA o bounding box içini siler
+  Türkçe metin YALNIZCA o bounding box içine render edilir
+  → Her balon tamamen izole — birbirinin içine karışma imkânsız
 
-SIRALAMA: Balon sırası = okuma sırası (sağdan sola Japonca, yukarıdan aşağıya manhwa)
+OKUMA SIRASI (balon sıralama):
+  Japonca manga: sağdan sola, yukarıdan aşağıya
+  Manhwa: yukarıdan aşağıya, soldan sağa
+  YOLOv8 bounding box'lar okuma sırasına göre sort edilir (önce sağ üst)
+  → Çeviriye giden dizi = doğru diyalog sırası
 
-FALLBACK:
-  DeepL API kotası bittiyse → Google Translate API
-  API yoksa → LibreTranslate (local, ücretsiz, düşük kalite)
+BAĞLAM STRATEJİSİ (Lord: "sayfa boyutunda tutarlı çeviri"):
+  Seviye 1 — Tek Sayfa (minimum):
+    Sayfadaki TÜM balonlar tek API çağrısında gönderilir
+    Input:  {"page": 5, "bubbles": ["セリフ1", "セリフ2", "セリフ3"]}
+    Output: {"translations": ["Diyalog1_TR", "Diyalog2_TR", "Diyalog3_TR"]}
+    → Aynı sayfada "o" → "Naruto" (ilk balona bakarak anlar)
 
-KALİTE HİYERARŞİSİ:
-  1. DeepL (Türkçe destekli, en bağlamlı)
-  2. Google Translate (geniş dil, kabul edilebilir)
-  3. LibreTranslate (offline, yedeğin yedeği)
+  Seviye 2 — Çok Sayfa (daha kaliteli, Lord tercihi):
+    Önceki 2 sayfanın çevirisini + mevcut sayfayı birlikte gönder
+    Input:  {"context": "..önceki 2 sayfa TR metni..", "bubbles": ["..."]}
+    → "O" kim? → önceki sayfalarda bağlam var → doğru çeviri
+
+  Seviye 3 — Karakter listesi (en kaliteli):
+    Chapter başında: tüm konuşmaları tarayıp karakter isim listesi çıkar
+    Input:  {"characters": ["Naruto", "Sasuke"], "context": "...", "bubbles": ["..."]}
+    → İsimler tutarlı, zamirler doğru çözümleniyor
+
+KURULABİLİR PIPELINE:
+  MVP: Seviye 1 (tek sayfa bağlam)
+  v2:  Seviye 2 (önceki 2 sayfa)
+  v3:  Seviye 3 (karakter listesi) — isteğe bağlı
+
+FALLBACK ZİNCİRİ:
+  1. DeepL API (Türkçe destekli, en bağlamlı)
+  2. Google Translate API (geniş dil, kabul edilebilir)
+  3. LibreTranslate (local, ücretsiz, düşük kalite)
+
+KONTROL MEKANİZMASI:
+  Her sayfa çevrisinden sonra kullanıcıya "✏️ Düzelt" butonu
+  → Yanlış çeviri varsa balonun üstüne tıkla, düzelt, kaydet (DB'ye)
+  → Sonraki seferde aynı chapter açılınca düzeltilmiş versiyon gelir
 ```
 
 ### 5.4 Veri Modeli (FAZ-5 eklentisi)

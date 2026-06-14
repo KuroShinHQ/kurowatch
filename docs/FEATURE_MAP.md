@@ -538,6 +538,15 @@ ANIME İNDİRİCİ + OYNATICI:
     - Dizibox/YabancıDizi/HDFilmCehennemi: embed player URL yakala → yt-dlp
     - Tüm Türkçe manga siteleri: Madara WordPress teması → admin-ajax.php
 [ ] downloader/anime.py — yt-dlp async subprocess wrapper (generic extractor + embed parse)
+[ ] player.html — HTML5 <video> + özel kontroller
+[ ] player.js:
+    [ ] Ambient Mode — video-ambient-glow (~5.8KB) → Settings toggle "🌅 Ambient Aydınlatma"
+    [ ] Theater Mode — T tuşu, full genişlik, sidebar kapanır
+    [ ] Picture-in-Picture — I tuşu, browser native API (requestPictureInPicture)
+    [ ] Mini Player — M tuşu, position:fixed köşe pencere
+    [ ] Tam Klavye Seti:
+        Space/K=oynat  F=fullscreen  T=theater  I=PiP  M=mini
+        ←→=5sn  J/L=10sn  [/]=hız  1-9=%jump
 [ ] downloader/manager.py — kuyruk + WS progress (max 2 eşzamanlı)
 [ ] models.py — Download + IntroTimestamp tabloları
 [ ] routers/download.py — /api/download CRUD + /ws/download WS
@@ -578,12 +587,30 @@ SETTINGS (FAZ-3 eklentileri):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FAZ-4 — OTOMATİK ALGI + ÖNERİ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-6 — BROWSER EXTENSION (MAL-Sync tarzı)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+URL pattern parse → title+episode tespit → POST localhost:8099/api/progress/auto
+[ ] kurowatch-extension/manifest.json — Chrome/Firefox uyumlu
+[ ] kurowatch-extension/content.js — URL parse + API çağrısı
+    Desteklenen: diziwatch, tranimeizle, crunchyroll, mangaokutr, mangagezgini
+[ ] backend/routers/content.py — POST /api/progress/auto (fuzzy title match)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-4 — OTOMATİK ALGI + ÖNERİ
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [ ] Chromaprint audio fingerprint — intro/outro otomatik tespiti
 [ ] FFmpeg black frame detect — sahne sınır tespiti
 [ ] Öneri algoritması — genre + tag bazlı kişiselleştirme (araştırma askıda)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FAZ-5 — MANGA TYPESETTİNG ÇEVİRİSİ (sadece PC + GPU)
+Çeviri kalitesi (Lord direktifi: karışmama + bağlam tutarlılığı):
+- Bounding box izolasyonu: her balon tamamen izole (YOLOv8 + LaMa)
+- Okuma sırası sort: JP sağdan sola, manhwa yukarıdan aşağıya
+- Bağlam seviyesi MVP: tek sayfa tüm balonlar birlikte gönderilir
+- Bağlam seviyesi v2: önceki 2 sayfa metin + mevcut sayfa
+- "✏️ Düzelt" butonu: yanlış çeviriyi kullanıcı düzeltebilir (DB'ye kaydedilir)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Araç: zyddnys/manga-image-translator (GitHub)
 Pipeline: YOLOv8 balon tespiti → manga-ocr/PaddleOCR → DeepL → LaMa inpaint → render
