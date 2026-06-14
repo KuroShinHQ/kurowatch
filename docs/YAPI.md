@@ -1,7 +1,15 @@
 # KuroWatch — Yapı ve Gereksinimler
 
 ## Proje Amacı
-Kişisel anime/manga/manhwa takip uygulaması. Birden fazla siteyi izler, yeni bölüm gelince bildirim verir, kişisel puan/süre/etiket takibi yapar.
+Kişisel **anime / manga / manhwa / oyun** takip uygulaması. 4 içerik tipini tek yerden yönet. Birden fazla siteyi izler, yeni bölüm/güncelleme gelince bildirim verir, kişisel puan/süre/etiket takibi yapar.
+
+### İçerik Tipleri
+| Tip | API Kaynağı | Badge |
+|---|---|---|
+| Anime | AniList → MAL fallback | 🎬 |
+| Manga | AniList → scraper fallback | 📖 |
+| Manhwa | AniList → scraper fallback | 📱 |
+| Oyun | IGDB (Twitch) | 🎮 |
 
 ---
 
