@@ -34,8 +34,79 @@ Her içerik için birden fazla site eklenebilir. Birincil site (is_primary=true)
 1. AniList API     → resmi veri (anime için en güvenilir)
 2. MAL API         → alternatif metadata
 3. chapter_check.py scraper → API'de yoksa bu siteleri tara:
-   - (sen ekleyeceksin)
+   - (kullanıcı site URL'lerini ayarlardan girer — genel scraper altyapısı)
 ```
+
+---
+
+## 🧠 Backend Kararları (Soru-Cevap Netleşti — 14 Haz 2026)
+
+### Metadata ve Ekle
+- Yeni içerik: AniList/IGDB API önce, bulamazsa manuel form
+- Başlık: İngilizce (AniList `title.english`)
+- Kapak: API'den gelir, kullanıcı URL ile override edebilir (dosya yükleme YOK — sync sorun)
+
+### Güncelleme Kontrolü
+- Uygulama açılışında otomatik kontrol (FastAPI startup event)
+- Manuel "Yenile" butonu (Updates sayfasında → `POST /api/check-updates`)
+- APScheduler arka plan: YOK (single user, uygulama açıkken yeterli)
+
+### Bildirimler
+- Tarayıcı push (PWA Web Push API)
+- Uygulama içi: Updates sayfası listesi + kart badge
+- Telegram: YOK
+
+### Site Sistemi
+- Her içerik için N site (kullanıcı manuel girer: isim + URL + is_primary)
+- Her site: `latest_episode` veya `latest_chapter` alanı (scraper günceller)
+- Kart badge: yeni bölüm olan site otomatik açılır; yeni yoksa birincil site
+- Detay Sites tab: her site → site adı + en son bölüm + "Open →"
+
+### İlerleme Takibi
+- `my_progress` (int): kaçıncı bölüm/chapter'a kadar izledim/okudum
+- Süre hesabı: `my_progress × default_duration` (config'den)
+- Oyunlar: `status` (6 seçenek) + `my_progress_pct` (0-100, opsiyonel)
+
+### Bölüm İşaretleme (ikisi aynı `my_progress`'i günceller)
+- Slider: "EP 87'ye kadar izledim" → toplu güncelleme
+- Tek tek: her bölüm checkbox → `my_progress` otomatik güncellenir
+
+### Durum Etiketleri
+```python
+STATUS = ["watching", "completed", "on_hold", "dropped", "planning", "rewatching"]
+```
+
+### Etiket Sistemi
+- `tag_type = 'api'`: AniList genres (Action, Romance, Isekai...)
+- `tag_type = 'user'`: kullanıcının kendi etiketleri
+- ContentTag: many-to-many
+
+### Keşfet Arama
+- AniList GraphQL: `media(search: "...", genre_in: [...])` 
+- IGDB: `search "..."; fields name,cover,genres;`
+- Tür öneri: AniList genre listesi → click → top results
+
+### Import / Export
+- Format: JSON (`{ contents: [...], sites: [...], tags: [...], ... }`)
+- Çakışma: aynı `external_id` + farklı `updated_at` → kullanıcıya listele
+- Her çakışan öğe için: "Benimki" vs "Import" seçimi
+
+### Config (backend/config.json — gitignore'da)
+```json
+{
+  "igdb_client_id": "",
+  "igdb_client_secret": "",
+  "duration_anime_ep": 24,
+  "duration_manga_ch": 5,
+  "duration_manhwa_ch": 3,
+  "duration_game_session": 60,
+  "check_on_startup": true
+}
+```
+
+### Notlar
+- `note_text`: plain text
+- `note_is_spoiler`: boolean → detail'de bulanık, "Göster" butonu
 
 ---
 
