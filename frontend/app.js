@@ -961,12 +961,85 @@
         const cid = parseInt(this.dataset.contentId, 10);
         try {
           await apiPatch('/api/episodes/' + epId + '/watch', {});
-          renderDetail(cid);
+          const updated = await apiGet('/api/content/' + cid);
+          const allWatched = updated.episodes && updated.episodes.length > 0 &&
+            updated.episodes.every(function(e) { return e.is_watched; });
+          if (allWatched) {
+            _showCompleteModal(cid, updated.title || '', updated.my_score);
+          } else {
+            renderDetail(cid);
+          }
         } catch(e) { console.error('ep watch', e); }
       });
     });
     const syncBtnEl = el.querySelector('.ep-anilist-sync-btn');
     if (syncBtnEl) syncBtnEl.addEventListener('click', syncEpisodesFromAniList);
+  }
+
+  // ── Tamamlama Modalı ─────────────────────────────────────────────
+  function _showCompleteModal(contentId, title, currentScore) {
+    let modal = document.getElementById('complete-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'complete-modal';
+      modal.className = 'fixed inset-0 z-[9998] flex items-end justify-center pb-8 px-4';
+      modal.innerHTML = `
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="complete-modal-backdrop"></div>
+        <div class="relative z-10 w-full max-w-sm rounded-3xl bg-[#12132a] border border-[#00d4ff]/30 p-6 flex flex-col gap-5 shadow-2xl">
+          <div class="flex flex-col items-center gap-2 text-center">
+            <div class="text-5xl">🎉</div>
+            <h2 class="text-[18px] font-bold text-[#e1e0ff]">Tamamlandı!</h2>
+            <p id="complete-modal-title" class="text-[13px] text-[#9090b0]"></p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <label class="text-[12px] font-bold text-[#9090b0] uppercase tracking-wider">Puanın</label>
+            <div class="flex items-center gap-3">
+              <input id="complete-score-slider" type="range" min="1" max="10" step="0.5"
+                class="flex-1 accent-[#00d4ff] h-1"
+                value="7">
+              <span id="complete-score-val" class="text-[20px] font-bold text-[#00d4ff] w-10 text-right">7.0</span>
+            </div>
+          </div>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input id="complete-status-check" type="checkbox" checked
+              class="w-5 h-5 accent-[#00d4ff] rounded">
+            <span class="text-[13px] text-[#e1e0ff]">Durumu "Tamamlandı" olarak işaretle</span>
+          </label>
+          <div class="flex gap-3">
+            <button id="complete-modal-skip" class="flex-1 py-3 rounded-2xl border border-white/10 text-[#9090b0] text-[13px] font-bold hover:bg-white/5 transition-colors">Atla</button>
+            <button id="complete-modal-save" class="flex-1 py-3 rounded-2xl bg-[#00d4ff] text-[#003642] text-[13px] font-bold hover:bg-[#00bfef] transition-colors">Kaydet</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+    }
+
+    const scoreInput = modal.querySelector('#complete-score-slider');
+    const scoreVal = modal.querySelector('#complete-score-val');
+    modal.querySelector('#complete-modal-title').textContent = title;
+    scoreInput.value = currentScore != null ? currentScore : 7;
+    scoreVal.textContent = parseFloat(scoreInput.value).toFixed(1);
+    scoreInput.oninput = function() {
+      scoreVal.textContent = parseFloat(this.value).toFixed(1);
+    };
+
+    modal.classList.remove('hidden');
+
+    function close() { modal.classList.add('hidden'); renderDetail(contentId); }
+
+    modal.querySelector('#complete-modal-backdrop').onclick = close;
+    modal.querySelector('#complete-modal-skip').onclick = close;
+    modal.querySelector('#complete-modal-save').onclick = async function() {
+      const score = parseFloat(scoreInput.value);
+      const markDone = modal.querySelector('#complete-status-check').checked;
+      const patch = { my_score: score };
+      if (markDone) patch.status = 'completed';
+      try {
+        await apiPatch('/api/content/' + contentId, patch);
+        showToast('Kaydedildi! ' + (markDone ? '✓ Tamamlandı' : ''), 'success');
+      } catch(e) { showToast('Kaydedilemedi', 'error'); }
+      modal.classList.add('hidden');
+      renderDetail(contentId);
+    };
   }
 
   async function syncEpisodesFromAniList(e) {
