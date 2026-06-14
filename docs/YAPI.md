@@ -480,15 +480,34 @@ TR domain için: Madara AJAX dene önce
 #### AKTİF İNDİRME STRATEJİSİ (Lord Direktifi)
 
 ```
-ANİME — Daisy Chain:
-  Bölüm N oynarken → N+1 indirmeyi kuyruğa ekle (arka plan)
-  N+1 başlayınca → N+2 kuyruğa ekle
-  Uygulama: download_manager.py → video player "timeupdate" eventi
-    → kalan 5dk kala N+1 indirme başlatılır
+ANİME — Daisy Chain (%50 tetik — Lord direktifi):
+  Bölüm N oynarken → video.currentTime / video.duration >= 0.50 → N+1 kuyruğa ekle
+  N+1 başlayınca → N+2 kuyruğa ekle (zincir devam eder)
+  Download.trigger = 'daisy_chain' (manuel indirmeden ayırt edilir)
 
-MANGA — Preload:
-  Chapter N okunurken → N+1 indir (arka plan)
-  N+1 açılınca → N+2 başlar
+  // player.js implementasyonu:
+  let daisy_triggered = false;
+  video.addEventListener('timeupdate', () => {
+    const pct = video.currentTime / video.duration;
+    if (pct >= 0.5 && !daisy_triggered) {
+      daisy_triggered = true;
+      fetch(`/api/download`, { method:'POST',
+        body: JSON.stringify({content_id, ep: currentEp+1, trigger:'daisy_chain'}) });
+    }
+  });
+
+MANGA — Daisy Chain (%50 tetik — Lord direktifi):
+  Chapter N okurken → currentPage / totalPages >= 0.50 → N+1 kuyruğa ekle
+  N+1 açılınca → N+2 kuyruğa ekle
+
+  // reader.js implementasyonu:
+  function onPageChange(currentPage, totalPages) {
+    if (currentPage / totalPages >= 0.5 && !daisy_triggered) {
+      daisy_triggered = true;
+      fetch(`/api/download`, { method:'POST',
+        body: JSON.stringify({content_id, ch: currentCh+1, trigger:'daisy_chain'}) });
+    }
+  }
 
 "HEPSİNİ İNDİR":
   Seri detay sayfasında "📥 Tümünü İndir [720p]" butonu
@@ -646,22 +665,43 @@ GET    /api/reader/{content_id}/{ch_num} ← chapter görsel listesi (sıralı)
 
 ### 3.4 Netflix Mekanizmaları (Araştırıldı)
 
-**Auto-next episode:**
+**Auto-next episode + Daisy Chain (tek timeupdate handler):**
 ```javascript
-// player.js — video timeupdate event
+// player.js — video timeupdate event — TÜM tetikler burada
+let daisy_triggered = false;
+let nextOverlayShown = false;
+
 video.addEventListener('timeupdate', () => {
+  const pct = video.currentTime / video.duration;
   const remaining = video.duration - video.currentTime;
+
+  // 1) DAISY CHAIN — %50'de N+1 indir (Lord direktifi)
+  if (pct >= 0.5 && !daisy_triggered) {
+    daisy_triggered = true;
+    fetch('/api/download', { method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ content_id, episode_number: currentEp + 1,
+                             trigger: 'daisy_chain' }) });
+  }
+
+  // 2) AUTO-NEXT OVERLAY — 30sn kala göster
   if (remaining <= 30 && !nextOverlayShown) {
-    showNextEpisodeOverlay();  // "Sonraki Bölüm" overlay
+    showNextEpisodeOverlay();
     nextOverlayShown = true;
   }
+
+  // 3) COUNTDOWN — 10sn kala geri sayım + color wipe → geçiş
   if (remaining <= 10) {
-    startCountdown(10, () => playNextEpisode());  // 10sn geri sayım + color wipe
+    startCountdown(10, () => playNextEpisode());
   }
 });
 
-// Color wipe: CSS animation, "Next Episode" butonunda dolum efekti
-// Kullanıcı tıklarsa → anında geçiş; iptal → clearTimeout
+// Bölüm değişince daisy_triggered sıfırla:
+function playNextEpisode() {
+  daisy_triggered = false;
+  nextOverlayShown = false;
+  currentEp += 1;
+  loadEpisode(currentEp);
+}
 ```
 
 **Intro / Outro Skip:**
