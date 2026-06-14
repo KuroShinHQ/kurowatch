@@ -253,6 +253,8 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <span class="material-symbols-outlined font-bold">check</span>
   </button>
 </div>
+<!-- Etiketler -->
+<div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
 <!-- Tabs -->
 <div class="flex border-b border-white/5 px-gutter gap-6 sticky top-0 bg-[#0d0d1a]/90 backdrop-blur-md z-30 pt-2">
   <button class="text-[12px] uppercase font-bold text-[#00d4ff] pb-2 border-b-2 border-[#00d4ff] active:scale-[0.97] transition-all" onclick="detailSwitchTab('episodes')">Bölümler</button>
@@ -355,7 +357,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
   <div class="max-w-4xl mx-auto p-4 pt-20 lg:pt-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-[20px] font-bold text-white/80 tracking-wider">Güncellemeler</h1>
-      <button class="bg-transparent border border-[#00d4ff] text-[#00d4ff] px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-[#00d4ff]/10 transition-all active:scale-95">
+      <button id="updates-check-btn" class="bg-transparent border border-[#00d4ff] text-[#00d4ff] px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-[#00d4ff]/10 transition-all active:scale-95">
         <span class="material-symbols-outlined text-sm">refresh</span> Kontrol Et
       </button>
     </div>
@@ -521,6 +523,27 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
           <input id="settings-igdb-secret" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client Secret" type="password"/>
         </div>
         <button id="settings-igdb-save" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
+      </div>
+    </div>
+
+    <!-- Etiketler -->
+    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
+      <div class="px-4 py-3 border-b border-white/5 flex items-center justify-between">
+        <span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Etiketler</span>
+        <button id="tag-create-toggle" class="h-8 px-3 border border-[#00d4ff]/50 text-[#00d4ff] rounded-lg text-[12px] font-medium hover:bg-[#00d4ff]/10 transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">add</span> Yeni
+        </button>
+      </div>
+      <div id="tag-create-form" class="hidden px-4 py-3 border-b border-white/5 flex-col gap-3">
+        <input id="tag-name-input" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 placeholder:text-[#9090b0]" placeholder="Etiket adı..." type="text"/>
+        <div class="flex items-center gap-3">
+          <span class="text-[12px] text-[#9090b0]">Renk:</span>
+          <div class="flex gap-2" id="tag-color-picker"></div>
+        </div>
+        <button id="tag-save-btn" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 active:scale-[0.97] transition-colors">Oluştur</button>
+      </div>
+      <div id="tag-list-settings" class="flex flex-col divide-y divide-white/5">
+        <div class="px-4 py-4 text-[13px] text-[#9090b0]">Yükleniyor...</div>
       </div>
     </div>
 
@@ -797,6 +820,11 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
   </a>
 </nav>
 
+
+<!-- Toast Bildirimi -->
+<div id="kw-toast" class="hidden fixed bottom-20 lg:bottom-8 left-1/2 -translate-x-1/2 z-[300] bg-[#1c1d37] border border-white/10 rounded-xl px-4 py-3 flex items-center gap-3 shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none">
+  <span class="toast-msg text-[14px] text-[#e1e0ff] font-medium whitespace-nowrap"></span>
+</div>
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- SCRIPTLER                                                        -->

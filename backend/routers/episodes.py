@@ -52,16 +52,25 @@ async def list_updates(
     unread_only: bool = Query(False),
     db: AsyncSession = Depends(get_db),
 ):
-    stmt = select(Update).order_by(Update.detected_at.desc())
+    stmt = (
+        select(Update)
+        .options(selectinload(Update.content))
+        .order_by(Update.detected_at.desc())
+    )
     if unread_only:
         stmt = stmt.where(Update.is_read == False)
     result = await db.execute(stmt)
     updates = result.scalars().all()
     return [
-        {"id": u.id, "content_id": u.content_id, "episode_number": u.episode_number,
-         "site_name": u.site_name,
-         "detected_at": u.detected_at.isoformat(),
-         "is_read": u.is_read}
+        {
+            "id": u.id,
+            "content_id": u.content_id,
+            "content_title": u.content.title if u.content else "Bilinmiyor",
+            "episode_number": u.episode_number,
+            "site_name": u.site_name,
+            "detected_at": u.detected_at.isoformat(),
+            "is_read": u.is_read,
+        }
         for u in updates
     ]
 
