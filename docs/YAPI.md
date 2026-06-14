@@ -3,6 +3,50 @@
 ## Proje Amacı
 Kişisel **anime / manga / manhwa / oyun** takip uygulaması. 4 içerik tipini tek yerden yönet. Birden fazla siteyi izler, yeni bölüm/güncelleme gelince bildirim verir, kişisel puan/süre/etiket takibi yapar.
 
+---
+
+## 🔬 Araştırma Bulguları (14 Haz 2026)
+
+### Mevcut Tracker Uygulamalarının Sorunları (MAL / AniList / Alternatifler)
+Kullanıcıların şikayet ettiği konular — KuroWatch bunları çözecek:
+
+| Şikayet | MAL/AniList'te Durum | KuroWatch Çözümü |
+|---|---|---|
+| Eski/çirkin UI | MAL özellikle | Modern dark grid UI |
+| Çoklu site takibi yok | Yok | Her içeriğe N site eklenir |
+| Offline çalışmıyor | Yok | PWA + service worker cache |
+| Cross-device sync | Import yok | JSON export/import |
+| Oyun takibi yok | Yok | IGDB ile 4. tip |
+| Push bildirim yok | Kısmi | PWA Web Push |
+| Manhwa desteği zayıf | Yok | Ayrı tip ve API |
+| Scraper/custom site | Yok | Kullanıcı site URL girer |
+
+### Kaçırılan Özellikler — Gelecek Fazlar İçin Not
+Araştırmada kullanıcıların istediği ama yaygın uygulamalarda olmayan özellikler:
+
+```
+FAZA SONRASI (backlog):
+- Episode countdown: "One Piece 1151 — 3 gün 4 saat sonra" (AniList nextAiringEpisode)
+- Haftalık yayın takvimi görünümü (hangi gün ne çıkıyor)
+- MAL/AniList import: mevcut listeni aktar (migration için)
+- Öneri motoru: "bunu beğendiysen bunu dene" (AniList recommendations)
+- Topluluk özelliği: arkadaş listesi (kapsam dışı - single user)
+```
+
+### Claude Code Çalışma Protokolü (Araştırma)
+Claude Code'da kullanıcıların yaşadığı sorunlar ve KuroWatch için önlemler:
+
+| Sorun | Önlem |
+|---|---|
+| Uzun sohbette context kaybı | Her modül bitince DEVAM.md güncelle + commit + yeni sohbet |
+| Rate limit hızlı tükeniyor | Büyük değişiklik = ayrı sohbet, küçük değişiklik = aynı sohbet |
+| Atomic commit atlanıyor | Her router/model tamamlanınca commit, yarım bırakma |
+| N+1 query hatası | SQLAlchemy `selectinload` zorunlu (CLAUDE.md'de var) |
+| Async/sync karışımı | Her endpoint `async def`, her DB çağrısı `await` (tip kontrolü ile) |
+| Import döngüsü | models.py hiçbir router import etmez |
+
+---
+
 ### İçerik Tipleri
 | Tip | API Kaynağı | Badge |
 |---|---|---|

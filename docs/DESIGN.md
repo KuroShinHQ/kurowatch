@@ -1,5 +1,128 @@
 # KuroWatch — DESIGN.md (Stitch AI Final Prompt)
 
+---
+
+## ⚠️ Stitch AI Dikkat Notları (Araştırma — 14 Haz 2026)
+
+### Stitch'in Kısıtları
+- **Generic output riski:** Prompt yeterince detaylı olmazsa generic Material/Tailwind çıktısı verir. Çözüm: hex renk, pixel değer, exact component açıklaması → bizim promptumuz bunu karşılıyor.
+- **Vanilla JS desteği yok:** Stitch çıktısı HTML/CSS + React/JSX veya Tailwind. Biz vanilla JS istiyoruz → Stitch'ten HTML/CSS al, JS kısmı manuel yazılacak (app.js Claude ile).
+- **Google tasarım token sistemi:** Stitch kendi token sistemi kullanır (Material You). Çıktıdan tüm `--md-*` değişkenlerini sil, `--kw-*` (KuroWatch) ile değiştir.
+- **PWA yok:** Stitch manifest.json / service worker üretmez → manuel eklenecek.
+- **Backend entegrasyonu yok:** Fetch call'lar placeholder olur → sonradan `/api/...` ile değiştirilecek.
+- **Mart 2026 kalite düşüşü:** Stitch güncellemesinden sonra rapor var. İlk çıktı beğenilmezse yeniden dene, veya component bazlı ayrı ayrı üret.
+
+### Stitch Sonrası Yapılacaklar (Checklist)
+```
+[ ] Google token sistemi temizle (--md-* → --kw-*)
+[ ] Renk paletini kendi palette ile eşle (yukarıdaki CSS değişkenler)
+[ ] app.js: navigation + state + fetch('/api/...') Manuel yaz
+[ ] manifest.json + sw.js ekle (PWA)
+[ ] navigator.vibrate() haptic noktalarını ekle
+[ ] Spring animasyon curve'leri ekle (Stitch linear kullanır)
+[ ] Skeleton loader'ları gerçek API ile bağla
+[ ] Offline banner: navigator.onLine event
+```
+
+---
+
+## 🎬 Premium Animasyon Sistemi (Netflix/Spotify Araştırma)
+
+### Neden Önemli
+Araştırma: Micro-animasyonlar perceived performance'ı %30-40 artırır. Day-1 retention'ı %18-28 etkiler. Ama aşırı animasyon = "oyuncak hissi". Netflix prensibi: **fonksiyonel animasyon** — kullanıcıya bir şey olduğunu söyle, dikkat dağıtma.
+
+### Animasyon Eğri Kütüphanesi
+```css
+/* KuroWatch Spring Curves */
+--ease-spring:    cubic-bezier(0.32, 0.72, 0, 1);     /* Modal, bottom sheet açılış */
+--ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);       /* Kart hover, scale */
+--ease-in-expo:   cubic-bezier(0.7, 0, 0.84, 0);       /* Kapanma animasyonları */
+--ease-bounce:    cubic-bezier(0.34, 1.56, 0.64, 1);   /* Checkbox, badge pop */
+--ease-standard:  cubic-bezier(0.2, 0, 0, 1);          /* Sayfa geçişleri */
+```
+
+### Animasyon Zamanlaması
+```
+Sayfa geçiş (fade):        150ms  ease-standard
+Kart hover scale:          180ms  ease-out-expo
+Bottom sheet açılış:       320ms  ease-spring
+Modal backdrop:            200ms  ease-standard
+Progress bar fill:         600ms  ease-out-expo
+Badge pop (yeni bölüm):    400ms  ease-bounce
+Skeleton shimmer:          1.5s   linear infinite
+Checkbox check:            250ms  ease-bounce
+Score slider thumb:        100ms  ease-standard
+```
+
+### Animasyon Kural Seti
+- ❌ 3'ten fazla eş zamanlı animasyon
+- ❌ 600ms üzerinde UI bloklaması
+- ❌ Bounce animasyonu kritik işlemlerde (sadece dekoratif elemanlarda)
+- ✅ `prefers-reduced-motion` media query: tüm animasyonları 0ms yap
+- ✅ Her animasyonun görsel karşılığı olmalı (haptic ile eşleştir)
+
+---
+
+## 📳 Haptic Feedback Sistemi (Web Vibration API)
+
+PWA'da `navigator.vibrate()` ile fiziksel geri bildirim. Sadece destekleyen cihazlarda.
+
+```javascript
+// kurowatch_haptics.js
+const haptic = {
+  light:    () => navigator.vibrate?.(10),   // Filtre chip seç
+  medium:   () => navigator.vibrate?.(30),   // Bölüm işaretle ✓
+  heavy:    () => navigator.vibrate?.(60),   // İçerik eklendi
+  success:  () => navigator.vibrate?.([10, 50, 10]),  // Tamamlandı
+  error:    () => navigator.vibrate?.([30, 20, 30]),  // Hata
+  snap:     () => navigator.vibrate?.(15),   // Kart hover
+};
+```
+
+### Haptic Eşleştirme
+| Eylem | Haptic | Açıklama |
+|---|---|---|
+| Bölüm ✓ işaretle | `medium` (30ms) | Onay hissi |
+| İçerik ekle | `heavy` (60ms) | Önemli eylem |
+| Tamamlandı işaretle | `success` [10,50,10] | Başarı ritmi |
+| Filtre seç | `light` (10ms) | Hafif geri bildirim |
+| Swipe to dismiss | `snap` (15ms) | Snap hissi |
+| Hata / bulunamadı | `error` [30,20,30] | Dikkat ritmi |
+| Uzun basma başladı | `medium` (30ms) | Context menu açılıyor |
+
+---
+
+## 🎨 Premium Dark Theme Mimarisi
+
+### Netflix'ten Alınan Prensipler
+1. **Elevation hierarchy:** Yüzeylerin "yüksekliği" renk değil, şeffaflıkla ifade edilir.
+   - Base: `#0d0d1a`  → Kart: `#1a1a2e`  → Modal: `#22223b`  → Tooltip: `#2d2d4e`
+2. **Yalnızca accent vurgulanır:** Aksiyon alan her şey cyan. Pasif her şey gri/muted.
+3. **Görüntü önceliği:** Kapak resmi en büyük eleman. Metin overlay, resmi öldürmez.
+4. **OLED dostu:** Gerçek siyah (#000) yok — `#0d0d1a` kullanılıyor (AMOLED'de az pil ama saf siyah donuk görünür).
+
+### Skeleton Loader Sistemi
+```css
+/* Görüntü yüklenene kadar shimmer */
+.skeleton {
+  background: linear-gradient(90deg, #1a1a2e 25%, #22223b 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+```
+
+### Image Error Fallback
+```html
+<!-- Her cover img için -->
+<img src="..." loading="lazy" onerror="this.src='/assets/no-cover.svg'" />
+```
+
+---
+
 ## Tüm Tasarım Kararları
 
 | # | Karar | Seçim |
