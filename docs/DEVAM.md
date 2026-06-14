@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-1) · **Aktif sürüm:** v0.1.0 · **Son commit:** `—`
+**Son güncelleme:** 14 Haziran 2026 (sohbet-1) · **Aktif sürüm:** v0.1.0 · **Son commit:** `2974da6`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -11,58 +11,108 @@
 KuroWatch DEVAM.md oku. Özet:
 
 EN SON YAPILAN (14 Haz sohbet-1):
-- Proje iskeleti oluşturuldu (klasör yapısı, docs, requirements.txt)
-- GitHub repo: github.com/KuroShinHQ/kurowatch
-- Kuroshin.bat entegrasyonu: [6] KuroWatch başlat planlandı
+✅ GitHub repo oluşturuldu: github.com/KuroShinHQ/kurowatch (private)
+✅ Klasör yapısı kuruldu: C:\Kuroshin\kurowatch\
+✅ gh CLI kuruldu: C:\Kuroshin\tools\gh.exe
+✅ Kuroshin.bat [10]: KuroWatch başlat (port 8099)
+✅ Tüm tasarım kararları netleşti (30 karar)
+✅ Araştırma tamamlandı: Stitch AI, Claude Code, tracker şikayetleri, Netflix animasyon
 
-SIRADAKI GÖREV:
-1. backend/database.py + models.py yaz
-2. backend/main.py (FastAPI app)
-3. Temel router'lar: content.py + sync.py
-4. Stitch AI'dan frontend çıktısı alındıktan sonra frontend entegre
-5. AniList API wrapper (anilist.py)
+OLUŞTURULAN DOSYALAR:
+- CLAUDE.md          → Sonnet 4.6 direktifleri, API stratejisi, bug önleme
+- docs/DEVAM.md      → bu dosya
+- docs/YAPI.md       → mimari, veri modeli, backend kararları
+- docs/DESIGN.md     → Stitch AI final prompt (BATCH 1 ve BATCH 2)
+- docs/FEATURE_MAP.md → tüm özelliklerin diyagramı, dosya eşleştirme, checklist
+
+SIRADAKI GÖREV (öncelik sırası):
+1. Stitch AI'a git → DESIGN.md "Stitch AI Final Prompt" bölümünü kopyala
+   BATCH 1 (Standard mod): Home + Detail + Search + Updates + Stats
+   BATCH 2 (Experimental mod): Add Modal + Settings + Conflict Modal
+2. Stitch çıktısı gelince → frontend/ klasörüne koy
+3. Post-Stitch checklist uygula (DESIGN.md'de var)
+4. Backend yazmaya başla:
+   - backend/database.py (SQLite async engine)
+   - backend/models.py (6 ORM model)
+   - backend/main.py (FastAPI app)
+   - backend/routers/content.py (CRUD)
 ```
 
 ---
 
 ## 🎯 NEREDE KALDIK
 
-**Sohbet-1 (14 Haz):** Proje kurulum.
+### ✅ Sohbet-1'de Tamamlananlar (14 Haz 2026)
 
-### ✅ Tamamlananlar
-- [ ] Klasör yapısı: `C:\Kuroshin\kurowatch\`
-- [ ] `docs/YAPI.md` — tam mimari ve gereksinimler
-- [ ] `backend/requirements.txt`
-- [ ] GitHub repo oluşturuldu (`KuroShinHQ/kurowatch`)
-- [ ] `.gitignore` oluşturuldu
+**Altyapı:**
+- `gh` CLI kuruldu (`C:\Kuroshin\tools\gh.exe`)
+- GitHub repo: `KuroShinHQ/kurowatch` (private, 6 commit)
+- `C:\Kuroshin\kurowatch\` klasör yapısı
+- Kuroshin.bat `[10]` → KuroWatch başlat
+- Ana Kuroshin `.gitignore`'a `kurowatch/` eklendi
+
+**Dokümantasyon (tamamen hazır):**
+- `CLAUDE.md` — AniList/MAL/IGDB API stratejisi, bug önleme, sohbet protokolü
+- `docs/YAPI.md` — mimari, veri modeli, 30 backend kararı (araştırma bulguları dahil)
+- `docs/DESIGN.md` — Stitch AI final prompt (8 ekran, renk paleti, animasyon, haptic, PWA)
+- `docs/FEATURE_MAP.md` — ASCII diyagram, veri akışı, dosya→özellik haritası, checklist
+
+**Araştırma tamamlandı:**
+- Stitch AI: max 5 ekran/üretim, 2 batch planı, post-Stitch checklist
+- Claude Code: context kaybı, rate limit, atomic commit protokolü
+- Tracker şikayetleri: MAL/AniList eksiklerinin KuroWatch'ta nasıl çözüldüğü tablosu
+- Premium animasyon: Netflix spring curves, Web Vibration API haptic sistemi
 
 ### 🔴 Sıradaki (Öncelik Sırası)
-1. `backend/database.py` — SQLite async engine + session factory
-2. `backend/models.py` — Content, Site, Episode, Tag, TrackingSession ORM
-3. `backend/main.py` — FastAPI app, CORS, router include, startup
-4. `backend/routers/content.py` — temel CRUD
-5. `backend/routers/sync.py` — export/import JSON
-6. `backend/scraper/anilist.py` — metadata çekme
-7. Frontend (Stitch AI sonrası)
-8. Kuroshin.bat [6] entegrasyonu
+
+**ÖNCE: Stitch AI Frontend**
+1. stitch.google.com → DESIGN.md "Stitch AI Final Prompt" bölümü → BATCH 1
+2. Çıktıyı `frontend/` klasörüne koy
+3. DESIGN.md post-Stitch checklist uygula (Google token temizle, app.js yaz, manifest ekle)
+4. BATCH 2 → Add Modal + Settings + Conflict Modal
+
+**SONRA: Backend**
+5. `backend/database.py` → SQLite async engine
+6. `backend/models.py` → Content, Site, Episode, Tag, Update, Config
+7. `backend/main.py` → FastAPI app (port 8099, CORS, startup)
+8. `backend/routers/content.py` → CRUD
+9. `backend/routers/sync.py` → export/import/conflict
+10. `backend/scraper/anilist.py` → AniList GraphQL
 
 ---
 
 ## 🛠️ KRİTİK BİLGİLER
 
 ### Stack
-- Backend: Python 3.11 + FastAPI + SQLAlchemy async + SQLite
-- Frontend: Stitch AI çıktısı → static HTML/CSS/JS (FastAPI serve eder)
-- Mobil: PWA (manifest + service worker) → telefonda "uygulamaya ekle"
-- Port: `8099` (Kuroshin portlarından çakışmıyor)
+- Backend: Python FastAPI + SQLAlchemy async + SQLite (aiosqlite)
+- Frontend: Stitch AI çıktısı → HTML/CSS + Manuel vanilla app.js
+- Mobil: PWA (manifest.json + sw.js)
+- Port: 8099
 
-### Veri Sync
-- Export: `GET /api/export` → JSON indir
-- Import: `POST /api/import` → JSON yükle, `updated_at` ile merge
+### API Stratejisi
+| İçerik | Birincil | Fallback |
+|---|---|---|
+| Anime | AniList GraphQL (ücretsiz, auth yok) | MAL OAuth2 |
+| Manga | AniList GraphQL | scraper |
+| Manhwa | AniList GraphQL | scraper |
+| Oyun | IGDB (Twitch auth) | manuel |
 
-### Yeni Bölüm Tespiti
-- AniList GraphQL → MAL API → scraper fallback
-- APScheduler ile periyodik kontrol
+### Stitch AI Batch Planı
+```
+BATCH 1 (Standard mod, 1 generation):
+  Home + Detail + Search + Updates + Stats
+
+BATCH 2 (Experimental mod, 1 generation):
+  Add Modal + Settings + Conflict Modal
+```
+
+### Önemli Dosyalar
+```
+docs/DESIGN.md      → Stitch'e verilecek prompt (son bölüm: "Stitch AI Final Prompt")
+docs/FEATURE_MAP.md → Tüm özellikler nerede, hangi dosyada → kaybolursa buraya bak
+docs/YAPI.md        → Backend kararları, API detayları
+CLAUDE.md           → Geliştirme direktifleri
+```
 
 ### Komutlar
 ```powershell
@@ -70,17 +120,20 @@ SIRADAKI GÖREV:
 cd C:\Kuroshin\kurowatch
 python -m uvicorn backend.main:app --reload --port 8099
 
-# API test
-curl http://localhost:8099/docs
+# gh CLI (PATH'e ekle)
+$env:PATH += ";C:\Kuroshin\tools"
+gh --version
+
+# Git push
+$env:PATH += ";C:\Kuroshin\tools"
+git push origin main
 ```
 
 ### Portlar (Kuroshin ile çakışma yok)
 ```
+8099 → KuroWatch Backend
 8080 → Llama server
-8082 → L2
-9002 → Walker
 9003 → Bridge WS
-9004 → Bridge HTTP alarm
+9004 → Bridge HTTP
 9005 → Chancellor HTTP
-8099 → KuroWatch ← YENİ
 ```
