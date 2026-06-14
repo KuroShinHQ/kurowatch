@@ -12,6 +12,16 @@
 - **Backend entegrasyonu yok:** Fetch call'lar placeholder olur → sonradan `/api/...` ile değiştirilecek.
 - **Mart 2026 kalite düşüşü:** Stitch güncellemesinden sonra rapor var. İlk çıktı beğenilmezse yeniden dene, veya component bazlı ayrı ayrı üret.
 
+### Kaç Panel Üretilecek? (Araştırma)
+- Stitch 2.0: **max 5 ekran / üretim** (5 ekran = 1 generation)
+- Standard mod (Gemini Flash): 350/ay → ideation
+- Experimental mod (Gemini Pro): 50/ay → final polish
+- **Bizim planımız: 2 batch**
+  - **Batch 1** (Standard): Home + Detail + Search + Updates + Stats
+  - **Batch 2** (Experimental): Add Modal + Settings + Conflict Modal
+- Prompt: text olarak ver (screenshot/voice değil — hassas hex/layout için text daha iyi)
+- Minor canvas düzeltmeleri generation saymaz → küçük fix'leri canvas'ta yap
+
 ### Stitch Sonrası Yapılacaklar (Checklist)
 ```
 [ ] Google token sistemi temizle (--md-* → --kw-*)
