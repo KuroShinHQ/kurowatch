@@ -959,6 +959,7 @@
 
     renderTagSettings();
     renderTagColorPicker();
+    if (window.kuroPWA) window.kuroPWA.initPushUI();
   }
 
   // ── Detail Tab Yardımcıları ──────────────────────────────────────

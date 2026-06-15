@@ -3,18 +3,20 @@
 // Cache-first: app shell · Network-first: /api/* · Offline shell
 // ═══════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'kurowatch-v1';
+const CACHE_NAME = 'kurowatch-v2';
 const SHELL_FILES = [
   './',
   'index.html',
   'style.css',
   'app.js',
+  'player.js',
   'debug-logger.js',
   'i18n.js',
   'locales/tr.json',
   'locales/en.json',
   'manifest.json',
-  'icons/icon.svg'
+  'icons/icon.svg',
+  'icons/icon-192.png',
 ];
 
 // Install: shell cache
@@ -36,6 +38,35 @@ self.addEventListener('activate', event => {
         keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
       );
     }).then(() => self.clients.claim())
+  );
+});
+
+// ── Push Bildirimleri ────────────────────────────────────────────────
+self.addEventListener('push', event => {
+  let data = {};
+  try { data = event.data ? event.data.json() : {}; } catch {}
+  event.waitUntil(
+    self.registration.showNotification(data.title || 'KuroWatch', {
+      body:  data.body  || '',
+      icon:  data.icon  || '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag:   'kurowatch-update',
+      renotify: true,
+      data:  { url: data.url || '/' },
+    })
+  );
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  const target = event.notification.data?.url || '/';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+      for (const c of list) {
+        if ('focus' in c) return c.focus();
+      }
+      return clients.openWindow(target);
+    })
   );
 });
 
