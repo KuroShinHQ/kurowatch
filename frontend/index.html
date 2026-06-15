@@ -628,6 +628,26 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </div>
     </div>
 
+    <!-- Push Bildirimleri -->
+    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-[14px] font-semibold text-[#e1e0ff]">Push Bildirimleri</div>
+          <div class="text-[12px] text-[#9090b0] mt-0.5">Yeni bölüm geldiğinde bildirim al</div>
+        </div>
+        <button id="push-toggle-btn"
+          class="relative w-[52px] h-[28px] rounded-full border transition-all duration-300 bg-[#1c1d37] border-white/10"
+          aria-label="Push toggle">
+          <span id="push-toggle-dot" class="absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-[#9090b0] transition-all duration-300"></span>
+        </button>
+      </div>
+      <div id="push-status" class="text-[11px] text-[#9090b0] hidden">Durum yükleniyor…</div>
+      <button id="push-test-btn"
+        class="hidden w-full h-[40px] rounded-lg bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] text-[13px] font-medium hover:bg-[#00d4ff]/20 transition-colors">
+        🔔 Test Bildirimi Gönder
+      </button>
+    </div>
+
     <!-- Hakkında -->
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4">
       <div class="text-[16px] font-bold text-[#e1e0ff]">KuroWatch</div>
@@ -1039,5 +1059,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script src="player.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>

@@ -250,4 +250,16 @@ async def check_updates(db: AsyncSession = Depends(get_db)):
             await asyncio.sleep(0.7)
 
     await db.commit()
+
+    if found:
+        try:
+            from backend import push_manager
+            push_manager.send_push(
+                title="KuroWatch — Yeni Güncelleme",
+                body=f"{found} yeni bölüm bulundu!",
+                url="/#screen-updates",
+            )
+        except Exception:
+            pass
+
     return {"checked": len(items), "new_updates": found}
