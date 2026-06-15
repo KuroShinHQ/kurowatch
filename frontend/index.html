@@ -664,6 +664,31 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </button>
     </div>
 
+    <!-- Cookies (İndirme bypass) -->
+    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
+      <div class="px-4 py-3 border-b border-white/5 flex items-center justify-between">
+        <span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Site Cookies (İndirme)</span>
+        <span class="text-[10px] text-[#9090b0]">tranimeizle.co vb. için</span>
+      </div>
+      <div class="px-4 py-4 flex flex-col gap-3">
+        <p class="text-[12px] text-[#9090b0]">Cloudflare korumalı sitelerden indirmek için browser cookie'si gerekir. Chrome'da <strong class="text-[#e1e0ff]">Get cookies.txt LOCALLY</strong> extension kur → siteye git → Export → dosyayı buraya yükle.</p>
+        <div id="settings-cookies-list" class="text-[12px] text-[#9090b0]">Yükleniyor...</div>
+        <div class="flex gap-2 items-center">
+          <select id="settings-cookies-site" class="h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none flex-shrink-0" style="min-width:160px">
+            <option value="tranimeizle">tranimeizle.co</option>
+            <option value="turkanime">turkanime.co</option>
+            <option value="diziwatch">diziwatch.com</option>
+            <option value="cookies">Genel (tüm siteler)</option>
+          </select>
+          <label class="flex-1 flex items-center justify-center gap-2 h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[13px] font-medium cursor-pointer hover:bg-[#00d4ff]/20 transition-colors">
+            <span class="material-symbols-outlined" style="font-size:18px">upload_file</span>
+            cookies.txt Yükle
+            <input id="settings-cookies-input" type="file" accept=".txt" class="hidden"/>
+          </label>
+        </div>
+      </div>
+    </div>
+
     <!-- Hakkında -->
     <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4">
       <div class="text-[16px] font-bold text-[#e1e0ff]">KuroWatch</div>

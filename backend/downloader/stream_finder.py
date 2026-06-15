@@ -1,0 +1,172 @@
+"""
+stream_finder.py — Türk anime/dizi sitelerinden gerçek video URL'si çıkar.
+
+Strateji:
+  1. cookies.txt varsa → requests + CF bypass → iframe/embed URL çıkar
+  2. iframe URL yt-dlp'nin desteklediği bir player ise (Filemoon, Vidmoly vb.) → direkt kullan
+  3. Hiçbiri çalışmazsa → orijinal episode URL'yi döndür (yt-dlp denesin)
+
+Desteklenen siteler:
+  - tranimeizle.co (cookies.txt gerekli)
+  - diziwatch.com
+  - turkanime.co
+"""
+import os
+import re
+import asyncio
+import logging
+from pathlib import Path
+from typing import Optional
+from urllib.parse import urlparse
+
+logger = logging.getLogger(__name__)
+
+# Cookies dosyaları dizini
+_COOKIES_DIR = Path(__file__).parent.parent.parent / "cookies"
+
+# Embed player URL'lerini tanıyan kalıplar (yt-dlp destekleri)
+_EMBED_PATTERNS = [
+    r"(https?://(?:www\.)?filemoon\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?vidmoly\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?doodstream\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?streamtape\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?gounlimited\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?mixdrop\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://(?:www\.)?upstream\.[a-z]+/[^\s\"'<>]+)",
+    r"(https?://player\.[^\s\"'<>]+\.(?:m3u8|mp4)[^\s\"'<>]*)",
+    r"(https?://[^\s\"'<>]+\.m3u8[^\s\"'<>]*)",
+]
+
+# Site → cookies dosyası adı mapping
+_SITE_COOKIES = {
+    "tranimeizle.co": "tranimeizle_cookies.txt",
+    "tranimeizle.io": "tranimeizle_cookies.txt",
+    "turkanime.co":   "turkanime_cookies.txt",
+    "diziwatch.com":  "diziwatch_cookies.txt",
+    "anizm.net":      "anizm_cookies.txt",
+}
+
+
+def _domain(url: str) -> str:
+    """URL'den ana domain çıkar."""
+    host = urlparse(url).netloc.lstrip("www.")
+    return host
+
+
+def _cookies_path(url: str) -> Optional[Path]:
+    """Bu URL için cookies.txt dosyası var mı?"""
+    domain = _domain(url)
+    for site, fname in _SITE_COOKIES.items():
+        if domain.endswith(site):
+            p = _COOKIES_DIR / fname
+            if p.exists():
+                return p
+    # Genel fallback
+    generic = _COOKIES_DIR / "cookies.txt"
+    if generic.exists():
+        return generic
+    return None
+
+
+def _extract_embed_from_html(html: str) -> Optional[str]:
+    """HTML içinden ilk embed/player URL'sini çıkar."""
+    # iframe src ara
+    iframes = re.findall(
+        r'<iframe[^>]+src=["\']([^"\']+)["\']',
+        html, re.IGNORECASE
+    )
+    for src in iframes:
+        if any(skip in src for skip in ("google", "dtscout", "adservice", "doubleclick")):
+            continue
+        if src.startswith("http"):
+            logger.info("iframe bulundu: %s", src[:80])
+            return src
+
+    # Embed pattern'leri ara
+    for pat in _EMBED_PATTERNS:
+        m = re.search(pat, html, re.IGNORECASE)
+        if m:
+            logger.info("embed pattern bulundu: %s", m.group(1)[:80])
+            return m.group(1)
+
+    return None
+
+
+async def find_stream_url(episode_url: str) -> str:
+    """
+    Episode sayfasından gerçek video/embed URL'si döndür.
+    Başarısız olursa orijinal URL'yi döndür.
+    """
+    cookies_file = _cookies_path(episode_url)
+
+    if cookies_file:
+        logger.info("Cookies dosyası bulundu: %s", cookies_file)
+        try:
+            html = await _fetch_with_cookies(episode_url, cookies_file)
+            if html:
+                embed = _extract_embed_from_html(html)
+                if embed:
+                    return embed
+                logger.warning("HTML alındı ama embed bulunamadı (len=%d)", len(html))
+        except Exception as exc:
+            logger.error("stream_finder fetch hatası: %s", exc)
+    else:
+        logger.info("Cookies dosyası yok, orijinal URL kullanılıyor: %s", episode_url[:60])
+
+    return episode_url
+
+
+async def _fetch_with_cookies(url: str, cookies_file: Path) -> Optional[str]:
+    """requests_html veya requests + cookies ile sayfa getir."""
+    import requests
+
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5",
+        "Referer": f"{urlparse(url).scheme}://{urlparse(url).netloc}/",
+    }
+
+    cookies = _parse_netscape_cookies(cookies_file, _domain(url))
+
+    resp = await asyncio.get_event_loop().run_in_executor(
+        None,
+        lambda: requests.get(url, headers=headers, cookies=cookies, timeout=15, allow_redirects=True)
+    )
+
+    if resp.status_code == 200 and "captcha" not in resp.url.lower() and "challenge" not in resp.url.lower():
+        return resp.text
+    logger.warning("Sayfa alınamadı: status=%s url=%s", resp.status_code, resp.url[:80])
+    return None
+
+
+def _parse_netscape_cookies(cookies_file: Path, domain: str) -> dict:
+    """Netscape format cookies.txt → {name: value} dict (domain filtreli)."""
+    cookies: dict = {}
+    try:
+        for line in cookies_file.read_text(encoding="utf-8", errors="ignore").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = line.split("\t")
+            if len(parts) < 7:
+                continue
+            cookie_domain, _, path, secure, expires, name, value = parts[:7]
+            cookie_domain_clean = cookie_domain.lstrip(".").lstrip("www.")
+            if domain.endswith(cookie_domain_clean) or cookie_domain_clean.endswith(domain):
+                cookies[name] = value
+    except Exception as exc:
+        logger.error("Cookie parse hatası: %s", exc)
+    return cookies
+
+
+def get_yt_dlp_cookies_arg(episode_url: str) -> list[str]:
+    """yt-dlp için --cookies argümanı döndür (dosya varsa)."""
+    p = _cookies_path(episode_url)
+    if p:
+        return ["--cookies", str(p)]
+    return []

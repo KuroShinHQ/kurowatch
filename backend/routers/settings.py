@@ -1,6 +1,7 @@
 import json
 import os
-from fastapi import APIRouter
+from pathlib import Path
+from fastapi import APIRouter, File, UploadFile, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 
@@ -55,9 +56,48 @@ async def get_settings():
 @router.post("/settings")
 async def update_settings(body: dict):
     cfg = _load()
-    # Sadece bilinen key'leri güncelle (extra key reddedilmez ama saklanmaz)
     for k in _DEFAULTS:
         if k in body:
             cfg[k] = body[k]
     _save(cfg)
     return cfg
+
+
+# ── Cookies yönetimi ─────────────────────────────────────────────────
+
+_COOKIES_DIR = Path(__file__).parent.parent.parent / "cookies"
+
+
+@router.post("/settings/cookies/{site_name}")
+async def upload_cookies(site_name: str, file: UploadFile = File(...)):
+    """Netscape format cookies.txt yükle. site_name: tranimeizle, turkanime, diziwatch, genel"""
+    _COOKIES_DIR.mkdir(exist_ok=True)
+    safe_name = site_name.replace("/", "").replace("\\", "").replace("..", "")
+    if not safe_name:
+        raise HTTPException(400, "Geçersiz site adı")
+    fname = f"{safe_name}_cookies.txt" if not safe_name.startswith("cookies") else "cookies.txt"
+    dest = _COOKIES_DIR / fname
+    content = await file.read()
+    dest.write_bytes(content)
+    return {"ok": True, "file": fname, "bytes": len(content)}
+
+
+@router.get("/settings/cookies")
+async def list_cookies():
+    """Yüklü cookies dosyalarını listele."""
+    _COOKIES_DIR.mkdir(exist_ok=True)
+    files = []
+    for f in _COOKIES_DIR.glob("*.txt"):
+        files.append({"name": f.name, "bytes": f.stat().st_size})
+    return {"files": files}
+
+
+@router.delete("/settings/cookies/{file_name}")
+async def delete_cookies(file_name: str):
+    """Cookies dosyasını sil."""
+    safe = file_name.replace("/", "").replace("\\", "").replace("..", "")
+    p = _COOKIES_DIR / safe
+    if p.exists():
+        p.unlink()
+        return {"ok": True}
+    raise HTTPException(404, "Dosya bulunamadı")
