@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css"/>
+<link rel="stylesheet" href="tailwind.css?v=30"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -153,7 +153,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <section class="flex flex-col gap-4 mt-4">
       <div class="relative w-full group">
         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
-        <input id="home-search-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text"/>
+        <input id="home-search-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" autocomplete="new-password" name="kw_search_no_fill"/>
       </div>
     </section>
     <!-- Filtre Chips: Tür -->
@@ -219,7 +219,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
 <div class="absolute bottom-0 left-0 w-full p-gutter z-10 flex flex-col gap-2">
   <div class="flex items-center gap-2">
     <span id="detail-type-badge" class="px-2 py-1 bg-[#3b4665]/20 border border-[#3b4665] text-[#bbc5eb] font-label-caps text-label-caps rounded uppercase">TV</span>
-    <span id="detail-status-badge" class="px-2 py-1 bg-[#feb528]/20 border border-[#feb528] text-[#ffd9a1] font-label-caps text-label-caps rounded flex items-center gap-1 uppercase">
+    <span id="detail-status-badge" class="px-2 py-1 font-label-caps text-label-caps rounded flex items-center gap-1 uppercase" style="background:#feb52822;border:1px solid #feb528;color:#feb528">
       <span class="material-symbols-outlined text-[14px]">play_circle</span> İzliyor
     </span>
   </div>
@@ -359,7 +359,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <!-- Arama Kutusu (ortak) -->
     <div class="relative w-full group">
       <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
-      <input id="search-discover-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" style="font-size:16px!important" autocomplete="off"/>
+      <input id="search-discover-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" style="font-size:16px!important" autocomplete="new-password" name="kw_discover_no_fill"/>
     </div>
     <!-- Kütüphanem Panel -->
     <div id="search-panel-library" class="flex flex-col gap-3">
@@ -943,7 +943,7 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <script src="debug-logger.js"></script>
 <script src="i18n.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=30"></script>
 
 <!-- Ekrana Özel İnline JS (Faz C'de app.js'e taşınır) -->
 <script>

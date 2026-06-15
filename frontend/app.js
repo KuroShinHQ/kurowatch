@@ -47,11 +47,15 @@
 
   // Tip rozetleri için renkler
   const TYPE_COLOR = {
-    'anime':  { bg:'bg-[#00d4ff]/10', text:'text-[#00d4ff]', border:'border-[#00d4ff]/20', bar:'bg-[#00d4ff]', label:'Anime' },
-    'manga':  { bg:'bg-[#ffd9a1]/10', text:'text-[#ffd9a1]', border:'border-[#ffd9a1]/20', bar:'bg-[#ffd9a1]', label:'Manga' },
-    'manhwa': { bg:'bg-[#bbc5eb]/10', text:'text-[#bbc5eb]', border:'border-[#bbc5eb]/20', bar:'bg-[#bbc5eb]', label:'Manhwa' },
-    'game':   { bg:'bg-[#ffb4ab]/10', text:'text-[#ffb4ab]', border:'border-[#ffb4ab]/20', bar:'bg-[#ffb4ab]', label:'Oyun' }
+    'anime':  { color:'#00d4ff', label:'Anime' },
+    'manga':  { color:'#ffd9a1', label:'Manga' },
+    'manhwa': { color:'#bbc5eb', label:'Manhwa' },
+    'game':   { color:'#ffb4ab', label:'Oyun' }
   };
+  function tcStyle(tc) {
+    const c = tc.color;
+    return { badge: `color:${c};background:${c}1a;border:1px solid ${c}33`, bar: `background:${c}` };
+  }
 
   const STATUS_LABEL = {
     'watching': 'İzliyor',
@@ -292,10 +296,10 @@
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
           <div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg">${score}</div>
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
-            <span class="text-[10px] font-bold ${tc.text} ${tc.bg} w-fit px-1.5 py-0.5 rounded uppercase border ${tc.border} leading-none">${tc.label}</span>
+            <span class="text-[10px] font-bold w-fit px-1.5 py-0.5 rounded uppercase leading-none" style="${tcStyle(tc).badge}">${tc.label}</span>
             <h3 class="text-[13px] font-bold text-[#e1e0ff] line-clamp-2 leading-tight">${escapeHtml(it.title)}</h3>
             <div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden">
-              <div class="${tc.bar} h-full shadow-[0_0_8px_rgba(0,212,255,0.6)]" style="width:${pct}%"></div>
+              <div class="h-full" style="${tcStyle(tc).bar};width:${pct}%;box-shadow:0 0 8px ${tc.color}99"></div>
             </div>
           </div>
         </div>
@@ -414,7 +418,10 @@
 
     document.getElementById('detail-title').textContent = item.title;
     const typeLabelMap = { 'anime':'ANİME', 'manga':'MANGA', 'manhwa':'MANHWA', 'game':'OYUN' };
-    document.getElementById('detail-type-badge').textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
+    const typeBadgeEl = document.getElementById('detail-type-badge');
+    typeBadgeEl.textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
+    typeBadgeEl.style.cssText = tcStyle(tc).badge;
+    document.getElementById('detail-progress-bar').style.background = tc.color;
     const statusIcon = isGame ? 'sports_esports' : (isAnime ? 'play_circle' : 'menu_book');
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
     document.getElementById('detail-progress-current').textContent = isGame ? cur + '%' : cur;
@@ -681,7 +688,7 @@
       const tc = TYPE_COLOR[u.content_type] || TYPE_COLOR.anime;
       const coverHtml = u.content_cover_url
         ? `<img src="${escapeHtml(u.content_cover_url)}" class="w-full h-full object-cover" loading="lazy"/>`
-        : `<span class="font-bold text-xs ${tc.text}">${initials}</span>`;
+        : `<span class="font-bold text-xs" style="color:${tc.color}">${initials}</span>`;
       if (u.is_read) {
         return `
           <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e]/60 border-l-[4px] border-transparent inner-glow cursor-pointer hover:bg-[#1a1a2e] transition-transform duration-200 opacity-70 hover:opacity-100 active:scale-[0.97]" data-content-id="${u.content_id}">
@@ -884,7 +891,7 @@
           <div class="flex-1 min-w-0 flex flex-col justify-center gap-[2px]">
             <div class="flex items-center gap-1">
               <span class="font-bold text-[14px] text-[#e1e0ff] truncate">${escapeHtml(it.title)}</span>
-              <span class="${tc.bg} ${tc.text} text-[10px] font-bold px-1 py-[2px] rounded uppercase tracking-wider">${tc.label}</span>
+              <span class="text-[10px] font-bold px-1 py-[2px] rounded uppercase tracking-wider" style="${tcStyle(tc).badge}">${tc.label}</span>
             </div>
             <span class="text-[12px] text-[#9090b0] truncate">${date}</span>
           </div>
@@ -1100,42 +1107,47 @@
     const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
     const siteShortcut = primarySite
       ? '<a href="' + escapeHtml(primarySite.site_url) + '" target="_blank" rel="noopener" ' +
-        'class="flex items-center justify-center gap-2 w-full h-[44px] rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] font-bold text-[13px] hover:bg-[#00d4ff]/20 transition-colors mb-3 active:scale-[0.97]">' +
-        '<span class="material-symbols-outlined text-[18px]">' + readIcon + '</span>' +
+        'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
+        'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
+        '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
         readLabel + ' — ' + escapeHtml(primarySite.site_name) + '</a>'
       : '';
 
-    const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 text-[12px] text-[#9090b0] hover:text-[#00d4ff] transition-colors mb-3" data-content-id="' + contentId + '">' +
-      '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> ' + syncLabel + '</button>';
+    const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
+      '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> ' + syncLabel + '</button>';
 
     if (!episodes.length) {
-      el.innerHTML = siteShortcut + syncBtn + '<div class="text-center text-[#9090b0] py-6 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
+      el.innerHTML = siteShortcut + syncBtn + '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="material-symbols-outlined" style="font-size:40px">video_library</span><p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
       el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
       return;
     }
     el.innerHTML = siteShortcut + syncBtn + episodes.map(function(e) {
       if (e.is_watched) {
-        return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">' +
-          '<div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm ' + e.number + '</span>' +
-          (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
-          '</div><div class="min-w-[44px] min-h-[44px] flex items-center justify-end">' +
-          '<div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50">' +
-          '<span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div></div>';
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e80;border:1px solid #ffffff0d;opacity:0.5">' +
+          '<div style="display:flex;flex-direction:column"><span style="color:#e1e0ff;text-decoration:line-through;font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
+          (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
+          '</div><div style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:flex-end">' +
+          '<div style="width:24px;height:24px;border-radius:4px;background:#00d4ff33;display:flex;align-items:center;justify-content:center;border:1px solid #00d4ff80">' +
+          '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">check</span></div></div></div>';
       }
       const epUrl = e.url || null;
-      return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e] border ' + (e.is_new ? 'border-[#00d4ff]/30 active-rim' : 'border-white/5') + '">' +
-        '<div class="flex flex-col"><span class="font-headline-sm text-headline-sm ' + (e.is_new ? 'text-[#00d4ff]' : 'text-[#e1e0ff]') + '">Bölüm ' + e.number + '</span>' +
-        (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
-        '</div><div class="flex items-center gap-1">' +
-        (e.is_new ? '<span class="px-2 py-1 bg-[#00d4ff]/10 text-[#00d4ff] font-label-caps text-label-caps rounded uppercase text-[9px]">YENİ</span>' : '') +
-        (epUrl ? '<a href="' + escapeHtml(epUrl) + '" target="_blank" rel="noopener" class="ep-open-btn px-3 py-1.5 bg-[#00d4ff]/10 border border-[#00d4ff]/30 rounded-lg text-[#00d4ff] text-[12px] font-bold hover:bg-[#00d4ff]/20 transition-colors flex items-center gap-1 active:scale-[0.97]" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
-          readLabel + ' <span class="material-symbols-outlined text-[14px]">open_in_new</span></a>' : '') +
-        (epUrl ? '<button class="ep-dl-btn text-[#9090b0] hover:text-[#00d4ff] transition-colors w-[36px] min-h-[44px] flex items-center justify-center" title="İndir" ' +
+      const rowBorder = e.is_new ? '1px solid #00d4ff4d' : '1px solid #ffffff0d';
+      const numColor = e.is_new ? '#00d4ff' : '#e1e0ff';
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e;border:' + rowBorder + '">' +
+        '<div style="display:flex;flex-direction:column"><span style="color:' + numColor + ';font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
+        (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
+        '</div><div style="display:flex;align-items:center;gap:4px">' +
+        (e.is_new ? '<span style="padding:2px 8px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
+        (epUrl ? '<a href="' + escapeHtml(epUrl) + '" target="_blank" rel="noopener" class="ep-open-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" ' +
+          'style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;text-decoration:none">' +
+          readLabel + ' <span class="material-symbols-outlined" style="font-size:14px">open_in_new</span></a>' : '') +
+        (epUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;min-height:44px;display:flex;align-items:center;justify-content:center" ' +
           'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(epUrl) + '" ' +
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
-          '<span class="material-symbols-outlined text-[18px]">download</span></button>' : '') +
-        '<button class="ep-watch-btn min-w-[44px] min-h-[44px] flex items-center justify-end cursor-pointer" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
-        '<div class="w-6 h-6 rounded bg-[#31324d] flex items-center justify-center border border-white/10 hover:border-[#00d4ff] transition-colors"></div></button>' +
+          '<span class="material-symbols-outlined" style="font-size:18px">download</span></button>' : '') +
+        '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" ' +
+        'style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:flex-end;background:none;border:none;cursor:pointer">' +
+        '<div style="width:24px;height:24px;border-radius:4px;background:#31324d;border:1px solid #ffffff1a"></div></button>' +
         '</div></div>';
     }).join('');
 
@@ -1565,14 +1577,14 @@
         const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
         const cover = it.cover_url
           ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
-          : '<span class="font-bold text-xs ' + tc.text + '">' + escapeHtml((it.title||'?').split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase()) + '</span>';
+          : '<span class="font-bold text-xs" style="color:' + tc.color + '">' + escapeHtml((it.title||'?').split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase()) + '</span>';
         const status = STATUS_LABEL[it.status] || it.status || '';
         return '<div class="flex items-center gap-3 px-3 h-[64px] rounded-xl bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/30 cursor-pointer transition-colors active:scale-[0.97]" data-content-id="' + it.id + '">' +
           '<div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden">' + cover + '</div>' +
           '<div class="flex flex-col justify-center min-w-0 flex-1">' +
           '<h3 class="text-[14px] font-bold text-[#e1e0ff] truncate">' + escapeHtml(it.title || '') + '</h3>' +
           '<div class="flex items-center gap-2 mt-0.5">' +
-          '<span class="text-[11px] font-bold ' + tc.text + '">' + tc.label + '</span>' +
+          '<span class="text-[11px] font-bold" style="color:' + tc.color + '">' + tc.label + '</span>' +
           '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(status) + '</span>' +
           '</div></div>' +
           (it.my_score != null ? '<span class="text-[13px] font-bold text-[#00d4ff] flex-shrink-0">' + it.my_score.toFixed(1) + '</span>' : '') +
@@ -2043,6 +2055,15 @@
 
   // ── Init ─────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
+    // Arama kutularını autocomplete önlemek için temizle
+    ['home-search-input','search-discover-input'].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = '';
+        el.addEventListener('focus', function() { if (this.value && !homeFilter.query) this.value = ''; });
+      }
+    });
+
     // İlk hash'e göre ekran aç
     const initial = (location.hash || '').replace('#','') || 'screen-home';
     const valid = ['screen-home','screen-detail','screen-search','screen-updates','screen-stats','screen-settings','screen-archive'];
