@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-18) · **Aktif sürüm:** v0.7.0 (FAZ-3+PWA) · **Son commit:** `8fcbe7b`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-19) · **Aktif sürüm:** v0.8.0 (FAZ-4+ADB) · **Son commit:** `4bd8205`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -9,6 +9,47 @@
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+EN SON YAPILAN (15 Haz sohbet-19) — D+E+F tamamlandı:
+
+D) Kuroshin.bat KUROWATCH [3] Mobil ADB Bağlantısı eklendi
+   - adb reverse tcp:8099 tcp:8099 → telefon localhost:8099 = PC port 8099
+   - ADB otomatik bulma (PATH/LOCALAPPDATA/C:\Android)
+   - Chrome PWA kurulum talimatları
+
+E) FAZ-3 canlı test — YouTube (me at the zoo, 19sn) ile yt-dlp doğrulandı
+   - POST /api/download/start → status:done, 465KB, 8sn PASS ✅
+   - DELETE /api/download/1 → file_deleted PASS ✅
+   - GET /api/download/storage → 0B PASS ✅
+
+F) FAZ-4 Chromaprint intro tespiti — commit 4bd8205
+   - backend/analyzer/chromaprint.py — fpcalc async wrapper + .fp.json cache
+   - backend/analyzer/intro_detector.py — sliding window hamming distance, consensus
+   - backend/models.py — IntroTimestamp ORM (content_id, ep, start, end, confidence)
+   - backend/routers/analyze.py — POST/GET/DELETE /api/analyze/intro/{id}[/{ep}]
+   - frontend/player.js — _intro.load/tick/skip, openVideo contentId+ep
+   - frontend/index.html — #skip-intro-btn overlay (bottom-right)
+   Canlı kanıt: ep1+ep2 (aynı 19sn video) → start:0.0, end:19.0, confidence:1.0 PASS ✅
+
+⏭️ SIRADAKI GÖREV (sohbet-20):
+- Push (git push origin main) — her iki repo için
+- Diziwatch/Crunchyroll gerçek URL canlı testi (kullanıcı URL sağlarsa)
+- FAZ-5 (Çeviri motoru) veya Lord'un belirleyeceği yön
+
+BAŞLATMA:
+wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning"
+
+AKTİF DOSYALAR:
+- backend/analyzer/chromaprint.py  → fpcalc wrapper (yeni FAZ-4)
+- backend/analyzer/intro_detector.py → LCS karşılaştırma (yeni FAZ-4)
+- backend/routers/analyze.py        → analyze router (yeni FAZ-4)
+- frontend/player.js                → Skip Intro butonu (güncellendi)
+- Kuroshin.bat (ana repo)           → [10/3] ADB mobile (güncellendi)
+```
+
+---
+
+## FAZ-3 TAMAMLANDI (15 Haz sohbet-18)
 
 EN SON YAPILAN (15 Haz sohbet-18) — FAZ-3 TAMAMLANDI (İndirici + Player + Manga Reader):
 
@@ -40,10 +81,10 @@ Canlı kanıtlar:
 - Settings: Push Bildirimleri toggle + Test butonu
 VAPID public key: BJ45SGKJg3kn4ucbVjLLEyz8NBes6n3GtKRCY3iXD8PomvLkfmY7EsEfsTpSrXsrjElzjiON7ZXfzu89wHE9cvw
 
-SIRADAKI GÖREV (sohbet-19):
-D) Mobile Termux kurulum (ADB)
-E) FAZ-3 canlı test — Crunchyroll/diziwatch gerçek URL ile yt-dlp testi
-F) FAZ-4 Chromaprint intro tespiti
+SIRADAKI GÖREV (sohbet-20):
+- Push (git push origin main) — kurowatch + kuroshin
+- Diziwatch/Crunchyroll gerçek URL canlı testi
+- FAZ-5 Çeviri motoru veya Lord belirleyecek
 
 BAŞLATMA KOMUTU:
 wsl -d Ubuntu-22.04 -u root -e bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 &"
