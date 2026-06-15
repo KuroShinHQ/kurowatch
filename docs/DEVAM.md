@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-20) · **Aktif sürüm:** v0.9.0 (FAZ-3 Gelişmiş Player) · **Son commit:** `668bf66`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-29) · **Aktif sürüm:** v1.0.0 (FAZ-1~7 TAMAMLANDI + DB Reset + UI Fix) · **Son commit:** `25ab3d1`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -9,6 +9,31 @@
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+EN SON YAPILAN (15 Haz sohbet-29) — UI Inline Style Fix + Soru-Cevap Test:
+
+FAZ-1~7 TAMAMLANDI. sohbet-27'de DB reset + MD import (133 içerik). sohbet-28'de 8 bug fix.
+sohbet-29'da: badge renkleri, İzle butonu, search autocomplete → inline style ile düzeltildi.
+Commit: 25ab3d1
+
+AÇIK TESTLER (sohbet-30'da yap):
+- Manga Oku butonu çalışıyor mu?
+- Game detail % slider çalışıyor mu?
+- Manhwa filter 11 içerik gösteriyor mu?
+
+BACKEND BAŞLATMA:
+wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && nohup python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 & disown"
+
+SONRAKI İŞLER (Lord kararı):
+- Türk siteden direkt stream (yt-dlp iframe)
+- Jujutsu Kaisen: manga + anime çift takip
+- git push origin main
+
+⚠️ Tailwind kuralı: JS'de inline style kullan, dynamic class ÇALIŞMAZ.
+
+---
+
+(Aşağısı tarihsel — sohbet-20'ye kadar)
 
 EN SON YAPILAN (15 Haz sohbet-20) — FAZ-3 Gelişmiş Player Kontrolleri:
 
