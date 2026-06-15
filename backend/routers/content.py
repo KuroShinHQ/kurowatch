@@ -41,6 +41,7 @@ class ContentCreate(BaseModel):
 
 class ContentPatch(BaseModel):
     title: Optional[str] = None
+    type: Optional[str] = None
     status: Optional[str] = None
     cover_url: Optional[str] = None
     external_id: Optional[str] = None

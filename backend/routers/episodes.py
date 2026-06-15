@@ -9,9 +9,67 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.config import get_config
 from backend.database import get_db
-from backend.models import Content, Episode, Update
+from backend.models import Content, Episode, Site, Update
 from backend.scraper import anilist
 from backend.scraper import mangadex
+
+
+def _extract_ep_from_url(url: str) -> int | None:
+    """Site URL'inden mevcut bölüm numarasını çıkar."""
+    patterns = [
+        r'-(\d+)-bolum',       # anime: -24-bolum-izle
+        r'bolum[/-](\d+)',     # manga: bolum-457 veya bolum/457
+        r'[/-](\d+)[.-]?bolum',# manga: /457-bolum
+        r'chapter[/-](\d+)',   # chapter-200
+        r'[/-](\d+)/?$',       # URL sonu /24
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, url, re.IGNORECASE)
+        if m:
+            try:
+                return int(m.group(1))
+            except ValueError:
+                pass
+    return None
+
+
+def _derive_ep_url(site_url: str, current_ep: int, target_ep: int) -> str | None:
+    """Mevcut bölüm numarasını URL'de hedef numarayla değiştir."""
+    if not site_url or not current_ep or current_ep == target_ep:
+        return site_url if current_ep == target_ep else None
+
+    s = str(current_ep)
+    t = str(target_ep)
+
+    # Öncelikli kalıplar: bolum bağlamı
+    priority_patterns = [
+        (r'-' + re.escape(s) + r'-bolum', f'-{t}-bolum'),
+        (r'bolum[/-]' + re.escape(s), f'bolum-{t}'),
+        (r'[/-]' + re.escape(s) + r'-bolum', f'/{t}-bolum'),
+        (r'chapter[/-]' + re.escape(s), f'chapter-{t}'),
+    ]
+    for pattern, replacement in priority_patterns:
+        m = re.search(pattern, site_url, re.IGNORECASE)
+        if m:
+            return site_url[:m.start()] + replacement + site_url[m.end():]
+
+    # Fallback: sayıyı word-boundary ile değiştir (tek eşleşme varsa)
+    pattern = r'(?<![0-9])' + re.escape(s) + r'(?![0-9])'
+    matches = list(re.finditer(pattern, site_url))
+    if len(matches) == 1:
+        m = matches[0]
+        return site_url[:m.start()] + t + site_url[m.end():]
+    if len(matches) > 1:
+        # bolum/chapter bağlamındaki eşleşmeyi tercih et
+        for m in matches:
+            ctx = site_url[max(0, m.start()-12):m.end()+12].lower()
+            if 'bolum' in ctx or 'chapter' in ctx:
+                return site_url[:m.start()] + t + site_url[m.end():]
+        # son eşleşme
+        m = matches[-1]
+        return site_url[:m.start()] + t + site_url[m.end():]
+
+    return None
 
 router = APIRouter()
 
@@ -38,35 +96,47 @@ async def list_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
 @router.post("/content/{content_id}/episodes/sync")
 async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
     """Harici kaynaktan bölüm listesini çek, yeni olanları DB'ye kaydet."""
-    result = await db.execute(select(Content).where(Content.id == content_id))
+    result = await db.execute(
+        select(Content)
+        .options(selectinload(Content.sites))
+        .where(Content.id == content_id)
+    )
     c = result.scalar_one_or_none()
     if not c:
         raise HTTPException(404, "Bulunamadı")
 
-    if not c.external_id or c.type == "game":
-        raise HTTPException(400, "Bu içerik tipi için bölüm sync desteklenmiyor")
+    if c.type == "game":
+        raise HTTPException(400, "Oyunlar için bölüm sync desteklenmiyor")
 
-    existing_q = await db.execute(select(Episode.number).where(Episode.content_id == content_id))
-    existing_numbers = set(existing_q.scalars().all())
+    # MAL prefix varsa external_id yok sayılır — site URL'den ilerle
+    has_anilist_id = c.external_id and not c.external_id.startswith("mal:") and not c.external_id.startswith("mdx:")
 
-    ext = c.external_id
+    # Primary site URL'den bölüm URL türetme için temel bilgiler
+    primary_site = next((s for s in (c.sites or []) if s.is_primary), None) or (c.sites[0] if c.sites else None)
+    site_base_url = primary_site.site_url if primary_site else None
+    site_current_ep = _extract_ep_from_url(site_base_url) if site_base_url else None
+
+    existing_q = await db.execute(select(Episode).where(Episode.content_id == content_id))
+    existing_eps = {e.number: e for e in existing_q.scalars().all()}
+    existing_numbers = set(existing_eps.keys())
+
+    ext = c.external_id or ""
     new_episodes: list[Episode] = []
+    total = 0
 
     if ext.startswith("mdx:"):
-        # MangaDex sync
         detail = await mangadex.get_detail(ext[4:])
         if not detail:
             raise HTTPException(502, "MangaDex'ten veri alınamadı")
         total = min(detail.get("total_chapters") or (c.total_chapters or 0), 500)
-        for i in range(1, total + 1):
-            if i not in existing_numbers:
-                new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
 
-    elif ext.startswith("mal:"):
-        raise HTTPException(400, "MAL kaynakları için bölüm sync desteklenmiyor")
+    elif ext.startswith("mal:") or not has_anilist_id:
+        # AniList ID yok → sadece site URL'den bölüm sayısını çıkar
+        total = site_current_ep or (c.total_episodes if c.type == "anime" else c.total_chapters) or 0
+        if not total:
+            raise HTTPException(400, "Bölüm sayısı bilinmiyor — site URL'sinde bölüm numarası bulunamadı. Lütfen manuel olarak site URL'sini ekleyin.")
 
     elif c.type == "anime":
-        # AniList anime sync (streaming episodes veya sayısal)
         detail = await anilist.get_detail(ext)
         if not detail:
             raise HTTPException(502, "AniList'ten veri alınamadı")
@@ -77,19 +147,20 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
                 num = int(m.group(1)) if m else None
                 if num is None:
                     continue
+                ep_url = se.get("url") or _derive_ep_url(site_base_url, site_current_ep, num) if site_current_ep else se.get("url")
                 if num not in existing_numbers:
                     new_episodes.append(Episode(
                         content_id=content_id, number=num,
                         title=se.get("title") or None,
-                        url=se.get("url") or None,
+                        url=ep_url or None,
                         is_watched=False, is_new=False,
                     ))
                     existing_numbers.add(num)
+                elif not existing_eps[num].url and ep_url:
+                    existing_eps[num].url = ep_url
+            # Mevcut URL-siz episodları da güncelle (sonraki blokta)
         else:
             total = detail.get("total_episodes") or (c.total_episodes or 0)
-            for i in range(1, total + 1):
-                if i not in existing_numbers:
-                    new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
 
     else:
         # AniList manga/manhwa sync
@@ -97,13 +168,24 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
         if not detail:
             raise HTTPException(502, "AniList'ten veri alınamadı")
         total = min(detail.get("total_chapters") or (c.total_chapters or 0), 500)
-        for i in range(1, total + 1):
+
+    # total bölümlü içerikler için bölüm listesi oluştur (URL türeterek)
+    if total > 0:
+        for i in range(1, int(total) + 1):
+            derived_url = _derive_ep_url(site_base_url, site_current_ep, i) if site_current_ep else None
             if i not in existing_numbers:
-                new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
+                new_episodes.append(Episode(
+                    content_id=content_id, number=i,
+                    url=derived_url,
+                    is_watched=False, is_new=False,
+                ))
+            elif derived_url and not existing_eps[i].url:
+                # Mevcut URL-siz episodu güncelle
+                existing_eps[i].url = derived_url
 
     if new_episodes:
         db.add_all(new_episodes)
-        await db.commit()
+    await db.commit()
 
     eps_q = await db.execute(
         select(Episode).where(Episode.content_id == content_id).order_by(Episode.number)
