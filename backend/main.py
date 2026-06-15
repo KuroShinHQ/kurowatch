@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.database import init_db
-from backend.routers import content, episodes, sites, tags, settings, sync
+from backend.routers import content, episodes, sites, tags, settings, sync, download
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 _CONFIG_PATH  = os.path.join(os.path.dirname(__file__), "config.json")
@@ -72,6 +72,7 @@ app.include_router(sites.router,    prefix="/api", tags=["sites"])
 app.include_router(tags.router,     prefix="/api", tags=["tags"])
 app.include_router(settings.router, prefix="/api", tags=["settings"])
 app.include_router(sync.router,     prefix="/api", tags=["sync"])
+app.include_router(download.router, prefix="/api", tags=["download"])
 
 # ── Static Files SONRA (catch-all) ───────────────────────────────────
 if os.path.isdir(_FRONTEND_DIR):

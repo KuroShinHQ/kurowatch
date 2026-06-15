@@ -118,6 +118,15 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </a>
     </li>
     <li>
+      <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-[#9090b0] hover:text-white hover:bg-white/5 transition-all cursor-pointer text-sm min-h-[44px]" data-nav="screen-downloads">
+        <span class="relative">
+          <span class="material-symbols-outlined">download</span>
+          <span id="download-badge" class="hidden absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#00d4ff] text-[#0d0d1a] text-[9px] font-bold items-center justify-center"></span>
+        </span>
+        <span>İndirmeler</span>
+      </a>
+    </li>
+    <li>
       <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-[#9090b0] hover:text-white hover:bg-white/5 transition-all cursor-pointer text-sm min-h-[44px]" data-nav="screen-settings">
         <span class="material-symbols-outlined">settings</span><span>Settings</span>
       </a>
@@ -877,6 +886,10 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
     <span class="material-symbols-outlined mb-1">notifications</span>
     <span class="text-[10px] uppercase font-bold tracking-wider">Güncelle</span>
   </a>
+  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-downloads">
+    <span class="relative"><span class="material-symbols-outlined mb-1">download</span><span id="download-badge-mobile" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#00d4ff] text-[#0d0d1a] text-[8px] font-bold items-center justify-center"></span></span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">İndir</span>
+  </a>
   <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-settings">
     <span class="material-symbols-outlined mb-1">settings</span>
     <span class="text-[10px] uppercase font-bold tracking-wider">Ayarlar</span>
@@ -950,5 +963,81 @@ document.addEventListener('DOMContentLoaded', function() {
   observer.observe(modalAdd, { attributes: true, attributeFilter: ['class'] });
 });
 </script>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- EKRAN: İNDİRMELER                                              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<section id="screen-downloads" class="screen hidden w-full lg:ml-[240px] pt-16 lg:pt-8 pb-safe-nav lg:pb-8 px-4 lg:px-8 max-w-4xl mx-auto">
+  <div class="flex flex-col gap-6 mt-4">
+    <!-- Başlık + Depolama -->
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-[#e1e0ff]">İndirmeler</h2>
+      <span id="downloads-storage" class="text-xs text-[#9090b0] bg-[#1c1d37] border border-white/5 rounded-full px-3 py-1">— kullanılıyor</span>
+    </div>
+    <!-- Hızlı Yardım -->
+    <div class="bg-[#1c1d37] border border-white/5 rounded-xl p-4 text-sm text-[#9090b0]">
+      <span class="text-[#00d4ff] font-medium">📥 Nasıl indirilir?</span>
+      <span class="ml-2">İçerik detayından → Bölümler sekmesi → İndir butonuna tıkla.</span>
+    </div>
+    <!-- İndirme Listesi -->
+    <div id="downloads-list" class="flex flex-col gap-3">
+      <div class="text-center text-[#9090b0] py-12">
+        <div class="text-4xl mb-3">📥</div>
+        <div>Henüz indirme yok</div>
+        <div class="text-xs mt-1">İçerik detayından bölüm indir</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: VIDEO PLAYER                                             -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div id="modal-player" class="modal-overlay hidden fixed inset-0 z-[200] bg-black flex flex-col">
+  <!-- Header -->
+  <div class="flex items-center gap-3 px-4 py-3 bg-black/80 backdrop-blur-md border-b border-white/10 flex-shrink-0">
+    <button id="player-close" class="w-10 h-10 flex items-center justify-center text-white hover:text-[#00d4ff] transition-colors rounded-lg hover:bg-white/10">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <span id="player-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
+    <span class="text-xs text-[#9090b0]">ESC ile kapat</span>
+  </div>
+  <!-- Video -->
+  <div class="flex-1 flex items-center justify-center bg-black overflow-hidden">
+    <video id="player-video" class="max-w-full max-h-full w-full" controls preload="metadata"
+           style="background:#000;outline:none;">
+      <source id="player-source" src="" type="video/mp4">
+      Tarayıcınız video oynatmayı desteklemiyor.
+    </video>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: MANGA READER                                             -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div id="modal-reader" class="modal-overlay hidden fixed inset-0 z-[200] bg-[#0a0a12] overflow-y-auto">
+  <!-- Sticky Header -->
+  <div class="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-[#0a0a12]/95 backdrop-blur-md border-b border-white/10">
+    <button id="reader-close" class="w-10 h-10 flex items-center justify-center text-white hover:text-[#00d4ff] transition-colors rounded-lg hover:bg-white/10">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+    <span id="reader-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
+    <button id="reader-mode-btn" class="text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-white transition-colors min-h-[36px]">↕ Webtoon</button>
+  </div>
+  <!-- Sayfalar -->
+  <div id="reader-pages" class="flex flex-col items-center gap-0 min-h-screen pb-20">
+    <div class="text-[#9090b0] py-20 text-center">Yükleniyor…</div>
+  </div>
+  <!-- Sayfa Modu Nav (gizli webtoon modunda) -->
+  <div id="reader-nav" class="hidden fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4 bg-[#0a0a12]/95 backdrop-blur-md border-t border-white/10">
+    <button id="reader-prev" class="px-5 py-2.5 rounded-xl bg-[#1c1d37] border border-white/10 text-[#e1e0ff] hover:border-[#00d4ff]/50 transition-colors min-h-[44px]">◀ Önceki</button>
+    <button id="reader-next" class="px-5 py-2.5 rounded-xl bg-[#1c1d37] border border-white/10 text-[#e1e0ff] hover:border-[#00d4ff]/50 transition-colors min-h-[44px]">Sonraki ▶</button>
+  </div>
+</div>
+
+
+<script src="player.js"></script>
 </body>
 </html>
