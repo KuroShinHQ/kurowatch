@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-29) · **Aktif sürüm:** v1.0.0 (FAZ-1~7 TAMAMLANDI + DB Reset + UI Fix) · **Son commit:** `25ab3d1`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-33) · **Aktif sürüm:** v1.0.0 (FAZ-8 İndirme + CAPTCHA Human-in-the-Loop) · **Son commit:** `40346dd → WIP`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,24 +10,42 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (15 Haz sohbet-29) — UI Inline Style Fix + Soru-Cevap Test:
+EN SON YAPILAN (15 Haz sohbet-33) — CAPTCHA Human-in-the-Loop:
 
-FAZ-1~7 TAMAMLANDI. sohbet-27'de DB reset + MD import (133 içerik). sohbet-28'de 8 bug fix.
-sohbet-29'da: badge renkleri, İzle butonu, search autocomplete → inline style ile düzeltildi.
-Commit: 25ab3d1
+FAZ-8 İndirme sistemi sohbet-32'de eklendi (stream_finder + yt-dlp + cookies yükleme).
+sohbet-33'te: CAPTCHA Human-in-the-Loop implementasyonu tamamlandı.
 
-AÇIK TESTLER (sohbet-30'da yap):
-- Manga Oku butonu çalışıyor mu?
-- Game detail % slider çalışıyor mu?
-- Manhwa filter 11 içerik gösteriyor mu?
+CAPTCHA SİSTEMİ (3 dosya değişti):
+  backend/routers/settings.py:
+    GET /api/settings/cookies/captcha/{site_name} → SSE endpoint
+    - Playwright headless=False → visible browser aç (WSLg ile Windows'ta görünür)
+    - cf_clearance cookie'si bekleniyor (max 5 dakika)
+    - Bulununca tüm cookie'leri Netscape formatında cookies/{site}_cookies.txt'e kaydet
+    - SSE olayları: starting → open → waiting(10s ping) → saving → done/timeout/error
+
+  frontend/index.html:
+    Settings > Cookies bölümüne "CAPTCHA ile Cookie Al (Otomatik)" butonu (turuncu)
+    + #captcha-status-box (durum gösterge kutusu)
+
+  frontend/app.js:
+    EventSource ile SSE dinle → renkli durum mesajı göster
+    done → showToast + refreshCookiesList()
+
+KULLANIM:
+  1. Settings > Cookies > Site seç (tranimeizle.co)
+  2. "CAPTCHA ile Cookie Al" butonuna bas
+  3. WSLg'de bir Chrome penceresi açılır (Windows'ta görünür)
+  4. Sayfadaki CAPTCHA checkbox'ına tıkla
+  5. Otomatik olarak cookie kaydedilir, pencere kapanır
+  6. İndirme butonu artık çalışır
 
 BACKEND BAŞLATMA:
-wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && nohup python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 & disown"
+wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && setsid python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 &"
 
 SONRAKI İŞLER (Lord kararı):
-- Türk siteden direkt stream (yt-dlp iframe)
-- Jujutsu Kaisen: manga + anime çift takip
-- git push origin main
+A) CAPTCHA sistemini canlı test et (backend başlat → Settings → buton)
+B) Jujutsu Kaisen: manga + anime çift takip
+C) git push origin main (49+ commit bekliyor)
 
 ⚠️ Tailwind kuralı: JS'de inline style kullan, dynamic class ÇALIŞMAZ.
 

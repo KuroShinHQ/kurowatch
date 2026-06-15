@@ -1115,6 +1115,57 @@
       });
     }
 
+    // CAPTCHA Human-in-the-Loop
+    const captchaBtn = document.getElementById('captcha-browser-btn');
+    const captchaBox = document.getElementById('captcha-status-box');
+    if (captchaBtn && captchaBox) {
+      captchaBtn.addEventListener('click', function() {
+        const site = (document.getElementById('settings-cookies-site') || {}).value || 'tranimeizle';
+        captchaBtn.disabled = true;
+        captchaBtn.style.opacity = '0.5';
+        captchaBox.className = captchaBox.className.replace('hidden', '');
+        captchaBox.style.color = '#9090b0';
+        captchaBox.textContent = 'Tarayıcı başlatılıyor...';
+
+        const evtSrc = new EventSource('/api/settings/cookies/captcha/' + encodeURIComponent(site));
+
+        evtSrc.onmessage = function(e) {
+          try {
+            const d = JSON.parse(e.data);
+            const statusColors = {
+              starting: '#9090b0',
+              open:     '#ffb300',
+              waiting:  '#9090b0',
+              saving:   '#00d4ff',
+              done:     '#4caf50',
+              timeout:  '#ff5252',
+              error:    '#ff5252',
+            };
+            captchaBox.style.color = statusColors[d.status] || '#9090b0';
+            captchaBox.textContent = d.msg;
+
+            if (d.status === 'done' || d.status === 'timeout' || d.status === 'error') {
+              evtSrc.close();
+              captchaBtn.disabled = false;
+              captchaBtn.style.opacity = '1';
+              if (d.status === 'done') {
+                showToast('Cookie\'ler kaydedildi!', 'success');
+                refreshCookiesList();
+              }
+            }
+          } catch(_) {}
+        };
+
+        evtSrc.onerror = function() {
+          evtSrc.close();
+          captchaBtn.disabled = false;
+          captchaBtn.style.opacity = '1';
+          captchaBox.style.color = '#ff5252';
+          captchaBox.textContent = 'Bağlantı hatası. Backend çalışıyor mu?';
+        };
+      });
+    }
+
     renderTagSettings();
     renderTagColorPicker();
     if (window.kuroPWA) window.kuroPWA.initPushUI();

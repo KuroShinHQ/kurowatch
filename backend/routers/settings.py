@@ -1,7 +1,10 @@
+import asyncio
 import json
 import os
+import time
 from pathlib import Path
 from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
 
@@ -101,3 +104,112 @@ async def delete_cookies(file_name: str):
         p.unlink()
         return {"ok": True}
     raise HTTPException(404, "Dosya bulunamadı")
+
+
+# ── CAPTCHA Human-in-the-Loop ─────────────────────────────────────────
+
+_CAPTCHA_SITE_URLS = {
+    "tranimeizle": "https://tranimeizle.co",
+    "turkanime":   "https://turkanime.co",
+    "diziwatch":   "https://diziwatch.com",
+}
+
+
+def _cookies_to_netscape(cookies: list) -> str:
+    lines = ["# Netscape HTTP Cookie File", "# KuroWatch CAPTCHA capture", ""]
+    for c in cookies:
+        domain   = c.get("domain", "")
+        flag     = "TRUE" if domain.startswith(".") else "FALSE"
+        path     = c.get("path", "/")
+        secure   = "TRUE" if c.get("secure") else "FALSE"
+        expires  = str(int(c.get("expires", 0)))
+        name     = c.get("name", "")
+        value    = c.get("value", "")
+        lines.append(f"{domain}\t{flag}\t{path}\t{secure}\t{expires}\t{name}\t{value}")
+    return "\n".join(lines)
+
+
+def _sse(status: str, msg: str) -> str:
+    payload = json.dumps({"status": status, "msg": msg}, ensure_ascii=False)
+    return f"data: {payload}\n\n"
+
+
+@router.get("/settings/cookies/captcha/{site_name}")
+async def captcha_browser_launch(site_name: str):
+    """
+    Playwright headed browser aç → Lord CAPTCHA'ya tıklar →
+    cf_clearance cookie'si alınınca kaydet → SSE ile durum bildir.
+    """
+    site_url = _CAPTCHA_SITE_URLS.get(site_name)
+    if not site_url:
+        raise HTTPException(400, f"Bilinmeyen site: {site_name}")
+
+    async def generator():
+        yield _sse("starting", "Tarayıcı başlatılıyor...")
+        try:
+            from playwright.async_api import async_playwright
+
+            async with async_playwright() as pw:
+                browser = await pw.chromium.launch(
+                    headless=False,
+                    args=["--window-size=1280,800", "--disable-blink-features=AutomationControlled"],
+                )
+                context = await browser.new_context(
+                    user_agent=(
+                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                        "AppleWebKit/537.36 (KHTML, like Gecko) "
+                        "Chrome/131.0.0.0 Safari/537.36"
+                    )
+                )
+                page = await context.new_page()
+
+                yield _sse("open", f"{site_url} açıldı. CAPTCHA checkbox'ına tıklayın...")
+                try:
+                    await page.goto(site_url, wait_until="domcontentloaded", timeout=30_000)
+                except Exception:
+                    pass  # CF challenge sayfasında timeout normaldir
+
+                # cf_clearance cookie'yi bekle (max 5 dakika)
+                deadline = time.time() + 300
+                ping_at  = time.time() + 10
+                found    = False
+
+                while time.time() < deadline:
+                    # Canlı tutma ping'i (her 10s)
+                    if time.time() >= ping_at:
+                        remaining = int(deadline - time.time())
+                        yield _sse("waiting", f"Bekleniyor... ({remaining}s kaldı)")
+                        ping_at = time.time() + 10
+
+                    cookies = await context.cookies()
+                    cf_cookies = [c for c in cookies if c["name"] == "cf_clearance"]
+
+                    if cf_cookies:
+                        found = True
+                        yield _sse("saving", "CF clearance alındı! Cookie'ler kaydediliyor...")
+                        await asyncio.sleep(1)  # Kalan cookie'lerin yerleşmesini bekle
+                        cookies = await context.cookies()  # Taze liste
+
+                        _COOKIES_DIR.mkdir(exist_ok=True)
+                        fname = f"{site_name}_cookies.txt"
+                        dest  = _COOKIES_DIR / fname
+                        dest.write_text(_cookies_to_netscape(cookies), encoding="utf-8")
+
+                        await browser.close()
+                        yield _sse("done", f"{len(cookies)} cookie {fname} dosyasına kaydedildi. Artık indirme butonu çalışır!")
+                        return
+
+                    await asyncio.sleep(2)
+
+                await browser.close()
+                if not found:
+                    yield _sse("timeout", "5 dakika beklendi ama cf_clearance alınamadı. Tekrar deneyin.")
+
+        except Exception as exc:
+            yield _sse("error", str(exc))
+
+    return StreamingResponse(
+        generator(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
