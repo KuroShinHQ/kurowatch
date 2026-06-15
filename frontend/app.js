@@ -130,7 +130,8 @@
     if (id === 'screen-updates')  renderUpdates();
     if (id === 'screen-stats')    renderStats();
     if (id === 'screen-archive')  renderArchive();
-    if (id === 'screen-settings') renderSettings();
+    if (id === 'screen-settings')   renderSettings();
+    if (id === 'screen-downloads' && window.kuroDownload) window.kuroDownload.render();
     if (id === 'screen-search') {
       setTimeout(() => {
         _initSearchTabs();
@@ -476,7 +477,7 @@
 
     // Bölümler tab
     const epsTabEl = document.getElementById('detail-tab-episodes');
-    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id);
+    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title);
 
     // Siteler tab
     const sitesTabEl = document.getElementById('detail-tab-sites');
@@ -962,7 +963,7 @@
 
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
 
-  function renderDetailEpisodes(el, episodes, contentId) {
+  function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle) {
     const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 text-[12px] text-[#9090b0] hover:text-[#00d4ff] transition-colors mb-3" data-content-id="' + contentId + '">' +
       '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle</button>';
 
@@ -985,6 +986,10 @@
         (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
         '</div><div class="flex items-center gap-2">' +
         (e.is_new ? '<span class="px-2 py-1 bg-[#00d4ff]/10 text-[#00d4ff] font-label-caps text-label-caps rounded uppercase text-[9px]">YENİ</span>' : '') +
+        (e.url ? '<button class="ep-dl-btn text-[#9090b0] hover:text-[#00d4ff] transition-colors min-w-[36px] min-h-[44px] flex items-center justify-center" title="İndir" ' +
+          'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(e.url) + '" ' +
+          'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
+          '<span class="material-symbols-outlined text-[18px]">download</span></button>' : '') +
         '<button class="ep-watch-btn min-w-[44px] min-h-[44px] flex items-center justify-end cursor-pointer" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
         '<div class="w-6 h-6 rounded bg-[#31324d] flex items-center justify-center border border-white/10 hover:border-[#00d4ff] transition-colors"></div></button>' +
         '</div></div>';
@@ -1007,6 +1012,20 @@
         } catch(e) { console.error('ep watch', e); }
       });
     });
+    el.querySelectorAll('.ep-dl-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (!window.kuroDownload) { alert('İndirme modülü yüklenmedi'); return; }
+        window.kuroDownload.start(
+          parseInt(this.dataset.contentId, 10),
+          this.dataset.contentTitle,
+          this.dataset.contentType,
+          parseInt(this.dataset.epNum, 10),
+          this.dataset.epUrl,
+          '720p'
+        );
+      });
+    });
+
     const syncBtnEl = el.querySelector('.ep-anilist-sync-btn');
     if (syncBtnEl) syncBtnEl.addEventListener('click', syncEpisodesFromAniList);
   }
