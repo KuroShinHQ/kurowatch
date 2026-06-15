@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>KuroWatch</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <span class="logo">⏯ KuroWatch</span>
+      <span id="status-dot" class="dot dot-gray" title="Bağlantı durumu"></span>
+    </header>
+
+    <div id="page-info">
+      <div id="loading">Sayfa taranıyor...</div>
+      <div id="no-support" class="hidden">Bu sayfa desteklenmiyor.</div>
+      <div id="detected" class="hidden">
+        <div class="label">Tespit Edildi</div>
+        <div id="det-title" class="title"></div>
+        <div id="det-meta" class="meta"></div>
+        <button id="btn-add">+ KuroWatch'a Ekle</button>
+      </div>
+    </div>
+
+    <div id="result" class="hidden">
+      <div id="result-text"></div>
+    </div>
+
+    <footer>
+      <a id="open-app" href="http://localhost:8099" target="_blank">Uygulamayı Aç ↗</a>
+    </footer>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
