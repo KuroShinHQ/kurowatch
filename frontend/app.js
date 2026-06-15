@@ -452,6 +452,25 @@
       coverEl.style.backgroundColor = '#16213e';
     }
 
+    // Cover upload
+    const coverInput = document.getElementById('cover-file-input');
+    if (coverInput) {
+      coverInput.value = '';
+      coverInput.onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const fd = new FormData();
+        fd.append('file', file);
+        try {
+          const r = await fetch('/api/content/' + id + '/cover', { method: 'POST', body: fd });
+          const d = await r.json();
+          coverEl.style.backgroundImage = 'url(' + d.cover_url + '?' + Date.now() + ')';
+          coverEl.style.backgroundColor = '';
+          renderHome();
+        } catch (err) { showToast('Cover yüklenemedi: ' + err.message, 'error'); }
+      };
+    }
+
     // Mark butonu
     document.getElementById('detail-mark-btn').onclick = function() {
       const next = (item.my_progress || 0) + 1;
