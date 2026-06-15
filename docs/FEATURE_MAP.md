@@ -331,15 +331,12 @@
 ## 🔄 Veri Akışı Diyagramı
 
 ```
-FRONTEND (app.js)              BACKEND (FastAPI :8099)        DIŞ API
-─────────────────              ──────────────────────         ────────
-                               
-Home render ──────────────→ GET /api/content ──────────────→ [SQLite]
-                               ↓
-Card tıkla ───────────────→ GET /api/content/{id}
-                            GET /api/content/{id}/episodes
-                            GET /api/content/{id}/sites ──→ [SQLite]
+FRONTEND (app.js / player.js)  BACKEND (FastAPI :8099)        DIŞ API
+─────────────────────────────  ──────────────────────         ────────
 
+Home render ──────────────→ GET /api/content ──────────────→ [SQLite]
+Card tıkla ───────────────→ GET /api/content/{id}
+                            GET /api/content/{id}/episodes ─→ [SQLite]
 Bölüm ✓ ─────────────────→ PATCH /api/episodes/{id}/watch → [SQLite]
 
 "Ekle" arama ─────────────→ GET /api/search?q=... ─────────→ AniList API
@@ -356,9 +353,65 @@ Bölüm ✓ ─────────────────→ PATCH /api/ep
 
 Export ───────────────────→ GET /api/export ────────────────→ JSON dosya
 Import ───────────────────→ POST /api/import ───────────────→ [SQLite]
-                               çakışma → frontend conflict modal
-
 Settings kaydet ──────────→ POST /api/settings ─────────────→ config.json
+
+── FAZ-3 İndirici & Player (15 Haz) ──────────────────────────────────
+
+▶ Oynat (İndir buton) ────→ POST /api/download/start ──────→ yt-dlp
+WS progress push ─────────→ WS  /api/download/ws           (ilerleme %)
+▶ Oynat (done job) ───────→ GET /api/download/serve/{id}   (range stream)
+Altyazı yükle (C tuşu) ──→ GET /api/download/subtitles/{id} (.vtt dosya)
+Silme (🗑 buton) ─────────→ DELETE /api/download/{id}      (dosya sil)
+Depolama ─────────────────→ GET /api/download/storage      (bytes)
+Manga sayfaları ──────────→ GET /api/download/pages/{id}
+                            GET /api/download/page/{id}/{i} (tek sayfa)
+
+── FAZ-4 Chromaprint (15 Haz) ─────────────────────────────────────────
+
+İntro analiz ─────────────→ POST /api/analyze/intro/{id}   → fpcalc → [SQLite]
+İntro zamanı ─────────────→ GET  /api/analyze/intro/{id}/{ep}
+Skip Intro (player tick) ── video.currentTime karşılaştır → butonu göster
+```
+
+## 🎬 Video Player Modal Diyagramı (FAZ-3 — 15 Haz)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ MODAL-PLAYER (#modal-player)  z-index:200                           │
+│ Normal: fixed inset-0 bg-black flex-col                             │
+│ Mini:   fixed bottom-1rem right-1rem 320×200 rounded-xl             │
+│ Theater: header opacity:0, hover → görünür                          │
+├─────────────────────────────────────────────────────────────────────┤
+│ HEADER (#player-header)  transition-all 0.3s                        │
+│ [← Geri]  [═══ Başlık (truncate) ═══]  [CC][Blur][🎭][PiP][⊓][⛶] │
+│            #player-title                  ↑   ↑   ↑   ↑   ↑   ↑  │
+│                                          CC Ambi Th  PiP Mini Full │
+├─────────────────────────────────────────────────────────────────────┤
+│ VIDEO WRAP (#player-video-wrap)  flex-1 relative                    │
+│ ┌─────────────────────────────────────────────────────────────────┐ │
+│ │ <canvas id="ambient-canvas">  z:0  blur(40px) saturate(1.8)    │ │
+│ │ <video id="player-video">     z:1  controls                    │ │
+│ │   <source id="player-source">                                  │ │
+│ │   <track id="subtitle-track" kind="subtitles" srclang="tr">    │ │
+│ │                                                                 │ │
+│ │  [⏭ İntroyu Atla]         [Sonraki bölüm ████░░ 7s  İptal]   │ │
+│ │  #skip-intro-btn          #autonext-overlay                    │ │
+│ │  bottom-16 right-6        bottom-16 left-6                     │ │
+│ └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+
+KLAVYE KISAYOLLARI (playerOpen=true):
+  Space/K → play/pause    F → fullscreen    T → theater
+  I → PiP                 M → mini          A → ambient
+  C → CC/subtitle         ← /J → -10sn     → /L → +10sn
+  [ → hız -0.25x          ] → hız +0.25x   0-9 → seek %
+  Esc → kapat
+
+MANGA READER HEADER (FAZ-3 — 15 Haz):
+  [✕]  [═══ Başlık ═══]  [↕ Webtoon / 📄 Sayfa]  [⛶ Fullscreen]
+  Swipe: touchend dx>50px → prev/next (sayfa modunda)
+  Klavye: F → fullscreen, ←↑ → prev, →↓ → next, Esc → kapat
+  Auto-next: son sayfa (sayfa modu) → 5sn overlay → bölüm kapat
 ```
 
 ---
