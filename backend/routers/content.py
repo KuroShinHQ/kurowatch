@@ -74,6 +74,8 @@ def _serialize(c: Content) -> dict:
         "my_score": c.my_score,
         "note_text": c.note_text,
         "note_is_spoiler": c.note_is_spoiler,
+        "synopsis": c.synopsis or "",
+        "synopsis_tr": c.synopsis_tr or "",
         "genres": genres,
         "added_at": c.added_at.isoformat() if c.added_at else None,
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
@@ -225,6 +227,16 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
 
     if not detail:
         raise HTTPException(503, "Harici kaynaktan veri alınamadı")
+
+    # Lazy-save: synopsis varsa ve DB'de yoksa kaydet
+    syn = (detail.get("synopsis") or "").strip()
+    if syn and not c.synopsis:
+        import re
+        clean = re.sub(r'<[^>]+>', '', syn).strip()
+        c.synopsis = clean
+        c.updated_at = datetime.utcnow()
+        await db.commit()
+
     return detail
 
 
