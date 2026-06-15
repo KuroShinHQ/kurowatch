@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Haziran 2026 (sohbet-9) · **Aktif sürüm:** v0.4.0 · **Son commit:** `2cb1a16`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-17) · **Aktif sürüm:** v0.5.0 (FAZ-2) · **Son commit:** TBD (sohbet-17)
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,7 +10,56 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (14 Haz sohbet-9) — Detail cover+yıldız, Archive, Settings, check-updates (commit 2cb1a16):
+EN SON YAPILAN (15 Haz sohbet-17) — FAZ-2 TAMAMLANDI (MangaDex + IGDB + MAL):
+
+✅ backend/config.py — get_config() yardımcı fonksiyon
+✅ backend/scraper/mangadex.py — MangaDex API (search/detail/chapter_count, mdx: prefix)
+✅ backend/scraper/igdb.py — IGDB Twitch OAuth2 client creds (search/detail)
+✅ backend/scraper/mal.py — MAL public API (X-MAL-Client-ID, search/detail, mal: prefix)
+✅ content.py: /discover?type=game → IGDB; AniList 0 sonuç → MAL fallback; /discover/mangadex endpoint
+✅ content.py: /content/{id}/anilist → mdx:/mal:/game tip routing
+✅ episodes.py: _check_one() → game skip, mdx: MangaDex, mal: MAL, else AniList
+✅ episodes.py: sync_episodes → mdx: MangaDex, mal: HTTPException, anime/manga AniList
+✅ settings.py + main.py: mal_client_id default eklendi
+✅ index.html: Keşfet tip seçici (Anime/Manga/Manhwa/Oyun), MAL Client ID ayarı
+✅ app.js: _discoverType değişkeni, tip seçici butonları, IGDB arama, MAL kaydet
+✅ app.js: Add modal Step-1 tip seçici (anime/manga/manhwa/oyun)
+✅ app.js: it.id → it.external_id bug fix (discover kartlarında)
+✅ app.js: total_episodes/total_chapters hidden input + prefillAddForm + submitAddContent
+
+Canlı kanıtlar (sohbet-17):
+  GET /api/discover?q=naruto&type=anime → 12 sonuç, id=20 (AniList) ✅
+  GET /api/discover?q=berserk&type=manga via MangaDex → 12 sonuç, mdx:UUID ✅
+  GET /api/discover?q=elden+ring&type=game (no creds) → [] ✅
+  GET /api/discover?q=solo+leveling&type=manhwa → 3 sonuç (AniList) ✅
+  MangaDex chapter_count: Berserk=384, Spy×Family=127 ✅
+  GET /api/settings → mal_client_id: "" ✅
+
+SIRADAKI GÖREV (sohbet-18) — FAZ-2 TAMAMLANDI:
+Seçenekler:
+A) IGDB creds test (Twitch Dev hesabı gerekli, oyun arama UI test)
+B) FAZ-3 Player/Downloader — yt-dlp backend entegrasyonu
+C) PWA + Push notification entegrasyonu
+D) Mobile ADB kurulum (Termux + KuroWatch)
+
+BAŞLATMA KOMUTU:
+wsl -d Ubuntu-22.04 -u root -- bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
+
+AKTİF DOSYALAR:
+- backend/scraper/mangadex.py → MangaDex API (yeni)
+- backend/scraper/igdb.py → IGDB Twitch auth (yeni)
+- backend/scraper/mal.py → MAL fallback (yeni)
+- backend/routers/content.py → discover game/mangadex routing
+- backend/routers/episodes.py → check_one multi-source
+- frontend/app.js → discover tip seçici + add modal tip
+- frontend/index.html → discover UI + MAL settings
+```
+
+---
+
+## FAZ-2 TAMAMLANDI (15 Haz sohbet-17)
+
+EN SON YAPILAN (15 Haz sohbet-16) — FAZ-1 kalan görevler sırayla (commit 74bd0d6):
 
 ✅ ContentPatch'e external_id eklendi (PATCH ile AniList ID atanabilir)
 ✅ apiPatch() eklendi (frontend)

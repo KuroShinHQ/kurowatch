@@ -867,6 +867,10 @@
     if (igdbId) igdbId.value = cfg.igdb_client_id || '';
     if (igdbSecret) igdbSecret.value = cfg.igdb_client_secret || '';
 
+    // MAL input
+    const malClientId = document.getElementById('settings-mal-client-id');
+    if (malClientId) malClientId.value = cfg.mal_client_id || '';
+
     // Auto-delete toggle
     const toggleDot = document.getElementById('settings-auto-delete-dot');
     const toggleBg = document.getElementById('settings-auto-delete-bg');
@@ -914,6 +918,18 @@
           });
           this.textContent = 'Kaydedildi ✓';
           setTimeout(() => { this.textContent = 'Token Yenile'; }, 2000);
+        } catch(e) { alert('Kayıt hatası: ' + e.message); }
+      };
+    }
+
+    // MAL kaydet butonu
+    const malSaveBtn = document.getElementById('settings-mal-save');
+    if (malSaveBtn) {
+      malSaveBtn.onclick = async function() {
+        try {
+          await apiPost('/api/settings', { mal_client_id: malClientId ? malClientId.value.trim() : '' });
+          this.textContent = 'Kaydedildi ✓';
+          setTimeout(() => { this.textContent = 'Kaydet'; }, 2000);
         } catch(e) { alert('Kayıt hatası: ' + e.message); }
       };
     }
@@ -1287,6 +1303,7 @@
   // ── Render: Search / Discover ─────────────────────────────────────
   let _searchTimer = null;
   let _discoverGenre = null;
+  let _discoverType = 'anime';
   let _activeSearchTab = 'library';
 
   function _initSearchTabs() {
@@ -1307,7 +1324,8 @@
         panelDis.classList.toggle('hidden', isLib);
         panelDis.classList.toggle('flex', !isLib);
       }
-      if (inp) inp.placeholder = isLib ? 'Kütüphanende ara...' : 'AniList\'te ara (anime/manga/manhwa)...';
+      const typeLabels = { anime: 'AniList\'te ara...', manga: 'Manga ara...', manhwa: 'Manhwa ara...', game: 'Oyun ara (IGDB)...' };
+      if (inp) inp.placeholder = isLib ? 'Kütüphanende ara...' : (typeLabels[_discoverType] || 'Ara...');
       if (inp && inp.value) {
         isLib ? renderLibrarySearch(inp.value) : renderSearch(inp.value);
       } else if (!isLib) {
@@ -1315,6 +1333,31 @@
         if (_discoverGenre) renderSearch('');
       }
     }
+
+    // Keşfet tip seçici
+    document.querySelectorAll('.discover-type-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        _discoverType = this.dataset.discoverType;
+        _discoverGenre = null;
+        document.querySelectorAll('.discover-type-btn').forEach(function(b) {
+          const active = b.dataset.discoverType === _discoverType;
+          b.className = 'discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all ' +
+            (active ? 'bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40' : 'text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]');
+        });
+        // Oyun tipinde genre bölümünü gizle
+        const genreSection = document.getElementById('discover-genre-section');
+        if (genreSection) genreSection.classList.toggle('hidden', _discoverType === 'game');
+        const typeLabels2 = { anime: 'AniList\'te ara...', manga: 'Manga ara...', manhwa: 'Manhwa ara...', game: 'Oyun ara (IGDB)...' };
+        if (inp) inp.placeholder = typeLabels2[_discoverType] || 'Ara...';
+        const q = inp ? inp.value.trim() : '';
+        if (q.length >= 2) renderSearch(q);
+        else {
+          _buildDiscoverGenreChips();
+          const results = document.getElementById('search-results');
+          if (results) results.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">' + (typeLabels2[_discoverType] || 'Ara...') + '</div>';
+        }
+      });
+    });
 
     tabLib.onclick = function() { switchTab('library'); };
     tabDis.onclick = function() { switchTab('discover'); };
@@ -1404,10 +1447,11 @@
       results.innerHTML = '<div class="text-center text-[#9090b0] py-8">En az 2 karakter yaz veya bir tür seç...</div>';
       return;
     }
-    results.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> AniList\'te aranıyor...</div>';
-    let url = '/api/discover?type=anime';
+    const sourceLabel = _discoverType === 'game' ? 'IGDB' : 'AniList';
+    results.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> ' + sourceLabel + '\'te aranıyor...</div>';
+    let url = '/api/discover?type=' + _discoverType;
     if (hasQ) url += '&q=' + encodeURIComponent(q.trim());
-    if (_discoverGenre) url += '&genre=' + encodeURIComponent(_discoverGenre);
+    if (_discoverGenre && _discoverType !== 'game') url += '&genre=' + encodeURIComponent(_discoverGenre);
     try {
       const items = await apiGet(url);
       if (!items || items.length === 0) {
@@ -1415,15 +1459,16 @@
         return;
       }
       results.innerHTML = items.map(it => {
-        const typeLabel = it.type === 'manhwa' ? 'Manhwa' : it.type === 'manga' ? 'Manga' : 'Anime';
+        const typeLabelMap = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
+        const typeLabel = typeLabelMap[it.type] || it.type || 'Anime';
         const cover = it.cover_url
           ? `<img src="${it.cover_url}" class="w-full h-full object-cover" loading="lazy"/>`
-          : `<span class="text-[#9090b0] font-bold text-xs">${escapeHtml(it.title.slice(0,2).toUpperCase())}</span>`;
+          : `<span class="text-[#9090b0] font-bold text-xs">${escapeHtml((it.title||'??').slice(0,2).toUpperCase())}</span>`;
         const discoverData = JSON.stringify({
           title: it.title,
           type: it.type || 'anime',
           cover_url: it.cover_url || '',
-          external_id: String(it.id || ''),
+          external_id: String(it.external_id || ''),
           genres: it.genres || []
         });
         return `
@@ -1456,11 +1501,30 @@
 
   // ── Add Modal Step-1: AniList Arama ──────────────────────────────
   let _addSearchTimer = null;
+  let _addStep1Type = 'anime';
+
   function _initAddSearch() {
-    const inp = document.querySelector('#add-step-1 input[type="text"]');
+    const inp = document.getElementById('add-step1-search-input');
     const resultsBox = document.querySelector('#add-step-1 .flex-1.overflow-y-auto');
     if (!inp || !resultsBox) return;
+
+    // Tip seçici butonları
+    document.querySelectorAll('.add-step1-type-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        _addStep1Type = this.dataset.step1Type;
+        document.querySelectorAll('.add-step1-type-btn').forEach(function(b) {
+          const a = b.dataset.step1Type === _addStep1Type;
+          b.className = 'add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all ' +
+            (a ? 'bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40' : 'text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]');
+        });
+        const q = inp.value.trim();
+        if (q.length >= 2) inp.dispatchEvent(new Event('input'));
+        else resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Başlık yaz, ' + (_addStep1Type === 'game' ? 'IGDB' : 'AniList') + '\'te ara...</div>';
+      });
+    });
+
     inp.value = '';
+    _addStep1Type = 'anime';
     resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Başlık yaz, AniList\'te ara...</div>';
     inp.oninput = function() {
       clearTimeout(_addSearchTimer);
@@ -1472,7 +1536,7 @@
       resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-6 text-[13px] flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Aranıyor...</div>';
       _addSearchTimer = setTimeout(async function() {
         try {
-          const items = await apiGet('/api/discover?q=' + encodeURIComponent(q) + '&type=anime');
+          const items = await apiGet('/api/discover?q=' + encodeURIComponent(q) + '&type=' + _addStep1Type);
           if (!items || !items.length) {
             resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Sonuç bulunamadı</div>';
             return;
@@ -1482,7 +1546,8 @@
               ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
               : '<span class="font-bold text-xs text-[#9090b0]">' + escapeHtml((it.title || '?').slice(0,2).toUpperCase()) + '</span>';
             const yr = it.year || '';
-            const tp = (it.type || 'anime').charAt(0).toUpperCase() + (it.type || '').slice(1);
+            const tpMap2 = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
+            const tp = tpMap2[it.type] || (it.type || 'anime');
             return '<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-[#2f3639] transition-transform active:scale-[0.97] etched-border bg-[#0e1417]" data-add-pick=\'' + JSON.stringify(it).replace(/'/g, '&#39;') + '\'>' +
               '<div class="w-[40px] h-[56px] bg-[#2f3639] rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center">' + cover + '</div>' +
               '<div class="flex-1 min-w-0 flex flex-col justify-center">' +
@@ -1515,6 +1580,10 @@
     if (extInput) extInput.value = data.external_id || '';
     const genresInput = document.getElementById('add-form-genres');
     if (genresInput) genresInput.value = JSON.stringify(data.genres || []);
+    const epEl = document.getElementById('add-form-total-episodes');
+    if (epEl) epEl.value = data.total_episodes != null ? data.total_episodes : '';
+    const chEl = document.getElementById('add-form-total-chapters');
+    if (chEl) chEl.value = data.total_chapters != null ? data.total_chapters : '';
 
     // Tip seçimi
     document.querySelectorAll('.add-type-btn').forEach(btn => {
@@ -1545,6 +1614,10 @@
     const cover_url = (document.getElementById('add-form-cover') || {}).value.trim() || null;
     const note_text = (document.getElementById('add-form-note') || {}).value.trim() || null;
     const external_id = (document.getElementById('add-form-external-id') || {}).value.trim() || null;
+    const _epRaw = (document.getElementById('add-form-total-episodes') || {}).value;
+    const _chRaw = (document.getElementById('add-form-total-chapters') || {}).value;
+    const total_episodes = _epRaw ? parseInt(_epRaw) || null : null;
+    const total_chapters = _chRaw ? parseInt(_chRaw) || null : null;
     const starEl = document.querySelector('input[name="add-rating"]:checked');
     const my_score = starEl ? parseFloat(starEl.value) : null;
     const genresRaw = (document.getElementById('add-form-genres') || {}).value || '[]';
@@ -1555,7 +1628,7 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
 
     try {
-      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined });
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined });
       closeModal('modal-add');
       // Formu temizle
       ['add-form-title','add-form-cover','add-form-note'].forEach(id => {

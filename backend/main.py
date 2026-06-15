@@ -15,6 +15,7 @@ _DEFAULTS = {
     "check_on_startup": True,
     "igdb_client_id": "", "igdb_client_secret": "",
     "igdb_token": "", "igdb_token_expires_at": 0,
+    "mal_client_id": "",
     "vapid_public_key": "", "vapid_private_key": "",
     "duration_anime_ep": 24, "duration_manga_ch": 5,
     "duration_manhwa_ch": 3, "duration_game_session": 60,

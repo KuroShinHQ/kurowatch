@@ -7,9 +7,11 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.config import get_config
 from backend.database import get_db
 from backend.models import Content, Episode, Update
 from backend.scraper import anilist
+from backend.scraper import mangadex
 
 router = APIRouter()
 
@@ -34,31 +36,43 @@ async def list_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
 
 
 @router.post("/content/{content_id}/episodes/sync")
-async def sync_episodes_from_anilist(content_id: int, db: AsyncSession = Depends(get_db)):
-    """AniList'ten bölüm listesini çek, yeni olanları DB'ye kaydet."""
+async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
+    """Harici kaynaktan bölüm listesini çek, yeni olanları DB'ye kaydet."""
     result = await db.execute(select(Content).where(Content.id == content_id))
     c = result.scalar_one_or_none()
     if not c:
         raise HTTPException(404, "Bulunamadı")
 
     if not c.external_id or c.type == "game":
-        raise HTTPException(400, "Bu içerik tipi için AniList sync desteklenmiyor")
+        raise HTTPException(400, "Bu içerik tipi için bölüm sync desteklenmiyor")
 
-    # Mevcut bölüm numaraları
     existing_q = await db.execute(select(Episode.number).where(Episode.content_id == content_id))
     existing_numbers = set(existing_q.scalars().all())
 
-    detail = await anilist.get_detail(c.external_id)
-    if not detail:
-        raise HTTPException(502, "AniList'ten veri alınamadı")
-
+    ext = c.external_id
     new_episodes: list[Episode] = []
 
-    if c.type == "anime":
+    if ext.startswith("mdx:"):
+        # MangaDex sync
+        detail = await mangadex.get_detail(ext[4:])
+        if not detail:
+            raise HTTPException(502, "MangaDex'ten veri alınamadı")
+        total = min(detail.get("total_chapters") or (c.total_chapters or 0), 500)
+        for i in range(1, total + 1):
+            if i not in existing_numbers:
+                new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
+
+    elif ext.startswith("mal:"):
+        raise HTTPException(400, "MAL kaynakları için bölüm sync desteklenmiyor")
+
+    elif c.type == "anime":
+        # AniList anime sync (streaming episodes veya sayısal)
+        detail = await anilist.get_detail(ext)
+        if not detail:
+            raise HTTPException(502, "AniList'ten veri alınamadı")
         streaming = detail.get("streaming_episodes", [])
         if streaming:
             for se in streaming:
-                # "Episode 3 - Title" → 3
                 m = re.search(r'Episode\s+(\d+)', se.get("title", ""), re.IGNORECASE)
                 num = int(m.group(1)) if m else None
                 if num is None:
@@ -72,23 +86,20 @@ async def sync_episodes_from_anilist(content_id: int, db: AsyncSession = Depends
                     ))
                     existing_numbers.add(num)
         else:
-            # Streaming yok, sayısal oluştur
             total = detail.get("total_episodes") or (c.total_episodes or 0)
             for i in range(1, total + 1):
                 if i not in existing_numbers:
-                    new_episodes.append(Episode(
-                        content_id=content_id, number=i,
-                        is_watched=False, is_new=False,
-                    ))
+                    new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
+
     else:
-        # manga / manhwa: chapter numaraları oluştur (max 500)
+        # AniList manga/manhwa sync
+        detail = await anilist.get_detail(ext)
+        if not detail:
+            raise HTTPException(502, "AniList'ten veri alınamadı")
         total = min(detail.get("total_chapters") or (c.total_chapters or 0), 500)
         for i in range(1, total + 1):
             if i not in existing_numbers:
-                new_episodes.append(Episode(
-                    content_id=content_id, number=i,
-                    is_watched=False, is_new=False,
-                ))
+                new_episodes.append(Episode(content_id=content_id, number=i, is_watched=False, is_new=False))
 
     if new_episodes:
         db.add_all(new_episodes)
@@ -172,40 +183,56 @@ async def _check_one(content: Content, db: AsyncSession) -> int:
     if not content.external_id or content.type == "game":
         return 0
 
-    detail = await anilist.get_detail(content.external_id)
-    if not detail:
-        return 0
+    ext = content.external_id
+    api_count = 0
+    source = "AniList"
 
-    # Anime: episodes, Manga/Manhwa: chapters
-    if content.type == "anime":
-        api_count = detail.get("total_episodes") or 0
-        db_count = content.total_episodes or 0
+    if ext.startswith("mdx:"):
+        # MangaDex chapter count
+        count = await mangadex.get_chapter_count(ext[4:])
+        api_count = count or 0
+        source = "MangaDex"
+    elif ext.startswith("mal:"):
+        # MAL — chapter/episode count via public API
+        cfg = get_config()
+        mal_client_id = cfg.get("mal_client_id", "")
+        if not mal_client_id:
+            return 0
+        from backend.scraper import mal as mal_scraper
+        count = await mal_scraper.get_chapter_count(ext[4:], content.type, mal_client_id)
+        api_count = count or 0
+        source = "MAL"
     else:
-        api_count = detail.get("total_chapters") or 0
-        db_count = content.total_chapters or 0
+        # AniList
+        detail = await anilist.get_detail(ext)
+        if not detail:
+            return 0
+        if content.type == "anime":
+            api_count = detail.get("total_episodes") or 0
+        else:
+            api_count = detail.get("total_chapters") or 0
+        source = "AniList"
+
+    db_count = (content.total_episodes if content.type == "anime" else content.total_chapters) or 0
 
     if api_count <= db_count or api_count == 0:
         return 0
 
-    new_count = api_count - db_count
-    # Update kaydı oluştur
-    u = Update(
+    db.add(Update(
         content_id=content.id,
         episode_number=api_count,
-        site_name="AniList",
+        site_name=source,
         detected_at=datetime.utcnow(),
         is_read=False,
-    )
-    db.add(u)
+    ))
 
-    # Content'i güncelle
     if content.type == "anime":
         content.total_episodes = api_count
     else:
         content.total_chapters = api_count
     content.updated_at = datetime.utcnow()
 
-    return new_count
+    return api_count - db_count
 
 
 @router.post("/check-updates")
