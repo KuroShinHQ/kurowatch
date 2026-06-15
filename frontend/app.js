@@ -924,11 +924,17 @@
     }
 
     // MAL kaydet butonu
+    const malSecret = document.getElementById('settings-mal-client-secret');
+    if (cfg.mal_client_secret) {
+      if (malSecret) malSecret.placeholder = '••••••••••••••••••••••••••••••••';
+    }
     const malSaveBtn = document.getElementById('settings-mal-save');
     if (malSaveBtn) {
       malSaveBtn.onclick = async function() {
         try {
-          await apiPost('/api/settings', { mal_client_id: malClientId ? malClientId.value.trim() : '' });
+          const patch = { mal_client_id: malClientId ? malClientId.value.trim() : '' };
+          if (malSecret && malSecret.value.trim()) patch.mal_client_secret = malSecret.value.trim();
+          await apiPost('/api/settings', patch);
           this.textContent = 'Kaydedildi ✓';
           setTimeout(() => { this.textContent = 'Kaydet'; }, 2000);
         } catch(e) { alert('Kayıt hatası: ' + e.message); }
