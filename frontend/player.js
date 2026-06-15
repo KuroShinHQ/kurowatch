@@ -184,9 +184,51 @@
     }
   }
 
+  // ── Skip Intro ───────────────────────────────────────────────────
+  const _intro = {
+    start: null,
+    end:   null,
+
+    async load(contentId, episodeNumber) {
+      this.start = null;
+      this.end   = null;
+      const skipBtn = document.getElementById('skip-intro-btn');
+      if (skipBtn) skipBtn.classList.add('hidden');
+      if (!contentId || !episodeNumber) return;
+      try {
+        const r = await fetch(`${API}/api/analyze/intro/${contentId}/${episodeNumber}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        if (d.found) {
+          this.start = d.start;
+          this.end   = d.end;
+        }
+      } catch {}
+    },
+
+    tick(currentTime) {
+      const btn = document.getElementById('skip-intro-btn');
+      if (!btn) return;
+      if (this.start !== null && currentTime >= this.start && currentTime < this.end) {
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.add('hidden');
+      }
+    },
+
+    skip() {
+      const video = document.getElementById('player-video');
+      if (video && this.end !== null) {
+        video.currentTime = this.end;
+      }
+      const btn = document.getElementById('skip-intro-btn');
+      if (btn) btn.classList.add('hidden');
+    },
+  };
+
   // ── Video Player ─────────────────────────────────────────────────
   const _player = {
-    open: function (jobId, title) {
+    open: function (jobId, title, contentId, episodeNumber) {
       const modal = document.getElementById('modal-player');
       const video = document.getElementById('player-video');
       const src   = document.getElementById('player-source');
@@ -203,7 +245,12 @@
 
       // Daisy-chain tetikleyici: %50 oynandığında sonraki bölüm kuyruğa alınır
       video.dataset.jobId = jobId;
+      video.dataset.contentId = contentId || '';
+      video.dataset.episodeNumber = episodeNumber || '';
       video._daisyTriggered = false;
+
+      // Skip Intro — intro zamanlarını yükle
+      _intro.load(contentId, episodeNumber);
     },
 
     close: function () {
@@ -212,44 +259,53 @@
       if (video) { video.pause(); video.src = ''; }
       if (modal) { modal.classList.add('hidden'); modal.classList.remove('open'); }
       document.body.style.overflow = '';
+      const skipBtn = document.getElementById('skip-intro-btn');
+      if (skipBtn) skipBtn.classList.add('hidden');
     },
 
     openVideo: function (jobId, title) {
-      this.open(jobId, title);
+      const job = _jobs[jobId];
+      const contentId = job ? job.content_id : null;
+      const epNum     = job ? job.episode_number : null;
+      this.open(jobId, title, contentId, epNum);
     },
   };
 
-  // Daisy-chain: zaman güncellemede %50 geçilince N+1 kuyruğa al
+  // timeupdate: Skip Intro göster/gizle + Daisy-chain
   document.addEventListener('timeupdate', function (e) {
     const video = e.target;
-    if (!video || video.tagName !== 'VIDEO' || video._daisyTriggered) return;
-    if (!video.duration || video.duration === 0) return;
-    const pct = (video.currentTime / video.duration) * 100;
-    if (pct < 50) return;
-    video._daisyTriggered = true;
+    if (!video || video.tagName !== 'VIDEO') return;
 
-    const jobId = parseInt(video.dataset.jobId, 10);
-    const job = _jobs[jobId];
-    if (!job) return;
+    // Skip Intro tick
+    _intro.tick(video.currentTime);
 
-    const nextEp = job.episode_number + 1;
-    // Zaten kuyrukta/aktif/tamamlanmış mı?
-    const exists = Object.values(_jobs).some(
-      j => j.content_id === job.content_id && j.episode_number === nextEp
-    );
-    if (exists) return;
-
-    // Episode tablosundan URL al
-    fetch(API + '/api/content/' + job.content_id + '/episodes')
-      .then(r => r.json())
-      .then(eps => {
-        const next = eps.find(e => e.number === nextEp);
-        if (next && next.url) {
-          startDownload(job.content_id, job.content_title, job.media_type,
-                        nextEp, next.url, job.quality || '720p');
+    // Daisy-chain: %50 oynandığında sonraki bölüm kuyruğa al
+    if (!video._daisyTriggered && video.duration > 0) {
+      const pct = (video.currentTime / video.duration) * 100;
+      if (pct >= 50) {
+        video._daisyTriggered = true;
+        const jobId = parseInt(video.dataset.jobId, 10);
+        const job = _jobs[jobId];
+        if (job) {
+          const nextEp = job.episode_number + 1;
+          const exists = Object.values(_jobs).some(
+            j => j.content_id === job.content_id && j.episode_number === nextEp
+          );
+          if (!exists) {
+            fetch(API + '/api/content/' + job.content_id + '/episodes')
+              .then(r => r.json())
+              .then(eps => {
+                const next = eps.find(e => e.number === nextEp);
+                if (next && next.url) {
+                  startDownload(job.content_id, job.content_title, job.media_type,
+                                nextEp, next.url, job.quality || '720p');
+                }
+              })
+              .catch(() => {});
+          }
         }
-      })
-      .catch(() => {});
+      }
+    }
   }, true);
 
   // ── Manga Reader ─────────────────────────────────────────────────
@@ -340,10 +396,20 @@
   // ── Dışa Aç ──────────────────────────────────────────────────────
   window.kuroPlayer   = _player;
   window.kuroReader   = _reader;
+  window.kuroIntro    = _intro;
   window.kuroDownload = {
     start:  startDownload,
     cancel: cancelJob,
     render: _renderDownloadScreen,
+    analyzeIntro: async function (contentId) {
+      try {
+        const r = await fetch(`${API}/api/analyze/intro/${contentId}`, { method: 'POST' });
+        const d = await r.json();
+        alert(`İntro analizi başladı: ${d.episode_count} bölüm. Birkaç dakika içinde tamamlanır.`);
+      } catch (err) {
+        alert('Analiz başlatılamadı: ' + err.message);
+      }
+    },
   };
 
   // ── Başlat ───────────────────────────────────────────────────────
@@ -353,6 +419,10 @@
     // Player kapat
     const playerClose = document.getElementById('player-close');
     if (playerClose) playerClose.addEventListener('click', () => _player.close());
+
+    // Skip Intro butonu
+    const skipIntroBtn = document.getElementById('skip-intro-btn');
+    if (skipIntroBtn) skipIntroBtn.addEventListener('click', () => _intro.skip());
 
     // Reader kapat
     const readerClose = document.getElementById('reader-close');
