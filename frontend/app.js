@@ -1163,7 +1163,7 @@
         'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
         'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
         '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-        readLabel + ' — ' + escapeHtml(primarySite.site_name) + '</a>'
+        readLabel + ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./,''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) + '</a>'
       : '';
 
     const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
@@ -1322,8 +1322,11 @@
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span> Yükleniyor...';
     try {
       const res = await apiPost('/api/content/' + cid + '/episodes/sync', {});
-      const msg = res.synced > 0 ? res.synced + ' bölüm yüklendi' : 'Yeni bölüm yok';
-      showToast(msg, res.synced > 0 ? 'success' : 'info');
+      const total = res.episodes ? res.episodes.length : 0;
+      const msg = res.synced > 0
+        ? res.synced + ' bölüm yüklendi (' + total + ' toplam)'
+        : total > 0 ? total + ' bölüm zaten güncel' : 'Bölüm bulunamadı';
+      showToast(msg, res.synced > 0 ? 'success' : (total > 0 ? 'info' : 'error'));
       renderDetail(cid);
     } catch (err) {
       showToast('Yükleme hatası: ' + err.message, 'error');
