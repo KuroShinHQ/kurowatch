@@ -1024,12 +1024,21 @@ document.addEventListener('DOMContentLoaded', function() {
     <span class="text-xs text-[#9090b0]">ESC ile kapat</span>
   </div>
   <!-- Video -->
-  <div class="flex-1 flex items-center justify-center bg-black overflow-hidden">
+  <div class="flex-1 flex items-center justify-center bg-black overflow-hidden relative">
     <video id="player-video" class="max-w-full max-h-full w-full" controls preload="metadata"
            style="background:#000;outline:none;">
       <source id="player-source" src="" type="video/mp4">
       Tarayıcınız video oynatmayı desteklemiyor.
     </video>
+    <!-- Skip Intro Butonu -->
+    <button id="skip-intro-btn"
+      class="hidden absolute bottom-16 right-6 px-5 py-2.5 rounded-xl
+             bg-[#0d0d1a]/90 border border-[#00d4ff]/60 text-[#00d4ff]
+             text-sm font-medium backdrop-blur-sm hover:bg-[#00d4ff]/20
+             transition-all duration-200 shadow-lg z-10"
+      style="box-shadow:0 0 16px rgba(0,212,255,0.25)">
+      ⏭ İntroyu Atla
+    </button>
   </div>
 </div>
 

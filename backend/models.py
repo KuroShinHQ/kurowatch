@@ -98,3 +98,16 @@ class ContentTag(Base):
 
     content: Mapped["Content"] = relationship("Content", back_populates="tags")
     tag:     Mapped["Tag"]     = relationship("Tag",     back_populates="contents")
+
+
+class IntroTimestamp(Base):
+    """FAZ-4: Chromaprint ile tespit edilen intro başlangıç/bitiş zamanları."""
+    __tablename__ = "intro_timestamp"
+
+    id:             Mapped[int]   = mapped_column(Integer, primary_key=True, autoincrement=True)
+    content_id:     Mapped[int]   = mapped_column(Integer, nullable=False)
+    episode_number: Mapped[int]   = mapped_column(Integer, nullable=False)
+    intro_start:    Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
+    intro_end:      Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
+    confidence:     Mapped[float] = mapped_column(Float,   nullable=False, default=1.0)
+    created_at:     Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)

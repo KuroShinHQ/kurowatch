@@ -25,8 +25,19 @@ async def init_db():
     from sqlalchemy import text
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        # Migration: genres kolonu (mevcut DB'ye ekle)
+        # Migration: genres kolonu
         try:
             await conn.execute(text("ALTER TABLE content ADD COLUMN genres TEXT"))
         except Exception:
-            pass  # zaten var
+            pass
+        # Migration: FAZ-4 intro_timestamp tablosu (create_all ile zaten oluşur, sadece safeguard)
+        try:
+            await conn.execute(text(
+                "CREATE TABLE IF NOT EXISTS intro_timestamp "
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT, content_id INTEGER NOT NULL, "
+                "episode_number INTEGER NOT NULL, intro_start FLOAT NOT NULL, "
+                "intro_end FLOAT NOT NULL, confidence FLOAT NOT NULL DEFAULT 1.0, "
+                "created_at DATETIME NOT NULL)"
+            ))
+        except Exception:
+            pass
