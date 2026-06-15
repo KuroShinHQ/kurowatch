@@ -184,6 +184,182 @@
     }
   }
 
+  // ── Ambient Mode ─────────────────────────────────────────────────
+  const _ambient = {
+    _raf: null,
+    active: false,
+
+    toggle() {
+      this.active = !this.active;
+      const canvas = document.getElementById('ambient-canvas');
+      const btn    = document.getElementById('player-ambient-btn');
+      if (!canvas) return;
+      if (this.active) {
+        canvas.classList.remove('hidden');
+        if (btn) btn.classList.add('text-[#00d4ff]');
+        this._loop();
+      } else {
+        canvas.classList.add('hidden');
+        if (btn) btn.classList.remove('text-[#00d4ff]');
+        if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
+      }
+    },
+
+    _loop() {
+      const video  = document.getElementById('player-video');
+      const canvas = document.getElementById('ambient-canvas');
+      if (!canvas || !video || !this.active) return;
+      const ctx = canvas.getContext('2d');
+      if (canvas.width !== 64) { canvas.width = 64; canvas.height = 36; }
+      if (video.readyState >= 2) ctx.drawImage(video, 0, 0, 64, 36);
+      this._raf = requestAnimationFrame(() => { setTimeout(() => this._loop(), 80); });
+    },
+
+    stop() {
+      this.active = false;
+      const canvas = document.getElementById('ambient-canvas');
+      if (canvas) canvas.classList.add('hidden');
+      const btn = document.getElementById('player-ambient-btn');
+      if (btn) btn.classList.remove('text-[#00d4ff]');
+      if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; }
+    },
+  };
+
+  // ── Theater Mode ─────────────────────────────────────────────────
+  let _theaterActive = false;
+  function _toggleTheater() {
+    const modal = document.getElementById('modal-player');
+    const btn   = document.getElementById('player-theater-btn');
+    if (!modal) return;
+    _theaterActive = !_theaterActive;
+    modal.classList.toggle('player-theater', _theaterActive);
+    if (btn) btn.classList.toggle('text-[#00d4ff]', _theaterActive);
+  }
+
+  // ── Picture-in-Picture ───────────────────────────────────────────
+  async function _togglePiP() {
+    const video = document.getElementById('player-video');
+    if (!video) return;
+    try {
+      if (document.pictureInPictureElement) {
+        await document.exitPictureInPicture();
+      } else {
+        await video.requestPictureInPicture();
+      }
+    } catch {}
+  }
+
+  // ── Mini Player ──────────────────────────────────────────────────
+  let _miniActive = false;
+  function _toggleMini() {
+    const modal = document.getElementById('modal-player');
+    const btn   = document.getElementById('player-mini-btn');
+    if (!modal) return;
+    _miniActive = !_miniActive;
+    modal.classList.toggle('player-mini', _miniActive);
+    if (btn) btn.classList.toggle('text-[#00d4ff]', _miniActive);
+  }
+
+  // ── Fullscreen ───────────────────────────────────────────────────
+  function _toggleFullscreen() {
+    const modal = document.getElementById('modal-player');
+    const btn   = document.getElementById('player-fullscreen-btn');
+    if (!modal) return;
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+      if (btn) btn.querySelector('span').textContent = 'fullscreen';
+    } else {
+      (modal.requestFullscreen || modal.webkitRequestFullscreen).call(modal).catch(() => {});
+      if (btn) btn.querySelector('span').textContent = 'fullscreen_exit';
+    }
+  }
+
+  // ── Subtitle (CC) ────────────────────────────────────────────────
+  let _ccActive = false;
+  async function _loadSubtitles(jobId) {
+    const track = document.getElementById('subtitle-track');
+    if (!track) return;
+    track.src = '';
+    try {
+      const r = await fetch(API + '/api/download/subtitles/' + jobId);
+      if (!r.ok) return;
+      const blob = await r.blob();
+      track.src = URL.createObjectURL(blob);
+      track.mode = 'hidden';
+    } catch {}
+  }
+
+  function _toggleCC() {
+    const video = document.getElementById('player-video');
+    const btn   = document.getElementById('player-cc-btn');
+    if (!video || !video.textTracks.length) return;
+    _ccActive = !_ccActive;
+    video.textTracks[0].mode = _ccActive ? 'showing' : 'hidden';
+    if (btn) btn.classList.toggle('text-[#00d4ff]', _ccActive);
+  }
+
+  // ── Auto-Next Episode ────────────────────────────────────────────
+  const _autoNext = {
+    _timer: null,
+    _shown: false,
+    _nextJobId: null,
+
+    reset() {
+      clearInterval(this._timer);
+      this._timer = null;
+      this._shown = false;
+      this._nextJobId = null;
+      const overlay = document.getElementById('autonext-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      const bar = document.getElementById('autonext-bar');
+      if (bar) bar.style.width = '0%';
+      const count = document.getElementById('autonext-count');
+      if (count) count.textContent = '10';
+    },
+
+    check(currentTime, duration) {
+      if (!duration || this._shown || duration - currentTime > 30) return;
+      const video = document.getElementById('player-video');
+      if (!video) return;
+      const jobId = parseInt(video.dataset.jobId, 10);
+      const job   = _jobs[jobId];
+      if (!job) return;
+      const nextEp  = job.episode_number + 1;
+      const nextJob = Object.values(_jobs).find(
+        j => j.content_id === job.content_id && j.episode_number === nextEp && j.status === 'done'
+      );
+      if (!nextJob) return;
+
+      this._shown    = true;
+      this._nextJobId = nextJob.id;
+      let count = 10;
+
+      const overlay  = document.getElementById('autonext-overlay');
+      const titleEl  = document.getElementById('autonext-title');
+      const countEl  = document.getElementById('autonext-count');
+      const bar      = document.getElementById('autonext-bar');
+
+      if (titleEl)  titleEl.textContent  = job.content_title + ' — Bölüm ' + nextEp;
+      if (overlay)  overlay.classList.remove('hidden');
+
+      this._timer = setInterval(() => {
+        count--;
+        if (countEl) countEl.textContent = count;
+        if (bar)     bar.style.width = ((10 - count) * 10) + '%';
+        if (count <= 0) {
+          clearInterval(this._timer);
+          const nId  = this._nextJobId;
+          const nJob = nId !== null ? _jobs[nId] : null;
+          this.reset();
+          if (nJob) {
+            _player.close();
+            setTimeout(() => _player.openVideo(nJob.id, nJob.content_title + ' — Bölüm ' + nJob.episode_number), 200);
+          }
+        }
+      }, 1000);
+    },
+  };
+
   // ── Skip Intro ───────────────────────────────────────────────────
   const _intro = {
     start: null,
@@ -238,29 +414,45 @@
       src.src = API + '/api/download/serve/' + jobId;
       video.load();
       if (ttl) ttl.textContent = title || '';
+
+      // Mini modunu çıkar, tam ekrana aç
+      modal.classList.remove('player-mini', 'player-theater');
+      _miniActive    = false;
+      _theaterActive = false;
       modal.classList.remove('hidden');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
       video.play().catch(() => {});
 
-      // Daisy-chain tetikleyici: %50 oynandığında sonraki bölüm kuyruğa alınır
-      video.dataset.jobId = jobId;
-      video.dataset.contentId = contentId || '';
+      video.dataset.jobId        = jobId;
+      video.dataset.contentId    = contentId || '';
       video.dataset.episodeNumber = episodeNumber || '';
-      video._daisyTriggered = false;
+      video._daisyTriggered      = false;
 
-      // Skip Intro — intro zamanlarını yükle
       _intro.load(contentId, episodeNumber);
+      _autoNext.reset();
+      _loadSubtitles(jobId);
+      _ccActive = false;
+      const ccBtn = document.getElementById('player-cc-btn');
+      if (ccBtn) ccBtn.classList.remove('text-[#00d4ff]');
     },
 
     close: function () {
       const modal = document.getElementById('modal-player');
       const video = document.getElementById('player-video');
       if (video) { video.pause(); video.src = ''; }
-      if (modal) { modal.classList.add('hidden'); modal.classList.remove('open'); }
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('open', 'player-mini', 'player-theater');
+      }
       document.body.style.overflow = '';
       const skipBtn = document.getElementById('skip-intro-btn');
       if (skipBtn) skipBtn.classList.add('hidden');
+      _ambient.stop();
+      _autoNext.reset();
+      _miniActive    = false;
+      _theaterActive = false;
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     },
 
     openVideo: function (jobId, title) {
@@ -271,13 +463,13 @@
     },
   };
 
-  // timeupdate: Skip Intro göster/gizle + Daisy-chain
+  // timeupdate: Skip Intro + Auto-Next + Daisy-chain
   document.addEventListener('timeupdate', function (e) {
     const video = e.target;
     if (!video || video.tagName !== 'VIDEO') return;
 
-    // Skip Intro tick
     _intro.tick(video.currentTime);
+    _autoNext.check(video.currentTime, video.duration);
 
     // Daisy-chain: %50 oynandığında sonraki bölüm kuyruğa al
     if (!video._daisyTriggered && video.duration > 0) {
@@ -295,7 +487,7 @@
             fetch(API + '/api/content/' + job.content_id + '/episodes')
               .then(r => r.json())
               .then(eps => {
-                const next = eps.find(e => e.number === nextEp);
+                const next = eps.find(ep => ep.number === nextEp);
                 if (next && next.url) {
                   startDownload(job.content_id, job.content_title, job.media_type,
                                 nextEp, next.url, job.quality || '720p');
@@ -342,6 +534,10 @@
       if (modal) { modal.classList.add('hidden'); modal.classList.remove('open'); }
       document.body.style.overflow = '';
       this._pages = [];
+      if (this._autoNextTimer) { clearInterval(this._autoNextTimer); this._autoNextTimer = null; }
+      const overlay = document.getElementById('reader-autonext');
+      if (overlay) overlay.remove();
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     },
 
     toggleMode: function () {
@@ -382,8 +578,58 @@
     },
 
     next: function () {
-      if (this._current < this._pages.length - 1) { this._current++; this._render(); }
-      document.getElementById('modal-reader').scrollTop = 0;
+      if (this._current < this._pages.length - 1) {
+        this._current++;
+        this._render();
+        document.getElementById('modal-reader').scrollTop = 0;
+      } else if (!this._webtoon) {
+        // Son sayfa → auto-next chapter
+        this._triggerAutoNextChapter();
+      }
+    },
+
+    toggleFullscreen() {
+      const modal = document.getElementById('modal-reader');
+      const btn   = document.getElementById('reader-fullscreen-btn');
+      if (!modal) return;
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+        if (btn) btn.querySelector('span').textContent = 'fullscreen';
+      } else {
+        (modal.requestFullscreen || modal.webkitRequestFullscreen).call(modal).catch(() => {});
+        if (btn) btn.querySelector('span').textContent = 'fullscreen_exit';
+      }
+    },
+
+    _autoNextTimer: null,
+    _triggerAutoNextChapter() {
+      if (this._autoNextTimer) return;
+      let count = 5;
+      const overlay = document.createElement('div');
+      overlay.id = 'reader-autonext';
+      overlay.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(13,13,26,0.92);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:12px 20px;z-index:20;display:flex;align-items:center;gap:12px;backdrop-filter:blur(8px);font-size:13px;';
+      overlay.innerHTML = '<span style="color:#9090b0">Sonraki bölüm: <strong id="rc-count" style="color:#00d4ff">' + count + '</strong>s</span>'
+        + '<button id="rc-cancel" style="color:#9090b0;background:none;border:none;cursor:pointer;font-size:12px;padding:4px 8px;border-radius:6px;">İptal</button>';
+      document.body.appendChild(overlay);
+
+      document.getElementById('rc-cancel').onclick = () => {
+        clearInterval(this._autoNextTimer);
+        this._autoNextTimer = null;
+        overlay.remove();
+      };
+
+      this._autoNextTimer = setInterval(() => {
+        count--;
+        const el = document.getElementById('rc-count');
+        if (el) el.textContent = count;
+        if (count <= 0) {
+          clearInterval(this._autoNextTimer);
+          this._autoNextTimer = null;
+          overlay.remove();
+          // Sonraki bölüm yükle (jobId context reader close ile kaybolur — şimdilik kapat)
+          this.close();
+        }
+      }, 1000);
     },
   };
 
@@ -416,46 +662,102 @@
   document.addEventListener('DOMContentLoaded', function () {
     connectDownloadWS();
 
-    // Player kapat
-    const playerClose = document.getElementById('player-close');
-    if (playerClose) playerClose.addEventListener('click', () => _player.close());
+    // ── Player Butonları ──────────────────────────────────────────
+    const _pb = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
+    _pb('player-close',        () => _player.close());
+    _pb('skip-intro-btn',      () => _intro.skip());
+    _pb('player-ambient-btn',  () => _ambient.toggle());
+    _pb('player-theater-btn',  () => _toggleTheater());
+    _pb('player-pip-btn',      () => _togglePiP());
+    _pb('player-mini-btn',     () => _toggleMini());
+    _pb('player-fullscreen-btn', () => _toggleFullscreen());
+    _pb('player-cc-btn',       () => _toggleCC());
+    _pb('autonext-cancel',     () => _autoNext.reset());
 
-    // Skip Intro butonu
-    const skipIntroBtn = document.getElementById('skip-intro-btn');
-    if (skipIntroBtn) skipIntroBtn.addEventListener('click', () => _intro.skip());
+    // ── Reader Butonları ──────────────────────────────────────────
+    _pb('reader-close',          () => _reader.close());
+    _pb('reader-mode-btn',       () => _reader.toggleMode());
+    _pb('reader-prev',           () => _reader.prev());
+    _pb('reader-next',           () => _reader.next());
+    _pb('reader-fullscreen-btn', () => _reader.toggleFullscreen());
 
-    // Reader kapat
-    const readerClose = document.getElementById('reader-close');
-    if (readerClose) readerClose.addEventListener('click', () => _reader.close());
+    // ── Reader Swipe ──────────────────────────────────────────────
+    let _swipeStartX = 0, _swipeStartY = 0;
+    const readerEl = document.getElementById('modal-reader');
+    if (readerEl) {
+      readerEl.addEventListener('touchstart', function (e) {
+        _swipeStartX = e.touches[0].clientX;
+        _swipeStartY = e.touches[0].clientY;
+      }, { passive: true });
 
-    // Reader mod değiştir
-    const readerMode = document.getElementById('reader-mode-btn');
-    if (readerMode) readerMode.addEventListener('click', () => _reader.toggleMode());
+      readerEl.addEventListener('touchend', function (e) {
+        if (!_reader._pages.length || _reader._webtoon) return;
+        const dx = e.changedTouches[0].clientX - _swipeStartX;
+        const dy = e.changedTouches[0].clientY - _swipeStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+          if (dx < 0) _reader.next(); else _reader.prev();
+        }
+      }, { passive: true });
+    }
 
-    // Reader sayfa nav
-    const readerPrev = document.getElementById('reader-prev');
-    const readerNext = document.getElementById('reader-next');
-    if (readerPrev) readerPrev.addEventListener('click', () => _reader.prev());
-    if (readerNext) readerNext.addEventListener('click', () => _reader.next());
-
-    // Keyboard shortcuts
+    // ── Keyboard Shortcuts ────────────────────────────────────────
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        const playerModal = document.getElementById('modal-player');
-        const readerModal = document.getElementById('modal-reader');
-        if (playerModal && playerModal.classList.contains('open')) { _player.close(); return; }
-        if (readerModal && readerModal.classList.contains('open')) { _reader.close(); return; }
-      }
-      const readerModal = document.getElementById('modal-reader');
-      if (!readerModal || !readerModal.classList.contains('open')) return;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') _reader.next();
-      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   _reader.prev();
-    });
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-    // downloads ekranı açılınca render et
-    const origShow = window.kuroNav && window.kuroNav.show;
-    // patch showScreen: downloads ekranı açılınca _renderDownloadScreen çağrılsın
-    // (app.js zaten showScreen içinde id'ye göre render çağırıyor, orayı güncelleyeceğiz)
+      const playerModal = document.getElementById('modal-player');
+      const readerModal = document.getElementById('modal-reader');
+      const playerOpen  = playerModal && playerModal.classList.contains('open');
+      const readerOpen  = readerModal && readerModal.classList.contains('open');
+
+      if (e.key === 'Escape') {
+        if (playerOpen) { _player.close(); return; }
+        if (readerOpen) { _reader.close(); return; }
+      }
+
+      if (playerOpen) {
+        const video = document.getElementById('player-video');
+        if (!video) return;
+        switch (e.key) {
+          case ' ': case 'k': case 'K':
+            e.preventDefault();
+            video.paused ? video.play().catch(() => {}) : video.pause();
+            break;
+          case 'f': case 'F': e.preventDefault(); _toggleFullscreen(); break;
+          case 't': case 'T': e.preventDefault(); _toggleTheater(); break;
+          case 'i': case 'I': e.preventDefault(); _togglePiP(); break;
+          case 'm': case 'M': e.preventDefault(); _toggleMini(); break;
+          case 'a': case 'A': e.preventDefault(); _ambient.toggle(); break;
+          case 'c': case 'C': e.preventDefault(); _toggleCC(); break;
+          case 'ArrowLeft':  case 'j': case 'J':
+            e.preventDefault();
+            video.currentTime = Math.max(0, video.currentTime - 10);
+            break;
+          case 'ArrowRight': case 'l': case 'L':
+            e.preventDefault();
+            video.currentTime = Math.min(video.duration || 0, video.currentTime + 10);
+            break;
+          case '[':
+            e.preventDefault();
+            video.playbackRate = Math.max(0.25, +(video.playbackRate - 0.25).toFixed(2));
+            break;
+          case ']':
+            e.preventDefault();
+            video.playbackRate = Math.min(3, +(video.playbackRate + 0.25).toFixed(2));
+            break;
+        }
+        if (e.key >= '0' && e.key <= '9') {
+          e.preventDefault();
+          video.currentTime = (video.duration || 0) * parseInt(e.key, 10) / 10;
+        }
+        return;
+      }
+
+      if (readerOpen) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); _reader.next(); }
+        if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); _reader.prev(); }
+        if (e.key === 'f' || e.key === 'F') { e.preventDefault(); _reader.toggleFullscreen(); }
+      }
+    });
   });
 
 })();

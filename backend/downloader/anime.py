@@ -21,6 +21,11 @@ async def download_anime(
         "--merge-output-format", "mp4",
         "--newline",
         "--no-warnings",
+        "--write-sub",
+        "--write-auto-sub",
+        "--sub-lang", "tr,tr-TR,en",
+        "--convert-subs", "vtt",
+        "--sub-format", "vtt",
         "-o", output_path + ".%(ext)s",
         url,
     ]
