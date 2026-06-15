@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-19) · **Aktif sürüm:** v0.8.0 (FAZ-4+ADB) · **Son commit:** `4bd8205`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-20) · **Aktif sürüm:** v0.9.0 (FAZ-3 Gelişmiş Player) · **Son commit:** `668bf66`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -9,6 +9,20 @@
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+EN SON YAPILAN (15 Haz sohbet-20) — FAZ-3 Gelişmiş Player Kontrolleri:
+
+✅ 668bf66 — FAZ-3 Player gelişmiş kontroller:
+  - Ambient Mode: canvas blur arkaplan video yansıtır (A tuşu)
+  - Theater Mode: header auto-hide, immersive izleme (T tuşu)
+  - Picture-in-Picture: requestPictureInPicture API (I tuşu)
+  - Mini Player: sağ alt köşe 320×200 position:fixed (M tuşu)
+  - Klavye seti: Space/K (duraklat) / F (fullscreen) / T / I / M / A / C (CC)
+                 ←→/J/L (±10sn) / [/] (hız ±0.25x) / 0-9 (seek %)
+  - Auto-next episode: 30sn kala overlay + 10sn geri sayım → otomatik oynat
+  - CC/Altyazı: VTT track yükleme + GET /api/download/subtitles/{id}
+  - yt-dlp: --write-sub tr/en + --convert-subs vtt eklendi
+  - Reader: swipe (touch, sayfa modu) + auto-next chapter (5sn) + fullscreen (F)
 
 EN SON YAPILAN (15 Haz sohbet-19) — D+E+F tamamlandı:
 
@@ -33,18 +47,24 @@ F) FAZ-4 Chromaprint intro tespiti — commit 4bd8205
 
 ⏭️ SIRADAKI GÖREV (sohbet-20):
 - Push (git push origin main) — her iki repo için
-- Diziwatch/Crunchyroll gerçek URL canlı testi (kullanıcı URL sağlarsa)
-- FAZ-5 (Çeviri motoru) veya Lord'un belirleyeceği yön
+⏭️ SIRADAKI GÖREV (sohbet-21):
+- FAZ-4 Outro tespiti (FFmpeg black frame) VEYA
+- FAZ-5 Manga Çevirisi (GPU zorunlu) VEYA
+- FAZ-6 Browser Extension — Lord belirleyecek
+- Push (git push origin main) — Lord isteyince
 
 BAŞLATMA:
-wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning"
+wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 &"
 
 AKTİF DOSYALAR:
-- backend/analyzer/chromaprint.py  → fpcalc wrapper (yeni FAZ-4)
-- backend/analyzer/intro_detector.py → LCS karşılaştırma (yeni FAZ-4)
-- backend/routers/analyze.py        → analyze router (yeni FAZ-4)
-- frontend/player.js                → Skip Intro butonu (güncellendi)
-- Kuroshin.bat (ana repo)           → [10/3] ADB mobile (güncellendi)
+- frontend/player.js                → FAZ-3 gelişmiş kontroller (sohbet-20)
+- frontend/index.html               → Player modal genişletildi (sohbet-20)
+- frontend/style.css                → Theater/Mini CSS (sohbet-20)
+- backend/routers/download.py       → /subtitles/{id} endpoint (sohbet-20)
+- backend/downloader/anime.py       → --write-sub yt-dlp flag (sohbet-20)
+- backend/analyzer/chromaprint.py   → fpcalc wrapper (FAZ-4)
+- backend/analyzer/intro_detector.py → sliding window (FAZ-4)
+- backend/routers/analyze.py        → analyze router (FAZ-4)
 ```
 
 ---
