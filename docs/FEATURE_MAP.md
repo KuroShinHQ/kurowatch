@@ -667,21 +667,22 @@ ANİME İNDİRİCİ:
 VIDEO PLAYER:
 [x] HTML5 <video> + modal overlay
 [x] Skip Intro butonu (#skip-intro-btn, FAZ-4 ile entegre)
-[ ] Ambient Mode — video-ambient-glow
-[ ] Theater Mode (T tuşu)
-[ ] Picture-in-Picture (I tuşu, requestPictureInPicture)
-[ ] Mini Player (M tuşu, position:fixed köşe)
-[ ] Klavye seti: Space/K/F/T/I/M/←→/J/L/[/]/1-9
-[ ] Auto-next episode (30sn kala overlay + 10sn geri sayım)
-[ ] Altyazı: VTT subtitle track
+[x] Ambient Mode — canvas blur arkaplana video yansıtır (A tuşu)
+[x] Theater Mode — header auto-hide, immersive izleme (T tuşu)
+[x] Picture-in-Picture (I tuşu, requestPictureInPicture)
+[x] Mini Player — sağ alt köşe 320×200 (M tuşu)
+[x] Klavye seti: Space/K (pause) / F (fullscreen) / T (theater) / I (PiP) / M (mini) / A (ambient) / C (CC) / ←→/J/L (±10sn) / [/] (hız) / 0-9 (seek %)
+[x] Auto-next episode (30sn kala overlay + 10sn geri sayım)
+[x] Altyazı: VTT subtitle track (yt-dlp --write-sub tr/en)
+[x] Backend: GET /api/download/subtitles/{job_id}
 
 MANGA READER:
 [x] Webtoon modu (dikey scroll)
 [x] Sayfa modu (tek sayfa, ←→ nav)
-[x] Klavye: Esc/ArrowLeft/ArrowRight
-[ ] Swipe (mobil touch events)
-[ ] Auto-next chapter (son sayfa → 5sn → sonraki)
-[ ] Tam ekran toggle (F tuşu)
+[x] Klavye: Esc/ArrowLeft/ArrowRight/F
+[x] Swipe (mobil touch events — sayfa modunda)
+[x] Auto-next chapter (son sayfa → 5sn → sonraki)
+[x] Tam ekran toggle (F tuşu / reader-fullscreen-btn)
 
 FAZ-C — PWA PUSH ✅ TAMAMLANDI:
 [x] backend/push_manager.py — VAPID key + abonelik + push gönderimi

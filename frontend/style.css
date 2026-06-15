@@ -44,3 +44,34 @@
   --kw-outline:          #859398;
   --kw-outline-variant:  #3c494e;
 }
+
+/* ── Player: Theater Mode ────────────────────────────────────────── */
+#modal-player.player-theater #player-header {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#modal-player.player-theater:hover #player-header,
+#modal-player.player-theater #player-header:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Player: Mini Player ─────────────────────────────────────────── */
+#modal-player.player-mini {
+  inset: auto !important;
+  bottom: 1rem;
+  right: 1rem;
+  width: 320px;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.8);
+  transition: all 0.25s ease;
+}
+#modal-player.player-mini #player-header { display: none; }
+#modal-player.player-mini #player-video-wrap { flex: 1; }
+#modal-player.player-mini #player-video { max-height: 200px; }
+#modal-player.player-mini #autonext-overlay,
+#modal-player.player-mini #skip-intro-btn { display: none !important; }

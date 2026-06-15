@@ -1016,29 +1016,62 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div id="modal-player" class="modal-overlay hidden fixed inset-0 z-[200] bg-black flex flex-col">
   <!-- Header -->
-  <div class="flex items-center gap-3 px-4 py-3 bg-black/80 backdrop-blur-md border-b border-white/10 flex-shrink-0">
+  <div id="player-header" class="flex items-center gap-2 px-4 py-3 bg-black/80 backdrop-blur-md border-b border-white/10 flex-shrink-0 transition-all duration-300">
     <button id="player-close" class="w-10 h-10 flex items-center justify-center text-white hover:text-[#00d4ff] transition-colors rounded-lg hover:bg-white/10">
       <span class="material-symbols-outlined">arrow_back</span>
     </button>
     <span id="player-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
-    <span class="text-xs text-[#9090b0]">ESC ile kapat</span>
+    <div class="flex items-center gap-1">
+      <button id="player-cc-btn" title="Altyazı (C)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">closed_caption</span>
+      </button>
+      <button id="player-ambient-btn" title="Ambient Mode (A)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">blur_on</span>
+      </button>
+      <button id="player-theater-btn" title="Theater Mode (T)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">theaters</span>
+      </button>
+      <button id="player-pip-btn" title="Picture-in-Picture (I)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">picture_in_picture</span>
+      </button>
+      <button id="player-mini-btn" title="Mini Player (M)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">branding_watermark</span>
+      </button>
+      <button id="player-fullscreen-btn" title="Tam Ekran (F)" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10">
+        <span class="material-symbols-outlined text-xl">fullscreen</span>
+      </button>
+    </div>
   </div>
   <!-- Video -->
-  <div class="flex-1 flex items-center justify-center bg-black overflow-hidden relative">
+  <div id="player-video-wrap" class="flex-1 flex items-center justify-center bg-black overflow-hidden relative">
+    <canvas id="ambient-canvas" class="hidden absolute inset-0 w-full h-full pointer-events-none"
+      style="z-index:0;filter:blur(40px) saturate(1.8) brightness(0.45);transform:scale(1.12);"></canvas>
     <video id="player-video" class="max-w-full max-h-full w-full" controls preload="metadata"
-           style="background:#000;outline:none;">
+           style="background:#000;outline:none;position:relative;z-index:1;">
       <source id="player-source" src="" type="video/mp4">
-      Tarayıcınız video oynatmayı desteklemiyor.
+      <track id="subtitle-track" kind="subtitles" srclang="tr" label="Türkçe">
     </video>
     <!-- Skip Intro Butonu -->
     <button id="skip-intro-btn"
       class="hidden absolute bottom-16 right-6 px-5 py-2.5 rounded-xl
              bg-[#0d0d1a]/90 border border-[#00d4ff]/60 text-[#00d4ff]
              text-sm font-medium backdrop-blur-sm hover:bg-[#00d4ff]/20
-             transition-all duration-200 shadow-lg z-10"
-      style="box-shadow:0 0 16px rgba(0,212,255,0.25)">
+             transition-all duration-200 shadow-lg"
+      style="z-index:10;box-shadow:0 0 16px rgba(0,212,255,0.25)">
       ⏭ İntroyu Atla
     </button>
+    <!-- Auto-Next Episode Overlay -->
+    <div id="autonext-overlay" class="hidden absolute bottom-16 left-6 rounded-xl bg-[#0d0d1a]/90 border border-white/20 backdrop-blur-sm p-4" style="z-index:10;min-width:260px;">
+      <div class="text-xs text-[#9090b0] mb-1">Sonraki bölüm</div>
+      <div id="autonext-title" class="text-sm font-medium text-[#e1e0ff] mb-3 truncate"></div>
+      <div class="flex items-center gap-3">
+        <div class="flex-1 bg-white/10 rounded-full h-1 overflow-hidden">
+          <div id="autonext-bar" class="h-full bg-[#00d4ff] rounded-full transition-all duration-900" style="width:0%"></div>
+        </div>
+        <span id="autonext-count" class="text-sm font-bold text-[#00d4ff] w-6 text-right">10</span>
+        <button id="autonext-cancel" class="text-xs text-[#9090b0] hover:text-white transition-colors px-2 py-1 rounded">İptal</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1054,6 +1087,9 @@ document.addEventListener('DOMContentLoaded', function() {
     </button>
     <span id="reader-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
     <button id="reader-mode-btn" class="text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-white transition-colors min-h-[36px]">↕ Webtoon</button>
+    <button id="reader-fullscreen-btn" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10" title="Tam Ekran (F)">
+      <span class="material-symbols-outlined text-xl">fullscreen</span>
+    </button>
   </div>
   <!-- Sayfalar -->
   <div id="reader-pages" class="flex flex-col items-center gap-0 min-h-screen pb-20">

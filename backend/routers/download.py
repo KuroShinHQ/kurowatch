@@ -75,6 +75,21 @@ async def serve_video(job_id: int):
     return FileResponse(path, media_type="video/mp4", headers={"Accept-Ranges": "bytes"})
 
 
+@router.get("/download/subtitles/{job_id}")
+async def serve_subtitles(job_id: int):
+    """Video ile aynı dizindeki .vtt altyazı dosyasını sun (varsa)."""
+    job = manager.get_job(job_id)
+    if not job or job["status"] != "done":
+        raise HTTPException(404, "Bölüm hazır değil")
+    path = job.get("file_path", "")
+    base = os.path.splitext(path)[0]
+    for candidate in (base + ".tr.vtt", base + ".vtt", base + ".tr.srt", base + ".srt"):
+        if os.path.isfile(candidate):
+            mime = "text/vtt" if candidate.endswith(".vtt") else "text/plain"
+            return FileResponse(candidate, media_type=mime)
+    raise HTTPException(404, "Altyazı bulunamadı")
+
+
 @router.get("/download/pages/{job_id}")
 async def list_manga_pages(job_id: int):
     """Manga bölümündeki sayfa URL'lerini listele."""
