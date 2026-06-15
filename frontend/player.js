@@ -131,7 +131,7 @@
                      class="text-xs px-3 py-1.5 rounded-lg bg-[#00d4ff]/20 text-[#00d4ff] hover:bg-[#00d4ff]/30 transition-colors min-h-[36px]">
                      ▶ Oynat</button>`;
       } else {
-        actions = `<button onclick="window.kuroReader.open(${job.id},'${escHtml(job.content_title)} — ${ep}')"
+        actions = `<button onclick="window.kuroReader.open(${job.id},'${escHtml(job.content_title)} — ${ep}',${job.content_id},${job.episode_number})"
                      class="text-xs px-3 py-1.5 rounded-lg bg-[#ffd9a1]/20 text-[#ffd9a1] hover:bg-[#ffd9a1]/30 transition-colors min-h-[36px]">
                      📖 Oku</button>`;
       }
@@ -554,16 +554,36 @@
     _pages: [],
     _current: 0,
     _webtoon: true,
+    _trPages: null,
+    _showTr: false,
+    _contentId: null,
+    _episodeNumber: null,
 
-    open: async function (jobId, title) {
+    open: async function (jobId, title, contentId, episodeNumber) {
       const modal = document.getElementById('modal-reader');
       const ttl   = document.getElementById('reader-title');
       if (!modal) return;
+
+      this._contentId    = contentId    || null;
+      this._episodeNumber = episodeNumber || null;
+      this._trPages = null;
+      this._showTr  = false;
+
+      const toggle = document.getElementById('reader-lang-toggle');
+      if (toggle) toggle.style.display = 'none';
+      const trBtn = document.getElementById('reader-translate-btn');
+      if (trBtn) { trBtn.style.display = 'none'; trBtn.disabled = false; }
+      const trLabel = document.getElementById('reader-translate-label');
+      if (trLabel) trLabel.textContent = 'Çevir';
 
       if (ttl) ttl.textContent = title || '';
       modal.classList.remove('hidden');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
+
+      if (contentId && episodeNumber) {
+        _translate.init(contentId, episodeNumber);
+      }
 
       try {
         const r = await fetch(API + '/api/download/pages/' + jobId);
@@ -583,6 +603,8 @@
       if (modal) { modal.classList.add('hidden'); modal.classList.remove('open'); }
       document.body.style.overflow = '';
       this._pages = [];
+      this._trPages = null;
+      this._showTr  = false;
       if (this._autoNextTimer) { clearInterval(this._autoNextTimer); this._autoNextTimer = null; }
       const overlay = document.getElementById('reader-autonext');
       if (overlay) overlay.remove();
@@ -599,11 +621,13 @@
 
     _render: function () {
       const pagesEl = document.getElementById('reader-pages');
-      if (!pagesEl || this._pages.length === 0) return;
+      const pages = (this._showTr && this._trPages && this._trPages.length)
+        ? this._trPages : this._pages;
+      if (!pagesEl || pages.length === 0) return;
 
       if (this._webtoon) {
         // Dikey scroll — tüm sayfalar
-        pagesEl.innerHTML = this._pages.map((url, i) =>
+        pagesEl.innerHTML = pages.map((url, i) =>
           `<img src="${API + url}" alt="Sayfa ${i + 1}"
                 class="w-full block" loading="lazy"
                 style="max-width:800px;margin:0 auto;display:block;">`
@@ -614,10 +638,10 @@
         const nav = document.getElementById('reader-nav');
         if (nav) nav.style.display = 'flex';
         pagesEl.innerHTML = `
-          <img src="${API + this._pages[this._current]}"
+          <img src="${API + pages[this._current]}"
                alt="Sayfa ${this._current + 1}"
                class="w-full block" style="max-width:800px;margin:0 auto;display:block;">
-          <div class="text-center text-[#9090b0] text-sm py-2">${this._current + 1} / ${this._pages.length}</div>`;
+          <div class="text-center text-[#9090b0] text-sm py-2">${this._current + 1} / ${pages.length}</div>`;
       }
     },
 
@@ -682,6 +706,135 @@
     },
   };
 
+  // ── FAZ-5 Manga Çevirisi ─────────────────────────────────────────
+  const _translate = {
+    _gpu: null,     // null=kontrol edilmedi, false=yok, object=var
+    _ws:  null,
+    _contentId: null,
+    _episode:   null,
+
+    async checkGpu() {
+      if (this._gpu !== null) return this._gpu;
+      try {
+        const r = await fetch(API + '/api/system/gpu');
+        if (!r.ok) { this._gpu = false; return false; }
+        const d = await r.json();
+        this._gpu = d.available ? d : false;
+      } catch { this._gpu = false; }
+      return this._gpu;
+    },
+
+    async init(contentId, episodeNumber) {
+      this._contentId = contentId;
+      this._episode   = episodeNumber;
+
+      // Önce mevcut çeviri durumunu kontrol et
+      try {
+        const r = await fetch(`${API}/api/translate/${contentId}/${episodeNumber}`);
+        if (r.ok) {
+          const s = await r.json();
+          this._applyStatus(s);
+        }
+      } catch {}
+
+      // GPU var mı?
+      const gpu = await this.checkGpu();
+      const btn = document.getElementById('reader-translate-btn');
+      if (btn && gpu) btn.style.display = 'flex';
+    },
+
+    _applyStatus(status) {
+      const toggle = document.getElementById('reader-lang-toggle');
+      const btn    = document.getElementById('reader-translate-btn');
+      const label  = document.getElementById('reader-translate-label');
+
+      if (!status || status.status === 'not_started') {
+        if (toggle) toggle.style.display = 'none';
+        if (label) label.textContent = 'Çevir';
+        if (btn) btn.disabled = false;
+      } else if (status.status === 'translating') {
+        if (toggle) toggle.style.display = 'none';
+        const pct = status.pages_total > 0 ? `${status.pages_done}/${status.pages_total}` : '…';
+        if (label) label.textContent = pct;
+        if (btn) btn.disabled = true;
+        this._connectWS();
+      } else if (status.status === 'done') {
+        if (toggle) toggle.style.display = 'flex';
+        if (label) label.textContent = '✓ Çevrildi';
+        if (btn) btn.disabled = true;
+      } else if (status.status === 'failed') {
+        if (label) label.textContent = 'Tekrar Dene';
+        if (btn) btn.disabled = false;
+      }
+    },
+
+    async startTranslate() {
+      const { _contentId: cid, _episode: ep } = this;
+      if (!cid || !ep) return;
+      const label = document.getElementById('reader-translate-label');
+      const btn   = document.getElementById('reader-translate-btn');
+      if (label) label.textContent = 'Başlatılıyor…';
+      if (btn) btn.disabled = true;
+      try {
+        const r = await fetch(`${API}/api/translate/${cid}/${ep}`, { method: 'POST' });
+        if (!r.ok) throw new Error(r.status);
+        this._connectWS();
+      } catch {
+        if (label) label.textContent = 'Hata';
+        if (btn) btn.disabled = false;
+      }
+    },
+
+    _connectWS() {
+      if (this._ws && this._ws.readyState < 2) return;
+      this._ws = new WebSocket('ws://localhost:8099/api/translate/ws');
+      this._ws.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        if (msg.event === 'progress') {
+          const label = document.getElementById('reader-translate-label');
+          if (label) label.textContent = `${msg.pages_done}/${msg.pages_total}`;
+        } else if (msg.event === 'done') {
+          this._applyStatus({ status: 'done' });
+        } else if (msg.event === 'failed') {
+          this._applyStatus({ status: 'failed' });
+        }
+      };
+    },
+
+    async showTranslated() {
+      const { _contentId: cid, _episode: ep } = this;
+      if (!cid || !ep) return;
+      try {
+        const r = await fetch(`${API}/api/translate/pages/${cid}/${ep}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        if (d.pages && d.pages.length) {
+          _reader._trPages = d.pages;
+          _reader._showTr  = true;
+          _reader._render();
+          this._setLang('tr');
+        }
+      } catch {}
+    },
+
+    showOriginal() {
+      _reader._showTr  = false;
+      _reader._trPages = null;
+      _reader._render();
+      this._setLang('original');
+    },
+
+    _setLang(lang) {
+      const orgBtn = document.getElementById('reader-lang-original');
+      const trBtn  = document.getElementById('reader-lang-tr');
+      if (!orgBtn || !trBtn) return;
+      const active   = 'px-3 py-1.5 bg-[#00d4ff]/20 text-[#00d4ff] font-medium transition-colors';
+      const inactive = 'px-3 py-1.5 bg-[#1c1d37] text-[#9090b0] hover:text-white transition-colors';
+      orgBtn.className = lang === 'tr' ? inactive : active;
+      trBtn.className  = lang === 'tr' ? active   : inactive;
+    },
+  };
+
   // ── Yardımcı ─────────────────────────────────────────────────────
   function escHtml(s) {
     if (s == null) return '';
@@ -689,10 +842,11 @@
   }
 
   // ── Dışa Aç ──────────────────────────────────────────────────────
-  window.kuroPlayer   = _player;
-  window.kuroReader   = _reader;
-  window.kuroIntro    = _intro;
-  window.kuroOutro    = _outro;
+  window.kuroPlayer    = _player;
+  window.kuroReader    = _reader;
+  window.kuroIntro     = _intro;
+  window.kuroOutro     = _outro;
+  window.kuroTranslate = _translate;
   window.kuroDownload = {
     start:  startDownload,
     cancel: cancelJob,
@@ -731,6 +885,9 @@
     _pb('reader-prev',           () => _reader.prev());
     _pb('reader-next',           () => _reader.next());
     _pb('reader-fullscreen-btn', () => _reader.toggleFullscreen());
+    _pb('reader-translate-btn',  () => _translate.startTranslate());
+    _pb('reader-lang-original',  () => _translate.showOriginal());
+    _pb('reader-lang-tr',        () => _translate.showTranslated());
 
     // ── Reader Swipe ──────────────────────────────────────────────
     let _swipeStartX = 0, _swipeStartY = 0;

@@ -1096,6 +1096,15 @@ document.addEventListener('DOMContentLoaded', function() {
     </button>
     <span id="reader-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
     <button id="reader-mode-btn" class="text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-white transition-colors min-h-[36px]">↕ Webtoon</button>
+    <!-- FAZ-5: Dil toggle — çeviri tamamlanınca görünür -->
+    <div id="reader-lang-toggle" class="hidden items-center rounded-lg overflow-hidden border border-white/10 text-xs">
+      <button id="reader-lang-original" class="px-3 py-1.5 bg-[#00d4ff]/20 text-[#00d4ff] font-medium transition-colors">JP</button>
+      <button id="reader-lang-tr" class="px-3 py-1.5 bg-[#1c1d37] text-[#9090b0] hover:text-white transition-colors">TR</button>
+    </div>
+    <!-- FAZ-5: Çeviri butonu — sadece GPU varsa görünür -->
+    <button id="reader-translate-btn" class="hidden items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-[#00d4ff] transition-colors min-h-[36px]" title="Türkçeye Çevir (GPU gerekli)">
+      🌐 <span id="reader-translate-label">Çevir</span>
+    </button>
     <button id="reader-fullscreen-btn" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10" title="Tam Ekran (F)">
       <span class="material-symbols-outlined text-xl">fullscreen</span>
     </button>
