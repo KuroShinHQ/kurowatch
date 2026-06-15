@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-17) · **Aktif sürüm:** v0.5.0 (FAZ-2) · **Son commit:** `9850e2c`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-18) · **Aktif sürüm:** v0.6.0 (FAZ-3) · **Son commit:** `06985ba`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -10,53 +10,43 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-EN SON YAPILAN (15 Haz sohbet-17) — FAZ-2 TAMAMLANDI (MangaDex + IGDB + MAL):
+EN SON YAPILAN (15 Haz sohbet-18) — FAZ-3 TAMAMLANDI (İndirici + Player + Manga Reader):
 
-✅ backend/config.py — get_config() yardımcı fonksiyon
-✅ backend/scraper/mangadex.py — MangaDex API (search/detail/chapter_count, mdx: prefix)
-✅ backend/scraper/igdb.py — IGDB Twitch OAuth2 client creds (search/detail)
-✅ backend/scraper/mal.py — MAL public API (X-MAL-Client-ID, search/detail, mal: prefix)
-✅ content.py: /discover?type=game → IGDB; AniList 0 sonuç → MAL fallback; /discover/mangadex endpoint
-✅ content.py: /content/{id}/anilist → mdx:/mal:/game tip routing
-✅ episodes.py: _check_one() → game skip, mdx: MangaDex, mal: MAL, else AniList
-✅ episodes.py: sync_episodes → mdx: MangaDex, mal: HTTPException, anime/manga AniList
-✅ settings.py + main.py: mal_client_id default eklendi
-✅ index.html: Keşfet tip seçici (Anime/Manga/Manhwa/Oyun), MAL Client ID ayarı
-✅ app.js: _discoverType değişkeni, tip seçici butonları, IGDB arama, MAL kaydet
-✅ app.js: Add modal Step-1 tip seçici (anime/manga/manhwa/oyun)
-✅ app.js: it.id → it.external_id bug fix (discover kartlarında)
-✅ app.js: total_episodes/total_chapters hidden input + prefillAddForm + submitAddContent
+Commit: 06985ba
 
-Canlı kanıtlar (sohbet-17):
-  GET /api/discover?q=naruto&type=anime → 12 sonuç, id=20 (AniList) ✅
-  GET /api/discover?q=berserk&type=manga via MangaDex → 12 sonuç, mdx:UUID ✅
-  GET /api/discover?q=elden+ring&type=game (no creds) → [] ✅
-  GET /api/discover?q=solo+leveling&type=manhwa → 3 sonuç (AniList) ✅
-  MangaDex chapter_count: Berserk=384, Spy×Family=127 ✅
-  GET /api/settings → mal_client_id: "" ✅
+✅ backend/downloader/anime.py — yt-dlp async subprocess, ilerleme % parse, mp4/mkv/webm çıktı
+✅ backend/downloader/manga.py — MangaDex API sayfalar + gallery-dl Madara siteleri
+✅ backend/downloader/manager.py — in-memory kuyruk (max 2 eşzamanlı), WS push, daisy-chain tetikleyici
+✅ backend/routers/download.py — POST /start, GET /queue, DELETE /{id}, GET /storage
+   + GET /serve/{id} (video stream range), GET /pages/{id} + GET /page/{id}/{i} (manga)
+   + WebSocket /download/ws (kuyruk durumu push)
+✅ backend/main.py — download router eklendi
+✅ backend/requirements.txt — yt-dlp 2026.6.9 + gallery-dl 1.32.3 + websockets kuruldu
+✅ frontend/player.js — WS bağlantısı, kuyruk render, video player HTML5, manga reader (webtoon/sayfa modu), daisy-chain N+1 otomatik kuyruk
+✅ frontend/index.html — İndirmeler ekranı, Player modal, Manga Reader modal, nav badge
+✅ frontend/app.js — İndirmeler render hook, bölüm satırına download butonu
 
-✅ IGDB canlı test (sohbet-17 devam):
-  Elden Ring (2022) score=95, RDR2 score=94, Zelda BotW — IGDB çalışıyor
-  Credentials: config.json'da (.gitignore'da, güvende)
-  Twitch App: KuroWatch, Client ID: c9p2...
+Canlı kanıtlar:
+  GET /api/download/queue → {"jobs":[]} ✅
+  GET /api/download/storage → {"bytes":0,"mb":0.0} ✅
+  POST /api/download/start → {"id":1,"status":"queued",...} ✅
 
-SIRADAKI GÖREV (sohbet-18):
-Seçenekler:
-B) FAZ-3 Player/Downloader — yt-dlp backend entegrasyonu
+SIRADAKI GÖREV (sohbet-19):
 C) PWA + Push notification entegrasyonu
-D) Mobile ADB kurulum (Termux + KuroWatch)
+D) Mobile Termux kurulum (ADB)
+E) FAZ-3 canlı test — Crunchyroll/diziwatch gerçek URL ile yt-dlp testi
 
 BAŞLATMA KOMUTU:
-wsl -d Ubuntu-22.04 -u root -- bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099"
+wsl -d Ubuntu-22.04 -u root -e bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 &"
 
 AKTİF DOSYALAR:
-- backend/scraper/mangadex.py → MangaDex API (yeni)
-- backend/scraper/igdb.py → IGDB Twitch auth (yeni)
-- backend/scraper/mal.py → MAL fallback (yeni)
-- backend/routers/content.py → discover game/mangadex routing
-- backend/routers/episodes.py → check_one multi-source
-- frontend/app.js → discover tip seçici + add modal tip
-- frontend/index.html → discover UI + MAL settings
+- backend/downloader/anime.py  → yt-dlp wrapper (yeni)
+- backend/downloader/manga.py  → MangaDex + gallery-dl (yeni)
+- backend/downloader/manager.py → kuyruk + WS (yeni)
+- backend/routers/download.py  → download router (yeni)
+- frontend/player.js           → player + reader + WS (yeni)
+- frontend/index.html          → İndirmeler ekranı + modaller
+- frontend/app.js              → İndir butonu bölüm satırında
 ```
 
 ---
