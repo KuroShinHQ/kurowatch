@@ -570,6 +570,14 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
             <input id="settings-mal-client-id" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client ID" type="text"/>
             <button id="settings-mal-save" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Kaydet</button>
           </div>
+          <!-- MAL OAuth Sync -->
+          <div id="mal-sync-bar" class="mt-3 flex items-center gap-2 flex-wrap">
+            <span id="mal-status-label" class="text-[12px] text-[#9090b0]">MAL: Bağlı değil</span>
+            <button id="mal-connect-btn" class="h-[36px] px-3 bg-[#2d2f4e] border border-white/10 text-[#e1e0ff] rounded-lg text-[12px] font-medium hover:bg-[#3a3c60] transition-colors">MAL'a Bağlan</button>
+            <button id="mal-import-btn" class="hidden h-[36px] px-3 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[12px] font-medium hover:bg-[#00d4ff]/20 transition-colors">↓ Listemi İçe Aktar</button>
+            <button id="mal-disconnect-btn" class="hidden h-[36px] px-3 bg-[#ff4444]/10 border border-[#ff4444]/30 text-[#ff6666] rounded-lg text-[12px] font-medium hover:bg-[#ff4444]/20 transition-colors">Bağlantıyı Kes</button>
+          </div>
+          <div id="mal-import-result" class="hidden mt-1 text-[11px] text-[#22c55e]"></div>
         </div>
       </div>
     </div>

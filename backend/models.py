@@ -124,3 +124,13 @@ class OutroTimestamp(Base):
     outro_end:      Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
     confidence:     Mapped[float] = mapped_column(Float,   nullable=False, default=0.85)
     created_at:     Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class GameSession(Base):
+    """FAZ-7b: Oyun oturumu — oynama süresi takibi."""
+    __tablename__ = "game_session"
+
+    id:               Mapped[int]      = mapped_column(Integer, primary_key=True, autoincrement=True)
+    content_id:       Mapped[int]      = mapped_column(Integer, ForeignKey("content.id", ondelete="CASCADE"), nullable=False)
+    duration_minutes: Mapped[int]      = mapped_column(Integer, nullable=False, default=0)
+    started_at:       Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)

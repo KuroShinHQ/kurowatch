@@ -960,6 +960,71 @@
     renderTagSettings();
     renderTagColorPicker();
     if (window.kuroPWA) window.kuroPWA.initPushUI();
+    _initMalSync();
+  }
+
+  // ── MAL OAuth2 Sync ──────────────────────────────────────────────
+  async function _initMalSync() {
+    const statusLabel    = document.getElementById('mal-status-label');
+    const connectBtn     = document.getElementById('mal-connect-btn');
+    const importBtn      = document.getElementById('mal-import-btn');
+    const disconnectBtn  = document.getElementById('mal-disconnect-btn');
+    const importResult   = document.getElementById('mal-import-result');
+    if (!connectBtn) return;
+
+    async function _refreshMalStatus() {
+      try {
+        const s = await apiGet('/api/sync/mal/status');
+        if (s.connected) {
+          if (statusLabel) statusLabel.textContent = `MAL: @${s.username} ✓`;
+          connectBtn.classList.add('hidden');
+          importBtn.classList.remove('hidden');
+          disconnectBtn.classList.remove('hidden');
+        } else {
+          if (statusLabel) statusLabel.textContent = 'MAL: Bağlı değil';
+          connectBtn.classList.remove('hidden');
+          importBtn.classList.add('hidden');
+          disconnectBtn.classList.add('hidden');
+        }
+      } catch {}
+    }
+    await _refreshMalStatus();
+
+    connectBtn.onclick = async function () {
+      try {
+        const { auth_url } = await apiGet('/api/sync/mal/auth');
+        const popup = window.open(auth_url, 'mal_auth', 'width=600,height=700');
+        window.addEventListener('message', async function handler(e) {
+          if (e.data === 'mal_connected') {
+            window.removeEventListener('message', handler);
+            await _refreshMalStatus();
+          }
+        });
+      } catch (e) { alert('Hata: ' + e.message); }
+    };
+
+    importBtn.onclick = async function () {
+      importBtn.disabled = true;
+      importBtn.textContent = 'İçe aktarılıyor...';
+      try {
+        const r = await apiPost('/api/sync/mal/import', {});
+        if (importResult) {
+          importResult.classList.remove('hidden');
+          importResult.textContent = `✅ ${r.created} yeni eklendi, ${r.updated} güncellendi`;
+        }
+      } catch (e) {
+        if (importResult) { importResult.classList.remove('hidden'); importResult.style.color='#ef4444'; importResult.textContent='❌ Hata: ' + e.message; }
+      } finally {
+        importBtn.disabled = false;
+        importBtn.textContent = '↓ Listemi İçe Aktar';
+      }
+    };
+
+    disconnectBtn.onclick = async function () {
+      await apiDelete('/api/sync/mal/disconnect');
+      await _refreshMalStatus();
+      if (importResult) importResult.classList.add('hidden');
+    };
   }
 
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
