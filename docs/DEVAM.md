@@ -35,9 +35,13 @@ Canlı kanıtlar (sohbet-17):
   MangaDex chapter_count: Berserk=384, Spy×Family=127 ✅
   GET /api/settings → mal_client_id: "" ✅
 
-SIRADAKI GÖREV (sohbet-18) — FAZ-2 TAMAMLANDI:
+✅ IGDB canlı test (sohbet-17 devam):
+  Elden Ring (2022) score=95, RDR2 score=94, Zelda BotW — IGDB çalışıyor
+  Credentials: config.json'da (.gitignore'da, güvende)
+  Twitch App: KuroWatch, Client ID: c9p2...
+
+SIRADAKI GÖREV (sohbet-18):
 Seçenekler:
-A) IGDB creds test (Twitch Dev hesabı gerekli, oyun arama UI test)
 B) FAZ-3 Player/Downloader — yt-dlp backend entegrasyonu
 C) PWA + Push notification entegrasyonu
 D) Mobile ADB kurulum (Termux + KuroWatch)
