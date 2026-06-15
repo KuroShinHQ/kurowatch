@@ -686,6 +686,15 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
             <input id="settings-cookies-input" type="file" accept=".txt" class="hidden"/>
           </label>
         </div>
+        <!-- CAPTCHA Human-in-the-Loop -->
+        <button id="captcha-browser-btn"
+          class="w-full flex items-center justify-center gap-2 h-[44px] rounded-lg text-[13px] font-medium transition-colors"
+          style="background:rgba(255,160,0,0.12);border:1px solid rgba(255,160,0,0.35);color:#ffb300">
+          <span class="material-symbols-outlined" style="font-size:18px">open_in_browser</span>
+          CAPTCHA ile Cookie Al (Otomatik)
+        </button>
+        <div id="captcha-status-box" class="hidden rounded-lg px-3 py-2 text-[12px]"
+          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9090b0"></div>
       </div>
     </div>
 
