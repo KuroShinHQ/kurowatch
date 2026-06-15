@@ -402,6 +402,51 @@
     },
   };
 
+  // ── Skip Outro ───────────────────────────────────────────────────
+  const _outro = {
+    start: null,
+    end:   null,
+
+    async load(contentId, episodeNumber) {
+      this.start = null;
+      this.end   = null;
+      const btn = document.getElementById('skip-outro-btn');
+      if (btn) btn.classList.add('hidden');
+      if (!contentId || !episodeNumber) return;
+      try {
+        const r = await fetch(`${API}/api/analyze/outro/${contentId}/${episodeNumber}`);
+        if (!r.ok) return;
+        const d = await r.json();
+        if (d.found) {
+          this.start = d.start;
+          this.end   = d.end;
+        }
+      } catch {}
+    },
+
+    tick(currentTime) {
+      const introBtn = document.getElementById('skip-intro-btn');
+      const outroBtn = document.getElementById('skip-outro-btn');
+      if (!outroBtn) return;
+      // Outro butonu: intro bölümü değilken ve outro bölümündeyken göster
+      const inIntro = introBtn && !introBtn.classList.contains('hidden');
+      if (!inIntro && this.start !== null && currentTime >= this.start && currentTime < this.end) {
+        outroBtn.classList.remove('hidden');
+      } else {
+        outroBtn.classList.add('hidden');
+      }
+    },
+
+    skip() {
+      const video = document.getElementById('player-video');
+      if (video && this.end !== null) {
+        video.currentTime = this.end - 1;  // bitiş - 1sn (son frame donmasın)
+      }
+      const btn = document.getElementById('skip-outro-btn');
+      if (btn) btn.classList.add('hidden');
+    },
+  };
+
   // ── Video Player ─────────────────────────────────────────────────
   const _player = {
     open: function (jobId, title, contentId, episodeNumber) {
@@ -430,6 +475,7 @@
       video._daisyTriggered      = false;
 
       _intro.load(contentId, episodeNumber);
+      _outro.load(contentId, episodeNumber);
       _autoNext.reset();
       _loadSubtitles(jobId);
       _ccActive = false;
@@ -448,6 +494,8 @@
       document.body.style.overflow = '';
       const skipBtn = document.getElementById('skip-intro-btn');
       if (skipBtn) skipBtn.classList.add('hidden');
+      const outroBtn = document.getElementById('skip-outro-btn');
+      if (outroBtn) outroBtn.classList.add('hidden');
       _ambient.stop();
       _autoNext.reset();
       _miniActive    = false;
@@ -469,6 +517,7 @@
     if (!video || video.tagName !== 'VIDEO') return;
 
     _intro.tick(video.currentTime);
+    _outro.tick(video.currentTime);
     _autoNext.check(video.currentTime, video.duration);
 
     // Daisy-chain: %50 oynandığında sonraki bölüm kuyruğa al
@@ -643,6 +692,7 @@
   window.kuroPlayer   = _player;
   window.kuroReader   = _reader;
   window.kuroIntro    = _intro;
+  window.kuroOutro    = _outro;
   window.kuroDownload = {
     start:  startDownload,
     cancel: cancelJob,
@@ -666,6 +716,7 @@
     const _pb = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
     _pb('player-close',        () => _player.close());
     _pb('skip-intro-btn',      () => _intro.skip());
+    _pb('skip-outro-btn',      () => _outro.skip());
     _pb('player-ambient-btn',  () => _ambient.toggle());
     _pb('player-theater-btn',  () => _toggleTheater());
     _pb('player-pip-btn',      () => _togglePiP());

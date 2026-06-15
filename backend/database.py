@@ -41,3 +41,14 @@ async def init_db():
             ))
         except Exception:
             pass
+        # Migration: FAZ-4 outro_timestamp tablosu
+        try:
+            await conn.execute(text(
+                "CREATE TABLE IF NOT EXISTS outro_timestamp "
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT, content_id INTEGER NOT NULL, "
+                "episode_number INTEGER NOT NULL, outro_start FLOAT NOT NULL, "
+                "outro_end FLOAT NOT NULL, confidence FLOAT NOT NULL DEFAULT 0.85, "
+                "created_at DATETIME NOT NULL)"
+            ))
+        except Exception:
+            pass

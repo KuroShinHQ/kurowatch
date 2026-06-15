@@ -111,3 +111,16 @@ class IntroTimestamp(Base):
     intro_end:      Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
     confidence:     Mapped[float] = mapped_column(Float,   nullable=False, default=1.0)
     created_at:     Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
+
+
+class OutroTimestamp(Base):
+    """FAZ-4: FFmpeg blackdetect ile tespit edilen outro başlangıç/bitiş zamanları."""
+    __tablename__ = "outro_timestamp"
+
+    id:             Mapped[int]   = mapped_column(Integer, primary_key=True, autoincrement=True)
+    content_id:     Mapped[int]   = mapped_column(Integer, nullable=False)
+    episode_number: Mapped[int]   = mapped_column(Integer, nullable=False)
+    outro_start:    Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
+    outro_end:      Mapped[float] = mapped_column(Float,   nullable=False)  # saniye
+    confidence:     Mapped[float] = mapped_column(Float,   nullable=False, default=0.85)
+    created_at:     Mapped[datetime] = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
