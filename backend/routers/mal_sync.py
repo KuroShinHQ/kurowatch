@@ -6,7 +6,7 @@ GET    /api/sync/mal/status     → bağlı mı? username?
 POST   /api/sync/mal/import     → MAL listesi → KuroWatch DB
 DELETE /api/sync/mal/disconnect → token temizle
 """
-import base64, hashlib, json, os, secrets, time
+import base64, json, os, secrets, time
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import RedirectResponse, HTMLResponse
@@ -41,15 +41,13 @@ async def mal_auth():
     if not client_id:
         raise HTTPException(400, "MAL Client ID ayarlanmamış (Settings > API > MAL Client ID)")
 
+    # MAL yalnızca plain PKCE destekliyor (S256 değil)
     _verifier = base64.urlsafe_b64encode(secrets.token_bytes(40)).rstrip(b"=").decode()
-    challenge = base64.urlsafe_b64encode(
-        hashlib.sha256(_verifier.encode()).digest()
-    ).rstrip(b"=").decode()
 
     url = (
         f"{_MAL_AUTH}?response_type=code&client_id={client_id}"
-        f"&redirect_uri={_REDIRECT}&code_challenge={challenge}"
-        f"&code_challenge_method=S256&state=kurowatch"
+        f"&redirect_uri={_REDIRECT}&code_challenge={_verifier}"
+        f"&code_challenge_method=plain&state=kurowatch"
     )
     return {"auth_url": url}
 
