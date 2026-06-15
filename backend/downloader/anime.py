@@ -3,6 +3,8 @@ import os
 import re
 from typing import Callable, Optional
 
+from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg
+
 
 async def download_anime(
     url: str,
@@ -10,9 +12,14 @@ async def download_anime(
     quality: str = "720p",
     on_progress: Optional[Callable[[int], None]] = None,
 ) -> str:
-    """yt-dlp ile anime/video indir. Gerçek dosya yolunu döner."""
+    """yt-dlp ile anime/video indir. stream_finder ile gerçek URL tespit edilir."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     height = quality.replace("p", "")
+
+    # Gerçek stream URL'sini bul (embed player URL veya orijinal)
+    actual_url = await find_stream_url(url)
+
+    cookies_args = get_yt_dlp_cookies_arg(url)
 
     cmd = [
         "yt-dlp",
@@ -26,8 +33,9 @@ async def download_anime(
         "--sub-lang", "tr,tr-TR,en",
         "--convert-subs", "vtt",
         "--sub-format", "vtt",
+        *cookies_args,
         "-o", output_path + ".%(ext)s",
-        url,
+        actual_url,
     ]
 
     proc = await asyncio.create_subprocess_exec(

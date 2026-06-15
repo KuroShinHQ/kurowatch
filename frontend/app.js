@@ -1078,6 +1078,43 @@
       };
     }
 
+    // Cookies yönetimi
+    async function refreshCookiesList() {
+      const listEl = document.getElementById('settings-cookies-list');
+      if (!listEl) return;
+      try {
+        const data = await apiGet('/api/settings/cookies');
+        if (!data.files.length) {
+          listEl.innerHTML = '<span style="color:#9090b0">Henüz cookies yüklenmedi</span>';
+        } else {
+          listEl.innerHTML = data.files.map(function(f) {
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0">' +
+              '<span style="color:#e1e0ff">' + escapeHtml(f.name) + '</span>' +
+              '<span style="color:#9090b0;font-size:11px">' + (f.bytes/1024).toFixed(1) + ' KB</span>' +
+              '</div>';
+          }).join('');
+        }
+      } catch(e) { listEl.textContent = 'Cookies yüklenirken hata'; }
+    }
+    refreshCookiesList();
+    const cookiesInput = document.getElementById('settings-cookies-input');
+    if (cookiesInput) {
+      cookiesInput.addEventListener('change', async function() {
+        const file = this.files[0];
+        if (!file) return;
+        const site = (document.getElementById('settings-cookies-site') || {}).value || 'tranimeizle';
+        const fd = new FormData();
+        fd.append('file', file);
+        try {
+          const r = await fetch('/api/settings/cookies/' + encodeURIComponent(site), { method: 'POST', body: fd });
+          const d = await r.json();
+          showToast(d.file + ' yüklendi (' + (d.bytes/1024).toFixed(1) + ' KB)', 'success');
+          refreshCookiesList();
+        } catch(e) { showToast('Cookie yükleme hatası: ' + e.message, 'error'); }
+        this.value = '';
+      });
+    }
+
     renderTagSettings();
     renderTagColorPicker();
     if (window.kuroPWA) window.kuroPWA.initPushUI();
