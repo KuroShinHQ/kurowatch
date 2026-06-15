@@ -51,6 +51,11 @@ def main():
         title = c['title']
         ctype = c['type']
 
+        # Oyunlar AniList'te yok — atla
+        if ctype == 'game':
+            skipped += 1
+            continue
+
         print(f"  [{ctype}] {title}", end=' → ')
         result = discover(title, ctype)
         time.sleep(0.4)  # AniList rate limit
@@ -71,9 +76,7 @@ def main():
             patch['total_episodes'] = result['total_episodes']
         if result.get('total_chapters') and not c.get('total_chapters'):
             patch['total_chapters'] = result['total_chapters']
-        # Başlığı AniList'ten al (daha düzgün format)
-        if result.get('title') and result['title'] != title:
-            patch['title'] = result['title']
+        # NOT: Başlık patch edilmiyor — kullanıcının kendi başlığı korunur
 
         if not patch:
             print("değişiklik yok")
