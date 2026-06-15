@@ -140,8 +140,14 @@ async def mal_import(db: AsyncSession = Depends(get_db)):
 
             for item in data.get("data", []):
                 node = item["node"]
-                my_status = (item.get("list_status") or {}).get("status", "plan_to_watch")
+                # MAL API: my_list_status node içinde döner, list_status top-level olmayabilir
+                mal_status_obj = node.get("my_list_status") or item.get("list_status") or {}
+                my_status = mal_status_obj.get("status", "plan_to_watch")
                 kw_status = _STATUS.get(my_status, "planning")
+
+                progress = mal_status_obj.get("num_episodes_watched") or mal_status_obj.get("num_chapters_read") or 0
+                raw_score = mal_status_obj.get("score", 0)
+                score = float(raw_score) if raw_score and raw_score > 0 else None
 
                 pic = node.get("main_picture") or {}
                 cover = pic.get("large") or pic.get("medium")
@@ -150,6 +156,9 @@ async def mal_import(db: AsyncSession = Depends(get_db)):
                 res = await db.execute(select(Content).where(Content.external_id == ext_id))
                 existing = res.scalar_one_or_none()
                 if existing:
+                    existing.status = kw_status
+                    existing.my_progress = progress
+                    if score is not None: existing.my_score = score
                     if cover: existing.cover_url = cover
                     updated += 1
                 else:
@@ -161,7 +170,8 @@ async def mal_import(db: AsyncSession = Depends(get_db)):
                         external_id=ext_id,
                         total_episodes=node.get("num_episodes"),
                         total_chapters=node.get("num_chapters"),
-                        my_progress=0,
+                        my_progress=progress,
+                        my_score=score,
                     ))
                     created += 1
 
