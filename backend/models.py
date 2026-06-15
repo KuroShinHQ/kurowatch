@@ -28,6 +28,8 @@ class Content(Base):
     my_score:        Mapped[Optional[float]]= mapped_column(Float,   nullable=True)
     note_text:       Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)
     note_is_spoiler: Mapped[bool]           = mapped_column(Boolean, nullable=False, default=False)
+    synopsis:        Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # EN (AniList/IGDB'den)
+    synopsis_tr:     Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # TR çeviri
     genres:          Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # JSON list: ["Action","Fantasy"]
     added_at:        Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at:      Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)

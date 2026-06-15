@@ -45,6 +45,32 @@
     { id:3, content_id:3, content_title:'Spy×Family',     episode_number:3,   site_name:'Crunchyroll', detected_at:'2026-06-12T22:00:00', is_read:false }
   ];
 
+  // Tür çevirileri (AniList İngilizce → Türkçe)
+  const GENRE_TR = {
+    'Action':'Aksiyon','Adult Cast':'Yetişkin','Adventure':'Macera',
+    'Award Winning':'Ödüllü','Boys Love':'Boys Love','Comedy':'Komedi',
+    'Detective':'Dedektif','Drama':'Dram','Ecchi':'Ecchi',
+    'Fantasy':'Fantezi','Girls Love':'Girls Love','Gore':'Gore/Şiddet',
+    'Gourmet':'Gurme','Harem':'Harem','Historical':'Tarihi',
+    'Horror':'Korku','Isekai':'Isekai','Iyashikei':'İyileştirici',
+    'Josei':'Josei','Kids':'Çocuk','Love Polygon':'Aşk Üçgeni',
+    'Mahou Shoujo':'Sihirli Kız','Martial Arts':'Dövüş Sanatları',
+    'Mecha':'Meka','Medical':'Tıbbi','Military':'Askeri','Music':'Müzik',
+    'Mystery':'Gizem','Mythology':'Mitoloji','Organized Crime':'Organize Suç',
+    'Parody':'Parodi','Psychological':'Psikolojik','Racing':'Yarış',
+    'Reincarnation':'Reenkarnasyon','Reverse Harem':'Ters Harem',
+    'Romance':'Romantik','Samurai':'Samuray','School':'Okul',
+    'Sci-Fi':'Bilim Kurgu','Seinen':'Seinen','Shoujo':'Shoujo',
+    'Shounen':'Shounen','Slice of Life':'Günlük Yaşam','Space':'Uzay',
+    'Sports':'Spor','Super Power':'Süper Güç','Supernatural':'Doğaüstü',
+    'Survival':'Hayatta Kalma','Suspense':'Gerilim','Team Sports':'Takım Sporu',
+    'Thriller':'Gerilim','Time Travel':'Zaman Yolculuğu',
+    'Urban Fantasy':'Kentsel Fantezi','Vampire':'Vampir',
+    'Video Game':'Video Oyunu','Villainess':'Kötü Kız','Workplace':'İş Yeri',
+    'Eligible Titles For You Should Read This':'Önerilen',
+  };
+  function genreTR(g) { return GENRE_TR[g] || g; }
+
   // Tip rozetleri için renkler
   const TYPE_COLOR = {
     'anime':  { color:'#00d4ff', label:'Anime' },
@@ -218,7 +244,7 @@
     row.innerHTML = '<button class="' + chipClass + ' shrink-0 ' + (allActive ? 'bg-[#3b4665] border-[#3b4665] text-[#e1e0ff]' : inactiveClass) + '" data-genre="all">TÜM TÜRLER</button>' +
       genres.map(function(g) {
         const on = homeFilter.genre === g;
-        return '<button class="' + chipClass + ' ' + (on ? activeClass : inactiveClass) + '" data-genre="' + escapeHtml(g) + '">' + escapeHtml(g).toUpperCase() + '</button>';
+        return '<button class="' + chipClass + ' ' + (on ? activeClass : inactiveClass) + '" data-genre="' + escapeHtml(g) + '">' + escapeHtml(genreTR(g)).toUpperCase() + '</button>';
       }).join('');
     row.querySelectorAll('.filter-genre').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -577,7 +603,7 @@
         genresRow.classList.remove('hidden');
         genresRow.classList.add('flex');
         genresRow.innerHTML = genres.map(function(g) {
-          return '<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/30">' + escapeHtml(g) + '</span>';
+          return '<span class="px-3 py-1 rounded-full text-[11px] font-bold bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/30">' + escapeHtml(genreTR(g)) + '</span>';
         }).join('');
       } else {
         genresRow.classList.add('hidden');
@@ -602,6 +628,31 @@
     if (synToggle) synToggle.style.display = 'none';
     if (synEl)     synEl.style.webkitLineClamp = '3';
 
+    // DB'den synopsis varsa hemen göster (TR önce, yoksa EN)
+    function _showSynopsis(text) {
+      if (!text || !synEl || !synWrap) return false;
+      synEl.textContent = text;
+      synWrap.style.display = 'flex';
+      if (synSec) synSec.style.display = '';
+      if (text.length > 200 && synToggle) {
+        synEl.style.webkitLineClamp = '3';
+        synEl.style.overflow = 'hidden';
+        synToggle.style.display = '';
+        var expanded = false;
+        synToggle.textContent = 'Devamını Gör';
+        synToggle.onclick = function() {
+          expanded = !expanded;
+          synEl.style.webkitLineClamp = expanded ? 'unset' : '3';
+          synEl.style.overflow = expanded ? 'visible' : 'hidden';
+          synEl.style.display = expanded ? 'block' : '-webkit-box';
+          synToggle.textContent = expanded ? 'Daha Az Göster' : 'Devamını Gör';
+        };
+      } else if (synToggle) { synToggle.style.display = 'none'; }
+      return true;
+    }
+
+    var _synShown = _showSynopsis(item.synopsis_tr || item.synopsis);
+
     if (item.external_id) {
       apiGet('/api/content/' + id + '/anilist').then(function(al) {
         var showSection = false;
@@ -623,8 +674,8 @@
           }
         }
 
-        // Synopsis
-        if (al.synopsis && synEl && synWrap) {
+        // Synopsis — DB'de yoksa AniList'ten göster
+        if (!_synShown && al.synopsis && synEl && synWrap) {
           var tmp = document.createElement('div');
           tmp.innerHTML = al.synopsis;
           var text = (tmp.textContent || tmp.innerText || '').trim();
@@ -662,6 +713,8 @@
 
         if (showSection && synSec) synSec.style.display = 'flex';
       }).catch(function() {});
+    } else if (_synShown && synSec) {
+      synSec.style.display = 'flex';
     }
   }
 
@@ -851,7 +904,7 @@
           const color = colors[i] || '#9090b0';
           return '<span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold interactive cursor-pointer" ' +
             'style="background:' + color + '20;color:' + color + ';border:1px solid ' + color + '40">' +
-            escapeHtml(entry[0]) + ' (' + entry[1] + ')</span>';
+            escapeHtml(genreTR(entry[0])) + ' (' + entry[1] + ')</span>';
         }).join('');
       }
     }
