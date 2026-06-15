@@ -63,14 +63,18 @@ async def mal_callback(code: str = Query(...)):
     cfg = get_config()
     client_id = cfg.get("mal_client_id", "")
     try:
+        client_secret = cfg.get("mal_client_secret", "")
+        payload = {
+            "client_id": client_id,
+            "code": code,
+            "code_verifier": _verifier,
+            "grant_type": "authorization_code",
+            "redirect_uri": _REDIRECT,
+        }
+        if client_secret:
+            payload["client_secret"] = client_secret
         async with httpx.AsyncClient(timeout=15.0) as c:
-            r = await c.post(_MAL_TOKEN, data={
-                "client_id": client_id,
-                "code": code,
-                "code_verifier": _verifier,
-                "grant_type": "authorization_code",
-                "redirect_uri": _REDIRECT,
-            })
+            r = await c.post(_MAL_TOKEN, data=payload)
             r.raise_for_status()
             token = r.json()
     except Exception as e:

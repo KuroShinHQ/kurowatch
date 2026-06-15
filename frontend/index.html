@@ -565,9 +565,13 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
         </div>
         <button id="settings-igdb-save" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
         <div class="border-t border-white/5 pt-3 mt-1">
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">MAL Client ID <span class="text-[10px] normal-case text-[#6060a0]">(AniList fallback için)</span></label>
-          <div class="flex gap-2">
+          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">MAL Client ID</label>
+          <div class="flex gap-2 mb-2">
             <input id="settings-mal-client-id" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client ID" type="text"/>
+          </div>
+          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">MAL Client Secret</label>
+          <div class="flex gap-2">
+            <input id="settings-mal-client-secret" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client Secret" type="password"/>
             <button id="settings-mal-save" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Kaydet</button>
           </div>
           <!-- MAL OAuth Sync -->
