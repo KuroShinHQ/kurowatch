@@ -58,7 +58,9 @@
     'completed': 'Tamamlandı',
     'on_hold': 'Beklemede',
     'plan_to_watch': 'Planlı',
-    'dropped': 'Bırakıldı'
+    'planning': 'Planlı',
+    'dropped': 'Bırakıldı',
+    'rewatching': 'Tekrar İzliyor'
   };
 
   const TAG_COLORS = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#ffb4ab', '#90e090', '#ff9a3c'];
@@ -272,10 +274,12 @@
 
     grid.innerHTML = filtered.map(it => {
       const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
-      const total = it.total_chapters || 1;
-      const pct = it.my_progress_pct != null
-        ? it.my_progress_pct
-        : Math.round((it.my_progress || 0) / total * 100);
+      const isGameCard = it.type === 'game';
+      const isAnimeCard = it.type === 'anime';
+      const total = isGameCard ? 100 : (isAnimeCard ? (it.total_episodes || 1) : (it.total_chapters || 1));
+      const pct = isGameCard
+        ? (it.my_progress_pct || 0)
+        : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
       const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
       const coverBg = it.cover_url
@@ -402,21 +406,40 @@
     if (!item) return;
 
     const tc = TYPE_COLOR[item.type] || TYPE_COLOR.anime;
-    const total = item.total_chapters || 100;
-    const cur = item.my_progress || 0;
-    const pct = item.my_progress_pct != null ? item.my_progress_pct : Math.round(cur / total * 100);
+    const isGame = item.type === 'game';
+    const isAnime = item.type === 'anime';
+    const total = isGame ? 100 : (isAnime ? (item.total_episodes || 0) : (item.total_chapters || 0)) || 0;
+    const cur = isGame ? (item.my_progress_pct || 0) : (item.my_progress || 0);
+    const pct = isGame ? cur : (total > 0 ? Math.round(cur / total * 100) : 0);
 
     document.getElementById('detail-title').textContent = item.title;
-    document.getElementById('detail-type-badge').textContent = (item.type || '').toUpperCase();
-    document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">play_circle</span> ${STATUS_LABEL[item.status] || item.status}`;
-    document.getElementById('detail-progress-current').textContent = cur;
-    document.getElementById('detail-progress-total').textContent = '/ ' + total;
+    const typeLabelMap = { 'anime':'ANİME', 'manga':'MANGA', 'manhwa':'MANHWA', 'game':'OYUN' };
+    document.getElementById('detail-type-badge').textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
+    const statusIcon = isGame ? 'sports_esports' : (isAnime ? 'play_circle' : 'menu_book');
+    document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
+    document.getElementById('detail-progress-current').textContent = isGame ? cur + '%' : cur;
+    document.getElementById('detail-progress-total').textContent = isGame ? 'tamamlandı' : ('/ ' + (total || '?'));
     document.getElementById('detail-progress-pct').textContent = pct + '%';
     document.getElementById('detail-progress-bar').style.width = pct + '%';
     const slider = document.getElementById('detail-progress-slider');
-    slider.max = total;
+    slider.max = isGame ? 100 : (total || 999);
     slider.value = cur;
-    document.getElementById('detail-slider-max').textContent = total;
+    document.getElementById('detail-slider-max').textContent = isGame ? '100%' : (total || '?');
+
+    // Progress bölüm etiketi (oyun / manga / anime)
+    const progressLabel = document.querySelector('#screen-detail .font-label-caps.uppercase');
+    if (progressLabel) progressLabel.textContent = isGame ? 'TAMAMLANMA' : (isAnime ? 'BÖLÜM' : 'CHAPTER');
+
+    // Mark butonu etiketi
+    const markBtn = document.getElementById('detail-mark-btn');
+    if (markBtn) {
+      if (isGame) {
+        markBtn.style.display = 'none';
+      } else {
+        markBtn.style.display = '';
+        markBtn.querySelector('span.font-bold').textContent = isAnime ? 'Sonraki Bölümü İşaretle' : 'Sonraki Chapter\'ı İşaretle';
+      }
+    }
 
     // Rating yıldızları (interaktif — tıklanınca PATCH ile kaydet)
     let currentScore = item.my_score || 0;
@@ -472,31 +495,44 @@
     }
 
     // Mark butonu
-    document.getElementById('detail-mark-btn').onclick = function() {
-      const next = (item.my_progress || 0) + 1;
-      if (next > total) return;
-      item.my_progress = next;
-      apiPost('/api/content/' + id + '/progress', { progress: next });
-      renderDetail(id);
-    };
+    if (markBtn && !isGame) {
+      markBtn.onclick = function() {
+        const next = (item.my_progress || 0) + 1;
+        if (total > 0 && next > total) return;
+        item.my_progress = next;
+        apiPost('/api/content/' + id + '/progress', { progress: next });
+        renderDetail(id);
+      };
+    }
 
     // Slider değişimi
     slider.oninput = function() {
       const v = parseInt(this.value, 10);
-      document.getElementById('detail-progress-current').textContent = v;
-      const newPct = Math.round(v / total * 100);
-      document.getElementById('detail-progress-pct').textContent = newPct + '%';
-      document.getElementById('detail-progress-bar').style.width = newPct + '%';
+      if (isGame) {
+        document.getElementById('detail-progress-current').textContent = v + '%';
+        document.getElementById('detail-progress-pct').textContent = v + '%';
+        document.getElementById('detail-progress-bar').style.width = v + '%';
+      } else {
+        document.getElementById('detail-progress-current').textContent = v;
+        const newPct = total > 0 ? Math.round(v / total * 100) : 0;
+        document.getElementById('detail-progress-pct').textContent = newPct + '%';
+        document.getElementById('detail-progress-bar').style.width = newPct + '%';
+      }
     };
     slider.onchange = function() {
       const v = parseInt(this.value, 10);
-      item.my_progress = v;
-      apiPost('/api/content/' + id + '/progress', { progress: v });
+      if (isGame) {
+        item.my_progress_pct = v;
+        apiPatch('/api/content/' + id, { my_progress_pct: v });
+      } else {
+        item.my_progress = v;
+        apiPost('/api/content/' + id + '/progress', { progress: v });
+      }
     };
 
     // Bölümler tab
     const epsTabEl = document.getElementById('detail-tab-episodes');
-    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title);
+    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || []);
 
     // Siteler tab
     const sitesTabEl = document.getElementById('detail-tab-sites');
@@ -1054,16 +1090,30 @@
 
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
 
-  function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle) {
+  function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle, sites) {
+    const isAnime = contentType === 'anime';
+    const readLabel = isAnime ? 'İzle' : 'Oku';
+    const readIcon = isAnime ? 'play_circle' : 'menu_book';
+    const syncLabel = isAnime ? 'AniList\'ten Bölümleri Yükle' : 'Bölümleri Yükle';
+
+    // Siteler sekmesine hızlı erişim butonu (en üstte belirgin)
+    const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
+    const siteShortcut = primarySite
+      ? '<a href="' + escapeHtml(primarySite.site_url) + '" target="_blank" rel="noopener" ' +
+        'class="flex items-center justify-center gap-2 w-full h-[44px] rounded-xl bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] font-bold text-[13px] hover:bg-[#00d4ff]/20 transition-colors mb-3 active:scale-[0.97]">' +
+        '<span class="material-symbols-outlined text-[18px]">' + readIcon + '</span>' +
+        readLabel + ' — ' + escapeHtml(primarySite.site_name) + '</a>'
+      : '';
+
     const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 text-[12px] text-[#9090b0] hover:text-[#00d4ff] transition-colors mb-3" data-content-id="' + contentId + '">' +
-      '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle</button>';
+      '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> ' + syncLabel + '</button>';
 
     if (!episodes.length) {
-      el.innerHTML = syncBtn + '<div class="text-center text-[#9090b0] py-8 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm kaydı yok</p></div>';
+      el.innerHTML = siteShortcut + syncBtn + '<div class="text-center text-[#9090b0] py-6 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">video_library</span><p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
       el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
       return;
     }
-    el.innerHTML = syncBtn + episodes.map(function(e) {
+    el.innerHTML = siteShortcut + syncBtn + episodes.map(function(e) {
       if (e.is_watched) {
         return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">' +
           '<div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm ' + e.number + '</span>' +
@@ -1072,19 +1122,32 @@
           '<div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50">' +
           '<span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div></div>';
       }
+      const epUrl = e.url || null;
       return '<div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e] border ' + (e.is_new ? 'border-[#00d4ff]/30 active-rim' : 'border-white/5') + '">' +
         '<div class="flex flex-col"><span class="font-headline-sm text-headline-sm ' + (e.is_new ? 'text-[#00d4ff]' : 'text-[#e1e0ff]') + '">Bölüm ' + e.number + '</span>' +
         (e.title ? '<span class="font-body-md text-body-md text-[#9090b0]">' + escapeHtml(e.title) + '</span>' : '') +
-        '</div><div class="flex items-center gap-2">' +
+        '</div><div class="flex items-center gap-1">' +
         (e.is_new ? '<span class="px-2 py-1 bg-[#00d4ff]/10 text-[#00d4ff] font-label-caps text-label-caps rounded uppercase text-[9px]">YENİ</span>' : '') +
-        (e.url ? '<button class="ep-dl-btn text-[#9090b0] hover:text-[#00d4ff] transition-colors min-w-[36px] min-h-[44px] flex items-center justify-center" title="İndir" ' +
-          'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(e.url) + '" ' +
+        (epUrl ? '<a href="' + escapeHtml(epUrl) + '" target="_blank" rel="noopener" class="ep-open-btn px-3 py-1.5 bg-[#00d4ff]/10 border border-[#00d4ff]/30 rounded-lg text-[#00d4ff] text-[12px] font-bold hover:bg-[#00d4ff]/20 transition-colors flex items-center gap-1 active:scale-[0.97]" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
+          readLabel + ' <span class="material-symbols-outlined text-[14px]">open_in_new</span></a>' : '') +
+        (epUrl ? '<button class="ep-dl-btn text-[#9090b0] hover:text-[#00d4ff] transition-colors w-[36px] min-h-[44px] flex items-center justify-center" title="İndir" ' +
+          'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(epUrl) + '" ' +
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
           '<span class="material-symbols-outlined text-[18px]">download</span></button>' : '') +
         '<button class="ep-watch-btn min-w-[44px] min-h-[44px] flex items-center justify-end cursor-pointer" data-ep-id="' + e.id + '" data-content-id="' + contentId + '">' +
         '<div class="w-6 h-6 rounded bg-[#31324d] flex items-center justify-center border border-white/10 hover:border-[#00d4ff] transition-colors"></div></button>' +
         '</div></div>';
     }).join('');
+
+    // "Oku/İzle" butonuna tıklayınca aynı zamanda izlendi işaretle
+    el.querySelectorAll('.ep-open-btn').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        const epId = parseInt(this.dataset.epId, 10);
+        const cid = parseInt(this.dataset.contentId, 10);
+        try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e) {}
+        renderDetail(cid);
+      });
+    });
 
     el.querySelectorAll('.ep-watch-btn').forEach(function(btn) {
       btn.addEventListener('click', async function() {
