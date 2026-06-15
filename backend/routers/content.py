@@ -7,9 +7,11 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
 
+from backend.config import get_config
 from backend.database import get_db
 from backend.models import Content, ContentTag, Tag
 from backend.scraper import anilist
+from backend.scraper import igdb, mal
 
 router = APIRouter()
 
@@ -200,10 +202,23 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
     if not c:
         raise HTTPException(404, "Bulunamadı")
     if not c.external_id:
-        raise HTTPException(404, "AniList ID yok")
-    detail = await anilist.get_detail(c.external_id)
+        raise HTTPException(404, "Harici ID yok")
+
+    ext = c.external_id
+    cfg = get_config()
+
+    if ext.startswith("mdx:"):
+        from backend.scraper import mangadex
+        detail = await mangadex.get_detail(ext[4:])
+    elif ext.startswith("mal:"):
+        detail = await mal.get_detail(ext[4:], c.type, cfg.get("mal_client_id", ""))
+    elif c.type == "game":
+        detail = await igdb.get_detail(ext, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""))
+    else:
+        detail = await anilist.get_detail(ext)
+
     if not detail:
-        raise HTTPException(503, "AniList verisi alınamadı")
+        raise HTTPException(503, "Harici kaynaktan veri alınamadı")
     return detail
 
 
@@ -242,9 +257,38 @@ async def discover(
     genre: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
 ):
+    # Oyun araması → IGDB
+    if type == "game":
+        if not q:
+            raise HTTPException(400, "Oyun araması için q parametresi gerekli")
+        cfg = get_config()
+        return await igdb.search(q, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""), page)
+
     if not q and not genre:
         raise HTTPException(400, "q veya genre parametresi gerekli")
     if type not in ("anime", "manga", "manhwa"):
-        raise HTTPException(400, "Geçersiz tip (anime/manga/manhwa)")
+        raise HTTPException(400, "Geçersiz tip (anime/manga/manhwa/game)")
+
     results = await anilist.search(q, type, page, genre)
+
+    # AniList 0 sonuç + q var + genre yok → MAL fallback
+    if not results and q and not genre and type in ("anime", "manga"):
+        cfg = get_config()
+        mal_id = cfg.get("mal_client_id", "")
+        if mal_id:
+            results = await mal.search(q, type, mal_id, page)
+
     return results
+
+
+@router.get("/discover/mangadex")
+async def discover_mangadex(
+    q: str = Query(..., min_length=1),
+    type: str = Query("manga"),
+    page: int = Query(1, ge=1),
+):
+    """MangaDex doğrudan arama (manga/manhwa)."""
+    if type not in ("manga", "manhwa"):
+        raise HTTPException(400, "Geçersiz tip (manga/manhwa)")
+    from backend.scraper import mangadex
+    return await mangadex.search(q, type, page)

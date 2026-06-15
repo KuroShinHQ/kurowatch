@@ -13,6 +13,7 @@ _DEFAULTS = {
     "igdb_client_secret": "",
     "igdb_token": "",
     "igdb_token_expires_at": 0,
+    "mal_client_id": "",
     "vapid_public_key": "",
     "vapid_private_key": "",
     "duration_anime_ep": 24,

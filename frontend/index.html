@@ -355,15 +355,22 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
       </div>
     </div>
     <!-- Keşfet Panel -->
-    <div id="search-panel-discover" class="hidden flex-col gap-6">
-      <!-- Türler -->
+    <div id="search-panel-discover" class="hidden flex-col gap-4">
+      <!-- İçerik Tipi Seçici -->
+      <div class="flex gap-2 overflow-x-auto pb-1" id="discover-type-row">
+        <button class="discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40" data-discover-type="anime">🎬 Anime</button>
+        <button class="discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]" data-discover-type="manga">📖 Manga</button>
+        <button class="discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]" data-discover-type="manhwa">📱 Manhwa</button>
+        <button class="discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]" data-discover-type="game">🎮 Oyun</button>
+      </div>
+      <!-- Türler (Anime/Manga/Manhwa için) -->
       <div class="flex flex-col gap-3" id="discover-genre-section">
         <h3 class="text-[14px] font-bold text-[#9090b0] uppercase tracking-wider">Popüler Türler</h3>
         <div class="flex flex-wrap gap-2" id="discover-genre-row"></div>
       </div>
       <!-- Sonuç Listesi -->
       <div class="flex flex-col gap-4" id="search-results">
-        <div class="text-center text-[#9090b0] py-8 text-[13px]">Bir tür seç veya AniList'te ara...</div>
+        <div class="text-center text-[#9090b0] py-8 text-[13px]">Bir tür seç veya ara...</div>
       </div>
     </div>
   </div>
@@ -548,6 +555,13 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
           <input id="settings-igdb-secret" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client Secret" type="password"/>
         </div>
         <button id="settings-igdb-save" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
+        <div class="border-t border-white/5 pt-3 mt-1">
+          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">MAL Client ID <span class="text-[10px] normal-case text-[#6060a0]">(AniList fallback için)</span></label>
+          <div class="flex gap-2">
+            <input id="settings-mal-client-id" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client ID" type="text"/>
+            <button id="settings-mal-save" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Kaydet</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -679,9 +693,16 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
             <span class="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
+        <!-- Tip Seçici (Step-1) -->
+        <div class="flex gap-2 mb-3 overflow-x-auto pb-0.5" id="add-step1-type-row">
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40" data-step1-type="anime">🎬 Anime</button>
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="manga">📖 Manga</button>
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="manhwa">📱 Manhwa</button>
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="game">🎮 Oyun</button>
+        </div>
         <div class="relative mb-4">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9090b0]">search</span>
-          <input class="w-full h-[44px] pl-10 pr-4 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50 placeholder:text-[#9090b0]" placeholder="Başlık ara..." type="text" style="font-size:16px!important"/>
+          <input id="add-step1-search-input" class="w-full h-[44px] pl-10 pr-4 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50 placeholder:text-[#9090b0]" placeholder="Başlık ara..." type="text" style="font-size:16px!important"/>
         </div>
         <div class="flex-1 overflow-y-auto flex flex-col gap-2 pb-4">
           <!-- Sonuç Satırı -->
@@ -758,6 +779,9 @@ body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Kapak URL</label>
             <input id="add-form-cover" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[12px] text-[#9090b0] font-mono focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="https://..."/>
             <input id="add-form-genres" type="hidden" value=""/>
+            <input id="add-form-external-id" type="hidden" value=""/>
+            <input id="add-form-total-episodes" type="hidden" value=""/>
+            <input id="add-form-total-chapters" type="hidden" value=""/>
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Notlar</label>
