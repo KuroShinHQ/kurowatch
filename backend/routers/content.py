@@ -1,11 +1,16 @@
 import json
+import shutil
 from datetime import datetime
+from pathlib import Path
 from typing import Optional, List
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from sqlalchemy import select, or_
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
+
+_COVERS_DIR = Path(__file__).parent.parent.parent / "covers"
+_COVERS_DIR.mkdir(exist_ok=True)
 
 from backend.config import get_config
 from backend.database import get_db
@@ -279,6 +284,24 @@ async def discover(
             results = await mal.search(q, type, mal_id, page)
 
     return results
+
+
+@router.post("/content/{content_id}/cover")
+async def upload_cover(content_id: int, file: UploadFile = File(...), db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "Bulunamadı")
+    ext = Path(file.filename).suffix.lower() if file.filename else ".jpg"
+    if ext not in (".jpg", ".jpeg", ".png", ".webp"):
+        ext = ".jpg"
+    dest = _COVERS_DIR / f"{content_id}{ext}"
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+    c.cover_url = f"/covers/{content_id}{ext}"
+    c.updated_at = datetime.utcnow()
+    await db.commit()
+    return {"cover_url": c.cover_url}
 
 
 @router.get("/discover/mangadex")

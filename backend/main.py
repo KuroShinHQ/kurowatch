@@ -1,6 +1,7 @@
 import os
 import json
 from contextlib import asynccontextmanager
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +11,7 @@ from backend.routers import content, episodes, sites, tags, settings, sync, down
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 _CONFIG_PATH  = os.path.join(os.path.dirname(__file__), "config.json")
+_ROOT = Path(__file__).parent.parent
 
 _DEFAULTS = {
     "check_on_startup": True,
@@ -81,5 +83,9 @@ app.include_router(game.router,       prefix="/api", tags=["game"])
 app.include_router(mal_sync.router,   prefix="/api", tags=["mal_sync"])
 
 # ── Static Files SONRA (catch-all) ───────────────────────────────────
+_covers_dir = _ROOT / "covers"
+_covers_dir.mkdir(exist_ok=True)
+app.mount("/covers", StaticFiles(directory=str(_covers_dir)), name="covers")
+
 if os.path.isdir(_FRONTEND_DIR):
     app.mount("/", StaticFiles(directory=_FRONTEND_DIR, html=True), name="static")
