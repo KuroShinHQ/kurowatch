@@ -604,171 +604,136 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ## ✅ Özellik Tamamlanma Durumu
 
+> Son güncelleme: 15 Haz 2026 (sohbet-19)
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-1 (MVP) — TRACKER
+FAZ-1 (MVP) — TRACKER ✅ TAMAMLANDI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FRONTEND (Stitch sonrası):
-[ ] HOME — poster grid (virtual scroll kart listesi)
-[ ] HOME — filter chips (tek kaydırır satır: tip + durum)
-[ ] HOME — content card (tip şerit, badge, glow, progress, boş yıldız)
-[ ] HOME — uzun bas menüsü (Sonraki ✓ / Durum / Puan / Arşivle)
-[ ] HOME — boş durum
-[ ] SEARCH — kütüphanem sekmesi
-[ ] SEARCH — keşfet sekmesi (offline: yerel öneri)
-[ ] DETAIL — hero kapak + bilgi
-[ ] DETAIL — ★ yıldız interaktif puan (sadece yıldız, slider yok)
-[ ] DETAIL — progress slider + "sonraki bölüm" butonu
-[ ] DETAIL — bölümler sekmesi (virtual scroll, 1000+ bölüm)
-[ ] DETAIL — siteler sekmesi (yeni sekme açar)
-[ ] DETAIL — notlar + spoiler toggle
-[ ] UPDATES — liste + okundu/okunmadı
-[ ] UPDATES — "Şimdi Kontrol Et" butonu
-[ ] STATS — özet kartlar (tahmini saat + bölüm sayısı ayrı)
-[ ] STATS — donut/bar chart (CSS/SVG, kütüphane yok)
-[ ] SETTINGS — export/import + arşiv sayfası
-[ ] SETTINGS — Web Push bildirim butonu (VAPID izni)
-[ ] SETTINGS — dil seçici dropdown (TR/EN)
-[ ] SETTINGS — PWA "Ana Ekrana Ekle" butonu
-[ ] SETTINGS — varsayılan süreler
-[ ] ADD MODAL — API arama (AniList)
-[ ] ADD MODAL — form (site tekrarlı satır)
-[ ] CONFLICT MODAL — çakışma çözümü
-[ ] COMPLETE MODAL — seri bitti: Tamamlandı + puan sor
-[ ] NAV — mobil alt bar
-[ ] NAV — PC sol sidebar
-[ ] i18n — i18n.js + locales/tr.json + locales/en.json
-[ ] HAPTIC — 6 eylem eşleştirme
-[ ] PWA — manifest.json + sw.js (cache-first + locale dosyaları)
-[ ] ANIMASYON — spring curve library + skeleton loader
+FRONTEND:
+[x] HOME — poster grid + filter chips (tip/durum/genre)
+[x] HOME — content card (kapak, badge, glow, progress bar)
+[x] HOME — boş durum
+[x] SEARCH — kütüphanem sekmesi (q= filtre)
+[x] SEARCH — keşfet sekmesi (AniList/IGDB + genre chip)
+[x] DETAIL — hero kapak + bilgi paneli
+[x] DETAIL — ★ interaktif yıldız puan (PATCH my_score)
+[x] DETAIL — progress bar + "Sonraki Bölüm" butonu
+[x] DETAIL — cover_url → bg-image
+[x] DETAIL — bölümler sekmesi (URL varsa İndir butonu)
+[x] DETAIL — siteler sekmesi
+[x] DETAIL — notlar + spoiler toggle
+[x] UPDATES — liste + "Şimdi Kontrol Et"
+[x] STATS — özet kartlar + donut + bar chart (CSS/SVG)
+[x] SETTINGS — export/import + arşiv
+[x] SETTINGS — Web Push bildirim toggle + Test butonu
+[x] SETTINGS — varsayılan süreler + kalite + auto-delete
+[x] ADD MODAL — AniList arama + form + site satırları
+[x] CONFLICT MODAL — çakışma çözümü
+[x] NAV — mobil alt bar + PC sol sidebar
+[x] i18n — i18n.js + locales/tr.json + locales/en.json
+[x] PWA — manifest.json + sw.js + icon-192/512 + push
 
-BACKEND (FAZ-1):
-[ ] database.py — SQLite async engine (aiosqlite)
-[ ] models.py — ORM: Content, Site, Episode, Update, Tag, ContentTag
-[ ] routers/content.py — /api/content CRUD + /api/discover
-[ ] routers/episodes.py — /api/episodes + /api/check-updates + /api/updates
-[ ] routers/sites.py — /api/sites
-[ ] routers/tags.py — /api/tags
-[ ] routers/sync.py — /api/export + /api/import + /api/import/resolve
-[ ] routers/settings.py — /api/settings GET/POST
-[ ] scraper/anilist.py — GraphQL (anime/manga JP/manhwa KR)
-[ ] scraper/chapter_check.py — regex heuristik MVP
+BACKEND:
+[x] database.py — SQLite async engine (aiosqlite)
+[x] models.py — Content, Site, Episode, Update, Tag, ContentTag
+[x] routers/content.py — /api/content CRUD + /api/discover
+[x] routers/episodes.py — /api/episodes + /api/check-updates + /api/updates
+[x] routers/sites.py, tags.py, sync.py, settings.py
+[x] scraper/anilist.py — GraphQL (anime/manga/manhwa)
+[x] scraper/mal.py, igdb.py, mangadex.py
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-2 — PLATFORM GENİŞLEME
+FAZ-2 — PLATFORM GENİŞLEME ✅ TAMAMLANDI
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[ ] scraper/mal.py — MAL OAuth2 PKCE (localhost:5050)
-[ ] scraper/igdb.py — IGDB Twitch auth + oyun tipi
-[ ] scraper/chapter_check.py — MangaDex API entegrasyonu
-[ ] models.py — Game type desteği
-[ ] routers/content.py — oyun CRUD + IGDB arama
+[x] scraper/mal.py — MAL OAuth2 PKCE
+[x] scraper/igdb.py — IGDB Twitch auth
+[x] scraper/mangadex.py — MangaDex API
+[x] Content external_id PATCH (AniList ID atama)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-3 — PLAYER / DOWNLOADER (Netflix Deneyimi)
+FAZ-3 — PLAYER / DOWNLOADER ✅ TAMAMLANDI (15 Haz)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ANİME İNDİRİCİ:
+[x] downloader/anime.py — yt-dlp async subprocess, ilerleme % parse
+[x] downloader/manga.py — MangaDex API + gallery-dl (Madara)
+[x] downloader/manager.py — kuyruk max 2 eşzamanlı, WS push, daisy-chain
+[x] routers/download.py — /start /queue /storage /serve /pages /page + WS
+[x] İndirmeler ekranı — nav badge, job kartları, ilerleme çubuğu
+[x] Daisy-chain — %50'de N+1 bölüm otomatik kuyruğa alınır
+[x] İzle-sil — DELETE /api/download/{id} (dosya siler)
+[x] Canlı test: YouTube 465KB 8sn PASS ✅
 
-ANIME İNDİRİCİ + OYNATICI:
-    Site uyumluluğu (araştırıldı — 14 Haz 2026):
-    - Crunchyroll: yt-dlp resmi extractor ✅ (ücretsiz bölüm), premium DRM ❌
-    - DiziWatch/TrAnimeİzle: resmi extractor YOK → yt-dlp generic + embed iframe parse
-    - Dizibox/YabancıDizi/HDFilmCehennemi: embed player URL yakala → yt-dlp
-    - Tüm Türkçe manga siteleri: Madara WordPress teması → admin-ajax.php
-[ ] downloader/anime.py — yt-dlp async subprocess wrapper (generic extractor + embed parse)
-[ ] player.html — HTML5 <video> + özel kontroller
-[ ] player.js:
-    [ ] Ambient Mode — video-ambient-glow (~5.8KB) → Settings toggle "🌅 Ambient Aydınlatma"
-    [ ] Theater Mode — T tuşu, full genişlik, sidebar kapanır
-    [ ] Picture-in-Picture — I tuşu, browser native API (requestPictureInPicture)
-    [ ] Mini Player — M tuşu, position:fixed köşe pencere
-    [ ] Tam Klavye Seti:
-        Space/K=oynat  F=fullscreen  T=theater  I=PiP  M=mini
-        ←→=5sn  J/L=10sn  [/]=hız  1-9=%jump
-[ ] downloader/manager.py — kuyruk + WS progress (max 2 eşzamanlı)
-[ ] models.py — Download + IntroTimestamp tabloları
-[ ] routers/download.py — /api/download CRUD + /ws/download WS
-[ ] routers/player.py — /api/player (video bilgi + intro timestamps)
-[ ] frontend/player.html — HTML5 <video> + custom kontroller
-[ ] frontend/player.js:
-    [ ] Daisy chain (%50'de N+1 indir — timeupdate handler, trigger:'daisy_chain')
-    [ ] Auto-next episode (30sn kala overlay, 10sn geri sayım + color wipe)
-    [ ] Intro skip butonu ("⏩ İntroyu Atla" — manuel veya oto)
-    [ ] Outro skip (outro_start timestamp ile)
-    [ ] Timestamp işaret: [İntro Başlıyor] / [İntro Bitiyor] butonları
-    [ ] İzle-sil: izlendi → "Dosyayı Sil?" modal
-    [ ] Kalite seçimi: 360p / 720p / 1080p / best
-    [ ] Altyazı: VTT dosyası varsa subtitle track ekle
+VIDEO PLAYER:
+[x] HTML5 <video> + modal overlay
+[x] Skip Intro butonu (#skip-intro-btn, FAZ-4 ile entegre)
+[ ] Ambient Mode — video-ambient-glow
+[ ] Theater Mode (T tuşu)
+[ ] Picture-in-Picture (I tuşu, requestPictureInPicture)
+[ ] Mini Player (M tuşu, position:fixed köşe)
+[ ] Klavye seti: Space/K/F/T/I/M/←→/J/L/[/]/1-9
+[ ] Auto-next episode (30sn kala overlay + 10sn geri sayım)
+[ ] Altyazı: VTT subtitle track
 
-MANGA / MANHWA OKUYUCU:
-[ ] downloader/manga.py — Madara admin-ajax.php parser + gallery-dl + mangadex-downloader wrapper
-    (Madara: POST /wp-admin/admin-ajax.php action=manga_get_chapter_img_list — TÜM TR Madara siteleri)
-[ ] routers/reader.py — /api/reader + static görsel serve
-[ ] frontend/reader.html — tam ekran okuyucu
-[ ] frontend/reader.js:
-    [ ] Webtoon modu (dikey scroll — manhwa)
-    [ ] Sayfa modu (tek/çift — manga)
-    [ ] Klavye navigasyon (→ ← Space F Ctrl+→)
-    [ ] Swipe (mobil)
-    [ ] Daisy chain (%50 sayfada N+1 chapter indir, trigger:'daisy_chain')
-    [ ] Auto-next chapter (son sayfa → 5sn → sonraki bölüm)
-    [ ] Tam ekran toggle
+MANGA READER:
+[x] Webtoon modu (dikey scroll)
+[x] Sayfa modu (tek sayfa, ←→ nav)
+[x] Klavye: Esc/ArrowLeft/ArrowRight
+[ ] Swipe (mobil touch events)
+[ ] Auto-next chapter (son sayfa → 5sn → sonraki)
+[ ] Tam ekran toggle (F tuşu)
 
-SETTINGS (FAZ-3 eklentileri):
-[ ] Settings — İndirilenler sayfası (disk kullanımı, tümünü temizle)
-[ ] Settings — Oynatıcı: "İntroyu Otomatik Atla" toggle (global)
-[ ] Settings — Oynatıcı: "Outro Otomatik Atla" toggle
-[ ] Settings — Oynatıcı: "İzledikten Sonra Otomatik Sil" toggle
-[ ] Settings — İndirici: max eşzamanlı indirme (1/2/3)
-[ ] Settings — İndirici: varsayılan kalite (360/720/1080/best)
+FAZ-C — PWA PUSH ✅ TAMAMLANDI:
+[x] backend/push_manager.py — VAPID key + abonelik + push gönderimi
+[x] backend/routers/push.py — /vapid-public-key /subscribe /test
+[x] episodes.py — yeni bölüm → push otomatik
+[x] frontend/pwa.js — SW + subscribe/unsubscribe
+[x] frontend/sw.js — push event + notificationclick + cache v2
+[x] Settings: Push toggle + Test butonu
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-4 — OTOMATİK ALGI + ÖNERİ
+FAZ-4 — OTOMATİK ALGI (15 Haz sohbet-19)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[x] backend/analyzer/chromaprint.py — fpcalc wrapper + .fp.json cache
+[x] backend/analyzer/intro_detector.py — sliding window hamming, consensus
+[x] backend/models.py — IntroTimestamp ORM
+[x] backend/routers/analyze.py — POST/GET/DELETE /api/analyze/intro/{id}[/{ep}]
+[x] frontend/player.js — _intro.load/tick/skip + Skip Intro butonu
+[x] Canlı test: confidence:1.0 PASS ✅
+[ ] FFmpeg black frame detect — outro sınır tespiti
+[ ] Öneri algoritması — genre/tag bazlı (araştırma askıda)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-5 — MANGA ÇEVİRİSİ (sadece PC + GPU)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Araç: zyddnys/manga-image-translator
+Pipeline: YOLOv8 balon → manga-ocr/PaddleOCR → DeepL → LaMa inpaint → render
+Kısıt: NVIDIA GPU + CUDA zorunlu
+
+BACKEND:
+[ ] translator/engine.py — subprocess wrapper (--lang TRK)
+[ ] translator/detect_gpu.py — torch.cuda.is_available() + VRAM
+[ ] routers/translate.py — POST/GET /api/translate/{id}/{ch}
+[ ] routers/translate.py — GET /api/system/gpu
+[ ] models.py — Translation tablosu
+
+FRONTEND:
+[ ] GPU tespiti → localStorage cache
+[ ] "🌐 Türkçe Çevir" butonu — sadece GPU varsa
+[ ] Çeviri progress WS (sayfa sayfa %)
+[ ] Dil toggle: [Orijinal] [Türkçe]
+[ ] "✏️ Düzelt" butonu (DB'ye kaydedilir)
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FAZ-6 — BROWSER EXTENSION (MAL-Sync tarzı)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-URL pattern parse → title+episode tespit → POST localhost:8099/api/progress/auto
-[ ] kurowatch-extension/manifest.json — Chrome/Firefox uyumlu
-[ ] kurowatch-extension/content.js — URL parse + API çağrısı
-    Desteklenen: diziwatch, tranimeizle, crunchyroll, mangaokutr, mangagezgini
-[ ] backend/routers/content.py — POST /api/progress/auto (fuzzy title match)
+[ ] kurowatch-extension/manifest.json (Chrome/Firefox)
+[ ] kurowatch-extension/content.js — URL parse + API
+    Desteklenen: diziwatch, tranimeizle, crunchyroll, mangaokutr
+[ ] backend/routers/content.py — POST /api/progress/auto (fuzzy match)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-4 — OTOMATİK ALGI + ÖNERİ
+MOBİL ADB (Kuroshin.bat, 15 Haz sohbet-19)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[ ] Chromaprint audio fingerprint — intro/outro otomatik tespiti
-[ ] FFmpeg black frame detect — sahne sınır tespiti
-[ ] Öneri algoritması — genre + tag bazlı kişiselleştirme (araştırma askıda)
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-5 — MANGA TYPESETTİNG ÇEVİRİSİ (sadece PC + GPU)
-Çeviri kalitesi (Lord direktifi: karışmama + bağlam tutarlılığı):
-- Bounding box izolasyonu: her balon tamamen izole (YOLOv8 + LaMa)
-- Okuma sırası sort: JP sağdan sola, manhwa yukarıdan aşağıya
-- Bağlam seviyesi MVP: tek sayfa tüm balonlar birlikte gönderilir
-- Bağlam seviyesi v2: önceki 2 sayfa metin + mevcut sayfa
-- "✏️ Düzelt" butonu: yanlış çeviriyi kullanıcı düzeltebilir (DB'ye kaydedilir)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Araç: zyddnys/manga-image-translator (GitHub)
-Pipeline: YOLOv8 balon tespiti → manga-ocr/PaddleOCR → DeepL → LaMa inpaint → render
-Kısıt: NVIDIA GPU + CUDA zorunlu → mobil/PWA'da "🌐 Türkçe Çevir" butonu gizli
-
-BACKEND:
-[ ] translator/engine.py — manga-image-translator subprocess wrapper (GPU, --lang TRK)
-[ ] translator/detect_gpu.py — torch.cuda.is_available() + VRAM kontrolü
-[ ] routers/translate.py — POST/GET /api/translate/{content_id}/{ch_num}
-[ ] routers/translate.py — GET /api/system/gpu (PC tespiti)
-[ ] models.py — Translation tablosu (status, source_lang, translator_used)
-[ ] config.json — "deepl_api_key" alanı (500K/ay ücretsiz)
-
-FRONTEND (reader.js / reader.html):
-[ ] GPU tespiti: başlangıçta GET /api/system/gpu → sonuç localStorage'a kaydet
-[ ] "🌐 Türkçe Çevir" butonu — sadece GPU varsa göster (PC)
-[ ] Çeviri progress: WS üzerinden sayfa sayfa % güncelleme
-[ ] Çeviri tamamlanınca reader ch_{n}_tr/ klasörünü yükler
-[ ] Dil toggle: [Orijinal] [Türkçe] — her ikisi indiyse geçiş yapılabilir
-
-ÇEVİRİ KALİTESİ:
-[ ] Sayfa bazlı bağlam: tüm balonlar birlikte DeepL'e gönderilir
-[ ] Fallback zinciri: DeepL → Google Translate → LibreTranslate
-[ ] Balon okuma sırası: Japonca sağdan sola, manhwa yukarıdan aşağıya
+[x] Kuroshin.bat KUROWATCH [3] — adb reverse tcp:8099 + PWA talimatları
 ```
