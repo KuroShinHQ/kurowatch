@@ -366,11 +366,14 @@ Depolama ─────────────────→ GET /api/downloa
 Manga sayfaları ──────────→ GET /api/download/pages/{id}
                             GET /api/download/page/{id}/{i} (tek sayfa)
 
-── FAZ-4 Chromaprint (15 Haz) ─────────────────────────────────────────
+── FAZ-4 Chromaprint + FFmpeg Outro (15 Haz) ──────────────────────────
 
-İntro analiz ─────────────→ POST /api/analyze/intro/{id}   → fpcalc → [SQLite]
+İntro analiz ─────────────→ POST /api/analyze/intro/{id}    → fpcalc → [SQLite]
 İntro zamanı ─────────────→ GET  /api/analyze/intro/{id}/{ep}
 Skip Intro (player tick) ── video.currentTime karşılaştır → butonu göster
+Outro analiz ─────────────→ POST /api/analyze/outro/{id}    → ffmpeg blackdetect → [SQLite]
+Outro zamanı ─────────────→ GET  /api/analyze/outro/{id}/{ep}
+Skip Outro (player tick) ── video.currentTime >= outro_start → butonu göster
 ```
 
 ## 🎬 Video Player Modal Diyagramı (FAZ-3 — 15 Haz)
@@ -657,7 +660,7 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ## ✅ Özellik Tamamlanma Durumu
 
-> Son güncelleme: 15 Haz 2026 (sohbet-19)
+> Son güncelleme: 15 Haz 2026 (sohbet-21)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -754,7 +757,7 @@ FAZ-4 — OTOMATİK ALGI (15 Haz sohbet-19)
 [x] backend/routers/analyze.py — POST/GET/DELETE /api/analyze/intro/{id}[/{ep}]
 [x] frontend/player.js — _intro.load/tick/skip + Skip Intro butonu
 [x] Canlı test: confidence:1.0 PASS ✅
-[ ] FFmpeg black frame detect — outro sınır tespiti
+[x] FFmpeg black frame detect — outro sınır tespiti (sohbet-21)
 [ ] Öneri algoritması — genre/tag bazlı (araştırma askıda)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

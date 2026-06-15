@@ -1,8 +1,10 @@
 """
-FAZ-4: Chromaprint intro tespiti API.
-POST /analyze/intro/{content_id}      → indirilen tüm bölümleri analiz et
-GET  /analyze/intro/{content_id}      → bu içeriğin tüm intro zamanları
-GET  /analyze/intro/{content_id}/{ep} → tek bölüm intro zamanı (player için)
+FAZ-4: Chromaprint intro + FFmpeg outro tespiti API.
+POST /analyze/intro/{content_id}       → indirilen tüm bölümleri intro analiz et
+GET  /analyze/intro/{content_id}       → bu içeriğin tüm intro zamanları
+GET  /analyze/intro/{content_id}/{ep}  → tek bölüm intro zamanı (player için)
+POST /analyze/outro/{content_id}       → indirilen tüm bölümleri outro analiz et
+GET  /analyze/outro/{content_id}/{ep}  → tek bölüm outro zamanı (player için)
 """
 import os
 from typing import Optional
@@ -11,9 +13,10 @@ from fastapi import APIRouter, HTTPException, BackgroundTasks
 from sqlalchemy import select, delete
 
 from backend.database import AsyncSessionLocal
-from backend.models import IntroTimestamp
+from backend.models import IntroTimestamp, OutroTimestamp
 from backend.analyzer.chromaprint import fingerprint_file
 from backend.analyzer.intro_detector import compare_fingerprints, consensus_intro
+from backend.analyzer.outro_detector import detect_outro
 from backend.downloader.manager import _DOWNLOADS_ROOT
 
 router = APIRouter()
@@ -172,6 +175,88 @@ async def clear_intros(content_id: int):
     async with AsyncSessionLocal() as db:
         result = await db.execute(
             delete(IntroTimestamp).where(IntroTimestamp.content_id == content_id)
+        )
+        await db.commit()
+    return {"deleted": result.rowcount}
+
+
+# ── Outro Endpoint'leri ───────────────────────────────────────────────
+
+async def _analyze_outro_content(content_id: int) -> list[dict]:
+    """
+    Tüm bölümler için FFmpeg blackdetect ile outro tespiti yap ve DB'ye kaydet.
+    Returns: per-episode outro timestamp listesi.
+    """
+    episodes = _episode_paths(content_id)
+    if not episodes:
+        return []
+
+    outros: list[dict] = []
+    for ep_num, path in episodes:
+        ts = await detect_outro(path)
+        if ts:
+            outros.append({"episode_number": ep_num, **ts})
+
+    if outros:
+        async with AsyncSessionLocal() as db:
+            await db.execute(delete(OutroTimestamp).where(OutroTimestamp.content_id == content_id))
+            for row in outros:
+                db.add(OutroTimestamp(
+                    content_id=content_id,
+                    episode_number=row["episode_number"],
+                    outro_start=row["start"],
+                    outro_end=row["end"],
+                    confidence=row["confidence"],
+                ))
+            await db.commit()
+
+    return outros
+
+
+@router.post("/analyze/outro/{content_id}")
+async def analyze_outro(content_id: int, background_tasks: BackgroundTasks):
+    """Arka planda outro analizi başlat."""
+    episodes = _episode_paths(content_id)
+    if not episodes:
+        raise HTTPException(404, f"content_id={content_id} için indirilmiş bölüm bulunamadı")
+
+    background_tasks.add_task(_analyze_outro_content, content_id)
+    return {
+        "status": "analyzing",
+        "content_id": content_id,
+        "episode_count": len(episodes),
+        "message": "Outro analizi arka planda başladı. GET /api/analyze/outro/{id}/{ep} ile sonucu kontrol edin.",
+    }
+
+
+@router.get("/analyze/outro/{content_id}/{episode_number}")
+async def get_episode_outro(content_id: int, episode_number: int) -> dict:
+    """Tek bölüm outro zamanı — player.js tarafından kullanılır."""
+    async with AsyncSessionLocal() as db:
+        row = (await db.execute(
+            select(OutroTimestamp).where(
+                OutroTimestamp.content_id == content_id,
+                OutroTimestamp.episode_number == episode_number,
+            )
+        )).scalar_one_or_none()
+
+    if not row:
+        return {"found": False}
+
+    return {
+        "found": True,
+        "start": row.outro_start,
+        "end":   row.outro_end,
+        "confidence": row.confidence,
+    }
+
+
+@router.delete("/analyze/outro/{content_id}")
+async def clear_outros(content_id: int):
+    """Bu içeriğin outro verilerini sil (yeniden analiz için)."""
+    async with AsyncSessionLocal() as db:
+        result = await db.execute(
+            delete(OutroTimestamp).where(OutroTimestamp.content_id == content_id)
         )
         await db.commit()
     return {"deleted": result.rowcount}
