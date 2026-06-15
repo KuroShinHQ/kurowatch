@@ -366,6 +366,17 @@ Depolama ─────────────────→ GET /api/downloa
 Manga sayfaları ──────────→ GET /api/download/pages/{id}
                             GET /api/download/page/{id}/{i} (tek sayfa)
 
+── FAZ-5 Manga Çevirisi (15 Haz) ──────────────────────────────────────
+
+GPU bilgisi ──────────────→ GET /api/system/gpu                  → nvidia-smi
+Çeviri başlat ────────────→ POST /api/translate/{id}/{ep}        → manga_translator subprocess
+Çeviri durumu ────────────→ GET  /api/translate/{id}/{ep}
+Çeviri progress ──────────→ WS   /api/translate/ws               → sayfa sayfa %
+Çevrilmiş sayfa listesi ──→ GET  /api/translate/pages/{id}/{ep}
+Çevrilmiş sayfa ──────────→ GET  /api/translate/page/{id}/{ep}/{i}
+Sil ──────────────────────→ DELETE /api/translate/{id}/{ep}      (dosyaları siler)
+Dil toggle (reader) ──────  _translate.showTranslated/Original() → _reader._render()
+
 ── FAZ-4 Chromaprint + FFmpeg Outro (15 Haz) ──────────────────────────
 
 İntro analiz ─────────────→ POST /api/analyze/intro/{id}    → fpcalc → [SQLite]
@@ -761,25 +772,25 @@ FAZ-4 — OTOMATİK ALGI (15 Haz sohbet-19)
 [ ] Öneri algoritması — genre/tag bazlı (araştırma askıda)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-5 — MANGA ÇEVİRİSİ (sadece PC + GPU)
+FAZ-5 — MANGA ÇEVİRİSİ (sadece PC + GPU) ✅ TAMAMLANDI (15 Haz sohbet-21)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Araç: zyddnys/manga-image-translator
-Pipeline: YOLOv8 balon → manga-ocr/PaddleOCR → DeepL → LaMa inpaint → render
-Kısıt: NVIDIA GPU + CUDA zorunlu
+Pipeline: YOLOv8 balon → manga-ocr/PaddleOCR → m2m100/DeepL → LaMa inpaint → render
+Kısıt: NVIDIA GPU + CUDA zorunlu (nvidia-smi ile tespit)
 
 BACKEND:
-[ ] translator/engine.py — subprocess wrapper (--lang TRK)
-[ ] translator/detect_gpu.py — torch.cuda.is_available() + VRAM
-[ ] routers/translate.py — POST/GET /api/translate/{id}/{ch}
-[ ] routers/translate.py — GET /api/system/gpu
-[ ] models.py — Translation tablosu
+[x] translator/engine.py — subprocess wrapper (--lang TRK, --translator m2m100)
+[x] translator/detect_gpu.py — nvidia-smi GPU tespiti + translator kurulum kontrolü
+[x] routers/translate.py — POST/GET/DELETE /api/translate/{id}/{ep}
+[x] routers/translate.py — GET /api/translate/pages/{id}/{ep} + WS /api/translate/ws
+[x] routers/translate.py — GET /api/system/gpu
 
 FRONTEND:
-[ ] GPU tespiti → localStorage cache
-[ ] "🌐 Türkçe Çevir" butonu — sadece GPU varsa
-[ ] Çeviri progress WS (sayfa sayfa %)
-[ ] Dil toggle: [Orijinal] [Türkçe]
-[ ] "✏️ Düzelt" butonu (DB'ye kaydedilir)
+[x] GPU tespiti → _translate.checkGpu() + localStorage-benzeri _gpu cache
+[x] "🌐 Çevir" butonu — sadece GPU varsa reader header'da görünür
+[x] Çeviri progress WS (sayfa sayfa %) — reader-translate-label güncellenir
+[x] Dil toggle: [JP] [TR] — _translate.showOriginal() / showTranslated()
+[ ] "✏️ Düzelt" butonu (DB'ye kaydedilir) — gelecek sprint
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 FAZ-6 — BROWSER EXTENSION (MAL-Sync tarzı)
