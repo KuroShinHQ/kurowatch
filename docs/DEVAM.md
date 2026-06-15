@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Haziran 2026 (sohbet-18) · **Aktif sürüm:** v0.6.0 (FAZ-3) · **Son commit:** `06985ba`
+**Son güncelleme:** 15 Haziran 2026 (sohbet-18) · **Aktif sürüm:** v0.7.0 (FAZ-3+PWA) · **Son commit:** `8fcbe7b`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -31,10 +31,19 @@ Canlı kanıtlar:
   GET /api/download/storage → {"bytes":0,"mb":0.0} ✅
   POST /api/download/start → {"id":1,"status":"queued",...} ✅
 
+✅ FAZ-C (PWA Push) TAMAMLANDI (sohbet-18, commit 8fcbe7b):
+- backend/push_manager.py — VAPID key üretimi + abonelik dosya depolama + push gönderimi
+- backend/routers/push.py — /push/vapid-public-key + /push/subscribe + /push/test
+- episodes.py — check_updates yeni bölüm bulunca push otomatik
+- frontend/pwa.js — SW kaydı + subscribe/unsubscribe + VAPID base64url→Uint8Array
+- frontend/sw.js — push event + notificationclick, cache v2
+- Settings: Push Bildirimleri toggle + Test butonu
+VAPID public key: BJ45SGKJg3kn4ucbVjLLEyz8NBes6n3GtKRCY3iXD8PomvLkfmY7EsEfsTpSrXsrjElzjiON7ZXfzu89wHE9cvw
+
 SIRADAKI GÖREV (sohbet-19):
-C) PWA + Push notification entegrasyonu
 D) Mobile Termux kurulum (ADB)
 E) FAZ-3 canlı test — Crunchyroll/diziwatch gerçek URL ile yt-dlp testi
+F) FAZ-4 Chromaprint intro tespiti
 
 BAŞLATMA KOMUTU:
 wsl -d Ubuntu-22.04 -u root -e bash -c "fuser -k 8099/tcp 2>/dev/null; sleep 1; source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && python -m uvicorn backend.main:app --port 8099 --log-level warning > /tmp/kwb.log 2>&1 &"
