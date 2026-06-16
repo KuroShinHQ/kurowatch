@@ -147,6 +147,11 @@ async def captcha_browser_launch(site_name: str):
     async def generator():
         yield _sse("starting", "Tarayıcı başlatılıyor...")
         try:
+            import os as _os
+            # WSLg display — X11 soketi varsa DISPLAY=:0 kullan
+            if not _os.environ.get("DISPLAY"):
+                _os.environ["DISPLAY"] = ":0"
+
             from playwright.async_api import async_playwright
 
             async with async_playwright() as pw:
