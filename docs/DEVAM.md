@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 16 Haziran 2026 (sohbet-33) · **Aktif sürüm:** v1.0.0 (FAZ-8 İndirme + CAPTCHA Human-in-the-Loop) · **Son commit:** `00fe5ad`
+**Son güncelleme:** 16 Haziran 2026 (sohbet-33b) · **Aktif sürüm:** v1.0.0 · **Son commit:** `0007176`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -9,6 +9,48 @@
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+═══════════════════════════════════════════════════════════════
+BUG LİSTESİ (16 Haz sohbet-33b — Lord canlı testten tespit etti)
+═══════════════════════════════════════════════════════════════
+
+[BUG-1] Manga/Manhwa bölüm listesi boş
+  Ekran: "Bölüm listesi yok — yükle veya üstten siteyi aç"
+  Neden: AniList chapter URL'leri vermez — site-specific (mangaokutr.com vb.)
+          "Bölümleri Yükle" butonu = syncEpisodesFromAniList → sadece sayı alır, URL yok
+  Etki: Oku/İndir butonları epUrl kontrolüne bağlı → URL yoksa HİÇBİRİ çıkmıyor
+  Dosya: app.js:1260-1263 (boş liste dalı), episodes.py (AniList sync)
+
+[BUG-2] İzle/Oku + İndir butonu manga/manhwa'da yok
+  Neden: app.js:1282-1288 — `epUrl ? <buton> : ''` → epUrl=null → buton render yok
+          Manga chapter URL'leri hiç DB'ye girilmemiş (import sırasında atlandı)
+  Etki: İndirmeler ekranı tamamen boş
+
+[BUG-3] Güncellemeler çalışmıyor
+  Ekran: "Henüz güncelleme yok"
+  Neden: episodes.py check_updates → AniList/MangaDex toplam chapter sayısını çekiyor
+          Ama chapter URL'leri üretemiyor → is_new=true olan episode yok → hiç güncelleme yok
+  Etki: Updates sekmesi her zaman boş
+
+[BUG-4] İndirmeler ekranı boş
+  Neden: BUG-2'nin sonucu — manga/manhwa'da download butonu yok, indirme başlamıyor
+  Etki: İndirmeler sayfasında sadece anime indirilir
+
+[İSTEK-1] In-app video embed / player
+  Şu an: "İzle" butonu external tab açıyor (tranimeizle.co) — Lord TAMAM dedi
+  İstek: KuroWatch içinde video oynatma (iframe embed veya local player)
+  Not: FAZ-3 Player zaten kodda var (player.js) — local indirilmiş video için
+       CF bypass olmadan iframe embed = 403; cookies ile mümkün olabilir
+
+ÇÖZÜM SIRASINA ALINAN (sohbet-34+):
+  Öncelik 1 → BUG-1+2: Manga chapter URL'lerini DB'ye ekle
+    Yol A: Detay sayfasında "Chapter URL Ekle" modal (manuel giriş)
+    Yol B: mangaokutr.com scraper → chapter listesi otomatik çek + URL'leri kaydet
+    Yol C: Mevcut site URL'sinden chapter URL pattern'i türet (mangaokutr.com/manga-slug/bolum-N)
+  Öncelik 2 → BUG-3: Güncelleme tespiti — site scraper ile chapter sayısı çek
+  Öncelik 3 → İSTEK-1: İn-app player (cookies sonrası iframe, veya local video)
+
+═══════════════════════════════════════════════════════════════
 
 EN SON YAPILAN (15 Haz sohbet-33) — CAPTCHA Human-in-the-Loop:
 
