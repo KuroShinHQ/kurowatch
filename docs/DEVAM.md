@@ -42,13 +42,32 @@ BUG LİSTESİ (16 Haz sohbet-33b — Lord canlı testten tespit etti)
   Not: FAZ-3 Player zaten kodda var (player.js) — local indirilmiş video için
        CF bypass olmadan iframe embed = 403; cookies ile mümkün olabilir
 
+[BUG-5] Türleri AniList'ten Güncelle → "0 içeriğe tür eklendi"
+  Ekran: Settings > "Türleri AniList'ten Güncelle" → toast "0 içeriğe tür eklendi"
+  Canlı kanıt: POST /api/genres/patch-all → {"patched":0,"failed":18,"total":18}
+  Neden: 18 oyun → AniList ID'si yok → AniList patch başarısız → IGDB genres kullanılmıyor
+  Tür YOK: 19 içerik (Elden Ring, Witchfire, Atlas Fallen, Cult of the Lamb, No Man's Sky vb.)
+  Fix yolu: patch-all içinde type=game → IGDB genres endpoint'ini çağır (igdb.py)
+             VEYA: oyunlar için manuel tür girişi (settings/detay sayfasında)
+
+[BUG-6] Add ekranı → Kütüphanem arama görsel eksikliği
+  Ekran: Kütüphanem sekmesi açık, "Kütüphanende ara..." input boş, sonuç yok
+  Not: renderLibrarySearch() fonksiyonu var (app.js:1707), /api/content?q= çalışıyor
+       Arama input'u event listener'a bağlı (app.js:1659, 1698)
+       Fonksiyonel sorun YOK — kullanıcı Enter/yazma yapmadı
+       Görsel sorun: İlk açıldığında "Kütüphanende aramak için yaz..." placeholder dışında
+       hiçbir içerik/öneri yok; boş görünüyor, kullanıcı arama yapacağını anlamıyor
+  Fix yolu: Kütüphanem sekmesi açılınca son eklenen 5-10 içerik önizleme göster
+
 ÇÖZÜM SIRASINA ALINAN (sohbet-34+):
   Öncelik 1 → BUG-1+2: Manga chapter URL'lerini DB'ye ekle
     Yol A: Detay sayfasında "Chapter URL Ekle" modal (manuel giriş)
     Yol B: mangaokutr.com scraper → chapter listesi otomatik çek + URL'leri kaydet
     Yol C: Mevcut site URL'sinden chapter URL pattern'i türet (mangaokutr.com/manga-slug/bolum-N)
   Öncelik 2 → BUG-3: Güncelleme tespiti — site scraper ile chapter sayısı çek
-  Öncelik 3 → İSTEK-1: İn-app player (cookies sonrası iframe, veya local video)
+  Öncelik 3 → BUG-5: Oyun türleri → IGDB genres patch-all'a ekle
+  Öncelik 4 → BUG-6: Kütüphanem sekmesi → açılınca son eklenen içerik önizle
+  Öncelik 5 → İSTEK-1: İn-app player (cookies sonrası iframe, veya local video)
 
 ═══════════════════════════════════════════════════════════════
 
