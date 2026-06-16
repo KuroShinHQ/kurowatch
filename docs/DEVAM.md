@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 16 Haziran 2026 (sohbet-33b) · **Aktif sürüm:** v1.0.0 · **Son commit:** `0007176`
+**Son güncelleme:** 16 Haziran 2026 (sohbet-33c) · **Aktif sürüm:** v1.0.0 · **Son commit:** `46e39e8`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -9,6 +9,62 @@
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+═══════════════════════════════════════════════════════════════
+MİMARİ KARAR: 3 BUTON SİSTEMİ (16 Haz sohbet-33c — Lord direktifi)
+═══════════════════════════════════════════════════════════════
+
+Her bölüm/chapter satırında 3 buton olacak:
+
+  [1] Siteye Git        → external tab, tranimeizle.co / mangaokutr vb. açar (MEVCUT)
+  [2] Burada İzle/Oku   → KuroWatch içinde oynat/oku (YENİ)
+  [3] İndir [N-M]       → aralık seçerek indir (2-65, 12 gibi) → local'e kaydeder (YENİ)
+
+Local'e inince → İzle/Oku butonu local dosyayı açar (3. butona gerek kalmaz).
+
+TEKNIK YOLLAR (web araştırması 16 Haz):
+
+  [2] Burada İzle — ANİME:
+    - tranimeizle.co iframe embed = CF engeller (X-Frame-Options) → ÇALIŞMAZ
+    - YOL: yt-dlp --get-url → HLS/m3u8 URL çek → hls.js ile HTML5 <video> oynat
+    - Backend: GET /api/stream/hls?url=<ep_url> → yt-dlp -f best -g → m3u8 döner
+    - Frontend: hls.js kütüphanesi (CDN) + <video> tag (FAZ-3 player zaten var)
+    - Cookies gerekli: CF clearance olmadan yt-dlp da başarısız olur
+
+  [2] Burada Oku — MANGA/MANHWA:
+    - mangaokutr.com KAPANDI (Mart 2026) → alternatif site gerekli
+    - Madara temalı siteler: admin-ajax.php → chapter image URL listesi çekilir
+    - gallery-dl Madara desteği var (wordpress-madara-scraper alternatif)
+    - YOL: chapter URL'si DB'ye kayıtlıysa → chapter page HTML fetch → img URL'leri → reader
+    - Reader: FAZ-5 Manga Reader zaten var (dikey scroll + sayfa modu)
+
+  [3] İndir [N-M] — ANİME:
+    - yt-dlp → downloads/anime/{title}/ep-{N}.mp4
+    - FastAPI Range Requests: GET /api/files/stream/{download_id} → HTTP 206 Partial
+    - HTML5 <video src="/api/files/stream/..."> → tarayıcı native oynatır ✅
+
+  [3] İndir [N-M] — MANGA/MANHWA:
+    - gallery-dl → downloads/manga/{title}/chapter-{N}/*.jpg
+    - FastAPI: GET /api/files/manga/{title}/chapter/{N}/pages → [url1, url2, ...]
+    - FAZ-5 reader mevcut → local image URL'leri besle → okur ✅
+
+  LOCAL OYNATMA SONUCU:
+    - İndirilen anime → HTML5 <video> + Range Requests → akıcı oynatma ✅
+    - İndirilen manga → image viewer (FAZ-5 reader) → sayfa sayfa oku ✅
+    - EVET, local'e inince seçip izleyebilir/okuyabilirsin ✅
+
+  ⚠️ MANGA SİTE SORUNU (KRİTİK):
+    - mangaokutr.com Mart 2026'da kapandı → tüm manga URL'leri geçersiz
+    - Kütüphanedeki manga içeriklerinin siteleri güncellenmeli
+    - Alternatifler: MangaDex (EN), asurascans.com, Türk alternatif aranmalı
+
+  UYGULAMA SIRASI (sohbet-34+):
+    1. Manga site listesi güncelle (mangaokutr.com öldü → alternatif bul)
+    2. Manga chapter URL scraper (Madara admin-ajax.php)
+    3. [2] HLS stream endpoint (yt-dlp -g → m3u8 → hls.js)
+    4. [3] Aralık indirme UI (N-M input modal)
+    5. Local dosya stream endpoint (Range Requests)
+    6. Player/reader local mod (URL'yi /api/files/stream'e yönlendir)
 
 ═══════════════════════════════════════════════════════════════
 BUG LİSTESİ (16 Haz sohbet-33b — Lord canlı testten tespit etti)
