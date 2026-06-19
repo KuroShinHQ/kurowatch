@@ -175,6 +175,32 @@ async def delete_translation(content_id: int, episode_number: int) -> dict:
     return {"deleted": False}
 
 
+@router.put("/translate/{content_id}/{episode_number}/{page_index}")
+async def save_correction(content_id: int, episode_number: int, page_index: int, body: dict) -> dict:
+    """Düzeltilmiş çeviri metnini kaydet (corrections.json)."""
+    import json as _json
+    ch_dir = _chapter_dir(content_id, episode_number)
+    if not os.path.isdir(ch_dir):
+        raise HTTPException(404, "Bölüm dizini bulunamadı")
+
+    corrections_path = os.path.join(ch_dir, "corrections.json")
+    corrections: dict = {}
+    if os.path.exists(corrections_path):
+        with open(corrections_path, encoding="utf-8") as f:
+            corrections = _json.load(f)
+
+    text = body.get("text", "").strip()
+    if text:
+        corrections[str(page_index)] = text
+    else:
+        corrections.pop(str(page_index), None)
+
+    with open(corrections_path, "w", encoding="utf-8") as f:
+        _json.dump(corrections, f, ensure_ascii=False, indent=2)
+
+    return {"saved": True, "page_index": page_index, "text": text}
+
+
 @router.websocket("/translate/ws")
 async def translate_ws(ws: WebSocket):
     """İlerleme push — mevcut oturumları gönder, sonra bekle."""

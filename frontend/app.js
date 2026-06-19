@@ -191,6 +191,37 @@
     });
   }
 
+  function _initModalSwipe(el, id) {
+    const sheet = el.querySelector('[data-swipe-sheet]') || el.querySelector('.modal-sheet') || el.lastElementChild;
+    if (!sheet) return;
+    let startY = 0, currentY = 0, dragging = false;
+    sheet.addEventListener('touchstart', function(e) {
+      startY = e.touches[0].clientY;
+      currentY = 0;
+      dragging = true;
+      sheet.style.transition = 'none';
+    }, { passive: true });
+    sheet.addEventListener('touchmove', function(e) {
+      if (!dragging) return;
+      currentY = e.touches[0].clientY - startY;
+      if (currentY > 0) sheet.style.transform = 'translateY(' + currentY + 'px)';
+    }, { passive: true });
+    sheet.addEventListener('touchend', function() {
+      dragging = false;
+      sheet.style.transition = 'transform 0.25s cubic-bezier(0.32,0.72,0,1)';
+      if (currentY > 120) {
+        sheet.style.transform = 'translateY(100%)';
+        setTimeout(function() {
+          sheet.style.transform = '';
+          sheet.style.transition = '';
+          closeModal(id);
+        }, 250);
+      } else {
+        sheet.style.transform = '';
+      }
+    });
+  }
+
   function openModal(id) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -202,6 +233,7 @@
       if (s1) s1.classList.remove('hidden');
       if (s2) s2.classList.add('hidden');
       _initAddSearch();
+      _initModalSwipe(el, id);
     }
     el.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -224,7 +256,8 @@
   });
 
   // Expose
-  window.kuroNav = { show: showScreen, openModal: openModal, closeModal: closeModal };
+  window.kuroNav   = { show: showScreen, openModal: openModal, closeModal: closeModal };
+  window.kuroToast = showToast;
 
   // ── Render: Home (Kütüphane Grid) ────────────────────────────────
   let homeFilter = { type: 'all', status: 'all', genre: 'all', query: '' };
@@ -529,12 +562,23 @@
 
     // Mark butonu
     if (markBtn && !isGame) {
-      markBtn.onclick = function() {
+      markBtn.onclick = async function() {
+        const btn = this;
+        if (btn.disabled) return;
         const next = (item.my_progress || 0) + 1;
         if (total > 0 && next > total) return;
-        item.my_progress = next;
-        apiPost('/api/content/' + id + '/progress', { progress: next });
-        renderDetail(id);
+        btn.disabled = true;
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="animation:spin .8s linear infinite">progress_activity</span>';
+        try {
+          item.my_progress = next;
+          await apiPost('/api/content/' + id + '/progress', { progress: next });
+          renderDetail(id);
+        } catch(e) {
+          btn.disabled = false;
+          btn.innerHTML = origHTML;
+          showToast('İşaretlenemedi: ' + e.message, 'error');
+        }
       };
     }
 
@@ -1241,28 +1285,36 @@
   function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle, sites) {
     const isAnime = contentType === 'anime';
     const readLabel = isAnime ? 'İzle' : 'Oku';
-    const readIcon = isAnime ? 'play_circle' : 'menu_book';
+    const readIcon  = isAnime ? 'play_circle' : 'menu_book';
     const syncLabel = isAnime ? 'AniList\'ten Bölümleri Yükle' : 'Bölümleri Yükle';
 
-    // Siteler sekmesine hızlı erişim butonu (en üstte belirgin)
     const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
     const siteShortcut = primarySite
       ? '<a href="' + escapeHtml(primarySite.site_url) + '" target="_blank" rel="noopener" ' +
         'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
         'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
         '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-        readLabel + ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./,''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) + '</a>'
+        readLabel + ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) + '</a>'
       : '';
 
-    const syncBtn = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
+    const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
       '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> ' + syncLabel + '</button>';
 
     if (!episodes.length) {
-      el.innerHTML = siteShortcut + syncBtn + '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px"><span class="material-symbols-outlined" style="font-size:40px">video_library</span><p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
+      el.innerHTML = siteShortcut + syncBtnHtml +
+        '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px">' +
+        '<span class="material-symbols-outlined" style="font-size:40px">video_library</span>' +
+        '<p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
       el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
       return;
     }
-    el.innerHTML = siteShortcut + syncBtn + episodes.map(function(e) {
+
+    // ── Virtual Scroll kurulumu ───────────────────────────────────
+    const BATCH = 20;
+    let loaded = 0;
+    let observer = null;
+
+    function _epHtml(e) {
       if (e.is_watched) {
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e80;border:1px solid #ffffff0d;opacity:0.5">' +
           '<div style="display:flex;flex-direction:column"><span style="color:#e1e0ff;text-decoration:line-through;font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
@@ -1273,7 +1325,7 @@
       }
       const epUrl = e.url || null;
       const rowBorder = e.is_new ? '1px solid #00d4ff4d' : '1px solid #ffffff0d';
-      const numColor = e.is_new ? '#00d4ff' : '#e1e0ff';
+      const numColor  = e.is_new ? '#00d4ff' : '#e1e0ff';
       return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e;border:' + rowBorder + '">' +
         '<div style="display:flex;flex-direction:column"><span style="color:' + numColor + ';font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
         (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
@@ -1290,51 +1342,79 @@
         'style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:flex-end;background:none;border:none;cursor:pointer">' +
         '<div style="width:24px;height:24px;border-radius:4px;background:#31324d;border:1px solid #ffffff1a"></div></button>' +
         '</div></div>';
-    }).join('');
+    }
 
-    // "Oku/İzle" butonuna tıklayınca aynı zamanda izlendi işaretle
-    el.querySelectorAll('.ep-open-btn').forEach(function(btn) {
-      btn.addEventListener('click', async function() {
-        const epId = parseInt(this.dataset.epId, 10);
-        const cid = parseInt(this.dataset.contentId, 10);
+    function _loadBatch(list) {
+      const slice = episodes.slice(loaded, loaded + BATCH);
+      if (!slice.length) { if (observer) { observer.disconnect(); observer = null; } return; }
+      const frag = document.createDocumentFragment();
+      slice.forEach(function(e) {
+        const wrap = document.createElement('div');
+        wrap.innerHTML = _epHtml(e);
+        frag.appendChild(wrap.firstElementChild);
+      });
+      list.appendChild(frag);
+      loaded += slice.length;
+
+      if (loaded < episodes.length) {
+        if (observer) observer.disconnect();
+        const sentinel = list.lastElementChild;
+        observer = new IntersectionObserver(function(entries) {
+          if (entries[0].isIntersecting) { observer.disconnect(); observer = null; _loadBatch(list); }
+        }, { rootMargin: '200px' });
+        observer.observe(sentinel);
+      }
+    }
+
+    // Sabit header (shortcut + sync btn)
+    el.innerHTML = siteShortcut + syncBtnHtml +
+      '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>' +
+      '<div style="text-align:center;color:#9090b0;font-size:12px;padding:8px 0" id="ep-count-label">' +
+      episodes.length + ' bölüm</div>';
+
+    const list = el.querySelector('#ep-virtual-list');
+    _loadBatch(list);
+
+    // Event delegation — tek listener, tüm bölümler
+    el.addEventListener('click', async function(evt) {
+      const openBtn  = evt.target.closest('.ep-open-btn');
+      const watchBtn = evt.target.closest('.ep-watch-btn');
+      const dlBtn    = evt.target.closest('.ep-dl-btn');
+      const syncBtn  = evt.target.closest('.ep-anilist-sync-btn');
+
+      if (syncBtn) { syncEpisodesFromAniList(evt); return; }
+
+      if (openBtn) {
+        const epId = parseInt(openBtn.dataset.epId, 10);
+        const cid  = parseInt(openBtn.dataset.contentId, 10);
         try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e) {}
         renderDetail(cid);
-      });
-    });
+        return;
+      }
 
-    el.querySelectorAll('.ep-watch-btn').forEach(function(btn) {
-      btn.addEventListener('click', async function() {
-        const epId = parseInt(this.dataset.epId, 10);
-        const cid = parseInt(this.dataset.contentId, 10);
+      if (watchBtn) {
+        const epId = parseInt(watchBtn.dataset.epId, 10);
+        const cid  = parseInt(watchBtn.dataset.contentId, 10);
         try {
           await apiPatch('/api/episodes/' + epId + '/watch', {});
           const updated = await apiGet('/api/content/' + cid);
           const allWatched = updated.episodes && updated.episodes.length > 0 &&
             updated.episodes.every(function(e) { return e.is_watched; });
-          if (allWatched) {
-            _showCompleteModal(cid, updated.title || '', updated.my_score);
-          } else {
-            renderDetail(cid);
-          }
+          if (allWatched) { _showCompleteModal(cid, updated.title || '', updated.my_score); }
+          else { renderDetail(cid); }
         } catch(e) { console.error('ep watch', e); }
-      });
-    });
-    el.querySelectorAll('.ep-dl-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        if (!window.kuroDownload) { alert('İndirme modülü yüklenmedi'); return; }
-        window.kuroDownload.start(
-          parseInt(this.dataset.contentId, 10),
-          this.dataset.contentTitle,
-          this.dataset.contentType,
-          parseInt(this.dataset.epNum, 10),
-          this.dataset.epUrl,
-          '720p'
-        );
-      });
-    });
+        return;
+      }
 
-    const syncBtnEl = el.querySelector('.ep-anilist-sync-btn');
-    if (syncBtnEl) syncBtnEl.addEventListener('click', syncEpisodesFromAniList);
+      if (dlBtn) {
+        if (!window.kuroDownload) { showToast('İndirme modülü yüklenmedi', 'error'); return; }
+        window.kuroDownload.start(
+          parseInt(dlBtn.dataset.contentId, 10), dlBtn.dataset.contentTitle,
+          dlBtn.dataset.contentType, parseInt(dlBtn.dataset.epNum, 10),
+          dlBtn.dataset.epUrl, '720p'
+        );
+      }
+    });
   }
 
   // ── Tamamlama Modalı ─────────────────────────────────────────────
@@ -1934,7 +2014,7 @@
   async function submitAddContent() {
     const title = (document.getElementById('add-form-title') || {}).value || '';
     if (!title.trim()) {
-      alert('Başlık gerekli');
+      showToast('Başlık gerekli', 'error');
       return;
     }
     const activeType = document.querySelector('.add-type-btn.text-\\[\\#00d4ff\\]');
@@ -1965,7 +2045,7 @@
       });
       if (window.location.hash === '#screen-home' || !window.location.hash) renderHome();
     } catch (err) {
-      alert('Kayıt hatası: ' + err.message);
+      showToast('Kayıt hatası: ' + err.message, 'error');
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined">library_add</span> Kütüphaneye Ekle'; }
     }

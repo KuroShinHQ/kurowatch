@@ -31,6 +31,16 @@
       "matches": ["*://mangadex.org/chapter/*", "*://mangadex.org/title/*"],
       "js": ["content/common.js", "content/mangadex.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.tranimeizle.co/*"],
+      "js": ["content/tranimeizle.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["*://*.tranimaci.com/*"],
+      "js": ["content/tranimaci.js"],
+      "run_at": "document_idle"
     }
   ],
   "icons": {

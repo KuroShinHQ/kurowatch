@@ -266,6 +266,61 @@ async def patch_all_genres(db: AsyncSession = Depends(get_db)):
     return {"patched": patched, "failed": failed, "total": len(items)}
 
 
+# ── Browser Extension: Otomatik İlerleme ────────────────────────────
+
+class AutoProgressIn(BaseModel):
+    title: str
+    episode: Optional[int] = None
+    chapter: Optional[int] = None
+    site: Optional[str] = None
+    url: Optional[str] = None
+    type: Optional[str] = None
+
+
+@router.post("/progress/auto")
+async def auto_progress(body: AutoProgressIn, db: AsyncSession = Depends(get_db)):
+    """Browser extension: fuzzy title match → ilerleme güncelle."""
+    import re
+
+    def _norm(s: str) -> str:
+        return re.sub(r"[^\w\s]", "", s.lower()).strip()
+
+    result = await db.execute(select(Content))
+    all_items = result.scalars().all()
+
+    q = _norm(body.title)
+    best: Optional[Content] = None
+    best_score = 0.0
+
+    for c in all_items:
+        cn = _norm(c.title)
+        if cn == q:
+            best = c
+            best_score = 1.0
+            break
+        if q in cn or cn in q:
+            score = min(len(q), len(cn)) / max(len(q), len(cn), 1)
+            if score > best_score:
+                best, best_score = c, score
+
+    if not best or best_score < 0.5:
+        from fastapi import HTTPException as _H
+        raise _H(404, f"'{body.title}' için eşleşme bulunamadı (en iyi: {best_score:.2f})")
+
+    progress = body.episode or body.chapter or 0
+    if progress > (best.my_progress or 0):
+        best.my_progress = progress
+        if best.status == "planning":
+            best.status = "watching"
+        best.updated_at = datetime.utcnow()
+        await db.commit()
+        return {"action": "updated", "content_id": best.id, "title": best.title,
+                "progress": best.my_progress, "score": round(best_score, 2)}
+
+    return {"action": "unchanged", "content_id": best.id, "title": best.title,
+            "progress": best.my_progress, "score": round(best_score, 2)}
+
+
 # ── Discover (AniList proxy) ─────────────────────────────────────────
 
 @router.get("/discover")
