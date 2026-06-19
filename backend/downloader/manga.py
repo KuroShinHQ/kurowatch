@@ -85,25 +85,40 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     if "reading-content" not in html:
         raise RuntimeError(f"Madara: reading-content bulunamadı — {url}")
 
-    # Tüm HTML'de src= ile biten görsel URL'leri topla
-    _SKIP = ("logo", "favicon", "banner", "avatar", "icon", "wp-content/themes",
-              "elementor", "gravatar", "placeholder", "spinner", "loading")
+    # Önce wp-manga-chapter-img class'lı img'leri dene (Madara standart)
+    # src= değerleri bazen " https://..." şeklinde boşlukla başlar — strip() zorunlu
     seen: set[str] = set()
     img_urls: list[str] = []
-    for m in re.finditer(r'src=["\']([^"\'> ]+\.(?:jpg|jpeg|png|webp)(?:\?[^"\'> ]*)?)["\']', html, re.IGNORECASE):
-        src = m.group(1).strip()
-        if any(s in src.lower() for s in _SKIP):
-            continue
-        if src not in seen:
-            seen.add(src)
-            img_urls.append(src)
 
-    # Sayfa gibi görünen CDN URL'lerini filtrele: ardışık numaralı (001.jpg vb.) veya "/manga/" içeren
-    chapter_imgs = [u for u in img_urls if re.search(r'/\d{1,4}\.(?:jpg|jpeg|png|webp)', u, re.IGNORECASE)]
+    chapter_imgs: list[str] = []
+    for m in re.finditer(r'<img[^>]+class=["\'][^"\']*wp-manga-chapter-img[^"\']*["\'][^>]*>', html, re.IGNORECASE):
+        tag = m.group(0)
+        for attr in ("data-src", "data-lazy-src", "src"):
+            am = re.search(rf'{attr}=["\']([^"\']*)["\']', tag, re.IGNORECASE)
+            if am:
+                src = am.group(1).strip()
+                if src and src not in seen:
+                    seen.add(src)
+                    chapter_imgs.append(src)
+                break
+
     if not chapter_imgs:
-        chapter_imgs = [u for u in img_urls if "/manga/" in u.lower() or "/chapter/" in u.lower()]
-    if not chapter_imgs:
-        chapter_imgs = img_urls  # son çare: filtresiz
+        # Fallback: tüm HTML'de src/data-src ara (boşluklu URL desteğiyle)
+        _SKIP = ("logo", "favicon", "banner", "avatar", "icon", "wp-content/themes",
+                 "elementor", "gravatar", "placeholder", "spinner", "loading")
+        for m in re.finditer(r'(?:data-src|data-lazy-src|src)=["\']([^"\']*\.(?:jpg|jpeg|png|webp)[^"\']*)["\']', html, re.IGNORECASE):
+            src = m.group(1).strip()
+            if not src or any(s in src.lower() for s in _SKIP):
+                continue
+            if src not in seen:
+                seen.add(src)
+                img_urls.append(src)
+
+        chapter_imgs = [u for u in img_urls if re.search(r'/\d{1,4}\.(?:jpg|jpeg|png|webp)', u, re.IGNORECASE)]
+        if not chapter_imgs:
+            chapter_imgs = [u for u in img_urls if "/manga/" in u.lower() or "/chapter/" in u.lower()]
+        if not chapter_imgs:
+            chapter_imgs = img_urls
 
     # URL'leri sırala (001, 002, ... sırasını koru)
     chapter_imgs.sort(key=lambda u: re.search(r'(\d+)\.(?:jpg|jpeg|png|webp)', u).group(1)
