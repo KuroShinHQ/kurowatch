@@ -17,9 +17,11 @@ from backend.scraper import anilist
 router = APIRouter()
 
 SUPPORTED_SITES = [
-    {"id": "crunchyroll", "name": "Crunchyroll", "url": "crunchyroll.com",  "type": "anime"},
-    {"id": "diziwatch",   "name": "Diziwatch",   "url": "diziwatch.com",   "type": "anime"},
-    {"id": "mangadex",    "name": "MangaDex",    "url": "mangadex.org",    "type": "manga"},
+    {"id": "crunchyroll",   "name": "Crunchyroll",   "url": "crunchyroll.com",    "type": "anime"},
+    {"id": "diziwatch",     "name": "Diziwatch",     "url": "diziwatch.com",      "type": "anime"},
+    {"id": "mangadex",      "name": "MangaDex",      "url": "mangadex.org",       "type": "manga"},
+    {"id": "tranimeizle",   "name": "Tranimeizle",   "url": "tranimeizle.co",     "type": "anime"},
+    {"id": "tranimaci",     "name": "Tranimaci",     "url": "tranimaci.com",      "type": "anime"},
 ]
 
 

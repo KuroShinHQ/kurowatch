@@ -827,11 +827,62 @@
     _setLang(lang) {
       const orgBtn = document.getElementById('reader-lang-original');
       const trBtn  = document.getElementById('reader-lang-tr');
+      const fixBtn = document.getElementById('reader-fix-btn');
       if (!orgBtn || !trBtn) return;
       const active   = 'px-3 py-1.5 bg-[#00d4ff]/20 text-[#00d4ff] font-medium transition-colors';
       const inactive = 'px-3 py-1.5 bg-[#1c1d37] text-[#9090b0] hover:text-white transition-colors';
       orgBtn.className = lang === 'tr' ? inactive : active;
       trBtn.className  = lang === 'tr' ? active   : inactive;
+      if (fixBtn) fixBtn.style.display = lang === 'tr' ? 'flex' : 'none';
+    },
+
+    showFixModal() {
+      const page = _reader._current;
+      const cid  = this._contentId;
+      const ep   = this._episode;
+
+      const old = document.getElementById('kw-fix-modal');
+      if (old) old.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'kw-fix-modal';
+      modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.75);backdrop-filter:blur(4px);padding:16px';
+      modal.innerHTML =
+        '<div style="background:#1a2123;border:1px solid rgba(255,217,161,0.3);border-radius:16px;padding:24px;width:100%;max-width:480px;display:flex;flex-direction:column;gap:16px">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+            '<span style="font-size:14px;font-weight:700;color:#ffd9a1">✏️ Sayfa ' + (page + 1) + ' — Çeviri Düzeltme</span>' +
+            '<button id="kw-fix-close" style="background:none;border:none;color:#9090b0;cursor:pointer;font-size:20px;line-height:1;padding:4px">✕</button>' +
+          '</div>' +
+          '<textarea id="kw-fix-input" style="width:100%;min-height:120px;background:#0d0d1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:12px;color:#e1e0ff;font-size:14px;resize:vertical;font-family:inherit;box-sizing:border-box" placeholder="Düzeltilmiş çeviriyi gir..."></textarea>' +
+          '<button id="kw-fix-save" style="height:44px;background:#ffd9a1;color:#1a0a00;font-weight:700;border:none;border-radius:8px;cursor:pointer;font-size:14px">Kaydet</button>' +
+        '</div>';
+      document.body.appendChild(modal);
+
+      const closeModal = function() { modal.remove(); };
+      document.getElementById('kw-fix-close').onclick = closeModal;
+      modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+
+      document.getElementById('kw-fix-save').onclick = async function() {
+        const text = (document.getElementById('kw-fix-input').value || '').trim();
+        const btn  = document.getElementById('kw-fix-save');
+        btn.disabled = true;
+        btn.textContent = 'Kaydediliyor...';
+        try {
+          const r = await fetch(API + '/api/translate/' + cid + '/' + ep + '/' + page, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text }),
+          });
+          if (!r.ok) throw new Error(r.status);
+          closeModal();
+        } catch(err) {
+          btn.disabled = false;
+          btn.textContent = 'Hata — Tekrar Dene';
+        }
+      };
+
+      const inp = document.getElementById('kw-fix-input');
+      if (inp) inp.focus();
     },
   };
 
@@ -888,6 +939,7 @@
     _pb('reader-translate-btn',  () => _translate.startTranslate());
     _pb('reader-lang-original',  () => _translate.showOriginal());
     _pb('reader-lang-tr',        () => _translate.showTranslated());
+    _pb('reader-fix-btn',        () => _translate.showFixModal());
 
     // ── Reader Swipe ──────────────────────────────────────────────
     let _swipeStartX = 0, _swipeStartY = 0;

@@ -757,7 +757,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <div id="modal-add" class="modal-overlay hidden fixed inset-0 z-[100]">
   <div class="absolute inset-0 bg-black/75 backdrop-blur-[4px]" data-modal-close="modal-add"></div>
-  <div class="fixed bottom-0 left-0 w-full z-[101] flex flex-col items-center" style="height:85vh;">
+  <div data-swipe-sheet class="fixed bottom-0 left-0 w-full z-[101] flex flex-col items-center" style="height:85vh;">
     <!-- Tutma Çubuğu -->
     <div class="w-full flex justify-center py-3 bg-[#1a2123] rounded-t-xl border border-white/7 border-b-0 cursor-grab min-h-[44px] items-center">
       <div class="w-12 h-1.5 bg-[#3c494e] rounded-full"></div>
@@ -1154,6 +1154,10 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- FAZ-5: Çeviri butonu — sadece GPU varsa görünür -->
     <button id="reader-translate-btn" class="hidden items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-[#00d4ff] transition-colors min-h-[36px]" title="Türkçeye Çevir (GPU gerekli)">
       🌐 <span id="reader-translate-label">Çevir</span>
+    </button>
+    <!-- FAZ-5: Düzelt butonu — TR modda görünür -->
+    <button id="reader-fix-btn" class="hidden items-center gap-1 text-xs px-3 py-1.5 rounded-lg border border-[#ffd9a1]/30 text-[#ffd9a1] hover:bg-[#ffd9a1]/10 transition-colors min-h-[36px]" title="Bu sayfanın çevirisini düzelt">
+      ✏️ Düzelt
     </button>
     <button id="reader-fullscreen-btn" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10" title="Tam Ekran (F)">
       <span class="material-symbols-outlined text-xl">fullscreen</span>
