@@ -2,20 +2,39 @@ import asyncio
 import os
 import re
 from typing import Callable, Optional
+from urllib.parse import urlparse
 
 import httpx
+
+_MADARA_DOMAINS = [
+    "mangawow.com", "manga-sehri.net", "mangakeyf.com", "mangahost.net",
+    "okumangatr.com", "mangadenizi.com", "turkmanga.net", "mangaturk.org",
+]
+
+_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+    "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5",
+}
+
+
+def _is_madara(url: str) -> bool:
+    host = urlparse(url).netloc.lstrip("www.")
+    return any(host.endswith(d) for d in _MADARA_DOMAINS)
 
 
 async def download_manga_chapter(
     url: str,
     output_dir: str,
-    on_progress: Optional[Callable[[int, int], None]] = None,  # (downloaded, total)
+    on_progress: Optional[Callable[[int, int], None]] = None,
 ) -> list[str]:
     """Manga bölümü indir. Sayfa dosyalarının yol listesini döner."""
     os.makedirs(output_dir, exist_ok=True)
 
     if "mangadex.org" in url:
         return await _mangadex_chapter(url, output_dir, on_progress)
+    elif _is_madara(url):
+        return await _madara_chapter(url, output_dir, on_progress)
     else:
         return await _gallerydl_chapter(url, output_dir, on_progress)
 
@@ -52,6 +71,66 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
                 on_progress(i + 1, total)
 
         return files
+
+
+async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
+    """Madara WordPress tema sitelerinden manga bölümü indir (?style=list ile)."""
+    list_url = url.rstrip("/") + "/?style=list"
+
+    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
+        r = await client.get(list_url)
+        r.raise_for_status()
+        html = r.text
+
+    if "reading-content" not in html:
+        raise RuntimeError(f"Madara: reading-content bulunamadı — {url}")
+
+    # Tüm HTML'de src= ile biten görsel URL'leri topla
+    _SKIP = ("logo", "favicon", "banner", "avatar", "icon", "wp-content/themes",
+              "elementor", "gravatar", "placeholder", "spinner", "loading")
+    seen: set[str] = set()
+    img_urls: list[str] = []
+    for m in re.finditer(r'src=["\']([^"\'> ]+\.(?:jpg|jpeg|png|webp)(?:\?[^"\'> ]*)?)["\']', html, re.IGNORECASE):
+        src = m.group(1).strip()
+        if any(s in src.lower() for s in _SKIP):
+            continue
+        if src not in seen:
+            seen.add(src)
+            img_urls.append(src)
+
+    # Sayfa gibi görünen CDN URL'lerini filtrele: ardışık numaralı (001.jpg vb.) veya "/manga/" içeren
+    chapter_imgs = [u for u in img_urls if re.search(r'/\d{1,4}\.(?:jpg|jpeg|png|webp)', u, re.IGNORECASE)]
+    if not chapter_imgs:
+        chapter_imgs = [u for u in img_urls if "/manga/" in u.lower() or "/chapter/" in u.lower()]
+    if not chapter_imgs:
+        chapter_imgs = img_urls  # son çare: filtresiz
+
+    # URL'leri sırala (001, 002, ... sırasını koru)
+    chapter_imgs.sort(key=lambda u: re.search(r'(\d+)\.(?:jpg|jpeg|png|webp)', u).group(1)
+                      if re.search(r'(\d+)\.(?:jpg|jpeg|png|webp)', u) else u)
+
+    if not chapter_imgs:
+        raise RuntimeError(f"Madara: hiç sayfa görseli bulunamadı — {list_url}")
+
+    total = len(chapter_imgs)
+    files: list[str] = []
+
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=_HEADERS) as client:
+        for i, img_url in enumerate(chapter_imgs):
+            ext = re.search(r'\.(jpg|jpeg|png|webp)', img_url, re.IGNORECASE)
+            ext_str = "." + (ext.group(1).lower() if ext else "jpg")
+            dest = os.path.join(output_dir, f"{i + 1:04d}{ext_str}")
+            img_r = await client.get(img_url)
+            img_r.raise_for_status()
+            with open(dest, "wb") as fh:
+                fh.write(img_r.content)
+            files.append(dest)
+            if on_progress:
+                on_progress(i + 1, total)
+
+    if not files:
+        raise RuntimeError(f"Madara: hiç sayfa indirilemedi — {url}")
+    return files
 
 
 async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str]:

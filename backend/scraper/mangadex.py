@@ -44,6 +44,50 @@ async def get_detail(mdx_id: str) -> dict | None:
         return None
 
 
+async def get_chapters(mdx_id: str, max_chapters: int = 500) -> dict[int, str]:
+    """Chapter numarası → chapter UUID haritası. TR > EN > tüm diller sırasıyla dener."""
+    result: dict[int, str] = {}
+    for langs in (["tr"], ["en"], None):
+        try:
+            offset = 0
+            while len(result) < max_chapters:
+                params: dict = {
+                    "manga": mdx_id,
+                    "limit": 100,
+                    "offset": offset,
+                    "order[chapter]": "asc",
+                    "contentRating[]": _CONTENT_RATINGS,
+                }
+                if langs:
+                    params["translatedLanguage[]"] = langs
+                async with httpx.AsyncClient(timeout=15.0) as client:
+                    r = await client.get(f"{BASE}/chapter", params=params)
+                    r.raise_for_status()
+                    data = r.json()
+                items = data.get("data", [])
+                if not items:
+                    break
+                for item in items:
+                    ch_str = (item.get("attributes") or {}).get("chapter")
+                    if not ch_str:
+                        continue
+                    try:
+                        ch_num = int(float(ch_str))
+                    except (ValueError, TypeError):
+                        continue
+                    if ch_num not in result:
+                        result[ch_num] = item["id"]
+                total = data.get("total", 0)
+                offset += len(items)
+                if offset >= total:
+                    break
+        except Exception:
+            pass
+        if result:
+            break
+    return result
+
+
 async def get_chapter_count(mdx_id: str) -> int | None:
     """En yüksek chapter numarasını döndürür (İngilizce veya raw)."""
     for lang in (["en"], _CONTENT_RATINGS):
