@@ -95,7 +95,7 @@ def _extract_embed_from_html(html: str) -> Optional[str]:
 async def find_stream_url(episode_url: str) -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
-    Başarısız olursa orijinal URL'yi döndür.
+    Sıra: cookies fetch → Playwright JS-render → orijinal URL.
     """
     cookies_file = _cookies_path(episode_url)
 
@@ -110,9 +110,17 @@ async def find_stream_url(episode_url: str) -> str:
                 logger.warning("HTML alındı ama embed bulunamadı (len=%d)", len(html))
         except Exception as exc:
             logger.error("stream_finder fetch hatası: %s", exc)
-    else:
-        logger.info("Cookies dosyası yok, orijinal URL kullanılıyor: %s", episode_url[:60])
 
+    # Playwright fallback: JS-render ile embed URL çıkar
+    try:
+        embed = await _playwright_find_embed(episode_url)
+        if embed:
+            logger.info("Playwright embed buldu: %s", embed[:80])
+            return embed
+    except Exception as exc:
+        logger.warning("Playwright fallback başarısız: %s", exc)
+
+    logger.info("Embed bulunamadı, orijinal URL kullanılıyor: %s", episode_url[:60])
     return episode_url
 
 
@@ -170,3 +178,62 @@ def get_yt_dlp_cookies_arg(episode_url: str) -> list[str]:
     if p:
         return ["--cookies", str(p)]
     return []
+
+
+async def _playwright_find_embed(episode_url: str, timeout_ms: int = 12000) -> Optional[str]:
+    """
+    Playwright headless chromium ile sayfayı JS-render et, embed/video URL çıkar.
+    JS-render gerektiren TR anime siteleri (tranimaci.com vb.) için fallback.
+    """
+    from playwright.async_api import async_playwright
+
+    found_embed: list[str] = []
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox"])
+        ctx = await browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            locale="tr-TR",
+        )
+        page = await ctx.new_page()
+
+        # Ağ isteklerini izle — m3u8, mp4 ve bilinen player'ları yakala
+        async def on_request(req):
+            url = req.url
+            if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd")) and url not in found_embed:
+                found_embed.append(url)
+            for pat in ("filemoon", "vidmoly", "doodstream", "streamtape", "voe.sx",
+                        "speedfiles", "sibnet", "ok.ru", "fembed", "upstream"):
+                if pat in url and url not in found_embed:
+                    found_embed.append(url)
+
+        page.on("request", on_request)
+
+        try:
+            await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
+            # 10sn bekle — JS player yüklensin, CF challenge geçsin
+            await asyncio.sleep(10)
+
+            # DOM'daki <video src>, <source src>, iframe src kontrol et
+            html = await page.content()
+
+            # video/source elementleri
+            for sel in ("video source", "video", "iframe"):
+                els = await page.query_selector_all(sel)
+                for el in els:
+                    src = await el.get_attribute("src") or ""
+                    if src and src.startswith("http") and src not in found_embed:
+                        found_embed.append(src)
+        finally:
+            await browser.close()
+
+    # Ağ isteğinden yakalandıysa
+    if found_embed:
+        return found_embed[0]
+
+    # HTML'de embed ara
+    return _extract_embed_from_html(html)
