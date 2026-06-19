@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 from typing import Callable, Optional
+from urllib.parse import urlparse
 
 from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg
 
@@ -21,6 +22,13 @@ async def download_anime(
 
     cookies_args = get_yt_dlp_cookies_arg(url)
 
+    # Embed URL farklıysa orijinal sitenin domain'ini Referer olarak ekle
+    referer_args: list[str] = []
+    if actual_url != url:
+        parsed = urlparse(url)
+        referer = f"{parsed.scheme}://{parsed.netloc}/"
+        referer_args = ["--add-header", f"Referer:{referer}"]
+
     cmd = [
         "yt-dlp",
         "--no-playlist",
@@ -34,6 +42,7 @@ async def download_anime(
         "--convert-subs", "vtt",
         "--sub-format", "vtt",
         *cookies_args,
+        *referer_args,
         "-o", output_path + ".%(ext)s",
         actual_url,
     ]
