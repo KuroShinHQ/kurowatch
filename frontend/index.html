@@ -86,7 +86,7 @@ a:active, button:active, .interactive:active, .interactive-card:active {
 .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
 .pb-safe-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 64px); }
 
-body { min-height: max(884px, 100dvh); overscroll-behavior: contain; }
+body { min-height: 100dvh; overscroll-behavior: contain; }
 </style>
 </head>
 <body class="bg-[#0d0d1a] text-[#e1e0ff] min-h-screen font-sans antialiased selection:bg-[#00d4ff]/30 selection:text-[#00d4ff]">
@@ -1093,11 +1093,11 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
   </div>
   <!-- Video -->
-  <div id="player-video-wrap" class="flex-1 flex items-center justify-center bg-black overflow-hidden relative">
+  <div id="player-video-wrap" class="flex-1 flex items-center justify-center bg-black overflow-hidden relative" style="min-height:0;">
     <canvas id="ambient-canvas" class="hidden absolute inset-0 w-full h-full pointer-events-none"
       style="z-index:0;filter:blur(40px) saturate(1.8) brightness(0.45);transform:scale(1.12);"></canvas>
-    <video id="player-video" class="max-w-full max-h-full w-full" controls preload="metadata"
-           style="background:#000;outline:none;position:relative;z-index:1;">
+    <video id="player-video" controls preload="metadata"
+           style="width:auto;height:auto;max-width:100%;max-height:100%;background:#000;outline:none;position:relative;z-index:1;display:block;">
       <source id="player-source" src="" type="video/mp4">
       <track id="subtitle-track" kind="subtitles" srclang="tr" label="Türkçe">
     </video>
@@ -1138,7 +1138,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- MODAL: MANGA READER                                             -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<div id="modal-reader" class="modal-overlay hidden fixed inset-0 z-[200] bg-[#0a0a12] overflow-y-auto">
+<div id="modal-reader" class="modal-overlay hidden fixed inset-0 z-[200] bg-[#0a0a12] overflow-y-auto overflow-x-hidden">
   <!-- Sticky Header -->
   <div class="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-[#0a0a12]/95 backdrop-blur-md border-b border-white/10">
     <button id="reader-close" class="w-10 h-10 flex items-center justify-center text-white hover:text-[#00d4ff] transition-colors rounded-lg hover:bg-white/10">
@@ -1160,7 +1160,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </button>
   </div>
   <!-- Sayfalar -->
-  <div id="reader-pages" class="flex flex-col items-center gap-0 min-h-screen pb-20">
+  <div id="reader-pages" class="flex flex-col items-center gap-0 min-h-screen pb-20 w-full overflow-x-hidden">
     <div class="text-[#9090b0] py-20 text-center">Yükleniyor…</div>
   </div>
   <!-- Sayfa Modu Nav (gizli webtoon modunda) -->

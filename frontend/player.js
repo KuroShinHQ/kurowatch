@@ -629,18 +629,18 @@
         // Dikey scroll — tüm sayfalar
         pagesEl.innerHTML = pages.map((url, i) =>
           `<img src="${API + url}" alt="Sayfa ${i + 1}"
-                class="w-full block" loading="lazy"
-                style="max-width:800px;margin:0 auto;display:block;">`
+                loading="lazy"
+                style="width:100%;max-width:800px;margin:0 auto;display:block;height:auto;">`
         ).join('');
         document.getElementById('reader-nav') && (document.getElementById('reader-nav').style.display = 'none');
       } else {
-        // Sayfa modu — tek sayfa
+        // Sayfa modu — tek sayfa, viewport yüksekliğine sığdır
         const nav = document.getElementById('reader-nav');
         if (nav) nav.style.display = 'flex';
         pagesEl.innerHTML = `
           <img src="${API + pages[this._current]}"
                alt="Sayfa ${this._current + 1}"
-               class="w-full block" style="max-width:800px;margin:0 auto;display:block;">
+               style="width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);margin:0 auto;display:block;object-fit:contain;">
           <div class="text-center text-[#9090b0] text-sm py-2">${this._current + 1} / ${pages.length}</div>`;
       }
     },
