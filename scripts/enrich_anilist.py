@@ -3,10 +3,26 @@ AniList Zenginleştirme — external_id'si olmayan içerikleri
 KuroWatch backend'in /api/discover endpoint'i üzerinden AniList'e arar
 ve cover_url, genres, external_id, total_episodes/chapters günceller.
 """
-import json, sys, time
+import json, re, sys, time
 import urllib.request
 
 KW = "http://localhost:8099/api"
+
+_SEASON_RE = [
+    re.compile(r'\s*\([Ss]\d+(?:-[Ss]\d+)?\)'),           # (S2), (S2-S3)
+    re.compile(r'\s*\(\d+(?:st|nd|rd|th)\s+[Ss]eason\)'),  # (2nd Season)
+    re.compile(r'\s*\([Ss]eason\s+\d+\)'),                  # (Season 2)
+    re.compile(r'\s*Part\s+\d+$', re.IGNORECASE),           # Part 2
+]
+
+
+def _strip_extras(title: str) -> str:
+    """'KonoSuba (S3)' → 'KonoSuba'  |  'The Revenant (Diriliş)' → 'The Revenant'"""
+    t = title
+    for p in _SEASON_RE:
+        t = p.sub('', t)
+    t = re.sub(r'\s*\([^)]{4,30}\)$', '', t)  # Parantez içi Türkçe çeviri
+    return t.strip()
 
 def api_get(path):
     req = urllib.request.Request(f"{KW}/{path.lstrip('/')}", method='GET')
@@ -23,21 +39,39 @@ def api_patch(path, body):
     except Exception as e:
         return {'error': str(e)}
 
-def discover(title: str, ctype: str) -> dict | None:
-    # KuroWatch /api/discover → AniList search
-    al_type = 'anime' if ctype == 'anime' else 'manga'
+def _discover_one(title: str, al_type: str) -> "dict | None":
     encoded = urllib.request.quote(title)
     try:
         results = api_get(f"/discover?q={encoded}&type={al_type}")
-        if results and isinstance(results, list) and len(results) > 0:
+        if results and isinstance(results, list):
             return results[0]
-        # manhwa fallback
-        if ctype == 'manga':
-            results2 = api_get(f"/discover?q={encoded}&type=manhwa")
-            if results2 and isinstance(results2, list) and len(results2) > 0:
-                return results2[0]
     except Exception:
         pass
+    return None
+
+
+def discover(title: str, ctype: str) -> "dict | None":
+    al_type = 'anime' if ctype == 'anime' else 'manga'
+
+    # 1. Normal arama
+    r = _discover_one(title, al_type)
+    if r:
+        return r
+
+    # 2. Sezon marker / Türkçe çeviri temizlenmiş başlık ile tekrar dene
+    clean = _strip_extras(title)
+    if clean and clean != title:
+        time.sleep(0.2)
+        r = _discover_one(clean, al_type)
+        if r:
+            return r
+
+    # 3. Manhwa fallback (manga için)
+    if ctype == 'manga':
+        r = _discover_one(clean or title, 'manhwa')
+        if r:
+            return r
+
     return None
 
 def main():
