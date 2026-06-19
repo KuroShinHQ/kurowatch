@@ -125,10 +125,23 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
     total = 0
 
     if ext.startswith("mdx:"):
-        detail = await mangadex.get_detail(ext[4:])
-        if not detail:
-            raise HTTPException(502, "MangaDex'ten veri alınamadı")
-        total = min(detail.get("total_chapters") or (c.total_chapters or 0), 500)
+        chapters = await mangadex.get_chapters(ext[4:])
+        if not chapters:
+            raise HTTPException(502, "MangaDex'ten bölüm listesi alınamadı")
+        for ch_num, ch_uuid in chapters.items():
+            ep_url = f"https://mangadex.org/chapter/{ch_uuid}"
+            if ch_num not in existing_numbers:
+                new_episodes.append(Episode(
+                    content_id=content_id, number=ch_num,
+                    url=ep_url, is_watched=False, is_new=False,
+                ))
+                existing_numbers.add(ch_num)
+            elif not existing_eps[ch_num].url:
+                existing_eps[ch_num].url = ep_url
+        if chapters:
+            new_total = max(chapters.keys())
+            c.total_chapters = new_total
+            c.updated_at = datetime.utcnow()
 
     elif ext.startswith("mal:") or not has_anilist_id:
         # AniList ID yok → sadece site URL'den bölüm sayısını çıkar
