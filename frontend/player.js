@@ -10,6 +10,55 @@
   let _ws = null;
   let _jobs = {}; // id → job
 
+  // ── Floating Download İndikatörü ────────────────────────────────
+  let _floatHideTimer = null;
+
+  function _updateFloatIndicator() {
+    const el = document.getElementById('download-float');
+    if (!el) return;
+    const active = Object.values(_jobs).filter(function(j) { return j.status === 'queued' || j.status === 'downloading'; });
+    if (active.length > 0) {
+      const job = active[0];
+      clearTimeout(_floatHideTimer);
+      el.style.display = 'block';
+      const icon = document.getElementById('download-float-icon');
+      const lbl  = document.getElementById('download-float-label');
+      const pctEl = document.getElementById('download-float-pct');
+      const bar  = document.getElementById('download-float-bar');
+      if (icon) { icon.textContent = 'downloading'; icon.style.color = '#00d4ff'; }
+      if (lbl)  lbl.textContent = (job.content_title || '') + ' Bölüm ' + job.episode_number;
+      const pct = job.progress_pct || 0;
+      if (pctEl) pctEl.textContent = pct + '%';
+      if (bar)  { bar.style.width = pct + '%'; bar.style.background = '#00d4ff'; }
+    }
+  }
+
+  function _onDownloadDone(job) {
+    const el = document.getElementById('download-float');
+    if (!el) return;
+    clearTimeout(_floatHideTimer);
+    el.style.display = 'block';
+    const icon = document.getElementById('download-float-icon');
+    const lbl  = document.getElementById('download-float-label');
+    const pctEl = document.getElementById('download-float-pct');
+    const bar  = document.getElementById('download-float-bar');
+    if (job.status === 'done') {
+      if (icon) { icon.textContent = 'check_circle'; icon.style.color = '#4caf50'; }
+      if (lbl)  lbl.textContent = 'İndirildi: ' + (job.content_title || '') + ' Bölüm ' + job.episode_number;
+      if (pctEl) pctEl.textContent = '';
+      if (bar)  { bar.style.width = '100%'; bar.style.background = '#4caf50'; }
+    } else if (job.status === 'failed') {
+      if (icon) { icon.textContent = 'error'; icon.style.color = '#ef4444'; }
+      if (lbl)  lbl.textContent = job.error_msg ? job.error_msg.slice(0, 80) : 'İndirme hatası';
+      if (pctEl) pctEl.textContent = '';
+      if (bar)  { bar.style.width = '100%'; bar.style.background = '#ef4444'; }
+    }
+    _floatHideTimer = setTimeout(function() {
+      const active = Object.values(_jobs).filter(function(j) { return j.status === 'queued' || j.status === 'downloading'; });
+      if (!active.length && el) el.style.display = 'none';
+    }, job.status === 'failed' ? 8000 : 4000);
+  }
+
   function connectDownloadWS() {
     if (_ws && _ws.readyState < 2) return;
     _ws = new WebSocket('ws://localhost:8099/api/download/ws');
@@ -19,10 +68,15 @@
       if (msg.event === 'state') {
         _jobs = {};
         (msg.jobs || []).forEach(j => { _jobs[j.id] = j; });
-      } else if (msg.event === 'queued' || msg.event === 'started' || msg.event === 'done') {
+        _updateFloatIndicator();
+      } else if (msg.event === 'queued' || msg.event === 'started') {
         if (msg.job) _jobs[msg.job.id] = msg.job;
+        _updateFloatIndicator();
+      } else if (msg.event === 'done') {
+        if (msg.job) { _jobs[msg.job.id] = msg.job; _onDownloadDone(msg.job); }
       } else if (msg.event === 'progress') {
         if (_jobs[msg.job_id]) _jobs[msg.job_id].progress_pct = msg.pct;
+        _updateFloatIndicator();
       }
       _renderDownloadScreen();
       _updateBadge();
@@ -66,7 +120,7 @@
       _jobs[job.id] = job;
       _renderDownloadScreen();
       _updateBadge();
-      window.kuroNav && window.kuroNav.show('screen-downloads');
+      _updateFloatIndicator();
       return job;
     } catch (err) {
       alert('İndirme başlatılamadı: ' + err.message);

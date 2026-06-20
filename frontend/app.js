@@ -1615,10 +1615,12 @@
       const seasonEps = episodes.filter(function(e) { return (e.season || 1) === activeSeason; });
 
       const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
-      const nextEp = (myProgress > 0 && seasonEps.length >= myProgress) ? seasonEps[myProgress - 1] : null;
+      // myProgress = izlenen bölüm sayısı. Sıradaki = myProgress+1 (0 ise Bölüm 1'den başla)
+      const nextEpNum = myProgress + 1;
+      const nextEp = seasonEps.find(function(e) { return e.number === nextEpNum; }) || null;
       const targetUrl = (nextEp && nextEp.url) ? nextEp.url : (primarySite && primarySite.site_url ? primarySite.site_url : null);
       const targetLabel = (nextEp && nextEp.url)
-        ? readLabel + ' — Bölüm ' + myProgress
+        ? readLabel + ' — Bölüm ' + nextEpNum
         : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
       const siteShortcut = targetUrl
         ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
@@ -1647,8 +1649,14 @@
         : '<div style="display:flex;justify-content:flex-end;margin-bottom:6px">' +
           '<button class="ep-add-season-btn" style="font-size:11px;color:#9090b0;background:none;border:none;cursor:pointer">+ Sezon Ekle</button></div>';
 
-      const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-2" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
-        '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>';
+      const epCountBadge = seasonEps.length > 0
+        ? '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+          '<span style="font-size:12px;font-weight:700;color:#9090b0;text-transform:uppercase;letter-spacing:.06em">Sezon ' + activeSeason + '</span>' +
+          '<span style="font-size:12px;font-weight:700;color:#00d4ff;background:#00d4ff1a;border:1px solid #00d4ff33;border-radius:20px;padding:2px 10px">' + seasonEps.length + ' Bölüm</span>' +
+          '</div>'
+        : '';
+      const syncBtnHtml = '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
+        '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>';
 
       // ── Sezon ekleme formu ──
       const addSeasonFormHtml = '<div id="ep-add-season-form" style="display:none;flex-direction:column;gap:6px;padding:10px;background:#16213e;border-radius:10px;border:1px solid #00d4ff2a;margin-bottom:8px">' +
@@ -1664,14 +1672,13 @@
 
       if (!seasonEps.length) {
         el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +
-          '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px">' +
-          '<span class="material-symbols-outlined" style="font-size:40px">video_library</span>' +
-          '<p>S' + activeSeason + ' bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
+          '<div style="text-align:center;color:#9090b0;padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:10px">' +
+          '<span class="material-symbols-outlined" style="font-size:48px;color:#31324d">video_library</span>' +
+          '<p style="font-size:13px">Sezon ' + activeSeason + ' bölüm listesi yok</p>' +
+          '<p style="font-size:12px;color:#6060a0">Yukarıdan "' + syncLabel + '" butonuna bas</p></div>';
       } else {
-        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +
-          '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>' +
-          '<div style="text-align:center;color:#9090b0;font-size:12px;padding:8px 0" id="ep-count-label">' +
-          seasonEps.length + ' bölüm (Sezon ' + activeSeason + ')</div>';
+        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + epCountBadge + syncBtnHtml +
+          '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>';
         const list = el.querySelector('#ep-virtual-list');
         let loaded = 0;
         let observer = null;
