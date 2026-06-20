@@ -66,6 +66,15 @@ _FORCE_PLAYWRIGHT = {
 _PLAY_BUTTON_SELECTORS = {
     "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
     "hdfilmcehennemi.nl": [".play-button", "#play", ".jw-icon-playback", "[aria-label='play']"],
+    "tranimeizle.co":     [
+        ".players a:first-child",
+        ".eps-server:first-child a",
+        ".serverList li:first-child a",
+        "ul.servers li:first-child a",
+        "#playerSezon .btn:first-child",
+        ".player-options a:first-child",
+        "[data-video]:first-child",
+    ],
 }
 
 
@@ -257,22 +266,58 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         try:
             await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
 
-            # Site-spesifik play butonu varsa tıkla
+            # Network idle bekle — lazy-load player'ların başlaması için
+            try:
+                await page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass  # timeout OK, devam
+
+            # Site-spesifik play/sunucu butonu varsa tıkla
             for selector in _PLAY_BUTTON_SELECTORS.get(domain, []):
                 try:
                     btn = page.locator(selector).first
                     if await btn.is_visible(timeout=2000):
                         await btn.click()
                         logger.info("Play butonu tıklandı: %s", selector)
+                        await asyncio.sleep(3)  # tıklama sonrası iframe yüklensin
                         break
                 except Exception:
                     pass
 
-            # Player yüklensin — CF siteler için daha uzun bekle
-            wait_secs = 12 if any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT) else 8
+            # Player yüklensin
+            if "tranimeizle" in domain:
+                wait_secs = 15
+            elif any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT):
+                wait_secs = 12
+            else:
+                wait_secs = 8
             await asyncio.sleep(wait_secs)
 
             html = await page.content()
+
+            # JS ile tüm iframe/video src topla (lazy-set data-src dahil)
+            try:
+                js_srcs = await page.evaluate("""
+                    () => {
+                        const r = [];
+                        document.querySelectorAll('iframe, frame').forEach(el => {
+                            const s = el.src || el.getAttribute('data-src') || el.getAttribute('data-lazy-src');
+                            if (s && s.startsWith('http')) r.push(s);
+                        });
+                        document.querySelectorAll('video, video source').forEach(el => {
+                            const s = el.src || el.currentSrc || el.getAttribute('data-src');
+                            if (s && s.startsWith('http')) r.push(s);
+                        });
+                        return [...new Set(r)];
+                    }
+                """)
+                for s in js_srcs or []:
+                    if s and s.startswith("http") and s not in found_embed:
+                        if not any(skip in s for skip in _SKIP_IFRAME_DOMAINS):
+                            found_embed.append(s)
+                            logger.info("JS iframe/video bulundu: %s", s[:80])
+            except Exception as js_exc:
+                logger.warning("JS eval hatası: %s", js_exc)
 
             # DOM'daki video/source/iframe elementlerinden URL topla
             for sel in ("video source", "video", "iframe"):
