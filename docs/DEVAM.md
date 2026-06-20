@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-53) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c074221`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-54) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c0b656d`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,37 +10,39 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (20 Haz sohbet-53):
+MEVCUT DURUM (20 Haz sohbet-54):
   - 676 içerik, 670 cover (%99), 6 cover-sız (Türk yapımı)
   - external_score: 567/676 (%83) dolu
-  - Backend: port 8099 (nohup uvicorn, is_dead migration aktif)
+  - Backend: port 8099 — RESTART LAZIM (c0b656d değişikliği uygulanmadı)
   - Test: http://localhost:8099
 
-SOHBET-53 YAPILANLARI (tüm görevler tamamlandı):
-  ✅ [2] renderDetailSites: latest_known_ep DESC sort + [N] etiketi (09a0fef)
-  ✅ [3] #read-overlay iframe butonu, ESC/X kapat, openReadOverlay() (6a588be)
-  ✅ [4] daisy-chain sessiz POST fetch, 4s window.showToast (007d00d)
-  ✅ [5] enrich_site_urls.py: dizibox(42)/hdfilm(15)/merlintoon + slugify TR fix (d274831)
-  ✅ [6] stream_finder.py: _FORCE_PLAYWRIGHT + _PLAY_BUTTON_SELECTORS (42cb79f)
-  ✅ [7] audit_all_media.py HEAD kontrol + Site.is_dead + mark-dead/alive API (c074221)
+SOHBET-54 YAPILANLARI:
+  ✅ anime.py + episodes.py + frontend (app.js, index.html, player.js) refactor (c0b656d)
+     - AniList bölüm sync (13 bölüm türetme), "İzle — Bölüm 1" shortcut
+     - Floating indicator ile sessiz indirme
 
-SIRADAKİ GÖREVLER:
-  [1]-[7] ✅ TAMAM — bu FAZ bitti
+AKTİF SORUNLAR (çözüm bekliyor):
+  ❌ tranimeizle.io 404: Siteler sekmesine ana page girildi, bölüm URL girilmeli
+     - Doğru format: /anime/<slug>/<N>-bolum veya /<slug>-<N>-bolum-izle
+     - Lord'un 1. bölüm sayfasını açıp URL'yi Siteler sekmesine girmesi gerekiyor
+  ❌ yt-dlp hataları: ?su=... Crunchyroll URL → premium gerekli + cookies yok
+     - Çözüm: Settings → Cookies → tranimeizle için cookie ekle
+  ❌ Anime Türkçe isim yok: AniList yalnızca English + Romaji döndürüyor
+     - title_tr alanı DB'de YOK → migration + Edit modal + AniList sync güncelleme gerekli
 
-  Sonraki potansiyel görevler (Lord kararı):
-  [A] audit_all_media.py tam koşu (--no-mark kaldırarak gerçek DB güncelle)
-  [B] enrich_site_urls.py tam koşu (57 anime'ye site ekle)
-  [C] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
-  [D] Tinder-swipe nav (Lord kararı)
-  [E] Manga çeviri düzelt butonu
+SIRADAKİ GÖREVLER (öncelik sırasıyla):
+  [A] title_tr alanı: models.py migration + Edit modal + save API (Türkçe isim)
+  [B] tranimeizle bölüm URL şablonu çöz (Lord URL bulup Siteler'e girsin → test)
+  [C] audit_all_media.py tam koşu (--no-mark kaldır, gerçek DB güncelle)
+  [D] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
 
 ⚠️ ÖNEMLİ:
   - Manga siteleri WSL curl ile 000 verir AMA Python httpx ile OK!
-  - Her test ve erişim için httpx kullan, curl kullanma
   - Tailwind: JS'de inline style kullan, dynamic class ÇALIŞMAZ
+  - Backend restart ŞART: Bat [10] → [1]
 
 BAŞLATMA:
-  Bat [10] → [1] (chancellor yöntemi) — restart sonrası F5 yeterli
+  Bat [10] → [1] (chancellor restart — c0b656d değişiklikleri aktif etmek için)
   Test URL: http://localhost:8099
 ```
 
