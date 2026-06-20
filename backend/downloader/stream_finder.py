@@ -10,6 +10,8 @@ Desteklenen siteler:
   - tranimeizle.co (cookies.txt gerekli)
   - diziwatch.com
   - turkanime.co
+  - dizibox.live     (Playwright — JS-render + CF korumalı)
+  - hdfilmcehennemi.nl (Playwright — JS-render)
 """
 import os
 import re
@@ -39,11 +41,25 @@ _EMBED_PATTERNS = [
 
 # Site → cookies dosyası adı mapping
 _SITE_COOKIES = {
-    "tranimeizle.co": "tranimeizle_cookies.txt",
-    "tranimeizle.io": "tranimeizle_cookies.txt",
-    "turkanime.co":   "turkanime_cookies.txt",
-    "diziwatch.com":  "diziwatch_cookies.txt",
-    "anizm.net":      "anizm_cookies.txt",
+    "tranimeizle.co":     "tranimeizle_cookies.txt",
+    "tranimeizle.io":     "tranimeizle_cookies.txt",
+    "turkanime.co":       "turkanime_cookies.txt",
+    "diziwatch.com":      "diziwatch_cookies.txt",
+    "anizm.net":          "anizm_cookies.txt",
+    "dizibox.live":       "dizibox_cookies.txt",
+    "hdfilmcehennemi.nl": "hdfilmcehennemi_cookies.txt",
+}
+
+# Bu domainler JS-render gerektirir — requests fetch atla, direkt Playwright'a git
+_FORCE_PLAYWRIGHT = {
+    "dizibox.live",
+    "hdfilmcehennemi.nl",
+}
+
+# Site-spesifik play butonu CSS selector'ları (Playwright için)
+_PLAY_BUTTON_SELECTORS = {
+    "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
+    "hdfilmcehennemi.nl": [".play-button", "#play", ".jw-icon-playback", "[aria-label='play']"],
 }
 
 
@@ -96,22 +112,30 @@ async def find_stream_url(episode_url: str) -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
     Sıra: cookies fetch → Playwright JS-render → orijinal URL.
+
+    JS-render gerektiren siteler (dizibox.live, hdfilmcehennemi.nl) için
+    requests fetch atlanır, direkt Playwright kullanılır.
     """
-    cookies_file = _cookies_path(episode_url)
+    domain = _domain(episode_url)
+    force_pw = any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT)
 
-    if cookies_file:
-        logger.info("Cookies dosyası bulundu: %s", cookies_file)
-        try:
-            html = await _fetch_with_cookies(episode_url, cookies_file)
-            if html:
-                embed = _extract_embed_from_html(html)
-                if embed:
-                    return embed
-                logger.warning("HTML alındı ama embed bulunamadı (len=%d)", len(html))
-        except Exception as exc:
-            logger.error("stream_finder fetch hatası: %s", exc)
+    if not force_pw:
+        cookies_file = _cookies_path(episode_url)
+        if cookies_file:
+            logger.info("Cookies dosyası bulundu: %s", cookies_file)
+            try:
+                html = await _fetch_with_cookies(episode_url, cookies_file)
+                if html:
+                    embed = _extract_embed_from_html(html)
+                    if embed:
+                        return embed
+                    logger.warning("HTML alındı ama embed bulunamadı (len=%d)", len(html))
+            except Exception as exc:
+                logger.error("stream_finder fetch hatası: %s", exc)
+    else:
+        logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
-    # Playwright fallback: JS-render ile embed URL çıkar
+    # Playwright: JS-render + ağ isteği izleme
     try:
         embed = await _playwright_find_embed(episode_url)
         if embed:
@@ -180,17 +204,32 @@ def get_yt_dlp_cookies_arg(episode_url: str) -> list[str]:
     return []
 
 
-async def _playwright_find_embed(episode_url: str, timeout_ms: int = 12000) -> Optional[str]:
+async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> Optional[str]:
     """
     Playwright headless chromium ile sayfayı JS-render et, embed/video URL çıkar.
-    JS-render gerektiren TR anime siteleri (tranimaci.com vb.) için fallback.
+    JS-render gerektiren siteler (tranimaci.com, dizibox.live, hdfilmcehennemi.nl vb.) için.
     """
     from playwright.async_api import async_playwright
 
     found_embed: list[str] = []
+    domain = _domain(episode_url)
+    html = ""
+
+    _KNOWN_PLAYERS = (
+        "filemoon", "vidmoly", "doodstream", "streamtape", "voe.sx",
+        "speedfiles", "sibnet", "ok.ru", "fembed", "upstream",
+        "rapidvid", "mixdrop", "gounlimited", "mp4upload",
+        "odnoklassniki", "mail.ru", "vk.com/video",
+        "dizibox.live/embed", "hdfilmcehennemi.nl/embed",
+    )
+
+    def _is_embed(url: str) -> bool:
+        if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd", ".mp4")):
+            return True
+        return any(p in url for p in _KNOWN_PLAYERS)
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox"])
+        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox", "--disable-blink-features=AutomationControlled"])
         ctx = await browser.new_context(
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -201,39 +240,52 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 12000) -> O
         )
         page = await ctx.new_page()
 
-        # Ağ isteklerini izle — m3u8, mp4 ve bilinen player'ları yakala
+        # GET ve XHR/fetch isteklerini izle
         async def on_request(req):
             url = req.url
-            if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd")) and url not in found_embed:
+            if _is_embed(url) and url not in found_embed:
                 found_embed.append(url)
-            for pat in ("filemoon", "vidmoly", "doodstream", "streamtape", "voe.sx",
-                        "speedfiles", "sibnet", "ok.ru", "fembed", "upstream"):
-                if pat in url and url not in found_embed:
-                    found_embed.append(url)
 
         page.on("request", on_request)
 
         try:
             await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
-            # 10sn bekle — JS player yüklensin, CF challenge geçsin
-            await asyncio.sleep(10)
 
-            # DOM'daki <video src>, <source src>, iframe src kontrol et
+            # Site-spesifik play butonu varsa tıkla
+            for selector in _PLAY_BUTTON_SELECTORS.get(domain, []):
+                try:
+                    btn = page.locator(selector).first
+                    if await btn.is_visible(timeout=2000):
+                        await btn.click()
+                        logger.info("Play butonu tıklandı: %s", selector)
+                        break
+                except Exception:
+                    pass
+
+            # Player yüklensin — CF siteler için daha uzun bekle
+            wait_secs = 12 if any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT) else 8
+            await asyncio.sleep(wait_secs)
+
             html = await page.content()
 
-            # video/source elementleri
+            # DOM'daki video/source/iframe elementlerinden URL topla
             for sel in ("video source", "video", "iframe"):
                 els = await page.query_selector_all(sel)
                 for el in els:
-                    src = await el.get_attribute("src") or ""
-                    if src and src.startswith("http") and src not in found_embed:
-                        found_embed.append(src)
+                    for attr in ("src", "data-src"):
+                        src = await el.get_attribute(attr) or ""
+                        if src and src.startswith("http") and src not in found_embed:
+                            if _is_embed(src) or sel == "iframe":
+                                found_embed.append(src)
+
         finally:
             await browser.close()
 
-    # Ağ isteğinden yakalandıysa
     if found_embed:
+        # m3u8 varsa öncelik ver
+        for u in found_embed:
+            if ".m3u8" in u or "manifest.mpd" in u:
+                return u
         return found_embed[0]
 
-    # HTML'de embed ara
     return _extract_embed_from_html(html)
