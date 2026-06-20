@@ -20,9 +20,9 @@
 
 | # | Özellik | Durum | Not |
 |---|---------|-------|-----|
-| T-01 | App açılışı — Home ekranı gelir, nav bar görünür | ⏳ | |
-| T-02 | Nav: Home → Search → Updates → Stats → Settings geçişi | ⏳ | |
-| T-03 | Home: poster grid yüklenir, cover'lar görünür | ⏳ | |
+| T-01 | App açılışı — Home ekranı gelir, nav bar görünür | 🔧 | BUG-01: sidebar lg'de aktifti → bottom-nav her ekran fix (commit 0d7e032) |
+| T-02 | Nav: Home → Search → Updates → Stats → Settings geçişi | ⏳ | T-01 fix sonrası doğrula |
+| T-03 | Home: poster grid yüklenir, cover'lar görünür | ✅ | |
 | T-04 | Home: filter chip — "Anime" seçince sadece animeler | ⏳ | |
 | T-05 | Home: filter chip — "İzliyor" + "Anime" kombinasyon | ⏳ | |
 | T-06 | Home: karta tıklayınca Detail ekranı açılır | ⏳ | |
