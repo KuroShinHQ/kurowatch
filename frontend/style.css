@@ -75,3 +75,14 @@
 #modal-player.player-mini #player-video { max-height: 200px; }
 #modal-player.player-mini #autonext-overlay,
 #modal-player.player-mini #skip-intro-btn { display: none !important; }
+
+/* ── Complete Modal Animasyonları ───────────────────────────────── */
+@keyframes completeIn {
+  from { opacity:0; transform: scale(0.8) translateY(20px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes emojiBounce {
+  0%   { transform: scale(0) rotate(-15deg); }
+  60%  { transform: scale(1.3) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
