@@ -1,6 +1,7 @@
 {
   "name": "KuroWatch",
   "short_name": "KuroWatch",
+  "version": "1.0.0",
   "description": "Anime, manga, manhwa ve oyun takip uygulaması",
   "display": "standalone",
   "start_url": "./",
