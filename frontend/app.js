@@ -347,7 +347,7 @@
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
       const initialsHtml = `<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>`;
       const coverBg = it.cover_url
-        ? `<img src="${escapeHtml(it.cover_url)}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.outerHTML='${initialsHtml.replace(/'/g,"&#39;")}'"/>`
+        ? `${initialsHtml}<img src="${escapeHtml(it.cover_url)}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'"/>`
         : initialsHtml;
 
       return `
