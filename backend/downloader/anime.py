@@ -69,6 +69,12 @@ async def download_anime(
     await proc.wait()
     if proc.returncode != 0:
         err_tail = " | ".join(output_lines[-3:]) if output_lines else ""
+        err_lower = err_tail.lower()
+        if "crunchyroll" in err_lower or "?su=" in err_tail or "vrv.co" in err_lower:
+            raise RuntimeError(
+                "Bu bölüm Crunchyroll'a yönlendiriyor. "
+                "İndirmek için Ayarlar → Cookies bölümünden Crunchyroll cookies ekleyin."
+            )
         raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}" + (f": {err_tail}" if err_tail else ""))
 
     # Uzantı yt-dlp tarafından eklendi — bul
