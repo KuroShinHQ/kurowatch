@@ -157,8 +157,10 @@
     const nextIdx = _NAV_ORDER.indexOf(id);
     const isDetail = id === 'screen-detail';
 
-    let animClass = 'slide-up';
-    if (!isDetail && prevIdx >= 0 && nextIdx >= 0) {
+    let animClass = '';
+    if (isDetail) {
+      animClass = 'slide-up';
+    } else if (prevIdx >= 0 && nextIdx >= 0 && nextIdx !== prevIdx) {
       animClass = nextIdx > prevIdx ? 'slide-in-right' : 'slide-in-left';
     }
 
@@ -168,8 +170,10 @@
       s.classList.toggle('hidden', !isTarget);
       if (isTarget) {
         s.classList.remove('slide-in-right','slide-in-left','slide-up');
-        void s.offsetWidth; // reflow
-        s.classList.add(animClass);
+        if (animClass) {
+          void s.offsetWidth;
+          s.classList.add(animClass);
+        }
       }
     });
     _currentScreen = id;
