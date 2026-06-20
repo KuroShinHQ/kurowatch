@@ -1477,6 +1477,8 @@
         '<span class="material-symbols-outlined" style="font-size:40px">video_library</span>' +
         '<p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
       el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
+      const goSitesBtn = el.querySelector('.ep-go-sites-btn');
+      if (goSitesBtn) goSitesBtn.addEventListener('click', function() { detailSwitchTab('sites'); });
       return;
     }
 
@@ -1552,7 +1554,9 @@
       const watchBtn = evt.target.closest('.ep-watch-btn');
       const dlBtn    = evt.target.closest('.ep-dl-btn');
       const syncBtn  = evt.target.closest('.ep-anilist-sync-btn');
+      const goSites  = evt.target.closest('.ep-go-sites-btn');
 
+      if (goSites) { detailSwitchTab('sites'); return; }
       if (syncBtn) { syncEpisodesFromAniList(evt); return; }
 
       if (openBtn) {
@@ -1718,6 +1722,11 @@
       form.classList.toggle('hidden', !hidden);
       form.classList.toggle('flex', hidden);
     });
+    if (!sites.length) {
+      const form = el.querySelector('#detail-site-add-form');
+      form.classList.remove('hidden');
+      form.classList.add('flex');
+    }
 
     el.querySelector('#detail-site-save-btn').addEventListener('click', async function() {
       const cid = parseInt(this.dataset.contentId, 10);
