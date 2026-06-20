@@ -1320,6 +1320,42 @@
       };
     }
 
+    // Cover Debugger butonu
+    const coverDebugBtn = document.getElementById('settings-cover-debug-btn');
+    if (coverDebugBtn) {
+      coverDebugBtn.onclick = async function() {
+        openModal('modal-cover-debug');
+        const listEl   = document.getElementById('cover-debug-list');
+        const okCount  = document.getElementById('cover-debug-ok-count');
+        const misCount = document.getElementById('cover-debug-missing-count');
+        if (listEl) listEl.innerHTML = '<div class="text-center text-[#9090b0] py-8">Yükleniyor...</div>';
+        try {
+          const all = await apiGet('/api/content');
+          const missing = all.filter(function(c) { return !c.cover_url; });
+          const ok      = all.length - missing.length;
+          if (okCount)  okCount.textContent  = ok;
+          if (misCount) misCount.textContent = missing.length;
+          if (!listEl) return;
+          if (missing.length === 0) {
+            listEl.innerHTML = '<div class="text-center text-green-400 py-8">Tüm içeriklerin cover\'ı var ✓</div>';
+            return;
+          }
+          const typeIcon = { anime: '▶', manga: '📖', manhwa: '📖', game: '🎮' };
+          listEl.innerHTML = missing.map(function(c) {
+            return '<div class="flex items-center justify-between px-3 py-2 rounded-lg hover:bg-white/5">' +
+              '<div class="flex items-center gap-2 min-w-0">' +
+                '<span class="text-[11px] text-[#9090b0] shrink-0">' + (typeIcon[c.type] || '?') + '</span>' +
+                '<span class="text-[13px] text-[#e1e0ff] truncate">' + escapeHtml(c.title) + '</span>' +
+              '</div>' +
+              '<span class="text-[10px] text-[#9090b0] shrink-0 ml-2">#' + c.id + '</span>' +
+            '</div>';
+          }).join('');
+        } catch(e) {
+          if (listEl) listEl.innerHTML = '<div class="text-center text-red-400 py-8">Hata: ' + escapeHtml(e.message) + '</div>';
+        }
+      };
+    }
+
     // Cookies yönetimi
     async function refreshCookiesList() {
       const listEl = document.getElementById('settings-cookies-list');
