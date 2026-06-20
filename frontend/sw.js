@@ -3,12 +3,9 @@
 // Cache-first: app shell · Network-first: /api/* · Offline shell
 // ═══════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'kurowatch-v2';
+const CACHE_NAME = 'kurowatch-v3';
 const SHELL_FILES = [
-  './',
-  'index.html',
   'style.css',
-  'app.js',
   'player.js',
   'debug-logger.js',
   'i18n.js',
@@ -70,7 +67,7 @@ self.addEventListener('notificationclick', event => {
   );
 });
 
-// Fetch: API → network-first, diğer her şey → cache-first
+// Fetch: API → network-first, HTML/navigation → network-first, statik → cache-first
 self.addEventListener('fetch', event => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -88,23 +85,29 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Statik kaynaklar: cache-first
+  // Navigation/HTML istekleri: network-first (cache-busting çalışsın)
+  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
+    event.respondWith(
+      fetch(req).then(resp => {
+        if (resp && resp.status === 200) {
+          caches.open(CACHE_NAME).then(cache => cache.put(req, resp.clone()));
+        }
+        return resp;
+      }).catch(() => caches.match(req).then(c => c || caches.match('index.html')))
+    );
+    return;
+  }
+
+  // Diğer statik kaynaklar (JS, CSS, resimler): cache-first
   event.respondWith(
     caches.match(req).then(cached => {
       if (cached) return cached;
       return fetch(req).then(resp => {
         if (resp && resp.status === 200 && url.origin === location.origin) {
-          const clone = resp.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(req, resp.clone()));
         }
         return resp;
-      }).catch(() => {
-        // Offline fallback: HTML istekleri için index.html göster
-        if (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) {
-          return caches.match('index.html');
-        }
-        return new Response('Offline', { status: 503 });
-      });
+      }).catch(() => new Response('Offline', { status: 503 }));
     })
   );
 });
