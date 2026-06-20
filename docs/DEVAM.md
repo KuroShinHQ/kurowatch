@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-49) · **Aktif sürüm:** v1.0.0 · **Son commit:** `6dcca91`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-49) · **Aktif sürüm:** v1.0.0 · **Son commit:** `8ea16a7`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -19,14 +19,15 @@ MEVCUT DURUM (20 Haz sohbet-49):
 SOHBET-49 YAPILANLARI:
   ✅ Cache-busting: main.py GET "/" — server restart timestamp ile tüm JS/CSS versiyonlanır
      - regex: r'(\.(?:js|css))(\?v=\d+)?"' → \1?v={_BUILD_TS}"
-     - Kanıt: style.css?v=1781969345, app.js?v=1781969345 (CANLي ONAYLANDI)
-     - F5 artık Ctrl+Shift+R ile eşdeğer ✅
+  ✅ SW fix: sw.js kurowatch-v3, navigation=network-first — F5=Ctrl+Shift+R ✅ CANLI ONAYLANDI
+     - Eski v2 cache silinir, index.html artık cache'e kilitli değil
+     - Geçiş: bir kere Ctrl+Shift+R (sonraki restart'lardan itibaren F5 yeterli)
 
 AKTİF ÇALIŞMA: Sistematik bug testi (TEST_PLAN.md)
   - Sonraki: T-02 nav geçişleri, T-06 detail açılış
 
 BAŞLATMA:
-  Bat [10] → [1] (chancellor yöntemi) — artık her restart sonrası F5 yeterli
+  Bat [10] → [1] (chancellor yöntemi) — restart sonrası F5 yeterli
   Test URL: http://localhost:8099
 ```
 
