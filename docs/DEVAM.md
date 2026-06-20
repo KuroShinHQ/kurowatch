@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-49b) · **Aktif sürüm:** v1.0.0 · **Son commit:** `bb86c08`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-52) · **Aktif sürüm:** v1.0.0 · **Son commit:** `82af85d`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -8,39 +8,62 @@
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
 ```
-KuroWatch DEVAM.md + TEST_PLAN.md oku. Özet:
+KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (20 Haz sohbet-49):
+MEVCUT DURUM (20 Haz sohbet-52):
   - 676 içerik, 670 cover (%99)
   - external_score: 567/676 (%83) dolu (AniList/Jikan)
+  - manga.py: 3 yeni Madara site eklendi (ruyamanga.com/net, asurascans.com.tr) commit 82af85d
   - Backend: Bat [10] → [1] ile başlatılır (start /b wsl chancellor yöntemi)
-  - Test: http://localhost:8099/api/content
+  - Test: http://localhost:8099
 
-SOHBET-49 YAPILANLARI:
-  ✅ Cache-busting: main.py GET "/" — server restart timestamp ile tüm JS/CSS versiyonlanır
-     - regex: r'(\.(?:js|css))(\?v=\d+)?"' → \1?v={_BUILD_TS}"
-  ✅ SW fix: sw.js kurowatch-v3, navigation=network-first — F5=Ctrl+Shift+R ✅ CANLI ONAYLANDI
-     - Eski v2 cache silinir, index.html artık cache'e kilitli değil
-     - Geçiş: bir kere Ctrl+Shift+R (sonraki restart'lardan itibaren F5 yeterli)
+SOHBET-52 YAPILANLARI:
+  ✅ manga.py _MADARA_DOMAINS → 3 yeni site (httpx testi ile doğrulandı)
+     - ruyamanga.com: chapter indir PASS (HTTP 200, 17 wp-manga-chapter-img)
+     - ruyamanga.net: Madara onaylı
+     - asurascans.com.tr: Madara onaylı, chapter 403 (bot koruması riski)
+     - Dead atlanılar: mangaokutr.com, mangatr.net, uzaymanga.com, mangasehri.net, merlinscans.com
 
-AKTİF ÇALIŞMA: Sistematik bug testi (TEST_PLAN.md)
-  PASS: T-01 ✅ T-02 ✅ T-03 ✅ T-04 ✅ T-05 ✅
-  T-06 ❌ — 3 bug bulundu, YENİ SOHBETTE FİX:
+SIRADAKİ BÜYÜK GÖREVLER (öncelik sırası — Lord direktifi 20 Haz):
 
-  BUG-T06-A: Hero cover blur/kalite düşüyor
-    Fix: frontend/app.js renderDetail() hero section — blur azalt, object-fit düzenle
+[A] SITE SIRALAMA — Chapter count bazlı (detail kartı)
+    - Detail kartında siteler gösterilirken: en fazla bölüm olan site EN ÜSTTE
+    - Her sitenin yanında bölüm sayısı görünsün (örn: "asurascans [120]", "mangaokutr [80]")
+    - DB: Site.latest_known_ep field zaten var → bunu kullan
+    - Sıralama: ORDER BY latest_known_ep DESC (null en alta)
+    - Dosyalar: frontend/app.js renderDetailSites()
 
-  BUG-T06-B: Star rating hover yanlış (tıklamadan yükseliyor)
-    Fix: frontend/app.js + index.html — star CSS hover logic
+[B] IN-DETAIL OKUMA/İZLEME BUTONU (popup window)
+    - Bölümler tab'ında her bölüm satırının yanına "▶ Oku/İzle" butonu ekle
+    - Butona basınca yeni küçük pencere (window.open veya full-screen overlay iframe) ile sitenin
+      bölüm URL'ini aç — kullanıcı ayrı tab'a gitmeden kendi içinde izleyebilsin
+    - Overlay iframe tercih: z-index:9999, close butonu sağ üstte, ESC ile kapat
+    - Dosyalar: frontend/index.html (#read-overlay div ekle), frontend/app.js (_epHtml butonu)
 
-  BUG-T06-C: "İzle için site ekle" mesajı site olmasına rağmen çıkıyor
-    Fix: frontend/app.js renderDetail() site kontrol → sites array doğru oku
+[C] ARKA PLANDA İNDİRME + POPUP
+    - Kullanıcı bir bölümü izlerken/okurken → bölümün %50'sine gelince popup göster:
+      "Sıradaki bölüm arka planda indiriliyor..."
+    - Popup 4sn sonra kapanır (toast notification)
+    - Arka planda: GET /api/download/{content_id}/{ep+1} tetiklenir (sessiz)
+    - Eğer sonraki bölüm zaten indirilmişse popup çıkmaz
+    - Dosyalar: frontend/player.js (progress izleme hook), frontend/app.js (toast util)
 
-  SONRAKI: T-06 bugları fix et → T-07'ye geç
+[D] ENRICH SITE URLS — yeni siteler + 76 site-siz içerik
+    - dizibox.live (Türk dizi + bazı anime): https://www.dizibox.live/{slug}-izle/
+    - hdfilmcehennemi.nl (Türk film): https://www.hdfilmcehennemi.nl/{slug}-izle/
+    - merlintoon.com (anime/cartoon): URL pattern test edilmeli
+    - Hedef: 76 site-siz içeriğin bir kısmına URL ekle
+    - Dosyalar: scripts/enrich_site_urls.py
 
-  GELECEK FAZ (ayrı sohbet):
-  - Tinder-swipe nav ikonu: medya seç → kart sağ/sol/yukarı/aşağı kaydır
-  - Swipe kartında hızlı sezon/bölüm slider (nerede kaldığını kaydet)
+[E] DEAD SİTE YÖNETİMİ (detail kartı)
+    - Siteler gösterilirken: erişilemeyen/ölü siteler gizlenmez, gösterilir
+    - Ama yanına "⚠️ Erişilemiyor" etiketi koymak için periyodik HTTP HEAD kontrol
+    - audit_all_media.py: 676 içerik cover/tag/URL/download durum raporu
+
+⚠️ ÖNEMLİ:
+  - Manga siteleri WSL curl ile 000 verir AMA Python httpx ile OK!
+  - Her test ve erişim için httpx kullan, curl kullanma
+  - Tailwind: JS'de inline style kullan, dynamic class ÇALIŞMAZ
 
 BAŞLATMA:
   Bat [10] → [1] (chancellor yöntemi) — restart sonrası F5 yeterli
