@@ -27,6 +27,8 @@ _DEFAULTS = {
     "duration_game_session": 60,
     "check_on_startup": True,
     "default_quality": "720p",
+    "download_quality_manual": "720p",
+    "download_quality_auto": "480p",
     "max_concurrent_downloads": 2,
     "auto_delete_after_watch": False,
     "daisy_chain_trigger_pct": 50,
