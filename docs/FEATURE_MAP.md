@@ -671,7 +671,7 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ## ✅ Özellik Tamamlanma Durumu
 
-> Son güncelleme: 15 Haz 2026 (sohbet-21)
+> Son güncelleme: 20 Haz 2026 (sohbet-39)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -686,7 +686,9 @@ FRONTEND:
 [x] DETAIL — hero kapak + bilgi paneli
 [x] DETAIL — ★ interaktif yıldız puan (PATCH my_score)
 [x] DETAIL — progress bar + "Sonraki Bölüm" butonu
-[x] DETAIL — cover_url → bg-image
+[x] DETAIL — cover_url → bg-image + initials fallback (sohbet-39)
+[x] DETAIL — ✏️ Edit Modal → başlık/tip/durum/puan/not düzenle + sil (sohbet-39)
+[x] DETAIL — "8.5 / 10" sayısal puan gösterimi (sohbet-39)
 [x] DETAIL — bölümler sekmesi (URL varsa İndir butonu)
 [x] DETAIL — siteler sekmesi
 [x] DETAIL — notlar + spoiler toggle
@@ -793,12 +795,18 @@ FRONTEND:
 [ ] "✏️ Düzelt" butonu (DB'ye kaydedilir) — gelecek sprint
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FAZ-6 — BROWSER EXTENSION (MAL-Sync tarzı)
+FAZ-6 — BROWSER EXTENSION ✅ TAMAMLANDI (sohbet-37/38)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-[ ] kurowatch-extension/manifest.json (Chrome/Firefox)
-[ ] kurowatch-extension/content.js — URL parse + API
-    Desteklenen: diziwatch, tranimeizle, crunchyroll, mangaokutr
-[ ] backend/routers/content.py — POST /api/progress/auto (fuzzy match)
+[x] extension/manifest.json (Chrome Manifest V3)
+[x] extension/content/tranimaci.js — URL parse + ilerleme push
+[x] extension/content/tranimeizle.js — 3 katmanlı parse + domain fix
+[x] extension/content/diziwatch.js — URL parse
+[x] extension/background.js — service worker, CAPTURE mesajı
+[x] backend/routers/extension.py — POST /api/extension/capture (AniList fuzzy match)
+    - cover_url + genres AniList'ten otomatik
+    - _ensure_site() + _ensure_episode() → indirme butonu çıkıyor
+    - 4 katmanlı fuzzy: tam → kısalt → ilk kelime → trailing-s kırp
+    Canlı kanıt: Bölüm 12 → "Baki" AniList match ✅ (commit a9fbd24)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 MOBİL ADB (Kuroshin.bat, 15 Haz sohbet-19)
