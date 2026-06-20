@@ -1603,7 +1603,7 @@
     const isAnime = contentType === 'anime';
     const readLabel = isAnime ? 'İzle' : 'Oku';
     const readIcon  = isAnime ? 'play_circle' : 'menu_book';
-    const syncLabel = isAnime ? 'AniList\'ten Yükle' : 'Bölümleri Yükle';
+    const syncLabel = 'Bölümleri Güncelle';
 
     // ── Sezon yönetimi ──
     const allSeasons = episodes.length
