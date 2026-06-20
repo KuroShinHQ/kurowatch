@@ -345,9 +345,10 @@
         : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
       const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+      const initialsHtml = `<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>`;
       const coverBg = it.cover_url
-        ? `<div class="absolute inset-0 bg-cover bg-center" style="background-image:url('${escapeHtml(it.cover_url)}')"></div>`
-        : `<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>`;
+        ? `<img src="${escapeHtml(it.cover_url)}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.outerHTML='${initialsHtml.replace(/'/g,"&#39;")}'"/>`
+        : initialsHtml;
 
       return `
         <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" data-content-id="${it.id}">
@@ -1462,7 +1463,10 @@
         'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
         '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
         targetLabel + '</a>'
-      : '';
+      : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
+        'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
+        '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
+        readLabel + ' için site ekle → Siteler sekmesi</button>';
 
     const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
       '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> ' + syncLabel + '</button>';
