@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-54) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c0b656d`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-56) · **Aktif sürüm:** v1.1.0 · **Son commit:** `4a8d40f`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,39 +10,38 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (20 Haz sohbet-54):
-  - 676 içerik, 670 cover (%99), 6 cover-sız (Türk yapımı)
-  - external_score: 567/676 (%83) dolu
-  - Backend: port 8099 — RESTART LAZIM (c0b656d değişikliği uygulanmadı)
+MEVCUT DURUM (21 Haz sohbet-56):
+  - 676 içerik, backend 4a8d40f — RESTART LAZIM
   - Test: http://localhost:8099
 
-SOHBET-54 YAPILANLARI:
-  ✅ anime.py + episodes.py + frontend (app.js, index.html, player.js) refactor (c0b656d)
-     - AniList bölüm sync (13 bölüm türetme), "İzle — Bölüm 1" shortcut
-     - Floating indicator ile sessiz indirme
+SOHBET-56 YAPILANLARI:
+  ✅ stream_finder: networkidle + JS iframe + 15s bekleme + playwright-stealth (4a8d40f)
+  ✅ tranimeizle.co "Bot Kontrol" CAPTCHA teşhis edildi:
+     - Görsel CAPTCHA (puzzle) — headless bypass yok
+     - Çözüm: cookies/tranimeizle_cookies.txt (Netscape format) şart
+     - cookies dizini şu an BOŞ: C:\Kuroshin\kurowatch\cookies\
 
-AKTİF SORUNLAR (çözüm bekliyor):
-  ❌ tranimeizle.io 404: Siteler sekmesine ana page girildi, bölüm URL girilmeli
-     - Doğru format: /anime/<slug>/<N>-bolum veya /<slug>-<N>-bolum-izle
-     - Lord'un 1. bölüm sayfasını açıp URL'yi Siteler sekmesine girmesi gerekiyor
-  ❌ yt-dlp hataları: ?su=... Crunchyroll URL → premium gerekli + cookies yok
-     - Çözüm: Settings → Cookies → tranimeizle için cookie ekle
-  ❌ Anime Türkçe isim yok: AniList yalnızca English + Romaji döndürüyor
-     - title_tr alanı DB'de YOK → migration + Edit modal + AniList sync güncelleme gerekli
+AKTİF SORUNLAR:
+  ❌ tranimeizle.co indirme: CAPTCHA engeli — cookies gerekli
+     - Lord, Chrome'da CAPTCHA çöz → Cookie-Editor extension → Netscape export
+     - Kaydet: C:\Kuroshin\kurowatch\cookies\tranimeizle_cookies.txt
+  ❌ tranimeizle.io 404: Bölüm URL girilmeli (Siteler sekmesi)
+  ❌ Anime Türkçe isim yok: title_tr alanı DB'de yok
 
 SIRADAKİ GÖREVLER (öncelik sırasıyla):
-  [A] title_tr alanı: models.py migration + Edit modal + save API (Türkçe isim)
-  [B] tranimeizle bölüm URL şablonu çöz (Lord URL bulup Siteler'e girsin → test)
-  [C] audit_all_media.py tam koşu (--no-mark kaldır, gerçek DB güncelle)
+  [A] cookies.txt varsa → tranimeizle.co tekrar test
+  [B] mangaokutr.com testi → 67 içerik, Madara tema, manga.py var
+  [C] title_tr alanı: models.py migration + Edit modal + save API
   [D] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
 
 ⚠️ ÖNEMLİ:
-  - Manga siteleri WSL curl ile 000 verir AMA Python httpx ile OK!
-  - Tailwind: JS'de inline style kullan, dynamic class ÇALIŞMAZ
+  - playwright-stealth v2.0.3: Stealth().apply_stealth_async(page) — stealth_async DEĞİL
+  - DB tablo: episode (çoğulsuz), kolon: number (episode_number değil)
   - Backend restart ŞART: Bat [10] → [1]
+  - tranimaci.com: ÇALIŞIYOR (Playwright 10sn + Referer)
 
 BAŞLATMA:
-  Bat [10] → [1] (chancellor restart — c0b656d değişiklikleri aktif etmek için)
+  Bat [10] → [1] (chancellor restart — 4a8d40f değişiklikleri aktif)
   Test URL: http://localhost:8099
 ```
 
@@ -78,9 +77,7 @@ C:\Kuroshin\kurowatch\
     style.css            → global stiller (Tailwind build + custom)
     pwa.js               → PWA push notification (FAZ-7a)
   extension/             → Chrome/Firefox Manifest V3 extension
-  scripts/
-    bulk_cover_fetch.py  → AniList+Jikan zinciri, direkt SQLite (backend yok)
-    enrich_anilist.py    → eski cover zenginleştirme (bulk_cover_fetch yeni)
+  cookies/               → BOŞ — tranimeizle_cookies.txt buraya gelecek
   memory/
     kurowatch.db         → SQLite (gitignore)
   config.json            → API keys (gitignore)
@@ -89,6 +86,9 @@ C:\Kuroshin\kurowatch\
     TEST_PLAN.md         → sistematik test listesi
     FEATURE_MAP.md       → tüm özellik envanteri
     YAPI.md              → mimari kararlar
+  debug_stream.py        → geçici teşhis aracı (silinebilir)
+  check_botpage.py       → geçici teşhis aracı (silinebilir)
+  check_db.py            → geçici teşhis aracı (silinebilir)
 ```
 
 ---
@@ -100,6 +100,8 @@ C:\Kuroshin\kurowatch\
 - **WSL'den başlatma:** `setsid` ile + bat [10]→[1] en güvenilir
 - **Cover upload:** `POST /api/content/{id}/cover` (multipart) + `/covers/` static mount
 - **Extension capture:** `POST /api/extension/capture` → AniList eşleştir → DB
+- **tranimeizle.co CAPTCHA:** cookies/tranimeizle_cookies.txt (Netscape) olmadan indirme yok
+- **DB tablo:** `episode` (çoğulsuz); kolon `number` (episode_number değil)
 
 ---
 
@@ -107,9 +109,9 @@ C:\Kuroshin\kurowatch\
 
 | Commit | Ne |
 |--------|----|
-| `b85c251` | v0.3.1 bug fix paketi (503, cover zenginleştir, yıldız, genre, timeout) |
-| `2c62fb5` | Home kart cover onerror HTML injection fix |
-| `a9fbd24` | Extension capture: cover+genres AniList, 4 katmanlı fuzzy |
-| `dd4bed8` | Video/manga overflow fix |
+| `4a8d40f` | stream_finder: networkidle + JS iframe + 15s + playwright-stealth |
+| `b28f10d` | anime.py: hata mesajları iyileştirildi |
+| `1def47a` | stream_finder: Crunchyroll/VRV iframe filtresi |
+| `e1bb754` | "Bölümleri Güncelle" butonu |
 | `5c9d39c` | Anime indirme Playwright + Referer fix |
 | `1cacc29` | Madara manga lazy-load bug fix |
