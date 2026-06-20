@@ -631,11 +631,21 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
         </div>
         <div class="border-t border-white/5"></div>
         <div>
-          <label class="block text-[12px] text-[#9090b0] mb-2 uppercase tracking-wider font-semibold">Video Kalitesi</label>
+          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">Manuel İndirme Kalitesi</label>
+          <div class="text-[11px] text-[#9090b0] mb-2">İndir butonuna bastığınızda kullanılır</div>
           <div class="flex bg-[#272842] rounded-lg p-1 border border-white/5">
-            <button class="settings-quality-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="720p">720p</button>
-            <button class="settings-quality-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
-            <button class="settings-quality-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="best">En İyi</button>
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="480p">480p</button>
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="720p">720p</button>
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">Otomatik İndirme Kalitesi</label>
+          <div class="text-[11px] text-[#9090b0] mb-2">Daisy-chain (otomatik sıradaki bölüm) için kullanılır</div>
+          <div class="flex bg-[#272842] rounded-lg p-1 border border-white/5">
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="480p">480p</button>
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="720p">720p</button>
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
           </div>
         </div>
       </div>

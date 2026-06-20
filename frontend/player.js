@@ -533,16 +533,19 @@
             j => j.content_id === job.content_id && j.episode_number === nextEp
           );
           if (!exists) {
-            fetch(API + '/api/content/' + job.content_id + '/episodes')
-              .then(r => r.json())
-              .then(eps => {
-                const next = eps.find(ep => ep.number === nextEp);
-                if (next && next.url) {
-                  startDownload(job.content_id, job.content_title, job.media_type,
-                                nextEp, next.url, job.quality || '720p');
-                }
-              })
-              .catch(() => {});
+            Promise.all([
+              fetch(API + '/api/content/' + job.content_id + '/episodes').then(r => r.json()),
+              fetch(API + '/api/settings').then(r => r.json()).catch(() => ({})),
+            ]).then(function(results) {
+              const eps = results[0];
+              const settings = results[1];
+              const autoQ = settings.download_quality_auto || '480p';
+              const next = eps.find(ep => ep.number === nextEp);
+              if (next && next.url) {
+                startDownload(job.content_id, job.content_title, job.media_type,
+                              nextEp, next.url, autoQ);
+              }
+            }).catch(() => {});
           }
         }
       }

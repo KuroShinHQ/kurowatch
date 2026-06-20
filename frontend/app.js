@@ -1082,24 +1082,32 @@
       };
     }
 
-    // Kalite butonları
-    const qualBtns = document.querySelectorAll('.settings-quality-btn');
-    function setQuality(q) {
-      qualBtns.forEach(b => {
-        const active = b.dataset.quality === q;
-        b.classList.toggle('bg-[#0d0d1a]', active);
-        b.classList.toggle('text-[#00d4ff]', active);
-        b.classList.toggle('text-[#9090b0]', !active);
+    // Kalite butonları (manual + auto iki ayrı grup)
+    function _makeQualityGroup(selector, settingKey, initialVal) {
+      const btns = document.querySelectorAll(selector);
+      function setActive(q) {
+        btns.forEach(b => {
+          const active = b.dataset.quality === q;
+          b.classList.toggle('bg-[#0d0d1a]', active);
+          b.classList.toggle('border', active);
+          b.classList.toggle('border-white\\/5', active);
+          b.classList.toggle('shadow-sm', active);
+          b.style.color = active ? '#00d4ff' : '';
+          if (!active) b.style.color = '';
+        });
+        btns.forEach(b => { b.style.color = b.dataset.quality === q ? '#00d4ff' : '#9090b0'; });
+      }
+      setActive(initialVal || '720p');
+      btns.forEach(btn => {
+        btn.addEventListener('click', async function() {
+          cfg[settingKey] = this.dataset.quality;
+          setActive(cfg[settingKey]);
+          await apiPost('/api/settings', { [settingKey]: cfg[settingKey] });
+        });
       });
     }
-    setQuality(cfg.default_quality || '720p');
-    qualBtns.forEach(btn => {
-      btn.addEventListener('click', async function() {
-        cfg.default_quality = this.dataset.quality;
-        setQuality(cfg.default_quality);
-        await apiPost('/api/settings', { default_quality: cfg.default_quality });
-      });
-    });
+    _makeQualityGroup('.settings-quality-manual-btn', 'download_quality_manual', cfg.download_quality_manual || cfg.default_quality || '720p');
+    _makeQualityGroup('.settings-quality-auto-btn',   'download_quality_auto',   cfg.download_quality_auto   || '480p');
 
     // IGDB kaydet butonu
     const igdbSaveBtn = document.getElementById('settings-igdb-save');
