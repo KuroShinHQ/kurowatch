@@ -148,12 +148,31 @@
   window.kuroAPI = { get: apiGet, post: apiPost, patch: apiPatch, del: apiDelete, setMockMode: m => USE_MOCK = m };
 
   // ── Navigasyon Sistemi ────────────────────────────────────────────
+  const _NAV_ORDER = ['screen-home','screen-search','screen-updates','screen-stats','screen-settings','screen-downloads'];
+  let _currentScreen = 'screen-home';
+
   function showScreen(id) {
+    const prev = _currentScreen;
+    const prevIdx = _NAV_ORDER.indexOf(prev);
+    const nextIdx = _NAV_ORDER.indexOf(id);
+    const isDetail = id === 'screen-detail';
+
+    let animClass = 'slide-up';
+    if (!isDetail && prevIdx >= 0 && nextIdx >= 0) {
+      animClass = nextIdx > prevIdx ? 'slide-in-right' : 'slide-in-left';
+    }
+
     document.querySelectorAll('.screen').forEach(s => {
       const isTarget = s.id === id;
       s.classList.toggle('active', isTarget);
       s.classList.toggle('hidden', !isTarget);
+      if (isTarget) {
+        s.classList.remove('slide-in-right','slide-in-left','slide-up');
+        void s.offsetWidth; // reflow
+        s.classList.add(animClass);
+      }
     });
+    _currentScreen = id;
     history.replaceState({ screen: id }, '', '#' + id);
     updateNavActive(id);
 
@@ -343,7 +362,8 @@
       const pct = isGameCard
         ? (it.my_progress_pct || 0)
         : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
-      const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
+      const extScore = it.external_score != null ? it.external_score.toFixed(1) : null;
+      const score = extScore !== null ? extScore : (it.my_score != null ? it.my_score.toFixed(1) : '—');
       const starCount = it.my_score != null && it.my_score > 0 ? Math.round(it.my_score / 2) : 0;
       const starsHtml = starCount > 0
         ? '<div class="absolute top-2 left-1/2 -translate-x-1/2 flex gap-px z-10 pointer-events-none" style="color:#fbbf24;font-size:12px;text-shadow:0 1px 4px rgba(0,0,0,0.8);letter-spacing:1px">'

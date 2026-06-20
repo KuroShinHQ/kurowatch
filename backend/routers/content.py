@@ -74,6 +74,7 @@ def _serialize(c: Content) -> dict:
         "my_progress": c.my_progress,
         "my_progress_pct": c.my_progress_pct,
         "my_score": c.my_score,
+        "external_score": c.external_score,
         "note_text": c.note_text,
         "note_is_spoiler": c.note_is_spoiler,
         "synopsis": c.synopsis or "",
