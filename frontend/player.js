@@ -542,8 +542,26 @@
               const autoQ = settings.download_quality_auto || '480p';
               const next = eps.find(ep => ep.number === nextEp);
               if (next && next.url) {
-                startDownload(job.content_id, job.content_title, job.media_type,
-                              nextEp, next.url, autoQ);
+                fetch(API + '/api/download/start', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    content_id: job.content_id,
+                    content_title: job.content_title,
+                    media_type: job.media_type,
+                    episode_number: nextEp,
+                    url: next.url,
+                    quality: autoQ,
+                  }),
+                }).then(function(r) {
+                  if (r.ok) return r.json();
+                }).then(function(j) {
+                  if (j) {
+                    _jobs[j.id] = j;
+                    _updateBadge();
+                    if (window.showToast) window.showToast('Sıradaki bölüm arka planda indiriliyor...', 'info', 4000);
+                  }
+                }).catch(function() {});
               }
             }).catch(() => {});
           }
