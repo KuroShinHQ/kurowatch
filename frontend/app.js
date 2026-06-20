@@ -1062,7 +1062,7 @@
   }
 
   // ── Toast ────────────────────────────────────────────────────────
-  function showToast(msg, type) {
+  function showToast(msg, type, durationMs) {
     const toast = document.getElementById('kw-toast');
     if (!toast) return;
     const colors = { success: '#90e090', error: '#ffb4ab', info: '#9090b0' };
@@ -1075,8 +1075,9 @@
       toast.classList.remove('opacity-100');
       toast.classList.add('opacity-0');
       setTimeout(function() { toast.classList.add('hidden'); }, 300);
-    }, 3000);
+    }, durationMs || 3000);
   }
+  window.showToast = showToast;
 
   // ── Render: Stats ────────────────────────────────────────────────
   async function renderStats() {
