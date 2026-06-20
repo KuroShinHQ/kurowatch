@@ -75,6 +75,13 @@ async def download_anime(
                 "Bu bölüm Crunchyroll'a yönlendiriyor. "
                 "İndirmek için Ayarlar → Cookies bölümünden Crunchyroll cookies ekleyin."
             )
+        # [generic] + orijinal URL geri döndüyse = embed bulunamadı
+        if "[generic]" in err_tail and actual_url == url:
+            domain = urlparse(url).netloc
+            raise RuntimeError(
+                f"{domain} sitesinde video embed bulunamadı. "
+                "Bu site için cookies ekleyin (Ayarlar → Cookies) veya farklı bir site kullanın."
+            )
         raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}" + (f": {err_tail}" if err_tail else ""))
 
     # Uzantı yt-dlp tarafından eklendi — bul
