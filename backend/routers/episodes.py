@@ -277,7 +277,13 @@ async def _check_one(content: Content, db: AsyncSession) -> int:
     """Tek içerik için güncelleme kontrolü. Yeni bölüm sayısını döndürür."""
     if not content.external_id or content.type == "game":
         return 0
+    try:
+        return await asyncio.wait_for(_check_one_impl(content, db), timeout=8.0)
+    except (asyncio.TimeoutError, Exception):
+        return 0
 
+
+async def _check_one_impl(content: Content, db: AsyncSession) -> int:
     ext = content.external_id
     api_count = 0
     source = "AniList"
@@ -336,7 +342,7 @@ async def check_updates(db: AsyncSession = Depends(get_db)):
     result = await db.execute(
         select(Content)
         .where(Content.status == "watching")
-        .limit(20)
+        .limit(10)
     )
     items = result.scalars().all()
 

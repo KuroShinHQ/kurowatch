@@ -1,4 +1,6 @@
+import asyncio
 import json
+import re
 import shutil
 from datetime import datetime
 from pathlib import Path
@@ -264,6 +266,77 @@ async def patch_all_genres(db: AsyncSession = Depends(get_db)):
 
     await db.commit()
     return {"patched": patched, "failed": failed, "total": len(items)}
+
+
+# ── Cover Zenginleştirme ─────────────────────────────────────────────
+
+def _title_variants(title: str) -> list[str]:
+    """Bir başlık için AniList'e denenmesi gereken varyantları üret."""
+    variants = [title]
+    # Parantez içeriği sil: "Frieren: Beyond Journey's End (Sousou no Frieren)" → "Frieren: Beyond Journey's End"
+    no_paren = re.sub(r'\s*\([^)]+\)', '', title).strip()
+    if no_paren and no_paren != title:
+        variants.append(no_paren)
+    # İki nokta üstüste'den sonrasını at: "Zom 100: Zombie ni..." → "Zom 100"
+    colon_short = title.split(':')[0].strip()
+    if colon_short and colon_short != title and len(colon_short) >= 4:
+        variants.append(colon_short)
+    # Parantezli + iki nokta kısaltma birlikte
+    if no_paren:
+        colon_of_clean = no_paren.split(':')[0].strip()
+        if colon_of_clean and colon_of_clean not in variants and len(colon_of_clean) >= 4:
+            variants.append(colon_of_clean)
+    # Sezon belirteci kaldır: "(S2)", "(Season 2)"
+    season_re = re.compile(r'\s*(\([Ss]\d+\)|\([Ss]eason\s*\d+\)|Part\s+\d+)$', re.IGNORECASE)
+    no_season = season_re.sub('', title).strip()
+    if no_season and no_season != title and no_season not in variants:
+        variants.append(no_season)
+    return variants
+
+
+@router.post("/content/enrich-covers")
+async def enrich_covers(db: AsyncSession = Depends(get_db)):
+    """Cover'ı olmayan anime/manga içerikler için AniList'te agresif arama yap."""
+    stmt = select(Content).where(
+        Content.cover_url.is_(None),
+        Content.type.in_(["anime", "manga", "manhwa"]),
+    )
+    result = await db.execute(stmt)
+    items = result.scalars().all()
+
+    enriched = 0
+    failed = []
+
+    for c in items:
+        found = None
+        for variant in _title_variants(c.title):
+            try:
+                results = await anilist.search(variant, c.type)
+                if results:
+                    found = results[0]
+                    break
+                await asyncio.sleep(0.3)
+            except Exception:
+                pass
+
+        if found and found.get("cover_url"):
+            c.cover_url = found["cover_url"]
+            if not c.external_id:
+                c.external_id = found.get("external_id")
+            if not c.genres and found.get("genres"):
+                c.genres = json.dumps(found["genres"])
+            if not c.total_episodes and found.get("total_episodes"):
+                c.total_episodes = found["total_episodes"]
+            if not c.total_chapters and found.get("total_chapters"):
+                c.total_chapters = found["total_chapters"]
+            c.updated_at = datetime.utcnow()
+            enriched += 1
+        else:
+            failed.append(c.title)
+        await asyncio.sleep(0.4)
+
+    await db.commit()
+    return {"enriched": enriched, "failed_count": len(failed), "failed_titles": failed[:10]}
 
 
 # ── Browser Extension: Otomatik İlerleme ────────────────────────────

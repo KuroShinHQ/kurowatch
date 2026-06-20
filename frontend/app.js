@@ -516,12 +516,13 @@
       ratingEl.innerHTML = '';
       for (let i = 1; i <= 10; i++) {
         const span = document.createElement('span');
-        span.className = 'material-symbols-outlined cursor-pointer text-[28px] transition-colors ' + (i <= highlighted ? 'text-[#00d4ff]' : 'text-[#31324d]');
+        span.className = 'material-symbols-outlined cursor-pointer text-[28px] transition-colors';
+        span.style.color = i <= highlighted ? '#00d4ff' : '#4a4b72';
         span.style.fontVariationSettings = "'FILL' 1";
         span.textContent = 'star';
         span.dataset.star = i;
-        span.addEventListener('mouseover', () => buildStars(i));
-        span.addEventListener('mouseleave', () => buildStars(currentScore));
+        span.addEventListener('pointerover', () => buildStars(i));
+        span.addEventListener('pointerleave', () => buildStars(currentScore));
         span.addEventListener('click', async () => {
           currentScore = i;
           buildStars(i);
@@ -991,7 +992,7 @@
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Kontrol ediliyor...';
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 30000);
+      const timer = setTimeout(() => ctrl.abort(), 90000);
       const r = await fetch(API_BASE + '/api/check-updates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1196,6 +1197,18 @@
     const malClientId = document.getElementById('settings-mal-client-id');
     if (malClientId) malClientId.value = cfg.mal_client_id || '';
 
+    // Kayıtlı olmayan kimlik bilgilerini otomatik kaydet
+    (async function _seedCredentials() {
+      const patch = {};
+      if (!cfg.igdb_client_id) patch.igdb_client_id = 'c9p2endd78aknjq52x9qx7o4voupqn';
+      if (!cfg.mal_client_id)  patch.mal_client_id  = '7bf9dbc0538aefb6eb465ca9ef04c8bb';
+      if (Object.keys(patch).length) {
+        try { await apiPost('/api/settings', patch); } catch(e) {}
+        if (igdbId && patch.igdb_client_id) igdbId.value = patch.igdb_client_id;
+        if (malClientId && patch.mal_client_id) malClientId.value = patch.mal_client_id;
+      }
+    })();
+
     // Auto-delete toggle
     const toggleDot = document.getElementById('settings-auto-delete-dot');
     const toggleBg = document.getElementById('settings-auto-delete-bg');
@@ -1305,17 +1318,40 @@
       genresPatchBtn.onclick = async function() {
         if (this.disabled) return;
         this.disabled = true;
-        const orig = this.querySelector('span.text-\\[\\#e1e0ff\\]');
-        const origText = orig ? orig.textContent : '';
-        if (orig) orig.textContent = 'Güncelleniyor...';
+        const origHTML = this.innerHTML;
+        this.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin" style="margin-right:8px">progress_activity</span><span>Güncelleniyor...</span><span class="material-symbols-outlined text-[18px]">chevron_right</span>';
         try {
           const res = await apiPost('/api/genres/patch-all', {});
-          showToast(res.patched + ' içeriğe tür eklendi', res.patched > 0 ? 'success' : 'info');
+          showToast((res.patched || 0) + ' içeriğe tür eklendi', (res.patched || 0) > 0 ? 'success' : 'info');
         } catch (e) {
           showToast('Hata: ' + e.message, 'error');
         } finally {
           this.disabled = false;
-          if (orig) orig.textContent = origText || 'Türleri AniList\'ten Güncelle';
+          this.innerHTML = origHTML;
+        }
+      };
+    }
+
+    // Cover Zenginleştir butonu
+    const enrichCoversBtn = document.getElementById('settings-enrich-covers-btn');
+    if (enrichCoversBtn) {
+      enrichCoversBtn.onclick = async function() {
+        if (this.disabled) return;
+        this.disabled = true;
+        const origHTML = this.innerHTML;
+        this.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin" style="margin-right:8px">progress_activity</span><span>AniList taranıyor...</span><span class="material-symbols-outlined text-[18px]">chevron_right</span>';
+        try {
+          const res = await apiPost('/api/content/enrich-covers', {});
+          const msg = (res.enriched || 0) > 0
+            ? (res.enriched) + ' içeriğe cover eklendi'
+            : 'Yeni cover bulunamadı (' + (res.failed_count || 0) + ' başarısız)';
+          showToast(msg, (res.enriched || 0) > 0 ? 'success' : 'info');
+          if ((res.enriched || 0) > 0) renderHome();
+        } catch (e) {
+          showToast('Hata: ' + e.message, 'error');
+        } finally {
+          this.disabled = false;
+          this.innerHTML = origHTML;
         }
       };
     }
