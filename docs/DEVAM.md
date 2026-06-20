@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 16 Haziran 2026 (sohbet-33c) · **Aktif sürüm:** v1.0.0 · **Son commit:** `46e39e8`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-39) · **Aktif sürüm:** v1.0.0 · **Son commit (kurowatch):** `a9fbd24`
 
 > Yeni Claude'a tek-sayfa devamlılık. İlk önce **bu MD**'yi oku.
 
@@ -8,6 +8,51 @@
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT (copy-paste)
 
 ```
+KuroWatch DEVAM.md oku. Özet:
+
+═══════════════════════════════════════════════════════════════
+SOHBET-39 AKTİF ÇALIŞMA (20 Haz 2026)
+═══════════════════════════════════════════════════════════════
+
+EN SON YAPILAN (20 Haz sohbet-38b):
+  Extension capture tam: cover+genres AniList, Site+Episode URL kaydediliyor
+  Commit: a9fbd24 (kurowatch)
+
+AKTİF SORUNLAR (sohbet-39 teşhisi):
+
+[BUG-7] 74 içerik çifti yanlış external_id eşleşmesi (aynı kapak farklı kart)
+  Neden: enrich_anilist.py Türkçe başlıkla MAL aradı → yanlış eşleşme
+  Etki: 168 kayıt etkilendi — farklı içerikler aynı cover_url paylaşıyor
+  Örnekler:
+    mal:486    → "A Beautiful Mind" VE "The Hobbit" (tamamen farklı!)
+    mal:11757  → "A.R.O.G" VE "G.O.R.A"
+    mal:1689   → "5 Centimeters" 3 kayıt (biri gerçek, 2'si duplicate)
+    mal:2025   → "1 Kadın 1 Erkek" VE "Arka Sokaklar"
+  Fix: Her çiftte başlığı external_id'e daha az uyanın external_id+cover+genres'ini sıfırla
+
+[BUG-8] Gerçek duplicate kayıtlar (aynı içerik 2-3 kez eklenmiş)
+  id:678 "Baki's Path 2. Kısım" = id:681 "Bakis Path 2 Kisim" → sil/birleştir
+  id:206/207/208 "5 Centimeters" 3 kayıt → 2'sini sil
+
+[DETAIL-EKSİK] Detail ekranı mimari eksikler:
+  1. Edit butonu (✏️) — HTML'de var, onclick YOK → dummy buton
+  2. "8.5 / 10" sayısal puan — yıldız yanında yok
+  3. Cover fallback (initials) — home'da var, detail'da yok
+  4. İçerik silme — detail'dan sil butonu yok (sadece home context menüsünde)
+  5. "Akıllı İzle" — Episodes tab'ına gömülü, ana CTA olarak öne çıkmalı
+
+SIRADAKİ GÖREVLER (bu sohbet):
+  1. DEVAM.md güncelle + commit ← ŞU AN
+  2. BUG-7 fix: yanlış eşleşme temizleme scripti
+  3. BUG-8 fix: gerçek duplicate sil
+  4. Detail ekranı eksikleri: edit modal + score display + cover fallback + sil butonu
+
+BAŞLATMA:
+  wsl -d Ubuntu-22.04 -u root -e bash -c "source /root/kuroshin/venv/bin/activate && cd /mnt/c/Kuroshin/kurowatch && setsid python -m uvicorn backend.main:app --port 8099 --host 0.0.0.0 --log-level warning > /tmp/kwb.log 2>&1 &"
+  Test: Invoke-RestMethod -Uri 'http://localhost:8099/api/content' | Measure-Object | Select Count
+
+═══════════════════════════════════════════════════════════════
+
 KuroWatch DEVAM.md oku. Özet:
 
 ═══════════════════════════════════════════════════════════════
