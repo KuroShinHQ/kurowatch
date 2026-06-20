@@ -9,6 +9,8 @@ import httpx
 _MADARA_DOMAINS = [
     "mangawow.com", "manga-sehri.net", "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "mangadenizi.com", "turkmanga.net", "mangaturk.org",
+    # 20 Haz 2026 — httpx testi ile onaylanan yeni siteler
+    "ruyamanga.com", "ruyamanga.net", "asurascans.com.tr",
 ]
 
 _HEADERS = {
