@@ -573,7 +573,12 @@
         try {
           item.my_progress = next;
           await apiPost('/api/content/' + id + '/progress', { progress: next });
-          renderDetail(id);
+          if (total > 0 && next >= total) {
+            const updated = await apiGet('/api/content/' + id);
+            _showCompleteModal(id, item.title || '', updated.my_score);
+          } else {
+            renderDetail(id);
+          }
         } catch(e) {
           btn.disabled = false;
           btn.innerHTML = origHTML;
@@ -809,7 +814,11 @@
     }
 
     if (items.length === 0) {
-      list.innerHTML = '<div class="text-center text-[#9090b0] py-12 flex flex-col items-center gap-2"><span class="material-symbols-outlined text-4xl">notifications_off</span><p>Henüz güncelleme yok</p></div>';
+      list.innerHTML = '<div class="text-center text-[#9090b0] py-12 flex flex-col items-center gap-3">' +
+        '<span class="material-symbols-outlined" style="font-size:48px;opacity:0.4">notifications_off</span>' +
+        '<p class="text-[14px] font-medium">Yeni güncelleme yok</p>' +
+        '<p class="text-[12px] opacity-60">Kontrol Et butonuna basarak yeni bölümleri tara</p>' +
+        '</div>';
       return;
     }
 
@@ -1473,11 +1482,12 @@
       modal.className = 'fixed inset-0 z-[9998] flex items-end justify-center pb-8 px-4';
       modal.innerHTML = `
         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="complete-modal-backdrop"></div>
-        <div class="relative z-10 w-full max-w-sm rounded-3xl bg-[#12132a] border border-[#00d4ff]/30 p-6 flex flex-col gap-5 shadow-2xl">
+        <div id="complete-modal-card" class="relative z-10 w-full max-w-sm rounded-3xl bg-[#12132a] border border-[#00d4ff]/30 p-6 flex flex-col gap-5 shadow-2xl" style="animation:completeIn .35s cubic-bezier(.34,1.56,.64,1) both">
           <div class="flex flex-col items-center gap-2 text-center">
-            <div class="text-5xl">🎉</div>
+            <div id="complete-emoji" class="text-5xl" style="animation:emojiBounce .6s ease .2s both">🎉</div>
             <h2 class="text-[18px] font-bold text-[#e1e0ff]">Tamamlandı!</h2>
             <p id="complete-modal-title" class="text-[13px] text-[#9090b0]"></p>
+            <p class="text-[12px] text-[#00d4ff]/70 font-medium">Puan vermek ister misin?</p>
           </div>
           <div class="flex flex-col gap-2">
             <label class="text-[12px] font-bold text-[#9090b0] uppercase tracking-wider">Puanın</label>
@@ -1511,6 +1521,11 @@
     };
 
     modal.classList.remove('hidden');
+    // Animasyonu her açılışta sıfırla
+    const card = modal.querySelector('#complete-modal-card');
+    const emoji = modal.querySelector('#complete-emoji');
+    if (card) { card.style.animation = 'none'; void card.offsetHeight; card.style.animation = 'completeIn .35s cubic-bezier(.34,1.56,.64,1) both'; }
+    if (emoji) { emoji.style.animation = 'none'; void emoji.offsetHeight; emoji.style.animation = 'emojiBounce .6s ease .2s both'; }
 
     function close() { modal.classList.add('hidden'); renderDetail(contentId); }
 
@@ -1645,12 +1660,19 @@
 
     const picker = document.createElement('div');
     picker.id = 'tag-picker-popover';
-    picker.className = 'fixed z-[150] bg-[#1c1d37] border border-white/10 rounded-xl shadow-2xl min-w-[180px] max-h-[240px] overflow-y-auto py-2';
+    picker.className = 'fixed z-[150] bg-[#1c1d37] border border-white/10 rounded-xl shadow-2xl overflow-hidden';
+    picker.style.cssText = 'min-width:210px;max-width:260px';
 
-    if (allTags.length === 0) {
-      picker.innerHTML = '<div class="px-4 py-3 text-[12px] text-[#9090b0]">Etiket yok — Ayarlar\'dan oluştur</div>';
-    } else {
-      picker.innerHTML = allTags.map(function(t) {
+    function _buildTagList(query) {
+      const q = (query || '').toLowerCase().trim();
+      const filtered = q ? allTags.filter(function(t) { return t.name.toLowerCase().includes(q); }) : allTags;
+      if (filtered.length === 0 && q) {
+        return '<div class="px-4 py-2 text-[12px] text-[#9090b0]">Eşleşme yok</div>';
+      }
+      if (allTags.length === 0) {
+        return '<div class="px-4 py-2 text-[12px] text-[#9090b0]">Etiket yok — Ayarlar\'dan oluştur</div>';
+      }
+      return filtered.map(function(t) {
         const color = t.color || '#9090b0';
         const assigned = assignedIds.has(t.id);
         return '<button class="tag-picker-item w-full flex items-center gap-3 px-4 py-2 hover:bg-white/5 transition-colors text-left" data-tag-id="' + t.id + '" data-content-id="' + contentId + '" data-assigned="' + assigned + '">' +
@@ -1661,15 +1683,29 @@
       }).join('');
     }
 
+    picker.innerHTML =
+      '<div class="px-3 pt-3 pb-2 border-b border-white/5">' +
+        '<input id="tag-search-input" type="text" placeholder="Etiket ara..." autocomplete="off" ' +
+          'style="width:100%;height:34px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#e1e0ff;font-size:13px;padding:0 10px;outline:none">' +
+      '</div>' +
+      '<div id="tag-picker-list" style="max-height:200px;overflow-y:auto;padding:4px 0">' + _buildTagList('') + '</div>';
+
     document.body.appendChild(picker);
     const rect = anchorEl.getBoundingClientRect();
     picker.style.top = (rect.bottom + 8) + 'px';
-    picker.style.left = Math.min(rect.left, window.innerWidth - 200) + 'px';
+    picker.style.left = Math.min(rect.left, window.innerWidth - 220) + 'px';
     _tagPickerEl = picker;
+
+    const searchInput = picker.querySelector('#tag-search-input');
+    const listEl = picker.querySelector('#tag-picker-list');
+    searchInput.focus();
+    searchInput.addEventListener('input', function() {
+      listEl.innerHTML = _buildTagList(this.value);
+    });
 
     setTimeout(function() {
       document.addEventListener('click', function closePickerOnce(e) {
-        if (!picker.contains(e.target) && e.target.id !== 'detail-tag-add-btn') {
+        if (!picker.contains(e.target) && !anchorEl.contains(e.target)) {
           picker.remove();
           _tagPickerEl = null;
           document.removeEventListener('click', closePickerOnce);
@@ -1911,7 +1947,11 @@
     try {
       const items = await apiGet(url);
       if (!items || items.length === 0) {
-        results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Sonuç bulunamadı</div>';
+        results.innerHTML = '<div class="text-center text-[#9090b0] py-12 flex flex-col items-center gap-3">' +
+          '<span class="material-symbols-outlined" style="font-size:48px;opacity:0.4">search_off</span>' +
+          '<p class="text-[14px] font-medium">' + (hasQ ? '"' + escapeHtml(q.trim()) + '" için sonuç bulunamadı' : 'Bu türde sonuç yok') + '</p>' +
+          '<p class="text-[12px] opacity-60">Farklı bir arama dene</p>' +
+          '</div>';
         return;
       }
       results.innerHTML = items.map(it => {
