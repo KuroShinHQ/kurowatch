@@ -237,9 +237,14 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
   <button class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]" data-nav="screen-home">
     <span class="material-symbols-outlined">arrow_back</span>
   </button>
-  <button id="detail-edit-btn" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]">
-    <span class="material-symbols-outlined">edit</span>
-  </button>
+  <div class="flex items-center gap-2">
+    <label for="cover-file-input" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97] cursor-pointer" title="Cover yükle">
+      <span class="material-symbols-outlined text-[20px]">upload</span>
+    </label>
+    <button id="detail-edit-btn" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]">
+      <span class="material-symbols-outlined">edit</span>
+    </button>
+  </div>
 </div>
 <div class="absolute bottom-0 left-0 w-full p-gutter z-10 flex flex-col gap-2">
   <div class="flex items-center gap-2">
@@ -250,9 +255,6 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
   </div>
   <h1 id="detail-title" class="font-display-lg text-display-lg text-[#e1e0ff] drop-shadow-md">—</h1>
 </div>
-<label for="cover-file-input" class="absolute bottom-2 right-2 cursor-pointer bg-black/60 rounded-full p-2 hover:bg-black/80 transition-all z-10" title="Cover yükle">
-  <span class="material-symbols-outlined text-white text-[18px]">upload</span>
-</label>
 <input id="cover-file-input" type="file" accept="image/*" class="hidden"/>
 </div>
 <!-- Main Content Container -->
