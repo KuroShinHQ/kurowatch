@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-47) · **Aktif sürüm:** v1.0.0 · **Son commit:** `b85c251`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-48) · **Aktif sürüm:** v1.0.0 · **Son commit:** `7d0436c`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,19 +10,30 @@
 ```
 KuroWatch DEVAM.md + TEST_PLAN.md oku. Özet:
 
-MEVCUT DURUM (20 Haz sohbet-47):
-  - 676 içerik, 670 cover (%99) — bulk_cover_fetch.py ile düzeltildi
+MEVCUT DURUM (20 Haz sohbet-48):
+  - 676 içerik, 670 cover (%99)
+  - external_score: 567/676 (%83) dolu (AniList/Jikan)
   - Backend: Bat [10] → [1] ile başlatılır (start /b wsl chancellor yöntemi)
   - Test: http://localhost:8099/api/content
 
-AKTİF ÇALIŞMA: Sistematik bug testi
-  - Test metodolojisi: Claude test talimatı verir → Lord KuroWatch'ta dener → feedback
-  - Tüm özellikler sırayla test edilecek (TEST_PLAN.md takip et)
-  - Sonraki test: TEST_PLAN.md'deki ilk ❌ veya ❓ işaretli test
+SOHBET-48 YAPILANLARI:
+  ✅ BUG-01: Sidebar gizlendi (style=display:none, cache-proof)
+  ✅ BUG-02: Genre listesi home'dan kaldırıldı
+  ✅ external_score: DB'ye eklendi, 567/676 AniList/Jikan'dan çekildi
+  ✅ Kart sol üst: AniList yıldızı (★★★★★) — external_score'dan
+  ✅ Kart sağ üst: my_score (senin puanın, sayı badge)
+  ✅ Slide animasyon: F5'te sola kayma düzeltildi
+  ⚠️ KALAN BUG: F5 (normal reload) eski cache alıyor → Ctrl+Shift+R gerek
+     FIX: Yeni sohbette cache-busting ekle (app.js?v=X sorgu parametresi)
+  ⚠️ Genre listesi Ctrl+Shift+R öncesi görünüyor (cache sorunu aynı)
+
+AKTİF ÇALIŞMA: Sistematik bug testi (TEST_PLAN.md)
+  - Sonraki: T-02 nav geçişleri, T-06 detail açılış
 
 BAŞLATMA:
   Bat [10] → [1] (chancellor yöntemi)
   Test URL: http://localhost:8099
+  ⚠️ Her bat restart sonrası Ctrl+Shift+R (cache-busting yeni sohbette fix edilecek)
 ```
 
 ---
