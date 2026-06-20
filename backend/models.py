@@ -26,6 +26,7 @@ class Content(Base):
     my_progress:     Mapped[int]            = mapped_column(Integer, nullable=False, default=0)
     my_progress_pct: Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)  # oyunlar
     my_score:        Mapped[Optional[float]]= mapped_column(Float,   nullable=True)
+    external_score:  Mapped[Optional[float]]= mapped_column(Float,   nullable=True)  # AniList averageScore/10
     note_text:       Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)
     note_is_spoiler: Mapped[bool]           = mapped_column(Boolean, nullable=False, default=False)
     synopsis:        Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # EN (AniList/IGDB'den)
