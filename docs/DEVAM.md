@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-52b) · **Aktif sürüm:** v1.0.0 · **Son commit:** `f6e2df2`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-53) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c074221`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,50 +10,29 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (20 Haz sohbet-52):
-  - 676 içerik, 670 cover (%99)
-  - external_score: 567/676 (%83) dolu (AniList/Jikan)
-  - manga.py: 3 yeni Madara site eklendi (ruyamanga.com/net, asurascans.com.tr) commit 82af85d
-  - Backend: Bat [10] → [1] ile başlatılır (start /b wsl chancellor yöntemi)
+MEVCUT DURUM (20 Haz sohbet-53):
+  - 676 içerik, 670 cover (%99), 6 cover-sız (Türk yapımı)
+  - external_score: 567/676 (%83) dolu
+  - Backend: port 8099 (nohup uvicorn, is_dead migration aktif)
   - Test: http://localhost:8099
 
-SOHBET-52 YAPILANLARI:
-  ✅ manga.py _MADARA_DOMAINS → 3 yeni site (httpx testi ile doğrulandı)
-     - ruyamanga.com: chapter indir PASS (HTTP 200, 17 wp-manga-chapter-img)
-     - ruyamanga.net: Madara onaylı
-     - asurascans.com.tr: Madara onaylı, chapter 403 (bot koruması riski)
-     - Dead atlanılar: mangaokutr.com, mangatr.net, uzaymanga.com, mangasehri.net, merlinscans.com
+SOHBET-53 YAPILANLARI (tüm görevler tamamlandı):
+  ✅ [2] renderDetailSites: latest_known_ep DESC sort + [N] etiketi (09a0fef)
+  ✅ [3] #read-overlay iframe butonu, ESC/X kapat, openReadOverlay() (6a588be)
+  ✅ [4] daisy-chain sessiz POST fetch, 4s window.showToast (007d00d)
+  ✅ [5] enrich_site_urls.py: dizibox(42)/hdfilm(15)/merlintoon + slugify TR fix (d274831)
+  ✅ [6] stream_finder.py: _FORCE_PLAYWRIGHT + _PLAY_BUTTON_SELECTORS (42cb79f)
+  ✅ [7] audit_all_media.py HEAD kontrol + Site.is_dead + mark-dead/alive API (c074221)
 
-SIRADAKİ GÖREVLER (öncelik sırası — 20 Haz güncel):
+SIRADAKİ GÖREVLER:
+  [1]-[7] ✅ TAMAM — bu FAZ bitti
 
-[1] ✅ TAMAMLANDI — manga.py Madara domains (commit 82af85d)
-
-[2] Site sıralama (chapter count bazlı) — detail kartı
-    - Siteler: en fazla bölüm olan EN ÜSTTE, yanında sayı (örn: "asurascans [120]")
-    - DB: Site.latest_known_ep zaten var → ORDER BY DESC (null en alta)
-    - Dosya: frontend/app.js renderDetailSites()
-
-[3] In-detail okuma/izleme butonu (overlay iframe)
-    - Bölüm satırına "▶ Oku/İzle" butonu → tam ekran overlay iframe açılır
-    - ESC / X ile kapat, z-index:9999
-    - Dosyalar: frontend/index.html (#read-overlay), frontend/app.js (_epHtml)
-
-[4] Arka planda indirme + popup
-    - Bölümün %50'sine gelince toast: "Sıradaki bölüm arka planda indiriliyor..."
-    - Toast 4sn kapanır; zaten indirilmişse çıkmaz
-    - Backend: GET /api/download/{id}/{ep+1} sessiz tetiklenir
-    - Dosyalar: frontend/player.js (progress hook), frontend/app.js (toast util)
-
-[5] enrich_site_urls.py — yeni siteler + 76 site-siz içerik
-    - dizibox.live: https://www.dizibox.live/{slug}-izle/
-    - hdfilmcehennemi.nl: https://www.hdfilmcehennemi.nl/{slug}-izle/
-    - merlintoon.com: URL pattern önce test et
-
-[6] stream_finder.py → dizibox.live + hdfilmcehennemi embed desteği
-
-[7] audit_all_media.py + dead site yönetimi
-    - 676 içerik: cover/tag/URL/download durum raporu (httpx HEAD)
-    - Kırık URL tespiti → detail kartında ⚠️ etiketi
+  Sonraki potansiyel görevler (Lord kararı):
+  [A] audit_all_media.py tam koşu (--no-mark kaldırarak gerçek DB güncelle)
+  [B] enrich_site_urls.py tam koşu (57 anime'ye site ekle)
+  [C] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
+  [D] Tinder-swipe nav (Lord kararı)
+  [E] Manga çeviri düzelt butonu
 
 ⚠️ ÖNEMLİ:
   - Manga siteleri WSL curl ile 000 verir AMA Python httpx ile OK!
