@@ -24,41 +24,36 @@ SOHBET-52 YAPILANLARI:
      - asurascans.com.tr: Madara onaylı, chapter 403 (bot koruması riski)
      - Dead atlanılar: mangaokutr.com, mangatr.net, uzaymanga.com, mangasehri.net, merlinscans.com
 
-SIRADAKİ BÜYÜK GÖREVLER (öncelik sırası — Lord direktifi 20 Haz):
+SIRADAKİ GÖREVLER (öncelik sırası — 20 Haz güncel):
 
-[A] SITE SIRALAMA — Chapter count bazlı (detail kartı)
-    - Detail kartında siteler gösterilirken: en fazla bölüm olan site EN ÜSTTE
-    - Her sitenin yanında bölüm sayısı görünsün (örn: "asurascans [120]", "mangaokutr [80]")
-    - DB: Site.latest_known_ep field zaten var → bunu kullan
-    - Sıralama: ORDER BY latest_known_ep DESC (null en alta)
-    - Dosyalar: frontend/app.js renderDetailSites()
+[1] ✅ TAMAMLANDI — manga.py Madara domains (commit 82af85d)
 
-[B] IN-DETAIL OKUMA/İZLEME BUTONU (popup window)
-    - Bölümler tab'ında her bölüm satırının yanına "▶ Oku/İzle" butonu ekle
-    - Butona basınca yeni küçük pencere (window.open veya full-screen overlay iframe) ile sitenin
-      bölüm URL'ini aç — kullanıcı ayrı tab'a gitmeden kendi içinde izleyebilsin
-    - Overlay iframe tercih: z-index:9999, close butonu sağ üstte, ESC ile kapat
-    - Dosyalar: frontend/index.html (#read-overlay div ekle), frontend/app.js (_epHtml butonu)
+[2] Site sıralama (chapter count bazlı) — detail kartı
+    - Siteler: en fazla bölüm olan EN ÜSTTE, yanında sayı (örn: "asurascans [120]")
+    - DB: Site.latest_known_ep zaten var → ORDER BY DESC (null en alta)
+    - Dosya: frontend/app.js renderDetailSites()
 
-[C] ARKA PLANDA İNDİRME + POPUP
-    - Kullanıcı bir bölümü izlerken/okurken → bölümün %50'sine gelince popup göster:
-      "Sıradaki bölüm arka planda indiriliyor..."
-    - Popup 4sn sonra kapanır (toast notification)
-    - Arka planda: GET /api/download/{content_id}/{ep+1} tetiklenir (sessiz)
-    - Eğer sonraki bölüm zaten indirilmişse popup çıkmaz
-    - Dosyalar: frontend/player.js (progress izleme hook), frontend/app.js (toast util)
+[3] In-detail okuma/izleme butonu (overlay iframe)
+    - Bölüm satırına "▶ Oku/İzle" butonu → tam ekran overlay iframe açılır
+    - ESC / X ile kapat, z-index:9999
+    - Dosyalar: frontend/index.html (#read-overlay), frontend/app.js (_epHtml)
 
-[D] ENRICH SITE URLS — yeni siteler + 76 site-siz içerik
-    - dizibox.live (Türk dizi + bazı anime): https://www.dizibox.live/{slug}-izle/
-    - hdfilmcehennemi.nl (Türk film): https://www.hdfilmcehennemi.nl/{slug}-izle/
-    - merlintoon.com (anime/cartoon): URL pattern test edilmeli
-    - Hedef: 76 site-siz içeriğin bir kısmına URL ekle
-    - Dosyalar: scripts/enrich_site_urls.py
+[4] Arka planda indirme + popup
+    - Bölümün %50'sine gelince toast: "Sıradaki bölüm arka planda indiriliyor..."
+    - Toast 4sn kapanır; zaten indirilmişse çıkmaz
+    - Backend: GET /api/download/{id}/{ep+1} sessiz tetiklenir
+    - Dosyalar: frontend/player.js (progress hook), frontend/app.js (toast util)
 
-[E] DEAD SİTE YÖNETİMİ (detail kartı)
-    - Siteler gösterilirken: erişilemeyen/ölü siteler gizlenmez, gösterilir
-    - Ama yanına "⚠️ Erişilemiyor" etiketi koymak için periyodik HTTP HEAD kontrol
-    - audit_all_media.py: 676 içerik cover/tag/URL/download durum raporu
+[5] enrich_site_urls.py — yeni siteler + 76 site-siz içerik
+    - dizibox.live: https://www.dizibox.live/{slug}-izle/
+    - hdfilmcehennemi.nl: https://www.hdfilmcehennemi.nl/{slug}-izle/
+    - merlintoon.com: URL pattern önce test et
+
+[6] stream_finder.py → dizibox.live + hdfilmcehennemi embed desteği
+
+[7] audit_all_media.py + dead site yönetimi
+    - 676 içerik: cover/tag/URL/download durum raporu (httpx HEAD)
+    - Kırık URL tespiti → detail kartında ⚠️ etiketi
 
 ⚠️ ÖNEMLİ:
   - Manga siteleri WSL curl ile 000 verir AMA Python httpx ile OK!
