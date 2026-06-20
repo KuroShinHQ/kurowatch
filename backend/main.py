@@ -1,3 +1,4 @@
+import asyncio
 import os
 import json
 from contextlib import asynccontextmanager
@@ -40,20 +41,27 @@ def _get_config() -> dict:
     return cfg
 
 
+async def _startup_check_bg():
+    """check_on_startup: server hazır olduktan sonra arka planda çalışır, lifespan'i bloklamaz."""
+    await asyncio.sleep(3)
+    cfg = _get_config()
+    if not cfg.get("check_on_startup"):
+        return
+    try:
+        from backend.routers.episodes import check_updates
+        from backend.database import AsyncSessionLocal
+        async with AsyncSessionLocal() as db:
+            result = await check_updates(db=db)
+            if result["new_updates"]:
+                print(f"[KuroWatch] Startup: {result['new_updates']} yeni güncelleme bulundu.")
+    except Exception as e:
+        print(f"[KuroWatch] Startup check-updates hatası: {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_db()
-    cfg = _get_config()
-    if cfg.get("check_on_startup"):
-        try:
-            from backend.routers.episodes import check_updates
-            from backend.database import AsyncSessionLocal
-            async with AsyncSessionLocal() as db:
-                result = await check_updates(db=db)
-                if result["new_updates"]:
-                    print(f"[KuroWatch] Startup: {result['new_updates']} yeni güncelleme bulundu.")
-        except Exception as e:
-            print(f"[KuroWatch] Startup check-updates hatası: {e}")
+    asyncio.create_task(_startup_check_bg())
     yield
 
 
