@@ -1912,14 +1912,19 @@
   }
 
   function renderDetailSites(el, sites, contentId) {
-    const sitesHtml = sites.length
-      ? sites.map(function(s) {
+    const sorted = sites.slice().sort(function(a, b) {
+      const av = a.latest_known_ep != null ? a.latest_known_ep : -1;
+      const bv = b.latest_known_ep != null ? b.latest_known_ep : -1;
+      return bv - av;
+    });
+    const sitesHtml = sorted.length
+      ? sorted.map(function(s) {
           const abbr = (s.site_name || '?').slice(0, 2).toUpperCase();
           return '<div class="p-4 rounded-xl bg-[#16213e] border border-[#00d4ff]/20 inner-glow flex justify-between items-center gap-2">' +
             '<div class="flex items-center gap-3 min-w-0">' +
             '<div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold flex-shrink-0">' + abbr + '</div>' +
             '<div class="flex flex-col min-w-0">' +
-            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + '</span>' +
+            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + (s.latest_known_ep != null ? ' <span style="color:#9090b0;font-weight:normal;font-size:12px;">[' + s.latest_known_ep + ']</span>' : '') + '</span>' +
             (s.is_primary ? '<span class="text-[10px] text-[#00d4ff]">Ana Site</span>' : '') +
             '</div></div>' +
             '<div class="flex items-center gap-2 flex-shrink-0">' +
