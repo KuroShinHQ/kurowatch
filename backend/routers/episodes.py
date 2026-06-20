@@ -332,8 +332,12 @@ async def _check_one(content: Content, db: AsyncSession) -> int:
 
 @router.post("/check-updates")
 async def check_updates(db: AsyncSession = Depends(get_db)):
-    """Tüm içerikler için AniList'e sorgu at, yeni bölüm varsa Update kaydı oluştur."""
-    result = await db.execute(select(Content))
+    """İzlenen içerikler için AniList'e sorgu at, yeni bölüm varsa Update kaydı oluştur."""
+    result = await db.execute(
+        select(Content)
+        .where(Content.status == "watching")
+        .limit(20)
+    )
     items = result.scalars().all()
 
     found = 0

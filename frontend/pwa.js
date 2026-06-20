@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const API = 'http://localhost:8099';
+  const API = window.location.origin;
 
   // ── Service Worker Kaydı ─────────────────────────────────────────
   if ('serviceWorker' in navigator) {
@@ -106,6 +106,8 @@
     const toggleBtn = document.getElementById('push-toggle-btn');
     const testBtn   = document.getElementById('push-test-btn');
     if (!toggleBtn) return;
+    if (toggleBtn._pushInited) return;
+    toggleBtn._pushInited = true;
 
     // API desteği kontrolü
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
