@@ -120,7 +120,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- PAYLAŞILAN NAV — Masaüstü Sidebar                              -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<nav id="sidebar-nav" class="hidden flex-col py-8 px-4 fixed left-0 top-0 h-full w-[240px] bg-[#0d0d1a] border-r border-white/5 z-50">
+<nav id="sidebar-nav" style="display:none" class="hidden flex-col py-8 px-4 fixed left-0 top-0 h-full w-[240px] bg-[#0d0d1a] border-r border-white/5 z-50">
   <div class="text-2xl font-bold text-[#00d4ff] mb-8 tracking-tighter px-2">KuroWatch</div>
   <ul class="flex flex-col gap-2 flex-1">
     <li>
@@ -198,8 +198,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
         <button class="filter-status shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-status="completed">TAMAMLANDI</button>
         <button class="filter-status shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-status="on_hold">BEKLEMEDE</button>
       </div>
-      <!-- Filtre Chips: Genre (app.js tarafından doldurulur) -->
-      <div id="home-genre-row" class="hidden flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 lg:mx-0 lg:px-0"></div>
+      <!-- Genre chips kaldırıldı — home'da gereksiz kalabalık -->
     </div>
     <!-- Poster Grid — app.js tarafından doldurulur -->
     <div id="home-library-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4">

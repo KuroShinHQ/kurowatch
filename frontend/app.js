@@ -318,8 +318,7 @@
       return;
     }
 
-    // Genre chip satırını doldur
-    _buildGenreChips(items);
+    // Genre chip satırı home'dan kaldırıldı
 
     // Background: genres boş ama external_id varsa otomatik patch
     const needsPatch = items.some(function(it) { return it.external_id && (!it.genres || it.genres.length === 0); });
