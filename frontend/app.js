@@ -344,6 +344,12 @@
         ? (it.my_progress_pct || 0)
         : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
       const score = it.my_score != null ? it.my_score.toFixed(1) : '—';
+      const starCount = it.my_score != null && it.my_score > 0 ? Math.round(it.my_score / 2) : 0;
+      const starsHtml = starCount > 0
+        ? '<div class="absolute top-2 left-1/2 -translate-x-1/2 flex gap-px z-10 pointer-events-none" style="color:#fbbf24;font-size:12px;text-shadow:0 1px 4px rgba(0,0,0,0.8);letter-spacing:1px">'
+            + '★'.repeat(starCount) + '<span style="opacity:0.25;color:#fff">' + '★'.repeat(5 - starCount) + '</span>'
+            + '</div>'
+        : '';
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
       const initialsHtml = `<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-5xl font-bold">${initials}</div>`;
       const coverBg = it.cover_url
@@ -355,6 +361,7 @@
           ${coverBg}
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
           <div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg">${score}</div>
+          ${starsHtml}
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
             <span class="text-[10px] font-bold w-fit px-1.5 py-0.5 rounded uppercase leading-none" style="${tcStyle(tc).badge}">${tc.label}</span>
             <h3 class="text-[13px] font-bold text-[#e1e0ff] line-clamp-2 leading-tight">${escapeHtml(it.title)}</h3>
