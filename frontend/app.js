@@ -362,12 +362,15 @@
       const pct = isGameCard
         ? (it.my_progress_pct || 0)
         : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
-      const extScore = it.external_score != null ? it.external_score.toFixed(1) : null;
-      const score = extScore !== null ? extScore : (it.my_score != null ? it.my_score.toFixed(1) : '—');
-      const starCount = it.my_score != null && it.my_score > 0 ? Math.round(it.my_score / 2) : 0;
-      const starsHtml = starCount > 0
-        ? '<div class="absolute top-2 left-1/2 -translate-x-1/2 flex gap-px z-10 pointer-events-none" style="color:#fbbf24;font-size:12px;text-shadow:0 1px 4px rgba(0,0,0,0.8);letter-spacing:1px">'
-            + '★'.repeat(starCount) + '<span style="opacity:0.25;color:#fff">' + '★'.repeat(5 - starCount) + '</span>'
+      // Sağ üst: senin puanın (my_score) — yoksa badge gösterme
+      const myScoreBadge = it.my_score != null && it.my_score > 0
+        ? `<div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg z-10">${it.my_score.toFixed(1)}</div>`
+        : '';
+      // Sol üst: dış kaynak puanı (external_score) → yıldız — yoksa gösterme
+      const extStarCount = it.external_score != null && it.external_score > 0 ? Math.round(it.external_score / 2) : 0;
+      const starsHtml = extStarCount > 0
+        ? '<div class="absolute top-2 left-2 flex gap-px z-10 pointer-events-none" style="color:#fbbf24;font-size:11px;text-shadow:0 1px 4px rgba(0,0,0,0.9);letter-spacing:0.5px">'
+            + '★'.repeat(extStarCount) + '<span style="opacity:0.22;color:#fff">' + '★'.repeat(5 - extStarCount) + '</span>'
             + '</div>'
         : '';
       const initials = it.title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
@@ -380,7 +383,7 @@
         <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" data-content-id="${it.id}">
           ${coverBg}
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
-          <div class="absolute top-2 right-2 bg-[#00d4ff] text-[#003642] text-xs font-bold px-2 py-1 rounded-full shadow-lg">${score}</div>
+          ${myScoreBadge}
           ${starsHtml}
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
             <span class="text-[10px] font-bold w-fit px-1.5 py-0.5 rounded uppercase leading-none" style="${tcStyle(tc).badge}">${tc.label}</span>
