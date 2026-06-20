@@ -607,9 +607,43 @@
       }
     };
 
+    // Quick-edit pop-up (mobil ilerleme düzenleme)
+    const tapBtn  = document.getElementById('detail-progress-tap');
+    const qePanel = document.getElementById('progress-quick-edit');
+    const qeInput = document.getElementById('pqe-input');
+    if (tapBtn && qePanel && qeInput) {
+      tapBtn.onclick = function(e) {
+        e.stopPropagation();
+        const open = qePanel.style.display !== 'none';
+        qePanel.style.display = open ? 'none' : '';
+        if (!open) { qeInput.value = isGame ? (item.my_progress_pct || 0) : (item.my_progress || 0); qeInput.focus(); }
+      };
+      document.getElementById('pqe-minus').onclick = function() { qeInput.value = Math.max(0, parseInt(qeInput.value || 0, 10) - 1); };
+      document.getElementById('pqe-plus').onclick  = function() { qeInput.value = parseInt(qeInput.value || 0, 10) + 1; };
+      document.getElementById('pqe-save').onclick  = async function() {
+        const v = parseInt(qeInput.value, 10);
+        if (isNaN(v) || v < 0) return;
+        qePanel.style.display = 'none';
+        if (isGame) {
+          item.my_progress_pct = v;
+          await apiPatch('/api/content/' + id, { my_progress_pct: v });
+        } else {
+          item.my_progress = v;
+          await apiPost('/api/content/' + id + '/progress', { progress: v });
+        }
+        renderDetail(id);
+      };
+      document.addEventListener('click', function closeQe(e) {
+        if (!qePanel.contains(e.target) && e.target !== tapBtn && !tapBtn.contains(e.target)) {
+          qePanel.style.display = 'none';
+          document.removeEventListener('click', closeQe);
+        }
+      });
+    }
+
     // Bölümler tab
     const epsTabEl = document.getElementById('detail-tab-episodes');
-    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || []);
+    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || [], item.my_progress || 0);
 
     // Siteler tab
     const sitesTabEl = document.getElementById('detail-tab-sites');
@@ -1282,19 +1316,24 @@
 
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
 
-  function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle, sites) {
+  function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle, sites, myProgress) {
     const isAnime = contentType === 'anime';
     const readLabel = isAnime ? 'İzle' : 'Oku';
     const readIcon  = isAnime ? 'play_circle' : 'menu_book';
     const syncLabel = isAnime ? 'AniList\'ten Bölümleri Yükle' : 'Bölümleri Yükle';
 
     const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
-    const siteShortcut = primarySite
-      ? '<a href="' + escapeHtml(primarySite.site_url) + '" target="_blank" rel="noopener" ' +
+    const nextEp = (myProgress > 0 && episodes.length >= myProgress) ? episodes[myProgress - 1] : null;
+    const targetUrl = (nextEp && nextEp.url) ? nextEp.url : (primarySite ? primarySite.site_url : null);
+    const targetLabel = (nextEp && nextEp.url)
+      ? readLabel + ' — Bölüm ' + myProgress
+      : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
+    const siteShortcut = targetUrl
+      ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
         'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
         'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
         '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-        readLabel + ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) + '</a>'
+        targetLabel + '</a>'
       : '';
 
     const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
