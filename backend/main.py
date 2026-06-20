@@ -1,11 +1,17 @@
 import asyncio
 import os
+import re
+import time
 import json
 from contextlib import asynccontextmanager
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+
+_BUILD_TS = int(time.time())
+_VERSIONED_HTML: str | None = None
 
 from backend.database import init_db
 from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, mal_sync
@@ -89,6 +95,24 @@ app.include_router(translate.router,   prefix="/api", tags=["translate"])
 app.include_router(extension.router,  prefix="/api", tags=["extension"])
 app.include_router(game.router,       prefix="/api", tags=["game"])
 app.include_router(mal_sync.router,   prefix="/api", tags=["mal_sync"])
+
+# ── Versioned SPA Index ───────────────────────────────────────────────
+def _versioned_html() -> str:
+    global _VERSIONED_HTML
+    if _VERSIONED_HTML is None:
+        raw = (Path(_FRONTEND_DIR) / "index.html").read_text(encoding="utf-8")
+        _VERSIONED_HTML = re.sub(
+            r'(\.(?:js|css))(\?v=\d+)?"',
+            rf'\1?v={_BUILD_TS}"',
+            raw,
+        )
+    return _VERSIONED_HTML
+
+
+@app.get("/", response_class=HTMLResponse, include_in_schema=False)
+async def spa_index():
+    return HTMLResponse(_versioned_html())
+
 
 # ── Static Files SONRA (catch-all) ───────────────────────────────────
 _covers_dir = _ROOT / "covers"
