@@ -1744,11 +1744,11 @@
         '</div><div style="display:flex;align-items:center;gap:4px">' +
         (e.is_new ? '<span style="padding:2px 8px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
         (openUrl
-          ? '<a href="' + escapeHtml(openUrl) + '" target="_blank" rel="noopener"' +
-            (epUrl ? ' class="ep-open-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '"' : '') +
-            ' style="display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;' +
+          ? '<button class="ep-overlay-btn" data-url="' + escapeHtml(openUrl) + '" data-label="Bölüm ' + e.number + '"' +
+            (epUrl ? ' data-ep-id="' + e.id + '" data-content-id="' + contentId + '"' : '') +
+            ' style="display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;' +
             (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d80;border:1px solid #ffffff0d;color:#9090b0">' ) +
-            readLabel + ' <span class="material-symbols-outlined" style="font-size:14px">' + (epUrl ? 'open_in_new' : 'public') + '</span></a>'
+            '<span class="material-symbols-outlined" style="font-size:14px">web</span> ' + readLabel + '</button>'
           : '') +
         (openUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;min-height:44px;display:flex;align-items:center;justify-content:center" ' +
           'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
@@ -1762,20 +1762,25 @@
 
     _buildEpisodeView();
 
-    // ── Event delegation — openBtn / watchBtn / dlBtn (tek listener) ─
+    // ── Event delegation — overlayBtn / watchBtn / dlBtn (tek listener) ─
     el.addEventListener('click', async function(evt) {
-      const openBtn  = evt.target.closest('.ep-open-btn');
+      const overlayBtn = evt.target.closest('.ep-overlay-btn');
       const watchBtn = evt.target.closest('.ep-watch-btn');
       const dlBtn    = evt.target.closest('.ep-dl-btn');
 
-      if (openBtn) {
-        const epId = parseInt(openBtn.dataset.epId, 10);
-        const cid  = parseInt(openBtn.dataset.contentId, 10);
-        try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e) {}
-        const scr = document.getElementById('screen-detail');
-        const savedY = scr ? scr.scrollTop : 0;
-        await renderDetail(cid);
-        if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+      if (overlayBtn) {
+        const url   = overlayBtn.dataset.url;
+        const label = overlayBtn.dataset.label || '';
+        const epId  = overlayBtn.dataset.epId ? parseInt(overlayBtn.dataset.epId, 10) : null;
+        const cid   = overlayBtn.dataset.contentId ? parseInt(overlayBtn.dataset.contentId, 10) : null;
+        openReadOverlay(url, label);
+        if (epId && cid) {
+          try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
+          const scr = document.getElementById('screen-detail');
+          const savedY = scr ? scr.scrollTop : 0;
+          await renderDetail(cid);
+          if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+        }
         return;
       }
 
@@ -2744,6 +2749,37 @@
     if (window.kuroI18n && typeof window.kuroI18n.apply === 'function') {
       window.kuroI18n.apply();
     }
+
+    // ── Read Overlay: aç/kapat ─────────────────────────────────────
+    var _readOverlayEl    = document.getElementById('read-overlay');
+    var _readOverlayFrame = document.getElementById('read-overlay-frame');
+    var _readOverlayTitle = document.getElementById('read-overlay-title');
+    var _readOverlayExt   = document.getElementById('read-overlay-external');
+    var _readOverlayClose = document.getElementById('read-overlay-close');
+
+    function openReadOverlay(url, label) {
+      if (!_readOverlayEl) return;
+      if (_readOverlayTitle) _readOverlayTitle.textContent = label || '';
+      if (_readOverlayExt)   _readOverlayExt.href = url;
+      if (_readOverlayFrame) _readOverlayFrame.src = url;
+      _readOverlayEl.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeReadOverlay() {
+      if (!_readOverlayEl) return;
+      _readOverlayEl.style.display = 'none';
+      document.body.style.overflow = '';
+      if (_readOverlayFrame) _readOverlayFrame.src = '';
+    }
+
+    if (_readOverlayClose) _readOverlayClose.addEventListener('click', closeReadOverlay);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && _readOverlayEl && _readOverlayEl.style.display === 'flex') {
+        closeReadOverlay();
+      }
+    });
   });
 
 })();
