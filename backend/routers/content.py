@@ -84,7 +84,7 @@ def _serialize(c: Content) -> dict:
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
         "sites": [
             {"id": s.id, "site_name": s.site_name, "site_url": s.site_url,
-             "is_primary": s.is_primary, "latest_known_ep": s.latest_known_ep}
+             "is_primary": s.is_primary, "latest_known_ep": s.latest_known_ep, "is_dead": s.is_dead}
             for s in (c.sites or [])
         ],
         "tags": [

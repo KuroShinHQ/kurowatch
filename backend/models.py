@@ -44,12 +44,13 @@ class Content(Base):
 class Site(Base):
     __tablename__ = "site"
 
-    id:             Mapped[int]           = mapped_column(Integer, primary_key=True, autoincrement=True)
-    content_id:     Mapped[int]           = mapped_column(Integer, ForeignKey("content.id"), nullable=False)
-    site_name:      Mapped[str]           = mapped_column(String(200), nullable=False)
-    site_url:       Mapped[str]           = mapped_column(Text,        nullable=False)
-    is_primary:     Mapped[bool]          = mapped_column(Boolean, nullable=False, default=False)
-    latest_known_ep:Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+    id:             Mapped[int]            = mapped_column(Integer, primary_key=True, autoincrement=True)
+    content_id:     Mapped[int]            = mapped_column(Integer, ForeignKey("content.id"), nullable=False)
+    site_name:      Mapped[str]            = mapped_column(String(200), nullable=False)
+    site_url:       Mapped[str]            = mapped_column(Text,        nullable=False)
+    is_primary:     Mapped[bool]           = mapped_column(Boolean, nullable=False, default=False)
+    latest_known_ep:Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)
+    is_dead:        Mapped[Optional[bool]] = mapped_column(Boolean, nullable=True, default=None)
 
     content: Mapped["Content"] = relationship("Content", back_populates="sites")
 

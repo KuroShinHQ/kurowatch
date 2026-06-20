@@ -1930,7 +1930,7 @@
             '<div class="flex items-center gap-3 min-w-0">' +
             '<div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold flex-shrink-0">' + abbr + '</div>' +
             '<div class="flex flex-col min-w-0">' +
-            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + (s.latest_known_ep != null ? ' <span style="color:#9090b0;font-weight:normal;font-size:12px;">[' + s.latest_known_ep + ']</span>' : '') + '</span>' +
+            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + (s.latest_known_ep != null ? ' <span style="color:#9090b0;font-weight:normal;font-size:12px;">[' + s.latest_known_ep + ']</span>' : '') + (s.is_dead ? ' <span style="color:#ffb4ab;font-size:11px;font-weight:700;">⚠️ Ölü</span>' : '') + '</span>' +
             (s.is_primary ? '<span class="text-[10px] text-[#00d4ff]">Ana Site</span>' : '') +
             '</div></div>' +
             '<div class="flex items-center gap-2 flex-shrink-0">' +

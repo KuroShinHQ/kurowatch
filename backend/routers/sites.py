@@ -35,7 +35,31 @@ async def add_site(content_id: int, body: SiteCreate, db: AsyncSession = Depends
     await db.commit()
     await db.refresh(site)
     return {"id": site.id, "site_name": site.site_name, "site_url": site.site_url,
-            "is_primary": site.is_primary, "latest_known_ep": site.latest_known_ep}
+            "is_primary": site.is_primary, "latest_known_ep": site.latest_known_ep, "is_dead": site.is_dead}
+
+
+@router.patch("/sites/{site_id}/mark-dead")
+async def mark_site_dead(site_id: int, db: AsyncSession = Depends(get_db)):
+    """Audit scripti tarafından çağrılır — site'ı ölü olarak işaretle."""
+    r = await db.execute(select(Site).where(Site.id == site_id))
+    site = r.scalar_one_or_none()
+    if not site:
+        raise HTTPException(404, "Site bulunamadı")
+    site.is_dead = True
+    await db.commit()
+    return {"id": site_id, "is_dead": True}
+
+
+@router.patch("/sites/{site_id}/mark-alive")
+async def mark_site_alive(site_id: int, db: AsyncSession = Depends(get_db)):
+    """Audit scripti tarafından çağrılır — site'ı canlı olarak işaretle."""
+    r = await db.execute(select(Site).where(Site.id == site_id))
+    site = r.scalar_one_or_none()
+    if not site:
+        raise HTTPException(404, "Site bulunamadı")
+    site.is_dead = False
+    await db.commit()
+    return {"id": site_id, "is_dead": False}
 
 
 @router.delete("/sites/{site_id}", status_code=204)

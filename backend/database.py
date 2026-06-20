@@ -35,6 +35,11 @@ async def init_db():
             await conn.execute(text("ALTER TABLE episode ADD COLUMN season INTEGER NOT NULL DEFAULT 1"))
         except Exception:
             pass
+        # Migration: site.is_dead kolonu
+        try:
+            await conn.execute(text("ALTER TABLE site ADD COLUMN is_dead INTEGER"))
+        except Exception:
+            pass
         # Migration: FAZ-4 intro_timestamp tablosu (create_all ile zaten oluşur, sadece safeguard)
         try:
             await conn.execute(text(
