@@ -510,6 +510,7 @@
     // Rating yıldızları (interaktif — tıklanınca PATCH ile kaydet)
     let currentScore = item.my_score || 0;
     const ratingEl = document.getElementById('detail-rating-container');
+    const scoreTxt = document.getElementById('detail-score-text');
     function buildStars(highlighted) {
       ratingEl.innerHTML = '';
       for (let i = 1; i <= 10; i++) {
@@ -523,11 +524,13 @@
         span.addEventListener('click', async () => {
           currentScore = i;
           buildStars(i);
+          if (scoreTxt) scoreTxt.textContent = i + ' / 10';
           try { await apiPatch('/api/content/' + id, { my_score: i }); }
           catch (e) { console.error('score save', e); }
         });
         ratingEl.appendChild(span);
       }
+      if (scoreTxt) scoreTxt.textContent = highlighted > 0 ? highlighted + ' / 10' : '— / 10';
     }
     buildStars(currentScore);
 
@@ -536,9 +539,13 @@
     if (item.cover_url) {
       coverEl.style.backgroundImage = 'url(' + item.cover_url + ')';
       coverEl.style.backgroundColor = '';
+      coverEl.innerHTML = '';
     } else {
       coverEl.style.backgroundImage = '';
       coverEl.style.backgroundColor = '#16213e';
+      // Initials fallback
+      const initials = item.title.split(' ').slice(0, 2).map(function(w) { return w[0] || ''; }).join('').toUpperCase();
+      coverEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;font-weight:900;color:#31324d;letter-spacing:-2px">' + initials + '</div>';
     }
 
     // Cover upload
@@ -799,6 +806,110 @@
     } else if (_synShown && synSec) {
       synSec.style.display = 'flex';
     }
+
+    // ── Edit butonu bağla ─────────────────────────────────────────
+    const editBtn = document.getElementById('detail-edit-btn');
+    if (editBtn) {
+      editBtn.onclick = function() { openEditModal(item); };
+    }
+  }
+
+  // ── Edit Modal ───────────────────────────────────────────────────
+  function openEditModal(item) {
+    const modal = document.getElementById('modal-edit');
+    if (!modal) return;
+
+    // Form doldur
+    const titleInput = document.getElementById('edit-form-title');
+    if (titleInput) titleInput.value = item.title || '';
+
+    const statusSel = document.getElementById('edit-form-status');
+    if (statusSel) statusSel.value = item.status || 'watching';
+
+    const scoreSlider = document.getElementById('edit-form-score');
+    const scoreDisp   = document.getElementById('edit-score-display');
+    const sc = item.my_score || 0;
+    if (scoreSlider) scoreSlider.value = sc;
+    if (scoreDisp) scoreDisp.innerHTML = (sc > 0 ? sc : '—') + ' <span class="text-[#9090b0] text-[11px]">/ 10</span>';
+
+    const noteArea = document.getElementById('edit-form-note');
+    if (noteArea) noteArea.value = item.note_text || '';
+
+    // Tip butonları
+    document.querySelectorAll('.edit-type-btn').forEach(function(btn) {
+      const isActive = btn.dataset.editType === item.type;
+      btn.className = btn.className.replace(/bg-\[#1a2123\]|text-\[#00d4ff\]|border\s+border-\[#3c494e\]\/50|text-\[#9090b0\]/g, '').trim();
+      if (isActive) {
+        btn.style.background = '#1a2123';
+        btn.style.color = '#00d4ff';
+        btn.style.border = '1px solid rgba(60,73,78,0.5)';
+      } else {
+        btn.style.background = '';
+        btn.style.color = '#9090b0';
+        btn.style.border = '';
+      }
+    });
+
+    // Kaydet
+    const saveBtn = document.getElementById('edit-save-btn');
+    if (saveBtn) {
+      saveBtn.onclick = async function() {
+        const btn = this;
+        btn.disabled = true;
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<span class="material-symbols-outlined" style="animation:spin .8s linear infinite">progress_activity</span>';
+        try {
+          const scoreVal = parseInt(document.getElementById('edit-form-score').value, 10);
+          const patchBody = {
+            title:     (document.getElementById('edit-form-title').value || '').trim(),
+            status:    document.getElementById('edit-form-status').value,
+            note_text: document.getElementById('edit-form-note').value,
+          };
+          if (scoreVal > 0) patchBody.my_score = scoreVal;
+          await apiPatch('/api/content/' + item.id, patchBody);
+          closeModal('modal-edit');
+          await renderDetail(item.id);
+          renderHome();
+          showToast('Kaydedildi', 'success');
+        } catch (e) {
+          showToast('Kaydedilemedi: ' + e.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      };
+    }
+
+    // Sil
+    const delBtn = document.getElementById('edit-delete-btn');
+    if (delBtn) {
+      delBtn.onclick = async function() {
+        if (!confirm('"' + item.title + '"\n\nBu içeriği kütüphaneden silmek istiyor musun?')) return;
+        try {
+          await apiDelete('/api/content/' + item.id);
+          closeModal('modal-edit');
+          showScreen('screen-home');
+          renderHome();
+          showToast('"' + item.title + '" silindi', 'success');
+        } catch (e) {
+          showToast('Silinemedi: ' + e.message, 'error');
+        }
+      };
+    }
+
+    // Tip butonu onclick
+    document.querySelectorAll('.edit-type-btn').forEach(function(btn) {
+      btn.onclick = function() {
+        document.querySelectorAll('.edit-type-btn').forEach(function(b) {
+          b.style.background = ''; b.style.color = '#9090b0'; b.style.border = '';
+        });
+        this.style.background = '#1a2123';
+        this.style.color = '#00d4ff';
+        this.style.border = '1px solid rgba(60,73,78,0.5)';
+      };
+    });
+
+    openModal('modal-edit');
   }
 
   // ── Render: Updates ──────────────────────────────────────────────

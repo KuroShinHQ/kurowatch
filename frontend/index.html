@@ -212,7 +212,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
   <button class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]" data-nav="screen-home">
     <span class="material-symbols-outlined">arrow_back</span>
   </button>
-  <button class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]">
+  <button id="detail-edit-btn" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]">
     <span class="material-symbols-outlined">edit</span>
   </button>
 </div>
@@ -234,17 +234,20 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <div class="flex-1 flex flex-col -mt-4 bg-[#0d0d1a] z-20 rounded-t-[24px] inner-glow">
 <div class="p-gutter flex flex-col gap-4">
   <!-- Rating -->
-  <div class="flex items-center gap-1 justify-center py-2" id="detail-rating-container">
-    <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+  <div class="flex flex-col items-center gap-1 py-2">
+    <div class="flex items-center gap-1" id="detail-rating-container">
+      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+    </div>
+    <span id="detail-score-text" class="text-[13px] font-bold text-[#9090b0]">— / 10</span>
   </div>
   <!-- Progress -->
   <div class="bg-[#16213e] rounded-xl p-4 inner-glow border border-white/5 flex flex-col gap-3">
@@ -775,6 +778,80 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- MODAL: ADD — İçerik Ekle (Bottom Sheet)                        -->
 <!-- ════════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: EDIT — İçerik Düzenle / Sil                              -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div id="modal-edit" class="modal-overlay hidden fixed inset-0 z-[100]">
+  <div class="absolute inset-0 bg-black/75 backdrop-blur-[4px]" data-modal-close="modal-edit"></div>
+  <div class="fixed bottom-0 left-0 w-full z-[101] flex flex-col items-center" style="height:80vh;">
+    <div class="w-full flex justify-center py-3 bg-[#1a2123] rounded-t-xl border border-white/7 border-b-0 cursor-grab min-h-[44px] items-center">
+      <div class="w-12 h-1.5 bg-[#3c494e] rounded-full"></div>
+    </div>
+    <div class="w-full h-full bg-[#1a2123] flex flex-col px-4 pb-safe overflow-hidden">
+      <!-- Header -->
+      <div class="flex justify-between items-center py-4 flex-shrink-0">
+        <h2 class="text-[20px] font-bold text-[#dde3e7]">Düzenle</h2>
+        <button class="w-11 h-11 flex items-center justify-center text-[#9090b0] hover:bg-[#2f3639] rounded-full transition-colors" data-modal-close="modal-edit">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+      <!-- Form -->
+      <div class="flex-1 overflow-y-auto flex flex-col gap-5 pb-4 pr-1">
+        <div><label class="block text-[13px] font-semibold text-[#9090b0] mb-1">Başlık</label>
+          <input id="edit-form-title" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="Başlık"/></div>
+        <div>
+          <label class="block text-[13px] font-semibold text-[#9090b0] mb-1">Tür</label>
+          <div class="flex bg-[#242b2e] rounded-lg p-1 border border-[#3c494e] min-h-[44px]" id="edit-type-group">
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="anime">🎬 Anime</button>
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="manga">📖 Manga</button>
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="manhwa">📱 Manhwa</button>
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="game">🎮 Oyun</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="block text-[13px] font-semibold text-[#9090b0] mb-1">Durum</label>
+            <div class="relative">
+              <select id="edit-form-status" class="w-full h-[44px] px-3 appearance-none bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50">
+                <option value="watching">İzliyor</option>
+                <option value="completed">Tamamlandı</option>
+                <option value="planning">Planlanıyor</option>
+                <option value="on_hold">Bırakıldı</option>
+                <option value="dropped">Düşürüldü</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[#9090b0] pointer-events-none">expand_more</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between items-baseline mb-1">
+              <label class="text-[13px] font-semibold text-[#9090b0]">Puan</label>
+              <span id="edit-score-display" class="text-[13px] font-bold text-[#00d4ff]">— <span class="text-[#9090b0] text-[11px]">/ 10</span></span>
+            </div>
+            <input id="edit-form-score" type="range" min="0" max="10" step="1" value="0"
+              class="w-full h-[44px]"
+              oninput="document.getElementById('edit-score-display').innerHTML = (this.value>0?this.value:'—') + ' <span class=\\'text-[#9090b0] text-[11px]\\'>/ 10</span>'"/>
+          </div>
+        </div>
+        <div><label class="block text-[13px] font-semibold text-[#9090b0] mb-1">Notlar</label>
+          <textarea id="edit-form-note" class="w-full p-3 bg-[#1a1a2e] min-h-[72px] border border-[#3c494e] rounded-lg text-[14px] text-[#dde3e7] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50 resize-none" placeholder="Notlar..." rows="3"></textarea>
+        </div>
+        <!-- Tehlikeli Bölge -->
+        <div class="border border-red-500/20 rounded-xl p-4 bg-red-500/5">
+          <p class="text-[12px] text-[#9090b0] mb-3">Bu içeriği kalıcı olarak kütüphanenden kaldır.</p>
+          <button id="edit-delete-btn" class="w-full h-[40px] border border-red-500/50 text-red-400 rounded-lg text-[13px] font-bold hover:bg-red-500/10 transition-colors flex items-center justify-center gap-2 active:scale-[0.97]">
+            <span class="material-symbols-outlined text-[16px]">delete</span> Kütüphaneden Sil
+          </button>
+        </div>
+      </div>
+      <!-- Kaydet Butonu -->
+      <div class="pt-3 mt-auto border-t border-[#3c494e]/30 pb-2">
+        <button id="edit-save-btn" class="w-full h-[44px] bg-[#00d4ff] text-[#003642] font-bold text-[16px] rounded-lg transition-all active:scale-[0.97] flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,212,255,0.2)]">
+          <span class="material-symbols-outlined">save</span> Kaydet
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="modal-add" class="modal-overlay hidden fixed inset-0 z-[100]">
   <div class="absolute inset-0 bg-black/75 backdrop-blur-[4px]" data-modal-close="modal-add"></div>
   <div data-swipe-sheet class="fixed bottom-0 left-0 w-full z-[101] flex flex-col items-center" style="height:85vh;">
