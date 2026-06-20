@@ -543,40 +543,53 @@
     let currentScore = item.my_score || 0;
     const ratingEl = document.getElementById('detail-rating-container');
     const scoreTxt = document.getElementById('detail-score-text');
-    function buildStars(highlighted) {
-      ratingEl.innerHTML = '';
-      for (let i = 1; i <= 10; i++) {
-        const span = document.createElement('span');
-        span.className = 'material-symbols-outlined cursor-pointer text-[28px] transition-colors';
-        span.style.color = i <= highlighted ? '#00d4ff' : '#4a4b72';
-        span.style.fontVariationSettings = "'FILL' 1";
-        span.textContent = 'star';
-        span.dataset.star = i;
-        span.addEventListener('pointerover', () => buildStars(i));
-        span.addEventListener('pointerleave', () => buildStars(currentScore));
-        span.addEventListener('click', async () => {
-          currentScore = i;
-          buildStars(i);
-          if (scoreTxt) scoreTxt.textContent = i + ' / 10';
-          try { await apiPatch('/api/content/' + id, { my_score: i }); }
-          catch (e) { console.error('score save', e); }
-        });
-        ratingEl.appendChild(span);
-      }
-      if (scoreTxt) scoreTxt.textContent = highlighted > 0 ? highlighted + ' / 10' : '— / 10';
+    function highlightStars(n) {
+      Array.from(ratingEl.querySelectorAll('[data-star]')).forEach(function(s) {
+        s.style.color = parseInt(s.dataset.star, 10) <= n ? '#00d4ff' : '#4a4b72';
+      });
+      if (scoreTxt) scoreTxt.textContent = n > 0 ? n + ' / 10' : '— / 10';
     }
-    buildStars(currentScore);
+    ratingEl.innerHTML = '';
+    for (let i = 1; i <= 10; i++) {
+      const span = document.createElement('span');
+      span.className = 'material-symbols-outlined cursor-pointer text-[28px] transition-colors';
+      span.style.color = i <= currentScore ? '#00d4ff' : '#4a4b72';
+      span.style.fontVariationSettings = "'FILL' 1";
+      span.textContent = 'star';
+      span.dataset.star = String(i);
+      ratingEl.appendChild(span);
+    }
+    ratingEl.addEventListener('pointerover', function(e) {
+      const s = e.target.closest('[data-star]');
+      if (s) highlightStars(parseInt(s.dataset.star, 10));
+    });
+    ratingEl.addEventListener('pointerleave', function() { highlightStars(currentScore); });
+    ratingEl.addEventListener('click', async function(e) {
+      const s = e.target.closest('[data-star]');
+      if (!s) return;
+      const v = parseInt(s.dataset.star, 10);
+      currentScore = v;
+      highlightStars(v);
+      try { await apiPatch('/api/content/' + id, { my_score: v }); }
+      catch (err) { console.error('score save', err); }
+    });
+    if (scoreTxt) scoreTxt.textContent = currentScore > 0 ? currentScore + ' / 10' : '— / 10';
 
     // Cover bg
     const coverEl = document.getElementById('detail-cover-bg');
     if (item.cover_url) {
       coverEl.style.backgroundImage = 'url(' + item.cover_url + ')';
-      coverEl.style.backgroundColor = '';
+      coverEl.style.backgroundSize = 'auto 100%';
+      coverEl.style.backgroundPosition = 'center center';
+      coverEl.style.backgroundColor = '#0d0d1a';
+      coverEl.style.filter = '';
+      coverEl.style.transform = '';
       coverEl.innerHTML = '';
     } else {
       coverEl.style.backgroundImage = '';
+      coverEl.style.backgroundSize = '';
+      coverEl.style.backgroundPosition = '';
       coverEl.style.backgroundColor = '#16213e';
-      // Initials fallback
       const initials = item.title.split(' ').slice(0, 2).map(function(w) { return w[0] || ''; }).join('').toUpperCase();
       coverEl.innerHTML = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:64px;font-weight:900;color:#31324d;letter-spacing:-2px">' + initials + '</div>';
     }
@@ -594,7 +607,9 @@
           const r = await fetch('/api/content/' + id + '/cover', { method: 'POST', body: fd });
           const d = await r.json();
           coverEl.style.backgroundImage = 'url(' + d.cover_url + '?' + Date.now() + ')';
-          coverEl.style.backgroundColor = '';
+          coverEl.style.backgroundSize = 'auto 100%';
+          coverEl.style.backgroundPosition = 'center center';
+          coverEl.style.backgroundColor = '#0d0d1a';
           renderHome();
         } catch (err) { showToast('Cover yüklenemedi: ' + err.message, 'error'); }
       };
@@ -1878,6 +1893,8 @@
         await apiPost('/api/content/' + cid + '/sites', { site_name: name, site_url: url, is_primary: primaryEl ? primaryEl.checked : false });
         const updated = await apiGet('/api/content/' + cid);
         renderDetailSites(el, updated.sites || [], cid);
+        const epsTabEl = document.getElementById('detail-tab-episodes');
+        if (epsTabEl) renderDetailEpisodes(epsTabEl, updated.episodes || [], cid, updated.type, updated.title, updated.sites || [], updated.my_progress || 0);
         showToast('Site eklendi', 'success');
       } catch(e) { showToast('Eklenemedi: ' + e.message, 'error'); }
     });
@@ -1890,6 +1907,8 @@
           await apiDelete('/api/sites/' + sid);
           const updated = await apiGet('/api/content/' + cid);
           renderDetailSites(el, updated.sites || [], cid);
+          const epsTabEl = document.getElementById('detail-tab-episodes');
+          if (epsTabEl) renderDetailEpisodes(epsTabEl, updated.episodes || [], cid, updated.type, updated.title, updated.sites || [], updated.my_progress || 0);
         } catch(e) { showToast('Site silinemedi', 'error'); }
       });
     });
