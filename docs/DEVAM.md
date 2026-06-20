@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 20 Haziran 2026 (sohbet-49) · **Aktif sürüm:** v1.0.0 · **Son commit:** `8ea16a7`
+**Son güncelleme:** 20 Haziran 2026 (sohbet-49b) · **Aktif sürüm:** v1.0.0 · **Son commit:** `bb86c08`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -24,7 +24,23 @@ SOHBET-49 YAPILANLARI:
      - Geçiş: bir kere Ctrl+Shift+R (sonraki restart'lardan itibaren F5 yeterli)
 
 AKTİF ÇALIŞMA: Sistematik bug testi (TEST_PLAN.md)
-  - Sonraki: T-02 nav geçişleri, T-06 detail açılış
+  PASS: T-01 ✅ T-02 ✅ T-03 ✅ T-04 ✅ T-05 ✅
+  T-06 ❌ — 3 bug bulundu, YENİ SOHBETTE FİX:
+
+  BUG-T06-A: Hero cover blur/kalite düşüyor
+    Fix: frontend/app.js renderDetail() hero section — blur azalt, object-fit düzenle
+
+  BUG-T06-B: Star rating hover yanlış (tıklamadan yükseliyor)
+    Fix: frontend/app.js + index.html — star CSS hover logic
+
+  BUG-T06-C: "İzle için site ekle" mesajı site olmasına rağmen çıkıyor
+    Fix: frontend/app.js renderDetail() site kontrol → sites array doğru oku
+
+  SONRAKI: T-06 bugları fix et → T-07'ye geç
+
+  GELECEK FAZ (ayrı sohbet):
+  - Tinder-swipe nav ikonu: medya seç → kart sağ/sol/yukarı/aşağı kaydır
+  - Swipe kartında hızlı sezon/bölüm slider (nerede kaldığını kaydet)
 
 BAŞLATMA:
   Bat [10] → [1] (chancellor yöntemi) — restart sonrası F5 yeterli
