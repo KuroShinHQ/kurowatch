@@ -162,27 +162,39 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
         detail = await anilist.get_detail(ext)
         if not detail:
             raise HTTPException(502, "AniList'ten veri alınamadı")
-        streaming = detail.get("streaming_episodes", [])
-        if streaming:
-            for se in streaming:
-                m = re.search(r'Episode\s+(\d+)', se.get("title", ""), re.IGNORECASE)
-                num = int(m.group(1)) if m else None
-                if num is None:
-                    continue
-                ep_url = se.get("url") or _derive_ep_url(site_base_url, site_current_ep, num) if site_current_ep else se.get("url")
-                if num not in existing_numbers:
-                    new_episodes.append(Episode(
-                        content_id=content_id, season=season, number=num,
-                        title=se.get("title") or None,
-                        url=ep_url or None,
-                        is_watched=False, is_new=False,
-                    ))
-                    existing_numbers.add(num)
-                elif not existing_eps[num].url and ep_url:
-                    existing_eps[num].url = ep_url
-            # Mevcut URL-siz episodları da güncelle (sonraki blokta)
-        else:
-            total = detail.get("total_episodes") or (c.total_episodes or 0)
+        # Streaming URL map — sadece URL bilgisi için, bölüm SAYISI için DEĞİL
+        # AniList streamingEpisodes eksik veri içerebilir (bazı animeler için 1-2 bölüm)
+        streaming_url_map: dict[int, str] = {}
+        for se in (detail.get("streaming_episodes") or []):
+            m_s = re.search(r'Episode\s+(\d+)', se.get("title", ""), re.IGNORECASE)
+            if m_s:
+                n_s = int(m_s.group(1))
+                u_s = se.get("url") or (_derive_ep_url(site_base_url, site_current_ep, n_s) if site_current_ep else None)
+                if u_s:
+                    streaming_url_map[n_s] = u_s
+        # Bölüm sayısı her zaman total_episodes'tan (streaming count DEĞİL)
+        total = detail.get("total_episodes") or (c.total_episodes or 0)
+        if not total and streaming_url_map:
+            total = max(streaming_url_map.keys())
+        # Bölümleri oluştur (URL: site türetme > streaming — kullanıcının sitesi her zaman öncelikli)
+        for i in range(1, int(total) + 1):
+            site_ep_url = _derive_ep_url(site_base_url, site_current_ep, i) if site_current_ep else None
+            fallback_url = streaming_url_map.get(i)
+            ep_url = site_ep_url or fallback_url
+            if i not in existing_numbers:
+                new_episodes.append(Episode(
+                    content_id=content_id, season=season, number=i,
+                    url=ep_url or None,
+                    is_watched=False, is_new=False,
+                ))
+                existing_numbers.add(i)
+            else:
+                # Site URL varsa her zaman güncelle (streaming URL'nin üzerine yaz)
+                if site_ep_url:
+                    existing_eps[i].url = site_ep_url
+                elif not existing_eps[i].url and fallback_url:
+                    existing_eps[i].url = fallback_url
+        total = 0  # alt döngünün tekrar çalışmasını önle
 
     else:
         # AniList manga/manhwa sync

@@ -1355,6 +1355,18 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
 
+<!-- ── Floating Download Progress Indicator ──────────────────── -->
+<div id="download-float" style="display:none;position:fixed;bottom:80px;right:12px;z-index:8500;background:#1a1b2e;border:1px solid #00d4ff33;border-radius:12px;padding:10px 14px;min-width:220px;max-width:calc(100vw - 24px);box-shadow:0 4px 24px #00000080">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+    <span id="download-float-icon" class="material-symbols-outlined" style="font-size:18px;color:#00d4ff">downloading</span>
+    <span id="download-float-label" style="font-size:12px;font-weight:700;color:#e1e0ff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">İndiriliyor...</span>
+    <span id="download-float-pct" style="font-size:11px;font-weight:700;color:#00d4ff;min-width:28px;text-align:right">0%</span>
+  </div>
+  <div style="height:3px;background:#31324d;border-radius:2px;overflow:hidden">
+    <div id="download-float-bar" style="height:100%;background:#00d4ff;border-radius:2px;width:0%;transition:width .4s ease"></div>
+  </div>
+</div>
+
 <!-- ── Read Overlay (iframe tam ekran) ─────────────────────────── -->
 <div id="read-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:#000;flex-direction:column">
   <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:#0d0d1acc;border-bottom:1px solid #ffffff1a;flex-shrink:0">

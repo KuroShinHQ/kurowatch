@@ -54,8 +54,11 @@ async def download_anime(
     )
 
     last_pct = 0
+    output_lines: list[str] = []
     async for raw in proc.stdout:
         line = raw.decode("utf-8", errors="ignore").strip()
+        if line:
+            output_lines.append(line)
         m = re.search(r"(\d+\.?\d*)%", line)
         if m and on_progress:
             pct = min(99, int(float(m.group(1))))
@@ -65,7 +68,8 @@ async def download_anime(
 
     await proc.wait()
     if proc.returncode != 0:
-        raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}")
+        err_tail = " | ".join(output_lines[-3:]) if output_lines else ""
+        raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}" + (f": {err_tail}" if err_tail else ""))
 
     # Uzantı yt-dlp tarafından eklendi — bul
     for ext in ("mp4", "mkv", "webm", "avi"):
