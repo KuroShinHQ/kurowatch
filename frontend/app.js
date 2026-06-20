@@ -7,7 +7,7 @@
   'use strict';
 
   // ── Konfigürasyon ─────────────────────────────────────────────────
-  const API_BASE = 'http://localhost:8099';
+  const API_BASE = window.location.origin;
   let USE_MOCK = false; // backend :8099 bağlı
 
   // ── Mock Data ─────────────────────────────────────────────────────
@@ -990,7 +990,17 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Kontrol ediliyor...';
     try {
-      const res = await apiPost('/api/check-updates', {});
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 30000);
+      const r = await fetch(API_BASE + '/api/check-updates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+        signal: ctrl.signal,
+      });
+      clearTimeout(timer);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const res = await r.json();
       const msg = res.new_updates > 0
         ? res.new_updates + ' yeni güncelleme bulundu!'
         : 'Yeni güncelleme yok';
@@ -1247,8 +1257,12 @@
 
     // MAL kaydet butonu
     const malSecret = document.getElementById('settings-mal-client-secret');
+    const malSecretBadge = document.getElementById('settings-mal-secret-badge');
     if (cfg.mal_client_secret) {
       if (malSecret) malSecret.placeholder = '••••••••••••••••••••••••••••••••';
+      if (malSecretBadge) malSecretBadge.classList.remove('hidden');
+    } else {
+      if (malSecretBadge) malSecretBadge.classList.add('hidden');
     }
     const malSaveBtn = document.getElementById('settings-mal-save');
     if (malSaveBtn) {
@@ -1267,20 +1281,41 @@
     const verEl = document.getElementById('settings-version');
     if (verEl) verEl.textContent = 'v0.3.0 — Medya Takip Uygulaması';
 
+    // Uygulamayı Güncelle butonu
+    const updateBtn = document.getElementById('settings-update-btn');
+    if (updateBtn) {
+      updateBtn.onclick = async function() {
+        this.disabled = true;
+        this.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span> Kontrol...';
+        try {
+          if ('serviceWorker' in navigator) {
+            const reg = await navigator.serviceWorker.getRegistration();
+            if (reg) await reg.update();
+          }
+          location.reload();
+        } catch(e) {
+          location.reload();
+        }
+      };
+    }
+
     // Türleri AniList'ten Güncelle butonu
     const genresPatchBtn = document.getElementById('settings-genres-patch-btn');
     if (genresPatchBtn) {
       genresPatchBtn.onclick = async function() {
-        const icon = this.querySelector('.material-symbols-outlined');
+        if (this.disabled) return;
+        this.disabled = true;
         const orig = this.querySelector('span.text-\\[\\#e1e0ff\\]');
+        const origText = orig ? orig.textContent : '';
         if (orig) orig.textContent = 'Güncelleniyor...';
         try {
           const res = await apiPost('/api/genres/patch-all', {});
           showToast(res.patched + ' içeriğe tür eklendi', res.patched > 0 ? 'success' : 'info');
-          if (orig) orig.textContent = 'Türleri AniList\'ten Güncelle';
         } catch (e) {
           showToast('Hata: ' + e.message, 'error');
-          if (orig) orig.textContent = 'Türleri AniList\'ten Güncelle';
+        } finally {
+          this.disabled = false;
+          if (orig) orig.textContent = origText || 'Türleri AniList\'ten Güncelle';
         }
       };
     }
