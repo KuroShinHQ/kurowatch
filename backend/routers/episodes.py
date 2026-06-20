@@ -2,7 +2,8 @@ import asyncio
 import re
 from datetime import datetime
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -93,8 +94,13 @@ async def list_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
     ]
 
 
+class EpisodeSyncBody(BaseModel):
+    season: int = 1
+    anilist_override_id: Optional[str] = None
+
+
 @router.post("/content/{content_id}/episodes/sync")
-async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
+async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=EpisodeSyncBody()), db: AsyncSession = Depends(get_db)):
     """Harici kaynaktan bölüm listesini çek, yeni olanları DB'ye kaydet."""
     result = await db.execute(
         select(Content)
@@ -116,11 +122,14 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
     site_base_url = primary_site.site_url if primary_site else None
     site_current_ep = _extract_ep_from_url(site_base_url) if site_base_url else None
 
-    existing_q = await db.execute(select(Episode).where(Episode.content_id == content_id))
+    season = body.season if body else 1
+    existing_q = await db.execute(
+        select(Episode).where(Episode.content_id == content_id, Episode.season == season)
+    )
     existing_eps = {e.number: e for e in existing_q.scalars().all()}
     existing_numbers = set(existing_eps.keys())
 
-    ext = c.external_id or ""
+    ext = (body.anilist_override_id if body and body.anilist_override_id else None) or c.external_id or ""
     new_episodes: list[Episode] = []
     total = 0
 
@@ -132,7 +141,7 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
             ep_url = f"https://mangadex.org/chapter/{ch_uuid}"
             if ch_num not in existing_numbers:
                 new_episodes.append(Episode(
-                    content_id=content_id, number=ch_num,
+                    content_id=content_id, season=season, number=ch_num,
                     url=ep_url, is_watched=False, is_new=False,
                 ))
                 existing_numbers.add(ch_num)
@@ -163,7 +172,7 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
                 ep_url = se.get("url") or _derive_ep_url(site_base_url, site_current_ep, num) if site_current_ep else se.get("url")
                 if num not in existing_numbers:
                     new_episodes.append(Episode(
-                        content_id=content_id, number=num,
+                        content_id=content_id, season=season, number=num,
                         title=se.get("title") or None,
                         url=ep_url or None,
                         is_watched=False, is_new=False,
@@ -188,7 +197,7 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
             derived_url = _derive_ep_url(site_base_url, site_current_ep, i) if site_current_ep else None
             if i not in existing_numbers:
                 new_episodes.append(Episode(
-                    content_id=content_id, number=i,
+                    content_id=content_id, season=season, number=i,
                     url=derived_url,
                     is_watched=False, is_new=False,
                 ))
@@ -201,13 +210,15 @@ async def sync_episodes(content_id: int, db: AsyncSession = Depends(get_db)):
     await db.commit()
 
     eps_q = await db.execute(
-        select(Episode).where(Episode.content_id == content_id).order_by(Episode.number)
+        select(Episode).where(Episode.content_id == content_id).order_by(Episode.season, Episode.number)
     )
     eps = eps_q.scalars().all()
     return {
         "synced": len(new_episodes),
+        "season": season,
         "episodes": [
-            {"id": e.id, "number": e.number, "title": e.title, "url": e.url,
+            {"id": e.id, "season": getattr(e, "season", 1) or 1,
+             "number": e.number, "title": e.title, "url": e.url,
              "is_watched": e.is_watched, "is_new": e.is_new,
              "watched_at": e.watched_at.isoformat() if e.watched_at else None}
             for e in eps

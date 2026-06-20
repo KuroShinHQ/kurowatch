@@ -151,11 +151,12 @@ async def get_content(content_id: int, db: AsyncSession = Depends(get_db)):
         raise HTTPException(404, "Bulunamadı")
     d = _serialize(c)
     d["episodes"] = [
-        {"id": e.id, "number": e.number, "title": e.title,
+        {"id": e.id, "season": getattr(e, "season", 1) or 1,
+         "number": e.number, "title": e.title,
          "url": e.url, "is_watched": e.is_watched,
          "watched_at": e.watched_at.isoformat() if e.watched_at else None,
          "is_new": e.is_new}
-        for e in sorted(c.episodes, key=lambda e: e.number)
+        for e in sorted(c.episodes, key=lambda e: (getattr(e, "season", 1) or 1, e.number))
     ]
     return d
 

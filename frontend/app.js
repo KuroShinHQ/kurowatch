@@ -1602,44 +1602,128 @@
     const isAnime = contentType === 'anime';
     const readLabel = isAnime ? 'İzle' : 'Oku';
     const readIcon  = isAnime ? 'play_circle' : 'menu_book';
-    const syncLabel = isAnime ? 'AniList\'ten Bölümleri Yükle' : 'Bölümleri Yükle';
+    const syncLabel = isAnime ? 'AniList\'ten Yükle' : 'Bölümleri Yükle';
 
-    const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
-    const nextEp = (myProgress > 0 && episodes.length >= myProgress) ? episodes[myProgress - 1] : null;
-    const targetUrl = (nextEp && nextEp.url) ? nextEp.url : (primarySite ? primarySite.site_url : null);
-    const targetLabel = (nextEp && nextEp.url)
-      ? readLabel + ' — Bölüm ' + myProgress
-      : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
-    const siteShortcut = targetUrl
-      ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
-        'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
-        'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
-        '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-        targetLabel + '</a>'
-      : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-3" ' +
-        'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
-        '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
-        readLabel + ' için site ekle → Siteler sekmesi</button>';
+    // ── Sezon yönetimi ──
+    const allSeasons = episodes.length
+      ? [...new Set(episodes.map(function(e) { return e.season || 1; }))].sort(function(a,b){return a-b;})
+      : [1];
+    let activeSeason = allSeasons[allSeasons.length - 1]; // son sezon varsayılan
 
-    const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-3" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '">' +
-      '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> ' + syncLabel + '</button>';
+    function _buildEpisodeView() {
+      const seasonEps = episodes.filter(function(e) { return (e.season || 1) === activeSeason; });
 
-    if (!episodes.length) {
-      el.innerHTML = siteShortcut + syncBtnHtml +
-        '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px">' +
-        '<span class="material-symbols-outlined" style="font-size:40px">video_library</span>' +
-        '<p>Bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
-      el.querySelector('.ep-anilist-sync-btn').addEventListener('click', syncEpisodesFromAniList);
+      const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
+      const nextEp = (myProgress > 0 && seasonEps.length >= myProgress) ? seasonEps[myProgress - 1] : null;
+      const targetUrl = (nextEp && nextEp.url) ? nextEp.url : (primarySite && primarySite.site_url ? primarySite.site_url : null);
+      const targetLabel = (nextEp && nextEp.url)
+        ? readLabel + ' — Bölüm ' + myProgress
+        : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
+      const siteShortcut = targetUrl
+        ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
+          'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+          'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
+          '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
+          targetLabel + '</a>'
+        : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+          'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
+          '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
+          readLabel + ' için site ekle → Siteler sekmesi</button>';
+
+      // ── Sezon seçici ──
+      const seasonPickerHtml = allSeasons.length > 1
+        ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">' +
+          allSeasons.map(function(s) {
+            const active = s === activeSeason;
+            return '<button class="ep-season-btn" data-season="' + s + '" style="' +
+              'padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;' +
+              'background:' + (active ? '#00d4ff' : '#31324d') + ';' +
+              'color:' + (active ? '#0d0d1a' : '#9090b0') + ';' +
+              'border:1px solid ' + (active ? '#00d4ff' : 'rgba(255,255,255,0.1)') + '">Sezon ' + s + '</button>';
+          }).join('') +
+          '<button class="ep-add-season-btn" style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:#31324d;color:#00d4ff;border:1px solid #00d4ff4d">+ Sezon Ekle</button>' +
+          '</div>'
+        : '<div style="display:flex;justify-content:flex-end;margin-bottom:6px">' +
+          '<button class="ep-add-season-btn" style="font-size:11px;color:#9090b0;background:none;border:none;cursor:pointer">+ Sezon Ekle</button></div>';
+
+      const syncBtnHtml = '<button class="ep-anilist-sync-btn flex items-center gap-1 mb-2" style="font-size:12px;color:#9090b0;background:none;border:none;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
+        '<span class="material-symbols-outlined" style="font-size:16px">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>';
+
+      // ── Sezon ekleme formu ──
+      const addSeasonFormHtml = '<div id="ep-add-season-form" style="display:none;flex-direction:column;gap:6px;padding:10px;background:#16213e;border-radius:10px;border:1px solid #00d4ff2a;margin-bottom:8px">' +
+        '<div style="font-size:11px;color:#9090b0;margin-bottom:2px">Yeni sezon yükle (AniList ID ile)</div>' +
+        '<div style="display:flex;gap:6px">' +
+        '<input id="ep-new-season-num" type="number" min="1" value="' + (activeSeason + 1) + '" placeholder="Sezon No" ' +
+        'style="width:80px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:13px;text-align:center;padding:0 8px">' +
+        '<input id="ep-new-anilist-id" type="text" placeholder="AniList ID (opsiyonel)" ' +
+        'style="flex:1;height:36px;background:#0d0d1a;border:1px solid #ffffff1a;border-radius:8px;color:#e1e0ff;font-size:12px;padding:0 8px">' +
+        '<button id="ep-new-season-load" data-content-id="' + contentId + '" ' +
+        'style="height:36px;padding:0 14px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">Yükle</button>' +
+        '</div></div>';
+
+      if (!seasonEps.length) {
+        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +
+          '<div style="text-align:center;color:#9090b0;padding:24px 0;display:flex;flex-direction:column;align-items:center;gap:8px">' +
+          '<span class="material-symbols-outlined" style="font-size:40px">video_library</span>' +
+          '<p>S' + activeSeason + ' bölüm listesi yok — yükle veya üstten siteyi aç</p></div>';
+      } else {
+        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +
+          '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>' +
+          '<div style="text-align:center;color:#9090b0;font-size:12px;padding:8px 0" id="ep-count-label">' +
+          seasonEps.length + ' bölüm (Sezon ' + activeSeason + ')</div>';
+        const list = el.querySelector('#ep-virtual-list');
+        let loaded = 0;
+        let observer = null;
+        function _loadBatch() {
+          const slice = seasonEps.slice(loaded, loaded + 20);
+          if (!slice.length) { if (observer) { observer.disconnect(); observer = null; } return; }
+          const frag = document.createDocumentFragment();
+          slice.forEach(function(e) {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = _epHtml(e);
+            frag.appendChild(wrap.firstElementChild);
+          });
+          list.appendChild(frag);
+          loaded += slice.length;
+          if (loaded < seasonEps.length) {
+            if (observer) observer.disconnect();
+            const sentinel = list.lastElementChild;
+            observer = new IntersectionObserver(function(entries) {
+              if (entries[0].isIntersecting) { observer.disconnect(); observer = null; _loadBatch(); }
+            }, { rootMargin: '200px' });
+            observer.observe(sentinel);
+          }
+        }
+        _loadBatch();
+      }
+
+      // Event listeners
+      el.querySelectorAll('.ep-season-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          activeSeason = parseInt(this.dataset.season, 10);
+          _buildEpisodeView();
+        });
+      });
+      const addSeasonBtn = el.querySelector('.ep-add-season-btn');
+      if (addSeasonBtn) addSeasonBtn.addEventListener('click', function() {
+        const form = document.getElementById('ep-add-season-form');
+        if (form) form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+      });
+      const loadNewSeasonBtn = el.querySelector('#ep-new-season-load');
+      if (loadNewSeasonBtn) loadNewSeasonBtn.addEventListener('click', async function() {
+        const seasonNum = parseInt(document.getElementById('ep-new-season-num').value, 10) || (activeSeason + 1);
+        const anilistId = (document.getElementById('ep-new-anilist-id').value || '').trim() || null;
+        const fakeEvt = { currentTarget: this, target: this };
+        this.dataset.season = String(seasonNum);
+        await syncEpisodesFromAniList(fakeEvt, seasonNum, anilistId);
+      });
+      const syncBtn2 = el.querySelector('.ep-anilist-sync-btn');
+      if (syncBtn2) syncBtn2.addEventListener('click', syncEpisodesFromAniList);
       const goSitesBtn = el.querySelector('.ep-go-sites-btn');
       if (goSitesBtn) goSitesBtn.addEventListener('click', function() { detailSwitchTab('sites'); });
-      return;
     }
 
-    // ── Virtual Scroll kurulumu ───────────────────────────────────
-    const BATCH = 20;
-    let loaded = 0;
-    let observer = null;
-
+    // ── Episode row HTML ───────────────────────────────────────────
     function _epHtml(e) {
       if (e.is_watched) {
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e80;border:1px solid #ffffff0d;opacity:0.5">' +
@@ -1650,6 +1734,8 @@
           '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">check</span></div></div></div>';
       }
       const epUrl = e.url || null;
+      const fallbackUrl = !epUrl && primarySite ? primarySite.site_url : null;
+      const openUrl = epUrl || fallbackUrl;
       const rowBorder = e.is_new ? '1px solid #00d4ff4d' : '1px solid #ffffff0d';
       const numColor  = e.is_new ? '#00d4ff' : '#e1e0ff';
       return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e;border:' + rowBorder + '">' +
@@ -1657,11 +1743,15 @@
         (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
         '</div><div style="display:flex;align-items:center;gap:4px">' +
         (e.is_new ? '<span style="padding:2px 8px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
-        (epUrl ? '<a href="' + escapeHtml(epUrl) + '" target="_blank" rel="noopener" class="ep-open-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" ' +
-          'style="display:flex;align-items:center;gap:4px;padding:6px 12px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;text-decoration:none">' +
-          readLabel + ' <span class="material-symbols-outlined" style="font-size:14px">open_in_new</span></a>' : '') +
-        (epUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;min-height:44px;display:flex;align-items:center;justify-content:center" ' +
-          'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(epUrl) + '" ' +
+        (openUrl
+          ? '<a href="' + escapeHtml(openUrl) + '" target="_blank" rel="noopener"' +
+            (epUrl ? ' class="ep-open-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '"' : '') +
+            ' style="display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;' +
+            (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d80;border:1px solid #ffffff0d;color:#9090b0">' ) +
+            readLabel + ' <span class="material-symbols-outlined" style="font-size:14px">' + (epUrl ? 'open_in_new' : 'public') + '</span></a>'
+          : '') +
+        (openUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;min-height:44px;display:flex;align-items:center;justify-content:center" ' +
+          'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
           '<span class="material-symbols-outlined" style="font-size:18px">download</span></button>' : '') +
         '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" ' +
@@ -1670,66 +1760,44 @@
         '</div></div>';
     }
 
-    function _loadBatch(list) {
-      const slice = episodes.slice(loaded, loaded + BATCH);
-      if (!slice.length) { if (observer) { observer.disconnect(); observer = null; } return; }
-      const frag = document.createDocumentFragment();
-      slice.forEach(function(e) {
-        const wrap = document.createElement('div');
-        wrap.innerHTML = _epHtml(e);
-        frag.appendChild(wrap.firstElementChild);
-      });
-      list.appendChild(frag);
-      loaded += slice.length;
+    _buildEpisodeView();
 
-      if (loaded < episodes.length) {
-        if (observer) observer.disconnect();
-        const sentinel = list.lastElementChild;
-        observer = new IntersectionObserver(function(entries) {
-          if (entries[0].isIntersecting) { observer.disconnect(); observer = null; _loadBatch(list); }
-        }, { rootMargin: '200px' });
-        observer.observe(sentinel);
-      }
-    }
-
-    // Sabit header (shortcut + sync btn)
-    el.innerHTML = siteShortcut + syncBtnHtml +
-      '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>' +
-      '<div style="text-align:center;color:#9090b0;font-size:12px;padding:8px 0" id="ep-count-label">' +
-      episodes.length + ' bölüm</div>';
-
-    const list = el.querySelector('#ep-virtual-list');
-    _loadBatch(list);
-
-    // Event delegation — tek listener, tüm bölümler
+    // ── Event delegation — openBtn / watchBtn / dlBtn (tek listener) ─
     el.addEventListener('click', async function(evt) {
       const openBtn  = evt.target.closest('.ep-open-btn');
       const watchBtn = evt.target.closest('.ep-watch-btn');
       const dlBtn    = evt.target.closest('.ep-dl-btn');
-      const syncBtn  = evt.target.closest('.ep-anilist-sync-btn');
-      const goSites  = evt.target.closest('.ep-go-sites-btn');
-
-      if (goSites) { detailSwitchTab('sites'); return; }
-      if (syncBtn) { syncEpisodesFromAniList(evt); return; }
 
       if (openBtn) {
         const epId = parseInt(openBtn.dataset.epId, 10);
         const cid  = parseInt(openBtn.dataset.contentId, 10);
         try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e) {}
-        renderDetail(cid);
+        const scr = document.getElementById('screen-detail');
+        const savedY = scr ? scr.scrollTop : 0;
+        await renderDetail(cid);
+        if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
         return;
       }
 
       if (watchBtn) {
         const epId = parseInt(watchBtn.dataset.epId, 10);
         const cid  = parseInt(watchBtn.dataset.contentId, 10);
+        const row = watchBtn.closest('[style*="height:56px"]');
+        if (row) {
+          row.style.opacity = '0.5';
+          const checkDiv = watchBtn.querySelector('div');
+          if (checkDiv) {
+            checkDiv.style.background = '#00d4ff33';
+            checkDiv.style.border = '1px solid #00d4ff80';
+            checkDiv.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">check</span>';
+          }
+        }
         try {
           await apiPatch('/api/episodes/' + epId + '/watch', {});
           const updated = await apiGet('/api/content/' + cid);
           const allWatched = updated.episodes && updated.episodes.length > 0 &&
             updated.episodes.every(function(e) { return e.is_watched; });
           if (allWatched) { _showCompleteModal(cid, updated.title || '', updated.my_score); }
-          else { renderDetail(cid); }
         } catch(e) { console.error('ep watch', e); }
         return;
       }
@@ -1817,19 +1885,25 @@
     };
   }
 
-  async function syncEpisodesFromAniList(e) {
-    const btn = e.currentTarget;
+  async function syncEpisodesFromAniList(e, seasonOverride, anilistIdOverride) {
+    const btn = e.currentTarget || e.target;
     const cid = parseInt(btn.dataset.contentId, 10);
+    const season = seasonOverride || parseInt(btn.dataset.season || '1', 10);
     btn.disabled = true;
     btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span> Yükleniyor...';
+    const scr = document.getElementById('screen-detail');
+    const savedY = scr ? scr.scrollTop : 0;
     try {
-      const res = await apiPost('/api/content/' + cid + '/episodes/sync', {});
+      const body = { season: season };
+      if (anilistIdOverride) body.anilist_override_id = String(anilistIdOverride);
+      const res = await apiPost('/api/content/' + cid + '/episodes/sync', body);
       const total = res.episodes ? res.episodes.length : 0;
       const msg = res.synced > 0
-        ? res.synced + ' bölüm yüklendi (' + total + ' toplam)'
-        : total > 0 ? total + ' bölüm zaten güncel' : 'Bölüm bulunamadı';
+        ? 'S' + season + ': ' + res.synced + ' bölüm yüklendi (' + total + ' toplam)'
+        : total > 0 ? 'S' + season + ': ' + total + ' bölüm zaten güncel' : 'Bölüm bulunamadı';
       showToast(msg, res.synced > 0 ? 'success' : (total > 0 ? 'info' : 'error'));
-      renderDetail(cid);
+      await renderDetail(cid);
+      if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
     } catch (err) {
       showToast('Yükleme hatası: ' + err.message, 'error');
       btn.disabled = false;

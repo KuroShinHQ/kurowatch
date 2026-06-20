@@ -59,6 +59,7 @@ class Episode(Base):
 
     id:         Mapped[int]            = mapped_column(Integer, primary_key=True, autoincrement=True)
     content_id: Mapped[int]            = mapped_column(Integer, ForeignKey("content.id"), nullable=False)
+    season:     Mapped[int]            = mapped_column(Integer, nullable=False, default=1)
     number:     Mapped[int]            = mapped_column(Integer, nullable=False)
     title:      Mapped[Optional[str]]  = mapped_column(String(500), nullable=True)
     url:        Mapped[Optional[str]]  = mapped_column(Text,        nullable=True)
