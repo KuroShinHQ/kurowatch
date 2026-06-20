@@ -25,7 +25,7 @@
 | T-03 | Home: poster grid yüklenir, cover'lar görünür | ✅ | 670/676 cover, 6 Türk initials kutusu |
 | T-04 | Home: filter chip — "Anime" seçince sadece animeler | ✅ | Tür + durum chip'leri çalışıyor |
 | T-05 | Home: filter chip — "İzliyor" + "Anime" kombinasyon | ✅ | |
-| T-06 | Home: karta tıklayınca Detail ekranı açılır | ❌ | 3 bug: BUG-T06-A hero blur, BUG-T06-B star hover, BUG-T06-C site URL |
+| T-06 | Home: karta tıklayınca Detail ekranı açılır | 🔧 | Fix hazır (commit 0e58dc9) — Lord testi bekleniyor |
 
 ---
 
@@ -114,9 +114,9 @@
 
 | Bug # | Özellik | Açıklama | Durum |
 |-------|---------|----------|-------|
-| BUG-T06-A | Detail hero cover | Arka plan resmi çok blur/düşük kalite — cover'ı sığdırırken kalite kaybı | ⏳ FIX BEKLIYOR |
-| BUG-T06-B | Detail star rating | Mouse üzerine gelmeden yıldız hover aktif oluyor (tıklamadan yükseliyor) | ⏳ FIX BEKLIYOR |
-| BUG-T06-C | Detail site URL | "İzle için site ekle → Siteler sekmesi" mesajı çıkıyor — kayıtlı site olmasına rağmen | ⏳ FIX BEKLIYOR |
+| BUG-T06-A | Detail hero cover | Arka plan resmi çok blur/düşük kalite — cover'ı sığdırırken kalite kaybı | 🔧 FIX: background-size auto 100% (commit 0e58dc9) |
+| BUG-T06-B | Detail star rating | Mouse üzerine gelmeden yıldız hover aktif oluyor (tıklamadan yükseliyor) | 🔧 FIX: event delegation, DOM rebuild yok (commit 0e58dc9) |
+| BUG-T06-C | Detail site URL | "İzle için site ekle → Siteler sekmesi" mesajı çıkıyor — site eklendikten sonra Episodes tab yenilenmiyor | 🔧 FIX: renderDetailEpisodes yeniden çağrılıyor (commit 0e58dc9) |
 
 ---
 
@@ -126,5 +126,5 @@
 Toplam test: 38
 Tamamlanan: 6 / 38
 PASS:  5  (T-01,T-02,T-03,T-04,T-05)
-BUG:   1  (T-06 → 3 bug: hero blur, star hover, site URL)
+FIX:   1  (T-06 → 3 bug fix hazır, Lord testi bekleniyor)
 ```
