@@ -50,6 +50,12 @@ _SITE_COOKIES = {
     "hdfilmcehennemi.nl": "hdfilmcehennemi_cookies.txt",
 }
 
+# Bu domainler iframe olarak bulunsa bile atlanır (lisanslı oynatıcılar, reklam ağları)
+_SKIP_IFRAME_DOMAINS = (
+    "crunchyroll.com", "vrv.co", "funimation.com",
+    "google", "dtscout", "adservice", "doubleclick", "googlesyndication",
+)
+
 # Bu domainler JS-render gerektirir — requests fetch atla, direkt Playwright'a git
 _FORCE_PLAYWRIGHT = {
     "dizibox.live",
@@ -92,7 +98,7 @@ def _extract_embed_from_html(html: str) -> Optional[str]:
         html, re.IGNORECASE
     )
     for src in iframes:
-        if any(skip in src for skip in ("google", "dtscout", "adservice", "doubleclick")):
+        if any(skip in src for skip in _SKIP_IFRAME_DOMAINS):
             continue
         if src.startswith("http"):
             logger.info("iframe bulundu: %s", src[:80])
@@ -274,9 +280,13 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 for el in els:
                     for attr in ("src", "data-src"):
                         src = await el.get_attribute(attr) or ""
-                        if src and src.startswith("http") and src not in found_embed:
-                            if _is_embed(src) or sel == "iframe":
-                                found_embed.append(src)
+                        if not src or not src.startswith("http"):
+                            continue
+                        if any(skip in src for skip in _SKIP_IFRAME_DOMAINS):
+                            logger.info("Lisanslı iframe atlandı: %s", src[:80])
+                            continue
+                        if src not in found_embed and (_is_embed(src) or sel == "iframe"):
+                            found_embed.append(src)
 
         finally:
             await browser.close()
