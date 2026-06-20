@@ -33,7 +33,7 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["*://*.tranimeizle.co/*"],
+      "matches": ["*://*.tranimeizle.co/*", "*://*.tranimeizle.io/*"],
       "js": ["content/tranimeizle.js"],
       "run_at": "document_idle"
     },
