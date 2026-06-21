@@ -244,9 +244,13 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
     )
 
     def _is_embed(url: str) -> bool:
+        # JS/CSS dosyaları ve analytics/tracking atla
+        parsed_path = url.split("?")[0].split("#")[0].lower()
+        if parsed_path.endswith((".js", ".css", ".woff", ".woff2", ".png", ".ico", ".svg")):
+            return False
         if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd", ".mp4")):
             return True
-        if "/iframe.php" in url or "/embed/" in url or "/player/" in url:
+        if "/iframe.php" in url or "/embed/" in url or "/player/" in url or "/ifr.html" in url:
             return True
         return any(p in url for p in _KNOWN_PLAYERS)
 

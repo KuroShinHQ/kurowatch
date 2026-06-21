@@ -90,8 +90,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         r.raise_for_status()
         html = r.text
 
-    if "reading-content" not in html:
-        raise RuntimeError(f"Madara: reading-content bulunamadı — {url}")
+    # Madara standart sınıf yok ama sayfa yüklenmiş olabilir — hemen hata atma
 
     # Önce wp-manga-chapter-img class'lı img'leri dene (Madara standart)
     # src= değerleri bazen " https://..." şeklinde boşlukla başlar — strip() zorunlu
