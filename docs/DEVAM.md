@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-61) · **Aktif sürüm:** v1.1.0 · **Son commit:** TBD
+**Son güncelleme:** 21 Haziran 2026 (sohbet-61b) · **Aktif sürüm:** v1.1.0 · **Son commit:** `7d920ea`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,47 +10,35 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-60):
-  - 676 içerik, backend 1dd682a aktif — restart GEREKMİYOR
+MEVCUT DURUM (21 Haz sohbet-61b):
+  - 676 içerik, backend RESTART GEREKİYOR (7d920ea — bat menüsü)
   - Test: http://localhost:8099
 
 SOHBET-61 YAPILANLARI:
-  ✅ PCT:0 fix — anime.py chunk-based stdout (\r ve \n yakala; turkanime/alucard.click progress güncellenir)
-  ✅ title_tr null fix — content.py exclude_none→exclude_unset (PATCH null göndererek siler)
-  ✅ dizibox.so → stream_finder'a eklendi (_FORCE_PLAYWRIGHT + selector + cookies mapping)
-  ✅ hdfilmcehennemi.nl play selector düzeltildi → .play-that-video, wait_secs=20
-  ❌ dizibox.so/live: king.php player CF challenge döngüsü → cookies şart
-  ❌ hdfilmcehennemi.nl: rplayer/404/check/performance CF JS challenge → cookies şart
+  ✅ PCT:0 fix: anime.py chunk-based stdout — yt-dlp \r progress artık güncellenir
+  ✅ title_tr null fix: content.py exclude_unset — PATCH null ile DB'den siler
+  ✅ dizibox.so stream_finder'a eklendi; CF confirmed → askıya
+  ✅ hdfilmcehennemi.nl play selector .play-that-video; CF confirmed → askıya
+  🔍 turkanime eşleştirme araştırması TAMAMLANDI:
+     - slug tahmin yöntemi çalışmıyor (İngilizce vs Japonca romaji)
+     - turkanime.tv/sitemap/tv/sitemap1-3.xml.gz bulundu (TÜM animeler burada)
+     - build_ta_index.py YAZILDI → sitemap'tan {slug→ep1_url} JSON üretir
+     - Sonraki adım: index'i oluştur → AniList romaji ile eşleştir → DB'ye ekle
 
-İNDİRME DURUM HARİTASI:
-  ANİME:
-    anizm.net     ✅ 422.5 MB OK
-    tranimaci.com ✅ Playwright CDN MP4
-    turkanime.tv  ✅ Playwright 32sn + header capture → alucard.click 885MB
-    dizibox.so    ❌ CF challenge (cookies gerekli)
-    hdfilmcehennemi.nl ❌ CF challenge (cookies gerekli)
-  MANGA:
-    mangawow.com    ✅ 12 sayfa OK
-    ragnarscans.com ✅ 25 sayfa OK
-    ragnarscans.net ✅ aynı fix geçerli
-    hayalistic.com.tr ✅ ch0149 OK
+SOHBET-62 SIRASI:
+  [1] backend restart (bat menüsü — 7d920ea kodu aktif değil)
+  [2] python3 scripts/build_ta_index.py
+        → scripts/ta_index.json oluşturur (~binlerce slug)
+  [3] match_ta.py yaz: ta_index × AniList romaji → 329 anime eşleştir → DB ekle
+        Mantık: get_detail(anilist_id) → romaji → slug → ta_index lookup
+  [4] PCT + title_tr null fix doğrula (frontend)
 
-SIRADAKİ GÖREVLER:
-  [1] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
-  [2] Backend restart et (anime.py + content.py değişti)
-  [3] PCT fix doğrula: turkanime.tv bölümü indir → progress bar 0'dan yukarı çıkıyor mu?
-  [4] title_tr null fix doğrula: frontend edit → Türkçe Başlık sil → kaydeder mi?
 ⚠️ ÖNEMLİ:
   - turkanime.tv: on_request MP4 header → _SESSION_HEADERS → yt-dlp --add-header
-  - turkanime.tv: alucard.click 885MB (720p seçilse de 1080p geliyor, tek kalite)
-  - PCT:0 FIX: anime.py chunk-based okuma (\r\n her ikisi split edilir) — yt-dlp progress artık güncellenir
-  - title_tr null FIX: content.py exclude_unset=True — PATCH ile null gönderince DB'de temizlenir
-  - dizibox.so: DB'de dizibox.live redirectiyle çalışır; CF bypass için cookies gerekli
-  - hdfilmcehennemi.nl: rplayer CF JS challenge — cookies.txt ile dene (tranimeizle gibi)
-  - anizmplayer.com m3u8 → Referer: anizm.net/ şart (yt-dlp --add-header)
-  - manga.py: reading-content check kaldırıldı, fallback img extraction aktif
+  - build_ta_index.py: sitemap1-3.xml.gz → /mnt/c/.../scripts/ta_index.json
+  - dizibox.so + hdfilmcehennemi.nl: CF bypass yok, cookies.txt şart (askıya)
+  - anizmplayer.com m3u8 → Referer: anizm.net/ şart
   - DB: episode tablosu (çoğulsuz), kolon: number
-  - MANUAL_SITES.md: 383+71+29 eşleşmeyen içerik → Lord manuel URL ekleyecek
 ```
 
 ---
