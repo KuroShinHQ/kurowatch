@@ -26,6 +26,27 @@ logger = logging.getLogger(__name__)
 # Cookies dosyaları dizini
 _COOKIES_DIR = Path(__file__).parent.parent.parent / "cookies"
 
+# Playwright'ın MP4 URL'sine yaptığı isteğin header'ları (CF cookie dahil)
+# anime.py yt-dlp çağrısında kullanır; her find_stream_url çağrısında sıfırlanır
+_SESSION_HEADERS: dict[str, str] = {}
+
+
+def get_session_header_args(actual_url: str) -> list[str]:
+    """Playwright'ın MP4 isteğindeki header'ları yt-dlp --add-header listesi olarak döndür."""
+    if not _SESSION_HEADERS:
+        return []
+    domain = _domain(actual_url)
+    # Sadece bu URL domain'i için yakalanmışsa kullan
+    if _SESSION_HEADERS.get("_domain") == domain:
+        skip = {"_domain", "host", "content-length", "te", "accept-encoding", "range"}
+        args: list[str] = []
+        for k, v in _SESSION_HEADERS.items():
+            if k.startswith("_") or k in skip:
+                continue
+            args += ["--add-header", f"{k}:{v}"]
+        return args
+    return []
+
 # Embed player URL'lerini tanıyan kalıplar (yt-dlp destekleri)
 _EMBED_PATTERNS = [
     r"(https?://(?:www\.)?filemoon\.[a-z]+/[^\s\"'<>]+)",
@@ -44,6 +65,7 @@ _SITE_COOKIES = {
     "tranimeizle.co":     "tranimeizle_cookies.txt",
     "tranimeizle.io":     "tranimeizle_cookies.txt",
     "turkanime.co":       "turkanime_cookies.txt",
+    "turkanime.tv":       "turkanime_cookies.txt",
     "diziwatch.com":      "diziwatch_cookies.txt",
     "anizm.net":          "anizm_cookies.txt",
     "dizibox.live":       "dizibox_cookies.txt",
@@ -60,12 +82,20 @@ _SKIP_IFRAME_DOMAINS = (
 _FORCE_PLAYWRIGHT = {
     "dizibox.live",
     "hdfilmcehennemi.nl",
+    "turkanime.tv",
+}
+
+# Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
+_POPUP_CLOSE_SELECTORS = {
+    "turkanime.tv": ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
 }
 
 # Site-spesifik play butonu CSS selector'ları (Playwright için)
 _PLAY_BUTTON_SELECTORS = {
     "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
     "hdfilmcehennemi.nl": [".play-button", "#play", ".jw-icon-playback", "[aria-label='play']"],
+    # IndexIcerik AJAX → iframe inject eder; ilk sunucu butonunu tıkla
+    "turkanime.tv":       ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
     "tranimeizle.co":     [
         ".players a:first-child",
         ".eps-server:first-child a",
@@ -134,6 +164,7 @@ async def find_stream_url(episode_url: str) -> str:
     JS-render gerektiren siteler (dizibox.live, hdfilmcehennemi.nl) için
     requests fetch atlanır, direkt Playwright kullanılır.
     """
+    _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
     force_pw = any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT)
 
@@ -154,8 +185,10 @@ async def find_stream_url(episode_url: str) -> str:
         logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
     # Playwright: JS-render + ağ isteği izleme
+    # turkanime.tv iframe yüklemesi uzun sürer, timeout artırılır
+    pw_timeout = 60000 if "turkanime.tv" in domain else 15000
     try:
-        embed = await _playwright_find_embed(episode_url)
+        embed = await _playwright_find_embed(episode_url, timeout_ms=pw_timeout)
         if embed:
             logger.info("Playwright embed buldu: %s", embed[:80])
             return embed
@@ -274,11 +307,20 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         except Exception as _se:
             logger.warning("playwright-stealth bypass yok: %s", _se)
 
-        # GET ve XHR/fetch isteklerini izle
+        # GET ve XHR/fetch isteklerini izle; direkt MP4 için header'ları da yakala
         async def on_request(req):
             url = req.url
             if _is_embed(url) and url not in found_embed:
                 found_embed.append(url)
+                # CF korumalı direkt MP4: yt-dlp'ye geçirmek için header'ları sakla
+                if url.lower().split("?")[0].endswith(".mp4") and not _SESSION_HEADERS:
+                    try:
+                        h = dict(req.headers)
+                        h["_domain"] = _domain(url)
+                        _SESSION_HEADERS.update(h)
+                        logger.info("MP4 request header'ları yakalandı: %d adet", len(h) - 1)
+                    except Exception:
+                        pass
 
         page.on("request", on_request)
 
@@ -290,6 +332,18 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 await page.wait_for_load_state("networkidle", timeout=8000)
             except Exception:
                 pass  # timeout OK, devam
+
+            # Site-spesifik popup kapat (player butonundan önce)
+            for selector in _POPUP_CLOSE_SELECTORS.get(domain, []):
+                try:
+                    btn = page.locator(selector).first
+                    if await btn.is_visible(timeout=2000):
+                        await btn.click()
+                        logger.info("Popup kapatıldı: %s", selector)
+                        await asyncio.sleep(1)
+                        break
+                except Exception:
+                    pass
 
             # Site-spesifik play/sunucu butonu varsa tıkla
             for selector in _PLAY_BUTTON_SELECTORS.get(domain, []):
@@ -303,8 +357,10 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 except Exception:
                     pass
 
-            # Player yüklensin
-            if "tranimeizle" in domain:
+            # Player yüklensin (turkanime.tv iframe 25-30sn içinde mp4 isteği yapar)
+            if "turkanime.tv" in domain:
+                wait_secs = 32
+            elif "tranimeizle" in domain:
                 wait_secs = 15
             elif any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT):
                 wait_secs = 12
@@ -365,6 +421,27 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         for u in found_embed:
             if ".m3u8" in u or "manifest.mpd" in u:
                 return u
+        # Direkt mp4 URL varsa tercih et (rotor/wrapper sayfası yerine)
+        for u in found_embed:
+            if u.lower().split("?")[0].endswith(".mp4"):
+                return u
         return found_embed[0]
 
     return _extract_embed_from_html(html)
+
+
+async def _save_session_cookies(ctx, media_url: str) -> None:
+    """Playwright context cookie'lerini media domain için _SESSION_COOKIES'e kaydet."""
+    try:
+        media_domain = _domain(media_url)
+        cookies = await ctx.cookies()
+        parts = [
+            f"{c['name']}={c['value']}"
+            for c in cookies
+            if media_domain in c.get("domain", "").lstrip(".")
+        ]
+        if parts:
+            _SESSION_COOKIES[media_domain] = "; ".join(parts)
+            logger.info("Session cookie kaydedildi: %s (%d adet)", media_domain, len(parts))
+    except Exception as exc:
+        logger.warning("Session cookie kayıt hatası: %s", exc)
