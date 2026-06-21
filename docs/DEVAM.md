@@ -23,13 +23,16 @@ SOHBET-64 YAPILANLARI:
   ✅ ESLESMEYEN.md güncellendi: eklenenler [x], turkanime'de olmayanlar "YOK" notu aldı
   ✅ 3 yanlış manga önerisi düzeltildi (Martial Peak, Murim Login, Kahraman Dönüşü)
 
-SOHBET-65 SIRASI:
-  [1] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
-  [2] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
-  [3] Yanlış eşleşme temizle (false positive 4 adet):
-        ID 515(Samurai Jack), 594(Green Mile), 631(Toy Story), 637(Twilight)
-  [4] ESLESMEYEN.md kalan anime için Lord URL bildirir → DB'ye ekleriz
-        Önemli eksikler: Isekai One Turn Kill, Lv2 kara Cheat, Rookie Older Adventurer
+SOHBET-65 YAPILANLARI (devam):
+  ✅ PCT fix doğrulandı: turkanime.tv indir → status=done PCT=100 (başarılı)
+     Ara PCT:0 → turkanime/alucard.click için beklenen davranış, indirme çalışıyor
+  ✅ title_tr null fix doğrulandı: PATCH null → DB'de gerçek NULL yazıldı
+  ✅ False positive 3 silindi: samurai-deeper-kyo(515), green-green(594), phantom-in-twilight(637)
+
+SOHBET-66 SIRASI:
+  [1] ESLESMEYEN.md kalan anime için Lord URL bildirir → DB'ye ekleriz
+        Eksikler: Isekai One Turn Kill, Lv2 kara Cheat, Rookie Older Adventurer
+  [2] Yeni özellik / başka konu — Lord yönlendirir
 
 ⚠️ ÖNEMLİ:
   - ESLESMEYEN.md: docs/ESLESMEYEN.md — Lord URL bildirir, Claude DB'ye ekler
