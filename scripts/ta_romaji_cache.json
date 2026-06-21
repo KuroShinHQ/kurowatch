@@ -1,0 +1,2609 @@
+[
+  {
+    "id": 98,
+    "romaji": "Hazure Waku no [Joutai Ijou Skill] de Saikyou ni Natta Ore ga Subete wo Juurin Suru made",
+    "english": "Failure Frame: I Became the Strongest and Annihilated Everything with Low-Level Spells",
+    "synonyms": [
+      "Hazurewaku",
+      "Dengan Bingkai Status Sampah \"Skill Abnormal\" Aku Menjadi Terkuat dan Akan Menghabisi Semuanya"
+    ]
+  },
+  {
+    "id": 100,
+    "romaji": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou II Part 2",
+    "english": "The Misfit of Demon King Academy II (Cour 2)",
+    "synonyms": [
+      "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants Season 2 Part 2",
+      "ใครว่าข้าไม่เหมาะเป็นจอมมาร: ต้นตระกูลจอมมารที่เเกร่งที่สุดในประวัติศาสตร์เกิดใหม่ไปเรียนที่โรงเรียนลูกหลาน ภาค 2 Part 2",
+      "Непригодный для Академии владыки тьмы II"
+    ]
+  },
+  {
+    "id": 103,
+    "romaji": "Magic Maker: Isekai Mahou no Tsukurikata",
+    "english": "Magic Maker: How to Make Magic in Another World",
+    "synonyms": []
+  },
+  {
+    "id": 108,
+    "romaji": "Sentai Red Isekai de Boukensha ni Naru",
+    "english": "The Red Ranger Becomes an Adventurer in Another World",
+    "synonyms": [
+      "THE RED RANGER Becomes an Adventurer in Another World"
+    ]
+  },
+  {
+    "id": 111,
+    "romaji": "Ishura",
+    "english": "ISHURA",
+    "synonyms": []
+  },
+  {
+    "id": 202,
+    "romaji": "Melody of Oblivion",
+    "english": null,
+    "synonyms": [
+      "Boukyaku no Senritsu"
+    ]
+  },
+  {
+    "id": 204,
+    "romaji": "Slime Taoshite 300-nen, Shiranai Uchi ni Level MAX ni Nattemashita",
+    "english": "I've Been Killing Slimes for 300 Years and Maxed Out My Level",
+    "synonyms": [
+      "Slime 300",
+      "La Sorcière invincible tueuse de Slime depuis 300 ans",
+      "ล่าสไลม์มา 300 ปีรู้ตัวอีกทีก็เลเวล MAX ซะแล้ว",
+      "Tanpa Sadar Levelku Mentok Setelah Membasmi Slime Selama 300 Tahun"
+    ]
+  },
+  {
+    "id": 205,
+    "romaji": "Lupin III: Part III",
+    "english": "Lupin the Third Part 3",
+    "synonyms": [
+      "Rupan Sansei: Part III",
+      "Lupin, l'incorreggibile Lupin"
+    ]
+  },
+  {
+    "id": 206,
+    "romaji": "Byousoku 5 Centimeter",
+    "english": "5 Centimeters per Second",
+    "synonyms": [
+      "Five Centimeters Per Second",
+      "Byousoku 5 Centimeter - a chain of short stories about their distance",
+      "5 cm per second",
+      "5 Centímetros por Segundo",
+      "5 centimètres par seconde"
+    ]
+  },
+  {
+    "id": 210,
+    "romaji": "Sword Art Online",
+    "english": "Sword Art Online",
+    "synonyms": [
+      "S.A.O",
+      "SAO"
+    ]
+  },
+  {
+    "id": 211,
+    "romaji": "Tabimachi Late Show",
+    "english": "Tabimachi Lateshow",
+    "synonyms": []
+  },
+  {
+    "id": 212,
+    "romaji": "Madan no Ou to Vanadis",
+    "english": "Lord Marksman and Vanadis",
+    "synonyms": [
+      "The King of the Magic Bullet and Vanadis"
+    ]
+  },
+  {
+    "id": 213,
+    "romaji": "Magi: Sinbad no Bouken OVA",
+    "english": "Magi: Adventure of Sinbad (OVA)",
+    "synonyms": [
+      "Magi: Adventure of Sinbad"
+    ]
+  },
+  {
+    "id": 216,
+    "romaji": "Sekai Meisaku Douwa: Aladdin to Mahou no Lamp",
+    "english": "Aladdin and the Wonderful Lamp",
+    "synonyms": [
+      "Aladdin and the Magic Lamp",
+      "Czarodziejska lampa Alladyna"
+    ]
+  },
+  {
+    "id": 217,
+    "romaji": "Inu no Chikatetsu",
+    "english": null,
+    "synonyms": [
+      "Dog's Subway"
+    ]
+  },
+  {
+    "id": 218,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 221,
+    "romaji": "ROBOMASTERS THE ANIMATED SERIES",
+    "english": null,
+    "synonyms": [
+      "Ji Jia Dashi",
+      "RoboMas"
+    ]
+  },
+  {
+    "id": 224,
+    "romaji": "Tensei Kizoku, Kantei Skill de Nariagaru",
+    "english": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World",
+    "synonyms": [
+      "KanteiSkill"
+    ]
+  },
+  {
+    "id": 225,
+    "romaji": "Arifureta Itsuka",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 226,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 227,
+    "romaji": "Kagemusha wa Skirt wo Haite!",
+    "english": null,
+    "synonyms": [
+      "Body Double Puts on a Skirt!"
+    ]
+  },
+  {
+    "id": 228,
+    "romaji": "Ansatsu Kyoushitsu",
+    "english": "Assassination Classroom",
+    "synonyms": [
+      "Klasa skrytobójców",
+      "Lớp học ám sát"
+    ]
+  },
+  {
+    "id": 229,
+    "romaji": "Ansatsu Kyoushitsu",
+    "english": "Assassination Classroom",
+    "synonyms": [
+      "Klasa skrytobójców",
+      "Lớp học ám sát"
+    ]
+  },
+  {
+    "id": 230,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 231,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 232,
+    "romaji": "Gakusen Toshi Asterisk",
+    "english": "The Asterisk War",
+    "synonyms": [
+      "Academy Battle City Asterisk"
+    ]
+  },
+  {
+    "id": 233,
+    "romaji": "Shingeki no Kyojin",
+    "english": "Attack on Titan",
+    "synonyms": [
+      "SnK",
+      "AoT",
+      "Ataque a los Titanes",
+      "Ataque dos Titãs",
+      "L'Attacco dei Giganti"
+    ]
+  },
+  {
+    "id": 235,
+    "romaji": "Quanzhi Gaoshou",
+    "english": "The King's Avatar",
+    "synonyms": [
+      "Full-Time Expert",
+      "Master of Skills"
+    ]
+  },
+  {
+    "id": 236,
+    "romaji": "Avengers Confidential: Black Widow & Punisher",
+    "english": "Avengers Confidential: Black Widow & Punisher",
+    "synonyms": [
+      "Avengers Confidential: Czarna Wdowa i Punisher"
+    ]
+  },
+  {
+    "id": 237,
+    "romaji": "Golden Time",
+    "english": "Golden Time",
+    "synonyms": []
+  },
+  {
+    "id": 238,
+    "romaji": "Hajime no Ippo: Rising",
+    "english": "Hajime No Ippo: The Fighting! - Rising -",
+    "synonyms": [
+      "Hajime no Ippo 3",
+      "Fighting Spirit: Rising"
+    ]
+  },
+  {
+    "id": 239,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 240,
+    "romaji": "Bakugan Battle Brawlers: Gundalian Invaders",
+    "english": "Bakugan: Gundalian Invaders",
+    "synonyms": [
+      "Bakugan Invasjon fra Gundalia",
+      "Bakugan: Najeźdźcy z Gundalii"
+    ]
+  },
+  {
+    "id": 242,
+    "romaji": "Konjiki no Gash Bell!!",
+    "english": "Zatch Bell!",
+    "synonyms": [
+      "GASH BELL!!"
+    ]
+  },
+  {
+    "id": 243,
+    "romaji": "Teito Monogatari",
+    "english": "Doomed Megalopolis",
+    "synonyms": [
+      "Capital Story",
+      "Megalopolis"
+    ]
+  },
+  {
+    "id": 244,
+    "romaji": "Ben-To",
+    "english": "Ben-To",
+    "synonyms": [
+      "Bento",
+      "Ben-Tou"
+    ]
+  },
+  {
+    "id": 245,
+    "romaji": "Kyuukyoku Shinka Shita Full Dive RPG ga Genjitsu yori mo Kusogee Dattara",
+    "english": "Full Dive: This Ultimate Next-Gen Full Dive RPG Is Even Shittier than Real Life!",
+    "synonyms": [
+      "What If the Ultimate in Fully Immersive VR RPGs Was a Crappier Game Than Reality Itself",
+      "如果究极进化的完全潜行 RPG 比现实还更像垃圾游戏的话",
+      "Full Dive : L'ultime RPG est encore plus foireux que la réalité !",
+      "เมื่อ Full Dive RPG ได้กลายเป็นสิ่งที่แย่กว่าชีวิตจริง"
+    ]
+  },
+  {
+    "id": 248,
+    "romaji": "LFO - Xiao Dou Shi Da Mou Xian",
+    "english": null,
+    "synonyms": [
+      "LFO",
+      "Little Fighter Online"
+    ]
+  },
+  {
+    "id": 251,
+    "romaji": "Itai no wa Iya nano de Bougyoryoku ni Kyokufuri Shitai to Omoimasu.",
+    "english": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense.",
+    "synonyms": [
+      "I hate being in pain, so I think I’ll make a full defense build",
+      "bofuri",
+      "Bofuri : Je suis pas venue ici pour souffrir alors j'ai tout mis en défense.",
+      "Bofuri: Aku Tidak Ingin Terluka Jadi Seluruh Poin Status Kufokuskan ke Pertahanan"
+    ]
+  },
+  {
+    "id": 252,
+    "romaji": "Seiken Tsukai no World Break",
+    "english": "World Break: Aria of Curse for a Holy Swordsman",
+    "synonyms": [
+      "World Break เทพนักดาบข้ามภพ"
+    ]
+  },
+  {
+    "id": 253,
+    "romaji": "WHITE ALBUM 2nd Season",
+    "english": null,
+    "synonyms": [
+      "White Album Second Season",
+      "White Album the Latter Half",
+      "White Album: Discografía de Recuerdos"
+    ]
+  },
+  {
+    "id": 254,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 255,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 256,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 257,
+    "romaji": "Seirei Tsukai no Blade Dance",
+    "english": "Blade Dance of the Elementalers",
+    "synonyms": [
+      "Seirei Tsukai no Kenbu: Blade Dance"
+    ]
+  },
+  {
+    "id": 260,
+    "romaji": "Sen to Chihiro no Kamikakushi",
+    "english": "Spirited Away",
+    "synonyms": [
+      "Le Voyage de Chihiro",
+      "La Città Incantata",
+      "El Viaje de Chihiro",
+      "Chihiros Reise ins Zauberland",
+      "Ruhların Kaçışı"
+    ]
+  },
+  {
+    "id": 261,
+    "romaji": "Chuunibyou demo Koi ga Shitai!",
+    "english": "Love, Chunibyo & Other Delusions",
+    "synonyms": [
+      "Chu-2 Byo demo Koi ga Shitai!",
+      "Regardless of My Adolescent Delusions of Grandeur, I Want a Date!",
+      "Miłość, gimbaza i kosmiczna faza"
+    ]
+  },
+  {
+    "id": 262,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 263,
+    "romaji": "Youkoso Jitsuryoku Shijou Shugi no Kyoushitsu e",
+    "english": "Classroom of the Elite",
+    "synonyms": [
+      "Youjitsu",
+      "You-Zitsu",
+      "Cote",
+      "Chào mừng đến với lớp học đề cao thực lực",
+      "Chào mừng tới lớp học biết tuốt"
+    ]
+  },
+  {
+    "id": 265,
+    "romaji": "Code Geass: Hangyaku no Lelouch",
+    "english": "Code Geass: Lelouch of the Rebellion",
+    "synonyms": [
+      "Code Geass: Lelouch de la Rebelión"
+    ]
+  },
+  {
+    "id": 266,
+    "romaji": "Sentouin, Hakenshimasu!",
+    "english": "Combatants Will Be Dispatched!",
+    "synonyms": [
+      "Kombattanten werden entsandt!",
+      "Les combattants seront déployés !"
+    ]
+  },
+  {
+    "id": 267,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 269,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 271,
+    "romaji": "Dungeon ni Deai wo Motomeru no wa Machigatteiru Darou ka",
+    "english": "Is It Wrong to Try to Pick Up Girls in a Dungeon?",
+    "synonyms": [
+      "Danmachi",
+      "Dungeon ni Deai o Motomeru no wa Machigatte Iru Darouka: Familia Myth",
+      "DanMachi: É Errado Tentar Pegar Garotas numa Masmorra?",
+      "DanMachi: Família Myth",
+      "Danmachi: ¿Qué Tiene de Malo Intentar Ligar en una Mazmorra?"
+    ]
+  },
+  {
+    "id": 272,
+    "romaji": "Danshi Koukousei no Nichijou",
+    "english": "Daily Lives of High School Boys",
+    "synonyms": [
+      "Nichibros",
+      "La vie quotidienne de lycéens"
+    ]
+  },
+  {
+    "id": 273,
+    "romaji": "Daraku",
+    "english": "Dark",
+    "synonyms": [
+      "Degeneration"
+    ]
+  },
+  {
+    "id": 274,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 276,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 277,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 278,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 280,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 281,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 284,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 285,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 287,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 288,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 289,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 290,
+    "romaji": "Break Blade 1: Kakusei no Toki",
+    "english": "Broken Blade",
+    "synonyms": [
+      "Breaker Blade",
+      "Break Blade 1: The Time of Awakening"
+    ]
+  },
+  {
+    "id": 291,
+    "romaji": "Gekkakoku Kiiden",
+    "english": null,
+    "synonyms": [
+      "Moon Flower Country's Strange Doctor",
+      "Remède Impérial - L'étrange médecin de la cour",
+      "The Eccentric Doctor of the Moon Flower Kingdom"
+    ]
+  },
+  {
+    "id": 292,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 293,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 296,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 298,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 301,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 302,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 303,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 304,
+    "romaji": "Saihate no Paladin",
+    "english": "The Faraway Paladin",
+    "synonyms": []
+  },
+  {
+    "id": 305,
+    "romaji": "Eigi: SHADOW SKILL",
+    "english": null,
+    "synonyms": [
+      "Shadow Skill (1998)",
+      "Shadow Skill TV"
+    ]
+  },
+  {
+    "id": 306,
+    "romaji": "Taiho Shichauzo: SECOND SEASON",
+    "english": "You're Under Arrest: Fast & Furious",
+    "synonyms": [
+      "Taiho Shichau zo TV 2",
+      "You're Under Arrest! TV 2"
+    ]
+  },
+  {
+    "id": 308,
+    "romaji": "Kino no Tabi -the Beautiful World- the Animated Series",
+    "english": "Kino's Journey -the Beautiful World- the Animated Series",
+    "synonyms": []
+  },
+  {
+    "id": 309,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 310,
+    "romaji": "FETISH DOLL",
+    "english": null,
+    "synonyms": [
+      "Scrap Diary 3"
+    ]
+  },
+  {
+    "id": 311,
+    "romaji": "Gothic Lolita with Dragon",
+    "english": "Gothic Lolita with Dragon",
+    "synonyms": []
+  },
+  {
+    "id": 313,
+    "romaji": "Kidou Senshi Gundam SEED DESTINY",
+    "english": "Mobile Suit Gundam Seed Destiny",
+    "synonyms": []
+  },
+  {
+    "id": 314,
+    "romaji": "100-man no Inochi no Ue ni Ore wa Tatteiru",
+    "english": "I'm Standing on a Million Lives",
+    "synonyms": [
+      "I'm standing on 1,000,000 lives."
+    ]
+  },
+  {
+    "id": 315,
+    "romaji": "Pushover",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 317,
+    "romaji": "Fuguushoku [Kanteishi] ga Jitsu wa Saikyou Datta: Naraku de Kitaeta Saikyou no [Shingan] de Musou Suru",
+    "english": "Even Given the Worthless “Appraiser” Class, I’m Actually the Strongest",
+    "synonyms": [
+      "FuguKan",
+      "Đen đủi khi có nghề [Giám định sĩ] nhưng tôi lại là người mạnh nhất"
+    ]
+  },
+  {
+    "id": 318,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 320,
+    "romaji": "SOUND & FURY",
+    "english": "SOUND & FURY",
+    "synonyms": []
+  },
+  {
+    "id": 321,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 322,
+    "romaji": "Inu x Boku SS",
+    "english": "Inu X Boku Secret Service",
+    "synonyms": [
+      "Youko x Boku SS"
+    ]
+  },
+  {
+    "id": 323,
+    "romaji": "Queen's Blade: Gyokuza wo Tsugu Mono",
+    "english": "Queen's Blade 2: The Evil Eye",
+    "synonyms": [
+      "Queen's Blade 2",
+      "Queen's Blade: Gyokuza wo Tsugumono",
+      "Queen's Blade: The Successor of the Throne",
+      "Queen's Blade and the Evil Eye",
+      "Queen's Blade: Inheritor of the Throne"
+    ]
+  },
+  {
+    "id": 324,
+    "romaji": "Yowamushi Pedal: NEW GENERATION",
+    "english": "Yowamushi Pedal New Generation",
+    "synonyms": [
+      "YowaPeda 3"
+    ]
+  },
+  {
+    "id": 325,
+    "romaji": "Tensai Ouji no Akaji Kokka Saisei Jutsu",
+    "english": "The Genius Prince's Guide to Raising a Nation Out of Debt",
+    "synonyms": [
+      "Kiat Pemulihan Negara Berutang Ala Pangeran Genius"
+    ]
+  },
+  {
+    "id": 326,
+    "romaji": "Shin Tennis no Ouji-sama OVA vs. Genius 10",
+    "english": "The Prince of Tennis II OVA vs Genius 10",
+    "synonyms": [
+      "Shin Tennis no Ouji-sama OVA vs Genius10"
+    ]
+  },
+  {
+    "id": 327,
+    "romaji": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+    "english": "How a Realist Hero Rebuilt the Kingdom",
+    "synonyms": [
+      "Genjitsushugisha no Oukokukaizouki",
+      "A Realist's Kingdom Reform Chronicles",
+      "Genkoku"
+    ]
+  },
+  {
+    "id": 329,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 330,
+    "romaji": "GHOST IN THE SHELL: Koukaku Kidoutai",
+    "english": "Ghost in the Shell",
+    "synonyms": [
+      "GitS",
+      "Ghost in the Shell: O Fantasma do Futuro",
+      "Duch w pancerzu",
+      "Páncélba zárt szellem"
+    ]
+  },
+  {
+    "id": 332,
+    "romaji": "Gintama: Shinyaku Benizakura-hen",
+    "english": "Gintama - The Movie",
+    "synonyms": [
+      "Gintama: Benizakura Arc - A New Retelling",
+      "Gintama Movie: Crimson Sakura Chapter New Edition",
+      "Gintama: Shin-yaku Benizakura-hen"
+    ]
+  },
+  {
+    "id": 333,
+    "romaji": "Doraemon: Nobita to Robot Oukoku",
+    "english": null,
+    "synonyms": [
+      "Doraemon: Nobita & Robot Kingdom",
+      "Doraemon: Nobita's Robot Kingdom",
+      "Doraemon Movie 23: Nobita to Robot Kingdom",
+      "Doraemon the Movie: Nobita in the Robot Kingdom"
+    ]
+  },
+  {
+    "id": 335,
+    "romaji": "Lupin III: Bye Bye Liberty - Kiki Ippatsu!",
+    "english": "Lupin the 3rd: Bye Bye, Lady Liberty",
+    "synonyms": [
+      "Lupin III: Bye Bye, Lady Liberty",
+      "Lupin III - Bye Bye Liberty: Scoppia la crisi!",
+      "Lupin e il mago dei computers"
+    ]
+  },
+  {
+    "id": 336,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 337,
+    "romaji": "Gravity",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 339,
+    "romaji": "Manaria Friends",
+    "english": "Mysteria Friends",
+    "synonyms": [
+      "Shingeki no Bahamut: Manaria Friends"
+    ]
+  },
+  {
+    "id": 340,
+    "romaji": "Tengen Toppa Gurren Lagann",
+    "english": "Gurren Lagann",
+    "synonyms": [
+      "Heavenly Breakthrough Gurren Lagann",
+      "TTGL",
+      "Sfondamento dei cieli Gurren Lagann",
+      "Heaven-Piercing Gurren Lagann"
+    ]
+  },
+  {
+    "id": 345,
+    "romaji": "Kantai Collection: KanColle",
+    "english": "KanColle",
+    "synonyms": [
+      "KanKore"
+    ]
+  },
+  {
+    "id": 346,
+    "romaji": "Kodoma Monko Pero Pero",
+    "english": null,
+    "synonyms": [
+      "Punishment"
+    ]
+  },
+  {
+    "id": 347,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 348,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 350,
+    "romaji": "Gakuen Mokushiroku: HIGHSCHOOL OF THE DEAD",
+    "english": "High School of the Dead",
+    "synonyms": [
+      "HOTD",
+      "HSOTD",
+      "High School of the Dead: Apocalipsis en el Instituto"
+    ]
+  },
+  {
+    "id": 351,
+    "romaji": "Gakuen Mokushiroku: HIGHSCHOOL OF THE DEAD",
+    "english": "High School of the Dead",
+    "synonyms": [
+      "HOTD",
+      "HSOTD",
+      "High School of the Dead: Apocalipsis en el Instituto"
+    ]
+  },
+  {
+    "id": 352,
+    "romaji": "Saraiya Goyou",
+    "english": "House of Five Leaves",
+    "synonyms": [
+      "Sarai-ya Goyou"
+    ]
+  },
+  {
+    "id": 355,
+    "romaji": "Shugo Chara!",
+    "english": "Shugo Chara!",
+    "synonyms": [
+      "Guardian Character!"
+    ]
+  },
+  {
+    "id": 358,
+    "romaji": "New Initial D Movie: Legend 2 - Dokusou",
+    "english": "Initial D Legend 2: Racer",
+    "synonyms": [
+      "Shin Gekijouban Initial D: Legend 2 - Tousou"
+    ]
+  },
+  {
+    "id": 359,
+    "romaji": "Yuusha, Yamemasu",
+    "english": "I'm Quitting Heroing",
+    "synonyms": [
+      "Yamemasu Tsugi No Shokuba Ha Mao Jo",
+      "yuuyame",
+      "I’m Quitting Heroing: Next Gig Is at the Demon Queen's Castle"
+    ]
+  },
+  {
+    "id": 360,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 361,
+    "romaji": "Xian Wang De Richang Shenghuo",
+    "english": "The Daily Life of the Immortal King",
+    "synonyms": [
+      "La vida diaria del rey inmortal"
+    ]
+  },
+  {
+    "id": 363,
+    "romaji": "CONCEPTION",
+    "english": "Conception",
+    "synonyms": [
+      "Conception: Ore no Kodomo wo Undekure!"
+    ]
+  },
+  {
+    "id": 364,
+    "romaji": "IS: Infinite Stratos 2",
+    "english": "Infinite Stratos 2",
+    "synonyms": [
+      "IS2"
+    ]
+  },
+  {
+    "id": 367,
+    "romaji": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
+    "english": "I Got a Cheat Skill in Another World and Became Unrivaled in The Real World, Too",
+    "synonyms": [
+      "I Got a Cheat Ability in a Different World, and Became Extraordinary Even in the Real World",
+      "Isekai de Cheat Nouryoku Ote ni Shita Ore wa, Genjitsu Sekai o mo Musou Suru",
+      "Ganhei um Poder Apelão em Outro Mundo e Agora Sou Imbatível no Mundo Real",
+      "Iseleve",
+      "Skill Nge-Cheat yang Kudapat di Dunia Lain Juga Membuatku Tanpa Tanding di Dunia Asal"
+    ]
+  },
+  {
+    "id": 368,
+    "romaji": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta",
+    "english": "I Got a Cheat Skill in Another World and Became Unrivaled in The Real World, Too (Special) - The Legendary Dragon—Awakens",
+    "synonyms": [
+      "สกิลโกงไร้เทียมทาน สร้างตำนานในสองโลก -ชีวิตพลิกผันด้วยการอัปเลเวล- TVSP"
+    ]
+  },
+  {
+    "id": 369,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 373,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 374,
+    "romaji": "Isekai One Turn Kill Nee-san: Ane Douhan no Isekai Seikatsu Hajimemashita",
+    "english": "My One-Hit Kill Sister",
+    "synonyms": [
+      "One Turn Kill พี่สาวจ้าวต่างโลก: เริ่มต้นชีวิตร่วมเดินทางต่างโลกกับพี่สาว",
+      "Minha Mana Apelona"
+    ]
+  },
+  {
+    "id": 375,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 377,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 378,
+    "romaji": "Isekai Shokudou",
+    "english": "Restaurant to Another World",
+    "synonyms": []
+  },
+  {
+    "id": 380,
+    "romaji": "Itai no wa Iya nano de Bougyoryoku ni Kyokufuri Shitai to Omoimasu.",
+    "english": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense.",
+    "synonyms": [
+      "I hate being in pain, so I think I’ll make a full defense build",
+      "bofuri",
+      "Bofuri : Je suis pas venue ici pour souffrir alors j'ai tout mis en défense.",
+      "Bofuri: Aku Tidak Ingin Terluka Jadi Seluruh Poin Status Kufokuskan ke Pertahanan"
+    ]
+  },
+  {
+    "id": 381,
+    "romaji": "Sengoku BASARA",
+    "english": "Sengoku Basara: Samurai Kings",
+    "synonyms": []
+  },
+  {
+    "id": 382,
+    "romaji": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou",
+    "english": "Reborn as a Vending Machine, I Now Wander the Dungeon",
+    "synonyms": [
+      "Jidōhanbaiki ni Umarekawatta Ore wa Meikyū ni Samayō",
+      "Reencarnado numa Máquina de Vendas, Agora Exploro a Masmorra",
+      "Jihanki"
+    ]
+  },
+  {
+    "id": 384,
+    "romaji": "Jitsu wa Ore, Saikyou Deshita?",
+    "english": "Am I Actually the Strongest?",
+    "synonyms": [
+      "É Sério Que Eu Sou o Mais Forte?"
+    ]
+  },
+  {
+    "id": 385,
+    "romaji": "Youjuu Toshi",
+    "english": "Wicked City",
+    "synonyms": [
+      "Demon Beast City",
+      "Supernatural Beast City",
+      "Yoju Toshi",
+      "La cite interdite",
+      "La città delle bestie incantatrici"
+    ]
+  },
+  {
+    "id": 386,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 387,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 388,
+    "romaji": "JoJo no Kimyou na Bouken",
+    "english": "JoJo's Bizarre Adventure",
+    "synonyms": [
+      "JoJo's Bizarre Adventure OVA 1"
+    ]
+  },
+  {
+    "id": 389,
+    "romaji": "JoJo no Kimyou na Bouken (TV)",
+    "english": "JoJo's Bizarre Adventure (TV)",
+    "synonyms": [
+      "JoJo no Kimyou na Bouken (2012)",
+      "JoJo no Kimyou na Bouken: Sentou Chouryuu",
+      "JoJo's Bizarre Adventure: Phantom Blood",
+      "JoJo's Bizarre Adventure: Battle Tendency",
+      "Le bizzarre avventure di JoJo (2012)"
+    ]
+  },
+  {
+    "id": 390,
+    "romaji": "Kaitou Joker",
+    "english": "Mysterious Joker",
+    "synonyms": [
+      "JOKER"
+    ]
+  },
+  {
+    "id": 391,
+    "romaji": "Pocket Monsters Best Wishes: Kyurem VS Seikenshi",
+    "english": "Pokémon the Movie: Kyurem VS. The Sword of Justice",
+    "synonyms": [
+      "Gekijouban Pocket Monsters Best Wishes 2: Kyurem vs. Seikenshi",
+      "Pocket Monsters Best Wishes! 2 the Movie: Kyurem vs. Seikenshi",
+      "Pokemon Best Wishes!: Kyurem vs. the Sacred Swordsman Keldeo",
+      "Pokémon Filmen: Kyurem vs Rettferdighetens Sverd",
+      "Pokémon: Kyurem kontra Miecz Sprawiedliwości"
+    ]
+  },
+  {
+    "id": 392,
+    "romaji": "Juuou Mujin no Fafnir",
+    "english": "Unlimited Fafnir",
+    "synonyms": [
+      "Unlimited Fafnir School Battle"
+    ]
+  },
+  {
+    "id": 393,
+    "romaji": "Koutetsujou no Kabaneri",
+    "english": "Kabaneri of the Iron Fortress",
+    "synonyms": [
+      "Kabaneri de la Fortaleza de Hierro"
+    ]
+  },
+  {
+    "id": 394,
+    "romaji": "Koutetsujou no Kabaneri",
+    "english": "Kabaneri of the Iron Fortress",
+    "synonyms": [
+      "Kabaneri de la Fortaleza de Hierro"
+    ]
+  },
+  {
+    "id": 395,
+    "romaji": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
+    "english": "Kaguya-sama: Love is War",
+    "synonyms": [
+      "Kaguya Wants to be Confessed To: The Geniuses' War of Love and Brains",
+      "Kaguya-sama wa Kokurasetai: Tensai-tachi no Renai Zunousen",
+      "Kaguya-sama : L'Amour est une guerre",
+      "Kaguya-sama: Cuộc Chiến Tỏ Tình",
+      "Cuộc Chiến Tỏ Tình"
+    ]
+  },
+  {
+    "id": 396,
+    "romaji": "Kaifuku Jutsushi no Yarinaoshi",
+    "english": "Redo of Healer",
+    "synonyms": [
+      "La Venganza del Sanador"
+    ]
+  },
+  {
+    "id": 397,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 402,
+    "romaji": "C: THE MONEY OF SOUL AND POSSIBILITY CONTROL",
+    "english": "[C] - CONTROL - The Money and Soul of Possibility",
+    "synonyms": [
+      "[C] The Money of Soul and Possibility Control",
+      "[C] - Control",
+      "C-Control",
+      "The Money of Souland Possibility Controul",
+      "Dusza na sprzedaż"
+    ]
+  },
+  {
+    "id": 403,
+    "romaji": "Kimi to Boku no Saigo no Senjo, Arui wa Sekai ga Hajimaru Seisen",
+    "english": "Our Last Crusade or the Rise of a New World",
+    "synonyms": [
+      "Kimisen",
+      "Kimi to Boku no Saigo no Senjo, Aruiwa Sekai ga Hajimaru Seisen"
+    ]
+  },
+  {
+    "id": 404,
+    "romaji": "Quanzhi Gaoshou",
+    "english": "The King's Avatar",
+    "synonyms": [
+      "Full-Time Expert",
+      "Master of Skills"
+    ]
+  },
+  {
+    "id": 405,
+    "romaji": "Kinsou no Vermeil: Gakeppuchi Majutsushi wa Saikyou no Yakusai to Mahou Sekai wo Tsukisusumu",
+    "english": "Vermeil in Gold",
+    "synonyms": [
+      "Vermeil in Gold: A Desperate Magician Barges Into the Magical World Alongside the Strongest Calamity",
+      "Vermeil in Gold - Il mago a rischio bocciatura e la calamità più forte si fanno strada nel mondo della magia"
+    ]
+  },
+  {
+    "id": 406,
+    "romaji": "Kiseijuu: Sei no Kakuritsu",
+    "english": "Parasyte -the maxim-",
+    "synonyms": [
+      "Kiseiju - L'ospite indesiderato",
+      "Parasite : La Maxime",
+      "Pasożyt"
+    ]
+  },
+  {
+    "id": 407,
+    "romaji": "Best Ending?",
+    "english": "Best Ending?",
+    "synonyms": []
+  },
+  {
+    "id": 408,
+    "romaji": "\"Bungaku Shoujo\" to Ue Kawaku Ghost",
+    "english": null,
+    "synonyms": [
+      "\"A Literary Girl\" and a Ghost Who Hunger and Thirst",
+      "\"Bungaku Shoujo\" to Ue Kawaku Yuurei"
+    ]
+  },
+  {
+    "id": 411,
+    "romaji": "Komi-san wa, Komyushou desu.",
+    "english": "Komi Can’t Communicate",
+    "synonyms": [
+      "Comi san ha Comyusho desu",
+      "Komi-san wa, Comyushou desu.",
+      "Komi cherche ses mots",
+      "Komi không thể giao tiếp",
+      "Komi-san no puede comunicarse"
+    ]
+  },
+  {
+    "id": 412,
+    "romaji": "Kono Subarashii Sekai ni Shukufuku wo!",
+    "english": "KONOSUBA -God's blessing on this wonderful world!",
+    "synonyms": [
+      "Konosuba",
+      "Kono Subarashii Sekai ni Syukufuku wo!",
+      "Konosuba - As Bençãos de Deus Neste Mundo Maravilhoso",
+      "Konosuba : Sois béni monde merveilleux !",
+      "Konosuba: Un mundo maravilloso!"
+    ]
+  },
+  {
+    "id": 413,
+    "romaji": "Tenshi no Yuuwaku",
+    "english": "An Angel's Temptation",
+    "synonyms": []
+  },
+  {
+    "id": 415,
+    "romaji": "Kuroshitsuji",
+    "english": "Black Butler",
+    "synonyms": [
+      "Kuro Shitsuji",
+      "Kuroshitsuzi",
+      "Hắc Quản Gia",
+      "Diácono Negro temporada 1"
+    ]
+  },
+  {
+    "id": 420,
+    "romaji": "Gokushufudou",
+    "english": "The Way of the Househusband",
+    "synonyms": [
+      "La Via del Grembiule",
+      "Gokushufudou: Tatsu Imortal",
+      "De yakuza a amo de casa",
+      "La Voie du Tablier",
+      "Yakuza w fartuszku. Kodeks perfekcyjnego pana domu"
+    ]
+  },
+  {
+    "id": 421,
+    "romaji": "Yasei no Last Boss ga Arawareta!",
+    "english": "A Wild Last Boss Appeared!",
+    "synonyms": [
+      "A Wild Last Boss Appears!"
+    ]
+  },
+  {
+    "id": 422,
+    "romaji": "Nageki no Bourei wa Intai Shitai",
+    "english": "Let This Grieving Soul Retire",
+    "synonyms": [
+      "Arwah Berduka yang Ingin Pensiun"
+    ]
+  },
+  {
+    "id": 423,
+    "romaji": "Kagirinaki Rakuen",
+    "english": null,
+    "synonyms": [
+      "Limitless Paradise"
+    ]
+  },
+  {
+    "id": 424,
+    "romaji": "Musaigen no Phantom World: Limitless Phantom World",
+    "english": "Myriad Colors Phantom World: Limitless Phantom World",
+    "synonyms": [
+      "Musaigen no Phantom World Picture Drama Specials",
+      "Myriad Colors Phantom World Picture Drama Specials"
+    ]
+  },
+  {
+    "id": 425,
+    "romaji": "Hyakujuu-Ou GoLion",
+    "english": "Go Lion",
+    "synonyms": [
+      "Voltron: Defender of the Universe",
+      "Beast King GoLion",
+      "Lion Force Voltron",
+      "Hundred-Beast King Go Lion"
+    ]
+  },
+  {
+    "id": 427,
+    "romaji": "Looney Tunes Gokko",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 428,
+    "romaji": "Guimi Zhi Zhu",
+    "english": "Lord of Mysteries",
+    "synonyms": [
+      "Lord of the Mysteries",
+      "LOTM",
+      "Chúa Tể Huyền Bí",
+      "Tuan Misteri"
+    ]
+  },
+  {
+    "id": 429,
+    "romaji": "Satsuriku no Tenshi",
+    "english": "Angels of Death",
+    "synonyms": [
+      "Angel of Massacre",
+      "Angel Slaughter"
+    ]
+  },
+  {
+    "id": 430,
+    "romaji": "Cheat Kusushi no Slow Life: Isekai ni Tsukurou Drugstore",
+    "english": "Drug Store in Another World - The Slow Life of a Cheat Pharmacist",
+    "synonyms": [
+      "Cheat Pharmicist's Slow Life: Making a Drug Store in Another World"
+    ]
+  },
+  {
+    "id": 431,
+    "romaji": "Ame no Hi no Iris",
+    "english": null,
+    "synonyms": [
+      "Iris on Rainy Days"
+    ]
+  },
+  {
+    "id": 433,
+    "romaji": "Dagashi Kashi 2",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 434,
+    "romaji": "Mahoutsukai Reimeiki",
+    "english": "The Dawn of the Witch",
+    "synonyms": [
+      "Bình Minh Của Phù Thủy",
+      "Purwa Fajar Si Penyihir"
+    ]
+  },
+  {
+    "id": 435,
+    "romaji": "Kouya no Kotobuki Hikoutai",
+    "english": "The Magnificent KOTOBUKI",
+    "synonyms": []
+  },
+  {
+    "id": 436,
+    "romaji": "ef: a tale of memories.",
+    "english": "ef ~ A Tale of Memories",
+    "synonyms": []
+  },
+  {
+    "id": 437,
+    "romaji": "Maou Gakuin no Futekigousha: Shijou Saikyou no Maou no Shiso, Tensei shite Shison-tachi no Gakkou e Kayou",
+    "english": "The Misfit of Demon King Academy: History’s Strongest Demon King Reincarnates and Goes to School with His Descendants",
+    "synonyms": [
+      "Maou Gakuin no Futekigousha",
+      "The Misfit of Demon King Academy"
+    ]
+  },
+  {
+    "id": 438,
+    "romaji": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga, Dou Medereba Ii?",
+    "english": "An Archdemon's Dilemma: How to Love Your Elf Bride",
+    "synonyms": [
+      "Madome"
+    ]
+  },
+  {
+    "id": 441,
+    "romaji": "Glass no Kamen (2005)",
+    "english": "Glass Mask (2005)",
+    "synonyms": []
+  },
+  {
+    "id": 442,
+    "romaji": "Animatrix",
+    "english": "The Animatrix",
+    "synonyms": [
+      "Animatrix: Final Flight of the Osiris",
+      "Animatrix: The Second Renaissance",
+      "Animatrix: Kid's Story",
+      "Animatrix: Program",
+      "Animatrix: World Record"
+    ]
+  },
+  {
+    "id": 443,
+    "romaji": "Aoki Hagane no Arpeggio: Ars Nova",
+    "english": "Arpeggio of Blue Steel",
+    "synonyms": []
+  },
+  {
+    "id": 444,
+    "romaji": "Megalo Box",
+    "english": "Megalobox",
+    "synonyms": []
+  },
+  {
+    "id": 446,
+    "romaji": "Meikyuu Black Company",
+    "english": "The Dungeon of Black Company",
+    "synonyms": []
+  },
+  {
+    "id": 447,
+    "romaji": "Tesla Note: Mickey to Oliver no Agent Yousei Kouza",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 450,
+    "romaji": "Fate/Grand Order: Zettai Majuu Sensen Babylonia",
+    "english": "Fate/Grand Order Absolute Demonic Front: Babylonia",
+    "synonyms": [
+      "FGO: Babylonia"
+    ]
+  },
+  {
+    "id": 453,
+    "romaji": "Monster Musume no Iru Nichijou",
+    "english": "Monster Musume: Everyday Life With Monster Girls",
+    "synonyms": [
+      "MonMusu",
+      "Die Monster Mädchen"
+    ]
+  },
+  {
+    "id": 457,
+    "romaji": "Casshern",
+    "english": "Casshan: Robot Hunter",
+    "synonyms": []
+  },
+  {
+    "id": 458,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 461,
+    "romaji": "Tonari no Totoro",
+    "english": "My Neighbor Totoro",
+    "synonyms": [
+      "My Neighbour Totoro",
+      "Meu Amigo Totoro",
+      "Mi Vecino Totoro",
+      "Komşum Totoro",
+      "Mój sąsiad Totoro"
+    ]
+  },
+  {
+    "id": 462,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 463,
+    "romaji": "Isekai Mokushiroku Mynoghra: Hametsu no Bunmei de Hajimeru Sekai Seifuku",
+    "english": "Apocalypse Bringer Mynoghra: World Conquest Starts with the Civilization of Ruin",
+    "synonyms": [
+      "Khải huyền dị giới Mynoghra: Chinh phục thế giới từ nền văn minh suy tàn",
+      "Apokalips Dunia Lain Mynoghra: Menaklukkan Dunia Dimulai dari Peradaban Kehancuran"
+    ]
+  },
+  {
+    "id": 464,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 465,
+    "romaji": "Fushigi Yuugi OVA",
+    "english": "Mysterious Play OVA",
+    "synonyms": [
+      "Fushigi Yugi OVA 1",
+      "El Juego Misterioso Fushigi Yugi",
+      "Fushigi Yugi: Il Gioco Misterioso",
+      "Tajemnica przeszłości"
+    ]
+  },
+  {
+    "id": 466,
+    "romaji": "Ijiranaide, Nagatoro-san",
+    "english": "DON'T TOY WITH ME, MISS NAGATORO",
+    "synonyms": [
+      "Arrête de me chauffer, Nagatoro!",
+      "Jangan main-main denganku, Nona Nagatoro Serangan Ke-2 ",
+      "No me rayes, Nagatoro"
+    ]
+  },
+  {
+    "id": 467,
+    "romaji": "Ijiranaide, Nagatoro-san",
+    "english": "DON'T TOY WITH ME, MISS NAGATORO",
+    "synonyms": [
+      "Arrête de me chauffer, Nagatoro!",
+      "Jangan main-main denganku, Nona Nagatoro Serangan Ke-2 ",
+      "No me rayes, Nagatoro"
+    ]
+  },
+  {
+    "id": 468,
+    "romaji": "Nageki no Bourei wa Intai Shitai",
+    "english": "Let This Grieving Soul Retire",
+    "synonyms": [
+      "Arwah Berduka yang Ingin Pensiun"
+    ]
+  },
+  {
+    "id": 471,
+    "romaji": "Netoge no Yome wa Onnanoko ja Nai to Omotta?",
+    "english": "And you thought there is never a girl online?",
+    "synonyms": []
+  },
+  {
+    "id": 472,
+    "romaji": "Isekai no Seikishi Monogatari",
+    "english": "Tenchi Muyo! War on Geminar",
+    "synonyms": [
+      "ISM"
+    ]
+  },
+  {
+    "id": 473,
+    "romaji": "Nobunaga no Shinobi: Ise Kanegasaki-hen",
+    "english": "Ninja Girl & Samurai Master 2nd ",
+    "synonyms": []
+  },
+  {
+    "id": 474,
+    "romaji": "Yokohama Kaidashi Kikou: Quiet Country Cafe",
+    "english": null,
+    "synonyms": [
+      "YKK: Quiet Country Cafe",
+      "Yokohama Shopping Journal: Quiet Country Cafe"
+    ]
+  },
+  {
+    "id": 479,
+    "romaji": "One Punch Man",
+    "english": "One-Punch Man",
+    "synonyms": [
+      "OPM",
+      "Wanpanman",
+      "Jagoan Sekali Pukul S1",
+      "Nhất Quyền Nhân"
+    ]
+  },
+  {
+    "id": 480,
+    "romaji": "Yahari Ore no Seishun Love Come wa Machigatteiru.",
+    "english": "My Teen Romantic Comedy SNAFU",
+    "synonyms": [
+      "Oregairu",
+      "My youth romantic comedy is wrong as I expected."
+    ]
+  },
+  {
+    "id": 482,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 487,
+    "romaji": "Tokyo Ghoul: [JACK]",
+    "english": null,
+    "synonyms": [
+      "Tokyo Kushu: Jack"
+    ]
+  },
+  {
+    "id": 489,
+    "romaji": "Shingeki no Kyojin: The Final Season",
+    "english": "Attack on Titan Final Season",
+    "synonyms": [
+      "SnK 4",
+      "AoT 4",
+      "Shingeki no Kyojin 4",
+      "Attack on Titan Season 4",
+      "L'Attaque des Titans Saison Finale"
+    ]
+  },
+  {
+    "id": 490,
+    "romaji": "Mouretsu Pirates",
+    "english": "Bodacious Space Pirates",
+    "synonyms": [
+      "Mouretsu Uchuu Kaizoku",
+      "Miniskirt Pirates",
+      "Moretsu Uchuu Kaizoku"
+    ]
+  },
+  {
+    "id": 491,
+    "romaji": "Saki: Achiga-hen - episode of side-A",
+    "english": "Saki -  Episode of Side A",
+    "synonyms": []
+  },
+  {
+    "id": 492,
+    "romaji": "Juu Ou Sei",
+    "english": "Jyu-Oh-Sei: Planet of the Beast King",
+    "synonyms": [
+      "Juuousei"
+    ]
+  },
+  {
+    "id": 494,
+    "romaji": "Demashitaa! Powerpuff Girls Z",
+    "english": "Powerpuff Girls Z",
+    "synonyms": [
+      "And They're Off! Powerpuff Girls Z",
+      "PPGZ",
+      "As Meninas Superpoderosas Geração Z",
+      "Les Supers Nanas Zeta"
+    ]
+  },
+  {
+    "id": 495,
+    "romaji": "PSYCHO-PASS Sinners of the System Case 1: Tsumi to Batsu",
+    "english": "PSYCHO-PASS: Sinners of the System 1 - Crime and Punishment",
+    "synonyms": []
+  },
+  {
+    "id": 496,
+    "romaji": "Quanzhi Gaoshou 3",
+    "english": null,
+    "synonyms": [
+      "The King's Avatar S3"
+    ]
+  },
+  {
+    "id": 500,
+    "romaji": "Shuumatsu no Valkyrie",
+    "english": "Record of Ragnarok",
+    "synonyms": [
+      "Shuumatsu no Walkure",
+      "Valkyrie Apocalypse"
+    ]
+  },
+  {
+    "id": 501,
+    "romaji": "Kaifuku Jutsushi no Yarinaoshi",
+    "english": "Redo of Healer",
+    "synonyms": [
+      "La Venganza del Sanador"
+    ]
+  },
+  {
+    "id": 502,
+    "romaji": "Mahouka Koukou no Rettousei",
+    "english": "The Irregular at Magic High School",
+    "synonyms": []
+  },
+  {
+    "id": 503,
+    "romaji": "Tensei Shitara Ken Deshita",
+    "english": "Reincarnated as a Sword",
+    "synonyms": [
+      "I Became the Sword by Transmigrating",
+      "TenKen",
+      "TENKEN - Reincarnato in una spada"
+    ]
+  },
+  {
+    "id": 504,
+    "romaji": "Biohazard: Damnation",
+    "english": "Resident Evil: Damnation",
+    "synonyms": [
+      "Resident Evil: Condenação",
+      "Resident Evil: Potępienie"
+    ]
+  },
+  {
+    "id": 505,
+    "romaji": "Rick and Morty: Summer Meets God",
+    "english": "Summer Meets God (Rick Meets Evil)",
+    "synonyms": [
+      "Rick and Morty"
+    ]
+  },
+  {
+    "id": 506,
+    "romaji": "JoJo no Kimyou na Bouken: Ougon no Kaze",
+    "english": "JoJo's Bizarre Adventure: Golden Wind",
+    "synonyms": [
+      "JoJo's Bizarre Adventure Part 5",
+      "JoJo's Bizarre Adventure: Vento Aureo",
+      "Le Bizzarre Avventure Di GioGio: Vento Aureo"
+    ]
+  },
+  {
+    "id": 508,
+    "romaji": "Saihate no Paladin: Tetsusabi no Yama no Ou",
+    "english": "The Faraway Paladin: The Lord of Rust Mountains",
+    "synonyms": [
+      "The Faraway Paladin Season 2",
+      "Saihate no Paladin 2nd Season",
+      "The Faraway Paladin: O Senhor das Montanhas de Ferrugem",
+      "The Faraway Paladin : Le Seigneur des Montagnes de Rouille"
+    ]
+  },
+  {
+    "id": 509,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 510,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 513,
+    "romaji": "Sakamoto desu ga?",
+    "english": "Haven't You Heard? I'm Sakamoto",
+    "synonyms": [
+      "Sakamoto, pour vous servir !",
+      "Gak Pernah Dengar Nama Aku Sakamoto?",
+      "Soy Sakamoto, ¿por?"
+    ]
+  },
+  {
+    "id": 515,
+    "romaji": "Samurai Deeper Kyou",
+    "english": "Samurai Deeper Kyo",
+    "synonyms": []
+  },
+  {
+    "id": 517,
+    "romaji": "Hi☆sCoool! SeHa Girl",
+    "english": "Hi-sCool! Seha Girls",
+    "synonyms": [
+      "Sega Hard Girls"
+    ]
+  },
+  {
+    "id": 518,
+    "romaji": "Seitokai Yakuindomo＊",
+    "english": "Seitokai Yakuindomo Season 2",
+    "synonyms": [
+      "Seitokai Yakuindomo Season 2 ",
+      "Seitokai 2",
+      "Seitokai Yakuindomo*",
+      "SYD*"
+    ]
+  },
+  {
+    "id": 520,
+    "romaji": "Sekai Saikou no Ansatsusha, Isekai Kizoku ni Tensei suru",
+    "english": "The World's Finest Assassin Gets Reincarnated in Another World as an Aristocrat",
+    "synonyms": [
+      "Ansatsu Kizoku",
+      "Pembunuh Terhebat di Dunia Reinkarnasi Menjadi Bangsawan Dunia lain"
+    ]
+  },
+  {
+    "id": 522,
+    "romaji": "Onkochisin na Kanojo",
+    "english": null,
+    "synonyms": [
+      "Onkochisin na Kanojyo"
+    ]
+  },
+  {
+    "id": 523,
+    "romaji": "selector infected WIXOSS",
+    "english": "selector infected WIXOSS",
+    "synonyms": []
+  },
+  {
+    "id": 524,
+    "romaji": "Sentouin, Hakenshimasu!",
+    "english": "Combatants Will Be Dispatched!",
+    "synonyms": [
+      "Kombattanten werden entsandt!",
+      "Les combattants seront déployés !"
+    ]
+  },
+  {
+    "id": 525,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 526,
+    "romaji": "Nanatsu no Taizai",
+    "english": "The Seven Deadly Sins",
+    "synonyms": [
+      "7DS"
+    ]
+  },
+  {
+    "id": 527,
+    "romaji": "Tennis no Ouji-sama",
+    "english": "The Prince of Tennis",
+    "synonyms": []
+  },
+  {
+    "id": 529,
+    "romaji": "Jyuushin Enbu: HERO TALES",
+    "english": "Hero Tales",
+    "synonyms": [
+      "Juushin Enbu",
+      "Juushin Enbu Hero Tales",
+      "Jushin Enbu",
+      "Seven Stars Will Shatter the Empire: Hero Tales"
+    ]
+  },
+  {
+    "id": 530,
+    "romaji": "Fetish",
+    "english": null,
+    "synonyms": [
+      "Beautiful Days",
+      "Photograph",
+      "One My Star",
+      "Torawarebito"
+    ]
+  },
+  {
+    "id": 531,
+    "romaji": "Meitantei Holmes",
+    "english": "Sherlock Hound",
+    "synonyms": [
+      "Famous Detective Holmes",
+      "Il fiuto di Sherlock Holmes"
+    ]
+  },
+  {
+    "id": 533,
+    "romaji": "Shimoneta to Iu Gainen ga Sonzai Shinai Taikutsu na Sekai",
+    "english": "SHIMONETA: A Boring World Where the Concept of Dirty Jokes Doesn’t Exist",
+    "synonyms": [
+      "Shimoseka"
+    ]
+  },
+  {
+    "id": 535,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 536,
+    "romaji": "Tonari no Onee-san Dousei-hen",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 538,
+    "romaji": "Binkan Drops",
+    "english": null,
+    "synonyms": [
+      "A Maiden's Heart and a Blue Summer Sky",
+      "Dog Year",
+      "Too CLose For Love"
+    ]
+  },
+  {
+    "id": 540,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 541,
+    "romaji": "Shinmai Maou no Testament: BURST",
+    "english": "The Testament of Sister New Devil BURST",
+    "synonyms": [
+      "Shinmai Maou no Keiyakusha BURST"
+    ]
+  },
+  {
+    "id": 543,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 545,
+    "romaji": "Koukyoushihen Eureka Seven",
+    "english": "Eureka Seven",
+    "synonyms": [
+      "E7",
+      "Eureka 7",
+      "Eureka Seven Psalms of Planets",
+      "Psalms of Planets Eureka Seven"
+    ]
+  },
+  {
+    "id": 546,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 547,
+    "romaji": "Shuumatsu no Valkyrie",
+    "english": "Record of Ragnarok",
+    "synonyms": [
+      "Shuumatsu no Walkure",
+      "Valkyrie Apocalypse"
+    ]
+  },
+  {
+    "id": 548,
+    "romaji": "Anne Happy♪",
+    "english": "Anne-Happy",
+    "synonyms": [
+      "Unhappy♪"
+    ]
+  },
+  {
+    "id": 549,
+    "romaji": "Tensei Shitara Slime Datta Ken: Tensura Nikki",
+    "english": "The Slime Diaries",
+    "synonyms": [
+      "The Slime Diaries: That Time I Got Reincarnated as a Slime"
+    ]
+  },
+  {
+    "id": 550,
+    "romaji": "Tensei Shitara Slime Datta Ken: Tensura Nikki",
+    "english": "The Slime Diaries",
+    "synonyms": [
+      "The Slime Diaries: That Time I Got Reincarnated as a Slime"
+    ]
+  },
+  {
+    "id": 551,
+    "romaji": "Ten no Hanayome",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 552,
+    "romaji": "SoniAni: SUPER SONICO THE ANIMATION",
+    "english": "Soni-Ani: SUPER SONICO THE ANIMATION",
+    "synonyms": []
+  },
+  {
+    "id": 556,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 557,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 559,
+    "romaji": "Shinryaku! Ika Musume",
+    "english": "Squid Girl",
+    "synonyms": [
+      "The Invader Comes From the Bottom of the Sea!"
+    ]
+  },
+  {
+    "id": 560,
+    "romaji": "Dr. STONE: STONE WARS",
+    "english": "Dr. STONE: STONE WARS",
+    "synonyms": [
+      "ドクターストーン STONE WARS",
+      "Dr. STONE 2",
+      "닥터 스톤 STONE WARS",
+      "DR.STONE ภาค 2"
+    ]
+  },
+  {
+    "id": 562,
+    "romaji": "Sora yori mo Tooi Basho",
+    "english": "A Place Further Than the Universe",
+    "synonyms": [
+      "Uchuu Yorimo Toui Basho",
+      "Sora yorimo Tooi Basho",
+      "Uchuu yori mo Tooi Basho",
+      "Yorimoi"
+    ]
+  },
+  {
+    "id": 564,
+    "romaji": "Sword Art Online II",
+    "english": "Sword Art Online II",
+    "synonyms": [
+      "SAO2",
+      "GGO"
+    ]
+  },
+  {
+    "id": 565,
+    "romaji": "Tales of Zestiria the Cross",
+    "english": "Tales of Zestiria the X",
+    "synonyms": []
+  },
+  {
+    "id": 566,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 568,
+    "romaji": "HAPPY☆LESSON (TV)",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 569,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 570,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 572,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 573,
+    "romaji": "Tensei Kenja no Isekai Life: Daini no Shokugyou wo Ete, Sekai Saikyou ni Narimashita",
+    "english": "My Isekai Life: I Gained a Second Character Class and Became the Strongest Sage in the World!",
+    "synonyms": []
+  },
+  {
+    "id": 574,
+    "romaji": "Tenshi no 3P!",
+    "english": null,
+    "synonyms": [
+      "Tenshi no Three Piece!",
+      "Tenshi no 3-piece",
+      "Here comes the three angels",
+      "天使的3P！"
+    ]
+  },
+  {
+    "id": 575,
+    "romaji": "Tensei Oujo to Tensai Reijou no Mahou Kakumei",
+    "english": "The Magical Revolution of the Reincarnated Princess and the Genius Young Lady",
+    "synonyms": [
+      "MagiRevo",
+      "TenTen",
+      "Revolusi Sihir Sang Putri Reinkarnasi dan Tuan Putri Genius",
+      "TenTen Kakumei"
+    ]
+  },
+  {
+    "id": 576,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 578,
+    "romaji": "Mushoku Tensei: Isekai Ittara Honki Dasu",
+    "english": "Mushoku Tensei: Jobless Reincarnation",
+    "synonyms": [
+      "Jobless Reincarnation: I Will Seriously Try If I Go To Another World",
+      "Thất nghiệp chuyển sinh"
+    ]
+  },
+  {
+    "id": 579,
+    "romaji": "Digimon Adventure tri. 2: Ketsui",
+    "english": "Digimon Adventure tri. Chapter 2: Determination",
+    "synonyms": [
+      "Digimon tri. 2"
+    ]
+  },
+  {
+    "id": 580,
+    "romaji": "HATSUNE MIKU × TETSUYA NOMURA",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 581,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 582,
+    "romaji": "Chou Kadou Girl 1/6",
+    "english": "AMAZING STRANGER",
+    "synonyms": [
+      "Chou Kadou Girl ⅙",
+      "Choukadou Girl 1/6",
+      "Over Drive Girl 1/6",
+      "Súper Chica Móvil 1/6"
+    ]
+  },
+  {
+    "id": 583,
+    "romaji": "Itou Junji: Collection",
+    "english": "Junji Ito Collection",
+    "synonyms": []
+  },
+  {
+    "id": 584,
+    "romaji": "Xian Wang De Richang Shenghuo",
+    "english": "The Daily Life of the Immortal King",
+    "synonyms": [
+      "La vida diaria del rey inmortal"
+    ]
+  },
+  {
+    "id": 585,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 586,
+    "romaji": "Hataraku Maou-sama!",
+    "english": "The Devil is a Part-Timer!",
+    "synonyms": [
+      "Raja Iblis Nyambi!"
+    ]
+  },
+  {
+    "id": 588,
+    "romaji": "Kage no Jitsuryokusha ni Naritakute!: Zankyou-hen",
+    "english": null,
+    "synonyms": [
+      "The Eminence in Shadow: Lost Echoes"
+    ]
+  },
+  {
+    "id": 591,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 593,
+    "romaji": "Tokyo Godfathers",
+    "english": "Tokyo Godfathers",
+    "synonyms": [
+      "Rodzice chrzestni z Tokio",
+      "Héroes al Rescate"
+    ]
+  },
+  {
+    "id": 594,
+    "romaji": "Green Green",
+    "english": "Green Green",
+    "synonyms": []
+  },
+  {
+    "id": 595,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 597,
+    "romaji": "Jibaku-kun: TWELVE WORLD STORY",
+    "english": "Bucky: The Incredible Kid",
+    "synonyms": [
+      "Jibaku-kun",
+      "Bucky",
+      "Bucky: Searching for World 0 "
+    ]
+  },
+  {
+    "id": 600,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 601,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 602,
+    "romaji": "Blade Runner: Black Out 2022",
+    "english": "Blade Runner: Black Out 2022",
+    "synonyms": []
+  },
+  {
+    "id": 604,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 605,
+    "romaji": "Miira no Kaikata",
+    "english": "How to Keep a Mummy",
+    "synonyms": []
+  },
+  {
+    "id": 606,
+    "romaji": "Masamune-kun no Revenge",
+    "english": "Masamune-kun's Revenge",
+    "synonyms": []
+  },
+  {
+    "id": 607,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 608,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 610,
+    "romaji": "Nanatsu no Taizai",
+    "english": "The Seven Deadly Sins",
+    "synonyms": [
+      "7DS"
+    ]
+  },
+  {
+    "id": 611,
+    "romaji": "Nagasarete Airantou",
+    "english": "Nagasarete Airanto",
+    "synonyms": [
+      "Drift off to Blue Orchid Island",
+      "Casted Away - Airan Island"
+    ]
+  },
+  {
+    "id": 612,
+    "romaji": "Bungou Stray Dogs: Hitori Ayumu",
+    "english": "Bungo Stray Dogs 2: Walking Alone",
+    "synonyms": [
+      "Bungou Stray Dogs 2 OVA",
+      "Bungou Stray Dogs 2: Episode 13"
+    ]
+  },
+  {
+    "id": 613,
+    "romaji": "BURN THE WITCH",
+    "english": "BURN THE WITCH",
+    "synonyms": []
+  },
+  {
+    "id": 615,
+    "romaji": "Uchuu Show e Youkoso",
+    "english": "Welcome to THE SPACE SHOW",
+    "synonyms": [
+      "Uchu Show e Youkoso"
+    ]
+  },
+  {
+    "id": 616,
+    "romaji": "Ibara no Ou: King of Thorn",
+    "english": "King of Thorn",
+    "synonyms": [
+      "Ibara no Oh"
+    ]
+  },
+  {
+    "id": 617,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 620,
+    "romaji": "Tom to Jerry Gokko",
+    "english": "Tom and Jerry Gokko",
+    "synonyms": [
+      "Tom and Jerry (2022)",
+      "Tom to Jerry"
+    ]
+  },
+  {
+    "id": 621,
+    "romaji": "Tomo-chan wa Onnanoko!",
+    "english": "Tomo-chan Is a Girl!",
+    "synonyms": [
+      "Tomo-chan wa Onna no ko!"
+    ]
+  },
+  {
+    "id": 624,
+    "romaji": "Tonari no Totoro",
+    "english": "My Neighbor Totoro",
+    "synonyms": [
+      "My Neighbour Totoro",
+      "Meu Amigo Totoro",
+      "Mi Vecino Totoro",
+      "Komşum Totoro",
+      "Mój sąsiad Totoro"
+    ]
+  },
+  {
+    "id": 627,
+    "romaji": "Kyochuu Rettou Movie",
+    "english": "The Island of Giant Insects Movie",
+    "synonyms": [
+      "The Island of Giant Insects"
+    ]
+  },
+  {
+    "id": 628,
+    "romaji": "Muv-Luv Alternative: Total Eclipse",
+    "english": "Muv-Luv Alternative: Total Eclipse",
+    "synonyms": [
+      "MuvLuv Alternative Total Eclipse",
+      "MLA TE"
+    ]
+  },
+  {
+    "id": 629,
+    "romaji": "Kami no Tou: Tower of God",
+    "english": "Tower of God",
+    "synonyms": [
+      "Sinui Tap",
+      "Kami no Tou",
+      "TOG"
+    ]
+  },
+  {
+    "id": 630,
+    "romaji": "Kami no Tou: Tower of God",
+    "english": "Tower of God",
+    "synonyms": [
+      "Sinui Tap",
+      "Kami no Tou",
+      "TOG"
+    ]
+  },
+  {
+    "id": 631,
+    "romaji": "Ore Monogatari!!",
+    "english": "My Love Story!!",
+    "synonyms": [
+      "Mon Histoire"
+    ]
+  },
+  {
+    "id": 632,
+    "romaji": "Chou Robot Seimeitai Transformers Micron Densetsu",
+    "english": "Transformers: Armada",
+    "synonyms": [
+      "Transformers Legend of Micron"
+    ]
+  },
+  {
+    "id": 633,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 634,
+    "romaji": "Otomege Sekai wa Mob ni Kibishii Sekai desu",
+    "english": "Trapped in a Dating Sim: The World of Otome Games Is Tough for Mobs",
+    "synonyms": [
+      "mobseka",
+      "Otome Game Sekai wa Mob ni Kibishii Sekai desu "
+    ]
+  },
+  {
+    "id": 635,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 636,
+    "romaji": "Kocchi ni Oide yo.",
+    "english": null,
+    "synonyms": [
+      "Please come here."
+    ]
+  },
+  {
+    "id": 637,
+    "romaji": "Phantom in the Twilight",
+    "english": "Phantom in the Twilight",
+    "synonyms": []
+  },
+  {
+    "id": 638,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 639,
+    "romaji": "Grand Blue",
+    "english": "Grand Blue Dreaming",
+    "synonyms": []
+  },
+  {
+    "id": 642,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 643,
+    "romaji": "Uzaki-chan wa Asobitai!",
+    "english": "Uzaki-chan Wants to Hang Out!",
+    "synonyms": []
+  },
+  {
+    "id": 644,
+    "romaji": "Biohazard: Vendetta",
+    "english": "Resident Evil: Vendetta",
+    "synonyms": [
+      "Resident Evil: A Vingança"
+    ]
+  },
+  {
+    "id": 645,
+    "romaji": "Wild Arms: Twilight Venom",
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 646,
+    "romaji": "LV999 no Murabito",
+    "english": "The Villager of Level 999",
+    "synonyms": []
+  },
+  {
+    "id": 647,
+    "romaji": "Saikyou no Shien-shoku [Wajutsushi] Dearu Ore wa Sekai Saikyou Clan wo Shitagaeru",
+    "english": "The Most Notorious \"Talker\" Runs the World's Greatest Clan",
+    "synonyms": [
+      "Wajutsushi"
+    ]
+  },
+  {
+    "id": 648,
+    "romaji": "Yoake Tsugeru Lu no Uta",
+    "english": "Lu Over the Wall",
+    "synonyms": [
+      "Lu e la città delle sirene",
+      "Lou et l'île aux sirènes"
+    ]
+  },
+  {
+    "id": 649,
+    "romaji": "Shirokuma Cafe",
+    "english": "Polar Bear's Café",
+    "synonyms": [
+      "Polar Bear Cafe",
+      "Shirokuma Café"
+    ]
+  },
+  {
+    "id": 650,
+    "romaji": "Nandarou",
+    "english": null,
+    "synonyms": [
+      "What Is It?"
+    ]
+  },
+  {
+    "id": 651,
+    "romaji": "B: The Beginning Succession",
+    "english": "B: The Beginning: Succession",
+    "synonyms": [
+      "Perfect Bones 2"
+    ]
+  },
+  {
+    "id": 653,
+    "romaji": "Sword Art Online: Alicization - War of Underworld Part 2",
+    "english": "Sword Art Online: Alicization - War of Underworld Part 2",
+    "synonyms": [
+      "Sword Art Online: Alicization - War of Underworld Last Season",
+      "SAOV",
+      "SAO5"
+    ]
+  },
+  {
+    "id": 654,
+    "romaji": "NARUTO SD Rock Lee no Seishun Full-Power Ninden",
+    "english": "NARUTO Spin-Off: Rock Lee & His Ninja Pals",
+    "synonyms": [
+      "Naruto SD-Rock Lee:Les Péripéties d'un ninja en herbe"
+    ]
+  },
+  {
+    "id": 656,
+    "romaji": "Kite Liberator",
+    "english": "Kite Liberator",
+    "synonyms": []
+  },
+  {
+    "id": 658,
+    "romaji": "Yasei no Last Boss ga Arawareta!",
+    "english": "A Wild Last Boss Appeared!",
+    "synonyms": [
+      "A Wild Last Boss Appears!"
+    ]
+  },
+  {
+    "id": 659,
+    "romaji": "ALL YOU NEED IS KILL",
+    "english": "ALL YOU NEED IS KILL",
+    "synonyms": [
+      "AYNK"
+    ]
+  },
+  {
+    "id": 660,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 661,
+    "romaji": "A song for You! You? You!!",
+    "english": null,
+    "synonyms": [
+      "ASFYYY"
+    ]
+  },
+  {
+    "id": 662,
+    "romaji": "ONE PIECE FILM: GOLD",
+    "english": "One Piece Film: Gold",
+    "synonyms": [
+      "One Piece Film 13"
+    ]
+  },
+  {
+    "id": 663,
+    "romaji": "Youjo Senki",
+    "english": "Saga of Tanya the Evil",
+    "synonyms": []
+  },
+  {
+    "id": 667,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  },
+  {
+    "id": 669,
+    "romaji": "Arcana Famiglia: Amore Mangiare Cantare!",
+    "english": null,
+    "synonyms": [
+      "Arcana Famiglia: La Storia Della Arcana Famiglia"
+    ]
+  },
+  {
+    "id": 671,
+    "romaji": "Zom 100: Zombie ni Naru Made ni Shitai 100 no Koto",
+    "english": "Zom 100: Bucket List of the Dead",
+    "synonyms": [
+      "Zombie 100 ~100 Things I Want to do Before I Become a Zombie~",
+      "Zombie 100 ~Zombie ni Naru Made ni Shitai 100 no Koto~",
+      "100 Coisas para Fazer Antes de Virar Zumbi"
+    ]
+  },
+  {
+    "id": 678,
+    "romaji": null,
+    "english": null,
+    "synonyms": []
+  }
+]
