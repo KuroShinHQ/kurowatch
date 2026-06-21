@@ -1,0 +1,400 @@
+# ESLESMEYEN İçerikler — Manuel URL Gerekli
+
+> Otomatik eşleştirme yapılamayan içerikler. URL bulunca `[ ]` → `[x]` yap ve ID'yi bildir.
+
+
+## 🎌 Anime — turkanime'de bulunamadı (78 adet)
+
+turkanime.tv/video/SLUG-1-bolum formatında URL gir.
+
+- [ ] [216] **Aladdin (Çizgi Dizi)**
+- [ ] [220] **Amerikan Sapığı**
+- [ ] [224] **Appraisal Skill**
+- [ ] [227] **Asena ve Oniriks**
+- [ ] [228] **Assassin Isekai**
+- [ ] [231] **Assessment Assassin**
+- [ ] [232] **Asteriks ve Oniriks**
+- [ ] [237] **Back Street Girls: Gokudols** ← öneri: back-street-girls-gokudolls
+- [ ] [238] **Baki Serisi**
+- [ ] [239] **Baki Serisi (Tüm Sezonlar)**
+- [ ] [678] **Baki's Path 2. Kısım**
+- [ ] [257] **Cem Yılmaz Fundamentals**
+- [ ] [260] **Chihiro Gidişi**
+- [ ] [271] **DanMachi**
+- [ ] [273] **Dark**
+- [ ] [277] **Dawn of the Witch**
+- [ ] [284] **Demon Lord 2099**
+- [ ] [285] **Demon Slayer**
+- [ ] [298] **Ed, Edd n Eddy**
+- [ ] [302] **Failure Frame**
+- [ ] [303] **Faraway Paladin**
+- [ ] [305] **Farmer Skill**
+- [ ] [308] **Fate Serisi**
+- [ ] [309] **Fate Serisi (Stay Night, Zero, Unlimited Blade Works)**
+- [ ] [315] **Frieren: Beyond Journey's End**
+- [ ] [318] **Full Dive RPG**
+- [ ] [331] **Ghost Rider (Hayalet Sürücü)**
+- [ ] [334] **Gladio**
+- [ ] [335] **Gladyatör**
+- [ ] [336] **Gokudols**
+- [ ] [344] **Hacivat Karagöz Neden Öldürüldü?**
+- [ ] [361] **Immortal King**
+- [ ] [374] **Isekai One Turn Kill Neesan**
+- [ ] [375] **Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita**
+- [ ] [102] **Isekai Shikkaku (No Longer Allowed in Another World)** ← öneri: isekai-shikkaku
+- [ ] [387] **JoJo Serisi**
+- [ ] [406] **Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)**
+- [ ] [407] **Koleksiyoncu**
+- [ ] [409] **Komedi Dükkanı**
+- [ ] [410] **Komedi Dükkanı (Tolga Çevik)**
+- [ ] [423] **Limitless**
+- [ ] [429] **Love, Death & Robots**
+- [ ] [431] **Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life**
+- [ ] [436] **Malefiz**
+- [ ] [114] **Marvel's What If (S3)**
+- [ ] [450] **Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)** ← öneri: mo-dao-zu-shi-wanjie-pian, mo-dao-zu-shi
+- [ ] [458] **Mr. White)**
+- [ ] [464] **Mynoghra 4X**
+- [ ] [480] **Oregairu**
+- [ ] [492] **Planet of the Apes (Maymunlar Cehennemi Serisi)**
+- [ ] [495] **Punishment Hero**
+- [ ] [506] **Rookie Older Adventurer**
+- [ ] [521] **Sekai Saikou no Ansatsusha (Suikastçı Isekai)** ← öneri: sekai-saikou-no-ansatsusha-isekai-kizoku-ni-tensei-suru
+- [ ] [525] **Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)** ← öneri: sentouin-hakenshimasu
+- [ ] [527] **Seventh Prince**
+- [ ] [551] **Solo Leveling (Anime)**
+- [ ] [566] **Tales of Zestiria the Cross** ← öneri: tales-of-symphonia-the-animation-tethe-alla-hen, tales-of-gekijou
+- [ ] [583] **The Collector (Koleksiyoncu)**
+- [ ] [588] **The Eminence in Shadow**
+- [ ] [590] **The Emperor's New School (Şaşkın İmparator'un Okulu)**
+- [ ] [591] **The Faraway Paladin**
+- [ ] [597] **The Incredibles**
+- [ ] [601] **The Marvelous Misadventures of Flapjack**
+- [ ] [609] **The Secret Saturdays**
+- [ ] [628] **Totally Spies! (Ajanlar)**
+- [ ] [638] **Uncle from Another World**
+- [ ] [641] **Undisputed (Yenilmez Serisi)**
+- [ ] [642] **Up**
+- [ ] [646] **Villager A**
+- [ ] [650] **What If...?**
+- [ ] [659] **Yeşil Yol**
+- [ ] [661] **You**
+- [ ] [669] **Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)**
+- [ ] [670] **Zamana Karşı**
+- [ ] [674] **Çok Güzel Hareketler Bunlar**
+- [ ] [675] **Çok Güzel Hareketler Bunlar (1. Kuşak)**
+- [ ] [677] **Öyle Bir Geçer Zaman ki**
+- [ ] [381] **İhtiyarlara Yer Yok**
+
+## 📚 Manga (86 adet)
+
+- [ ] [134] **A Regressor's Tale of Cultivation**
+- [ ] [3] **Above All Gods**
+- [ ] [12] **Above Ten Thousand People**
+- [ ] [136] **Absolute Reign**
+- [ ] [137] **After Ten Millennia in Hell**
+- [ ] [4] **Büyü İmparatoru** ← RG: ragnarscans.net/manga/buyu-imparatoru/ ← HY: hayalistic.blog/manga/buyu-imparatoru/
+- [ ] [94] **Cultivator Against Hero Society**
+- [ ] [71] **Damn Reincarnation**
+- [ ] [26] **Deli Mühendis**
+- [ ] [145] **Doom Breaker (Suicidal Battle God)**
+- [ ] [146] **Dungeon Odyssey**
+- [ ] [77] **Dövüş Tanrısının Dönüşü Günlükleri**
+- [ ] [13] **Dünyanın En İyi Mühendisi**
+- [ ] [20] **FFF-Class Trashero**
+- [ ] [93] **Forced to Become the Villain's Son-in-Law**
+- [ ] [8] **Geri Dönen Büyücü** ← HY: hayalistic.blog/manga/seni-geri-dondurmek/
+- [ ] [24] **Hardcore Leveling Warrior**
+- [ ] [147] **Hardcore Leveling Warrior: Earth Game**
+- [ ] [148] **Heavenly Demon Reborn!**
+- [ ] [5] **I Am a Cultivation Bigshot**
+- [ ] [54] **I Just Want to Be Killed**
+- [ ] [149] **I Killed the Main Player**
+- [ ] [51] **I Reincarnated as the Crazed Heir**
+- [ ] [78] **Im Not That Kind of Talent**
+- [ ] [22] **Juujika no Rokunin**
+- [ ] [76] **Kage no Jitsuryokusha ni Naritakute**
+- [ ] [92] **Kahramanın Dönüşü** ← HY: hayalistic.blog/manga/kahraman-katili/
+- [ ] [45] **Kılıç Hanesinin Genç Efendisi** ← HY: hayalistic.blog/manga/kilic-kralinin-fantezi-dunyasinda-hayatta-kalma-hikayesi/
+- [ ] [150] **Latna Saga: Survival of a Sword King in a Fantasy World**
+- [ ] [151] **Level Up with the Gods**
+- [ ] [84] **Library of Heaven's Path**
+- [ ] [152] **Lout of Count's Family (Trash of the Count's Family)**
+- [ ] [153] **Martial Divine Demon** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [ ] [1] **Martial Peak** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [ ] [154] **Masters of Lightning Knives**
+- [ ] [59] **Mağdur Sıralamacının Dönüşü**
+- [ ] [155] **Mercenary Enrollment**
+- [ ] [19] **Murim Login** ← RG: ragnarscans.net/manga/murim-psychopath/
+- [ ] [156] **My Avatars' Path to Greatness**
+- [ ] [157] **My Blasted Reincarnated Life**
+- [ ] [158] **My S-Class Hunters**
+- [ ] [18] **Nano Machine**
+- [ ] [160] **Nebula's Civilization**
+- [ ] [161] **Omniscient Reader's Viewpoint (ORV)**
+- [ ] [69] **Overpowered Sword**
+- [ ] [91] **Oyun Obu Familia Aile Senki**
+- [ ] [70] **Oyuncunun Son Şansı** ← HY: hayalistic.blog/manga/oyunculari-fethet/
+- [ ] [36] **Player Who Returned 10,000 Years Later**
+- [ ] [64] **Regresör Kullanım Kılavuzu** ← RG: ragnarscans.net/manga/regressor-instruction-manual/ ← HY: hayalistic.blog/manga/ben-regresor-degilim/
+- [ ] [61] **Return of the Shattered Constellation**
+- [ ] [171] **Returning With Absolutely Nothing**
+- [ ] [172] **Revenge of the Baskerville Bloodhound**
+- [ ] [176] **SSS-Class Revival Hunter (SSS-Class Suicide Hunter)**
+- [ ] [173] **Second Life Ranker**
+- [ ] [23] **Seçkinin İkinci Yaşamı** ← RG: ragnarscans.net/manga/seckinin-ikinci-yasami/ ← HY: hayalistic.blog/manga/seckinin-ikinci-yasami/
+- [ ] [174] **Shadow of the Supreme**
+- [ ] [68] **Sokakta Hayatta Kalma Kılavuzu**
+- [ ] [177] **Standard Of Reincarnation**
+- [ ] [41] **Strongest Fighter** ← RG: ragnarscans.net/manga/the-strongest-god-king/
+- [ ] [90] **Sémalarin Kilici**
+- [ ] [179] **The Academy's Undercover Professor**
+- [ ] [180] **The Bastard of Swordborne**
+- [ ] [16] **The Beginning After the End**
+- [ ] [181] **The Ember Knight**
+- [ ] [182] **The Extra's Academy Survival Guide**
+- [ ] [183] **The Grand Mudang Saga**
+- [ ] [185] **The Knight Only Lives Today**
+- [ ] [186] **The Lazy Lord Masters the Sword**
+- [ ] [188] **The Legendary Spearman Returns**
+- [ ] [32] **The Max Level Hero Has Returned** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [ ] [189] **The Novel's Extra**
+- [ ] [190] **The Novel's Extra (Remake)**
+- [ ] [191] **The Return Of The 8th Class Mage**
+- [ ] [42] **The Return of the Crazy Demon**
+- [ ] [15] **The Scholar's Reincarnation**
+- [ ] [192] **The Sichuan Tang Clan's Entomologist**
+- [ ] [193] **The Skeleton Soldier Failed to Defend the Dungeon**
+- [ ] [17] **The Tutorial Tower of the Advanced Player**
+- [ ] [58] **The World After the End**
+- [ ] [196] **To Be An Actor**
+- [ ] [34] **Top Tier Providence**
+- [ ] [29] **Tower Into the Clouds**
+- [ ] [198] **Trash of the Count's Family (Lout of Count's Family)**
+- [ ] [74] **Yetenek Yutan Sihirbaz**
+- [ ] [88] **Yıldırım Bıçağı Ustası**
+- [ ] [56] **Yıldız Hocası Baek** ← HY: hayalistic.blog/manga/yildiz-tozundan/
+
+## 🗂️ Manhwa (32 adet)
+
+- [ ] [10] **A Returner's Magic Should Be Special**
+- [ ] [138] **Bad Born Blood**
+- [ ] [40] **Bug Player**
+- [ ] [139] **Cassmire**
+- [ ] [140] **Cassmire: The Loyal Sword**
+- [ ] [141] **Cheonhwa Archive's Young Master**
+- [ ] [142] **Chronicles of a Doomed Prodigy**
+- [ ] [143] **Chronicles of the Demon Faction**
+- [ ] [144] **Demon King of the Royal Class**
+- [ ] [75] **I Became the Tyrant of a Defense Game** ← HY: hayalistic.blog/manga/sincerely-i-became-dukess-maidd/
+- [ ] [53] **Memorize**
+- [ ] [86] **My Insanely Competent Underlings**
+- [ ] [80] **Never Die Extra**
+- [ ] [87] **Raising Newbie Heroes in Another World**
+- [ ] [46] **Ranker's Return (Remake)**
+- [ ] [165] **Reborn as a Scholar**
+- [ ] [83] **Regressing with the King's Power** ← RG: ragnarscans.net/manga/a-dragonslayers-peerless-regression/
+- [ ] [166] **Reincarnated Murim Lord**
+- [ ] [52] **Reincarnation of the Murim Clan's Former Ranker**
+- [ ] [169] **Return of the Disaster-Class Hero**
+- [ ] [47] **Return of the Mount Hua Sect**
+- [ ] [170] **Return of the War God**
+- [ ] [30] **Return to Player**
+- [ ] [73] **Revenge of the Iron-Blooded Sword Hound**
+- [ ] [57] **SSS-Class Suicide Hunter**
+- [ ] [63] **Seoul Station Necromancer**
+- [ ] [48] **The Heavenly Demon Can't Live a Normal Life**
+- [ ] [89] **The Unbeatable Dungeon's Lazy Boss Monster**
+- [ ] [195] **The World After the Fall**
+- [ ] [197] **Too Many Heroes**
+- [ ] [79] **Villain Unrivaled**
+- [ ] [200] **Yongsa High: Dungeon Raiders**
+
+## 🚫 Turkanime'de olmayacak içerikler (181 adet)
+(Türk dizisi / Batı filmi / cartoon — manuel site URL ekle veya atla)
+
+- [ ] [201] 1 Kadın 1 Erkek
+- [ ] [203] 3 Idiots
+- [ ] [204] 300 (300 Spartalı)
+- [ ] [205] 300 Spartalı
+- [ ] [206] 5 Centimeters
+- [ ] [209] A Beautiful Mind (Akıl Oyunları)
+- [ ] [211] Abimm
+- [ ] [212] Adanalı
+- [ ] [213] Adventure Time
+- [ ] [215] Akıl Oyunları
+- [ ] [217] Alvin ve Sincaplar
+- [ ] [218] American Dragon: Jake Long (Genç Ejder)
+- [ ] [219] American Psycho (Amerikan Sapığı)
+- [ ] [226] Arka Sokaklar
+- [ ] [236] Avengers
+- [ ] [240] Bakugan Battle Brawlers
+- [ ] [241] Batman Serisi (Kara Şövalye ve Tüm Filmler)
+- [ ] [242] Behzat Ç.
+- [ ] [243] Behzat Ç. Bir Ankara Polisiyesi
+- [ ] [244] Ben 10
+- [ ] [245] Ben 10 (Klasik, Alien Force, Ultimate Alien, Omniverse)
+- [ ] [248] Black Mirror
+- [ ] [252] Breaking Bad
+- [ ] [253] Breaking Bad (Walter White
+- [ ] [254] Broken Karaoke
+- [ ] [255] Captain America
+- [ ] [256] Cars
+- [ ] [262] Clarence
+- [ ] [267] Corpse Bride
+- [ ] [269] Dabbe Serisi
+- [ ] [274] Dark (2017)
+- [ ] [276] Dark Healer
+- [ ] [280] Deadpool
+- [ ] [287] Dexter
+- [ ] [112] Dexter (S8)
+- [ ] [288] Dexter's Laboratory
+- [ ] [289] Diriliş
+- [ ] [290] Disney Broken Karaoke
+- [ ] [291] Doctor Strange
+- [ ] [292] Doctor Who
+- [ ] [293] Doktorlar
+- [ ] [296] DreamWorks Dragons (Ejderha Binicileri)
+- [ ] [297] Düğün Dernek
+- [ ] [299] Edge of Tomorrow (Yarının Sınırında)
+- [ ] [301] Esaretin Bedeli
+- [ ] [306] Fast & Furious
+- [ ] [307] Fast & Furious (Hızlı ve Öfke
+- [ ] [310] Fetih 1453
+- [ ] [311] Fight Club
+- [ ] [312] Fight Club (Dövüş Kulübü)
+- [ ] [313] Filistin
+- [ ] [314] Finding Nemo
+- [ ] [317] Fuguushoku "Kanteishi" ga Jitsu wa Saikyou Datta
+- [ ] [320] Fury
+- [ ] [321] G.O.R.A
+- [ ] [322] Galip Derviş
+- [ ] [323] Game of Thrones
+- [ ] [324] Generator Rex
+- [ ] [326] Geniş Aile
+- [ ] [333] Gladiator
+- [ ] [337] Gravity Falls (Esrarengiz Kasaba)
+- [ ] [338] Green Lantern: The Animated Series
+- [ ] [341] Hababam Sınıfı (Yeni Nesil)
+- [ ] [342] Hababam Sınıfı (Yeni)
+- [ ] [345] Hancock
+- [ ] [346] Hannibal
+- [ ] [347] Harry Potter Serisi
+- [ ] [353] Howl's Moving Castle (Yüruyen Şato)
+- [ ] [354] Howl's Moving Castle (Yürüyen Şato)
+- [ ] [355] Hugo
+- [ ] [360] Ice Age (Buz Devri Serisi)
+- [ ] [362] In Time (Zamana Karşı)
+- [ ] [363] Inception
+- [ ] [369] Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta
+- [ ] [385] John Wick
+- [ ] [386] Johnny Bravo
+- [ ] [391] Justice League
+- [ ] [392] Justice League Unlimited
+- [ ] [400] Kardeş Payı
+- [ ] [402] Kim Possible
+- [ ] [408] Kolpaçino
+- [ ] [413] Kung Fu Panda
+- [ ] [416] Kurtlar Vadisi (Pusu dönemi)
+- [ ] [417] Kurtlar Vadisi (Pusu)
+- [ ] [418] Kurtlar Vadisi Irak
+- [ ] [420] La Casa de Papel
+- [ ] [425] Lion King
+- [ ] [427] Looney Tunes
+- [ ] [432] Léon: The Professional (Sevginin Gücü)
+- [ ] [433] Madagaskar
+- [ ] [435] Maleficent (Malefiz)
+- [ ] [441] Maskeli Beşler
+- [ ] [442] Matrix Serisi
+- [ ] [443] Max Steel
+- [ ] [444] Megas XLR
+- [ ] [447] Mickey Mouse
+- [ ] [455] Monsters At Work
+- [ ] [456] Monsters At Work (Sevimli Canavarlar)
+- [ ] [457] Mr. Robot
+- [ ] [459] Muhteşem Yüzyıl
+- [ ] [460] My Little Pony
+- [ ] [462] My Neighbor Totoro (Tonari no Totoro)
+- [ ] [472] New York'ta Beş Minare
+- [ ] [473] Ninjago: Masters of Spinjitzu
+- [ ] [483] Over the Garden Wall (Bahçe Duvarının Ötesinde)
+- [ ] [485] Pacific Rim (Pasifik Savaşı Serisi)
+- [ ] [486] Para Avcısı
+- [ ] [487] Percy Jackson Serisi
+- [ ] [489] Phineas and Ferb (Fineas ve Förb)
+- [ ] [491] Pis Yedili
+- [ ] [494] Powerpuff Girls
+- [ ] [498] Real Steel (Çelik Yumruk)
+- [ ] [499] Recep İvedik Üçlemesi
+- [ ] [502] Regular Show (Sürekli Dizi)
+- [ ] [504] Resident Evil Serisi
+- [ ] [505] Rick and Morty
+- [ ] [113] Rick and Morty (S7)
+- [ ] [517] Scooby-Doo
+- [ ] [522] Seksenler
+- [ ] [523] Selena
+- [ ] [528] Sevginin Gücü
+- [ ] [529] Shark Tale
+- [ ] [530] Sherlock
+- [ ] [535] Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita
+- [ ] [543] Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.
+- [ ] [545] Shrek
+- [ ] [546] Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru
+- [ ] [548] Sihirli Annem
+- [ ] [552] Sonic Serileri
+- [ ] [554] Space Goofs (Uzay Çılgınları)
+- [ ] [555] Spider-Man (Tobey Maguire Üçlemesi)
+- [ ] [556] Spider-Man Serileri
+- [ ] [557] Spirited Away (Sen to Chihiro no Kamikakushi)
+- [ ] [558] Split (Parçalanmış)
+- [ ] [562] Steven Universe
+- [ ] [567] Taşıyıcı
+- [ ] [568] Teach You a Lesson
+- [ ] [569] Teen Titans Go!
+- [ ] [570] Teletubbies
+- [ ] [579] Terminator Serisi
+- [ ] [580] Tetikci
+- [ ] [581] Tetikçi
+- [ ] [582] The Amazing World of Gumball
+- [ ] [593] The Godfather
+- [ ] [595] The Hobbit: An Unexpected Journey
+- [ ] [596] The Hunger Games (Açlık Oyunları Serisi)
+- [ ] [599] The Lord of the Rings (Yüzüklerin Efendisi Serisi)
+- [ ] [600] The Many Adventures of Winnie the Pooh (Tigger ve Pooh)
+- [ ] [602] The Maze Runner (Labirent Serisi)
+- [ ] [603] The Maze Runner (Labirent: Ölümcül Kaçış Serisi)
+- [ ] [604] The Mentalist
+- [ ] [605] The Mummy
+- [ ] [606] The Revenant (Diriliş)
+- [ ] [607] The Scorpion King Serisi
+- [ ] [608] The Scorpion King Serisi (Mumya ve Akrepler Kralı)
+- [ ] [611] The Shawshank Redemption (Esaretin Bedeli)
+- [ ] [612] The Walking Dead
+- [ ] [613] The Witcher
+- [ ] [614] The Wolf of Wall Street (Para Avcısı)
+- [ ] [615] The Yogi Bear Show
+- [ ] [616] Thor
+- [ ] [617] Titanic
+- [ ] [620] Tom and Jerry
+- [ ] [627] Total Drama Island (Drama Adası)
+- [ ] [631] Toy Story
+- [ ] [632] Transformers Prime
+- [ ] [633] Transformers Serisi
+- [ ] [639] Uncle Grandpa
+- [ ] [644] V for Vendetta
+- [ ] [645] Venom
+- [ ] [648] WALL-E
+- [ ] [649] We Bare Bears (Kafadan Ayılar)
+- [ ] [651] Winnie the Pooh
+- [ ] [653] World War Z
+- [ ] [655] Yahşi Batı
+- [ ] [656] Yahşi Cazibe
+- [ ] [657] Yaprak Dökümü
+- [ ] [660] Yogi Bear
+- [ ] [662] You (Joe Goldberg)
+- [ ] [673] Çocuklar Duymasın
+- [ ] [676] Ölüm Yarışı
+
+---
+
+**Özet:** Anime 78 | Manga 86 | Manhwa 32 | Turkanime-dışı 181
