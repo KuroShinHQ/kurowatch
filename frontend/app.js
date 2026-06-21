@@ -388,7 +388,7 @@
           ${starsHtml}
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
             <span class="text-[10px] font-bold w-fit px-1.5 py-0.5 rounded uppercase leading-none" style="${tcStyle(tc).badge}">${tc.label}</span>
-            <h3 class="text-[13px] font-bold text-[#e1e0ff] line-clamp-2 leading-tight">${escapeHtml(it.title)}</h3>
+            <h3 class="text-[13px] font-bold text-[#e1e0ff] line-clamp-2 leading-tight">${escapeHtml(it.title_tr || it.title)}</h3>
             <div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden">
               <div class="h-full" style="${tcStyle(tc).bar};width:${pct}%;box-shadow:0 0 8px ${tc.color}99"></div>
             </div>
@@ -507,7 +507,7 @@
     const cur = isGame ? (item.my_progress_pct || 0) : (item.my_progress || 0);
     const pct = isGame ? cur : (total > 0 ? Math.round(cur / total * 100) : 0);
 
-    document.getElementById('detail-title').textContent = item.title;
+    document.getElementById('detail-title').textContent = item.title_tr || item.title;
     const typeLabelMap = { 'anime':'ANİME', 'manga':'MANGA', 'manhwa':'MANHWA', 'game':'OYUN' };
     const typeBadgeEl = document.getElementById('detail-type-badge');
     typeBadgeEl.textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
@@ -871,6 +871,9 @@
     const titleInput = document.getElementById('edit-form-title');
     if (titleInput) titleInput.value = item.title || '';
 
+    const titleTrInput = document.getElementById('edit-form-title-tr');
+    if (titleTrInput) titleTrInput.value = item.title_tr || '';
+
     const statusSel = document.getElementById('edit-form-status');
     if (statusSel) statusSel.value = item.status || 'watching';
 
@@ -908,8 +911,10 @@
         btn.innerHTML = '<span class="material-symbols-outlined" style="animation:spin .8s linear infinite">progress_activity</span>';
         try {
           const scoreVal = parseInt(document.getElementById('edit-form-score').value, 10);
+          const titleTrEl = document.getElementById('edit-form-title-tr');
           const patchBody = {
             title:     (document.getElementById('edit-form-title').value || '').trim(),
+            title_tr:  titleTrEl ? (titleTrEl.value || '').trim() : undefined,
             status:    document.getElementById('edit-form-status').value,
             note_text: document.getElementById('edit-form-note').value,
           };
@@ -1200,7 +1205,7 @@
           <div class="w-[40px] h-[40px] rounded overflow-hidden flex-shrink-0 bg-[#31324d] flex items-center justify-center">${cover}</div>
           <div class="flex-1 min-w-0 flex flex-col justify-center gap-[2px]">
             <div class="flex items-center gap-1">
-              <span class="font-bold text-[14px] text-[#e1e0ff] truncate">${escapeHtml(it.title)}</span>
+              <span class="font-bold text-[14px] text-[#e1e0ff] truncate">${escapeHtml(it.title_tr || it.title)}</span>
               <span class="text-[10px] font-bold px-1 py-[2px] rounded uppercase tracking-wider" style="${tcStyle(tc).badge}">${tc.label}</span>
             </div>
             <span class="text-[12px] text-[#9090b0] truncate">${date}</span>

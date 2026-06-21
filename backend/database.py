@@ -40,6 +40,11 @@ async def init_db():
             await conn.execute(text("ALTER TABLE site ADD COLUMN is_dead INTEGER"))
         except Exception:
             pass
+        # Migration: content.title_tr kolonu
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN title_tr TEXT"))
+        except Exception:
+            pass
         # Migration: FAZ-4 intro_timestamp tablosu (create_all ile zaten oluşur, sadece safeguard)
         try:
             await conn.execute(text(
