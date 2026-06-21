@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-58) · **Aktif sürüm:** v1.1.0 · **Son commit:** `faa4b38`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-59) · **Aktif sürüm:** v1.1.0 · **Son commit:** `aa3c10f`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,38 +10,51 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-58):
-  - 676 içerik, backend faa4b38 — RESTART LAZIM (Bat [10]→[1])
+MEVCUT DURUM (21 Haz sohbet-59):
+  - 676 içerik, backend aa3c10f aktif — restart GEREKMİYOR
   - Test: http://localhost:8099
+  - 151 fallback URL DB'ye eklendi (enrich çalıştı ✅)
+  - 608 ölü site is_dead=True işaretlendi (audit çalıştı ✅)
 
-SOHBET-58 YAPILANLARI:
-  ✅ 31 manga/manhwa + 10 anime sitesi gerçek URL testi yapıldı
-  ✅ stream_finder.py: protocol-relative (//) bug fix + pichive/aso1/anizmplayer tanıma
-  ✅ manga.py: _MADARA_DOMAINS güncellendi (mangawow.com/org, ragnarscans.net vb. eklendi)
-  ✅ content.py: site sıralaması — çalışan önce, en yüksek bölüm sayısı
-  ✅ app.js: primarySite=best non-dead; Sites tab ölü→sona; "✓ Aktif" badge
-  ✅ scripts/enrich_fallback_sites.py YENİ: anime (tranimeizle slug→turkanime/anizm) + manga oto eşleştirme
+SOHBET-59 YAPILANLARI:
+  ✅ enrich_fallback_sites.py çalıştı: 101 anime(turkanime) + 45 manga + 5 manhwa → DB'ye eklendi
+  ✅ audit_all_media.py: 608 ölü site işaretlendi
+  ✅ manga.py: reading-content hard-check kaldırıldı → ragnarscans.com 25 sayfa OK ✅
+  ✅ stream_finder.py: _is_embed JS/CSS filtresi eklendi, /ifr.html pattern eklendi
+  ✅ docs/MANUAL_SITES.md: 383 anime + 71 manga + 29 manhwa eşleşmeyen liste
+  ✅ anizm.net indirme ÇALIŞIYOR: stream_finder → m3u8 → yt-dlp (test OK)
+  ✅ mangawow.com indirme ÇALIŞIYOR: 12 sayfa test OK
+  ✅ ragnarscans.com indirme ÇALIŞIYOR: 25 sayfa test OK
+  🔄 anizm.net tam indirme testi arka planda (bh0wii1ej) — sonuç bekleniyor
 
-ÇALIŞAN SİTELER (21 Haz test):
-  ANİME/DİZİ: tranimaci.com ✅ | hdfilmcehennemi.nl ✅ | turkanime.tv 🟡 | dizibox.live 🟡 | anizm.net ✅ | diziwatch.ac 🟡
-  MANGA: mangawow.com ✅ | mangawow.org ✅ | ragnarscans.com ✅ | ragnarscans.net ✅ | hayalistic.com.tr ✅ | merlintoon.com ✅
-  ÖLÜLER: tranimeizle.co (CF), mangaokutr.com (offline), mangatr.net (bot), ruyamanga.net (403)
+İNDİRME DURUM HARİTASI:
+  ANİME:
+    anizm.net    ✅ stream_finder m3u8 buluyor → yt-dlp OK (tam test sonucu bekle)
+    tranimaci.com ✅ Playwright CDN MP4 (önceden çalışıyor)
+    turkanime.tv  ❌ CF bot koruması — embed URL session-specific, headless'ta geçersiz
+    dizibox.live  🟡 test edilmedi
+    hdfilmcehennemi.nl 🟡 test edilmedi
+  MANGA:
+    mangawow.com    ✅ 12 sayfa OK
+    ragnarscans.com ✅ 25 sayfa OK (reading-content fix sonrası)
+    ragnarscans.net ✅ aynı fix geçerli
+    hayalistic.com.tr 🟡 test edilmedi
 
 SIRADAKİ GÖREVLER:
-  [1] Backend restart: Bat [10] → [1] (faa4b38 aktif etmek için)
-  [2] title_tr test: Düzenle modal → "Türkçe Başlık" → kaydet → kart/detay güncellenmeli
-  [3] enrich_fallback_sites.py full run: python3 scripts/enrich_fallback_sites.py --type all
-      (429 anime + 172 manga/manhwa için fallback URL ekler, dry-run önce test et)
-  [4] audit_all_media.py: --no-mark kaldır → gerçek DB güncelle
+  [1] anizm.net indirme sonucunu doğrula (bh0wii1ej task tamamlandıysa)
+  [2] turkanime.tv için alternatif: turkanime.tv embed'i → IndexIcerik AJAX → iframe yakala
+      → stream_finder'a popup+sunucu-click ekle (popup: button.site-popup-close)
+  [3] hayalistic.com.tr + dizibox.live + hdfilmcehennemi.nl indirme testleri
+  [4] title_tr UI testi: Düzenle modal → "Türkçe Başlık" → kaydet → kart/detay
   [5] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
 
 ⚠️ ÖNEMLİ:
-  - enrich_fallback_sites.py: dry-run ile önce test et: --dry-run --limit 20
-  - Slug eşleşme oranı: ~%30-50 (tranimeizle slug turkanime'de aynı değilse bulamıyor)
-  - anizm.net arama sayfası 403 — direkt slug tahmini kullanılıyor
-  - diziwatch.ac embed: four.pichive.online (CF korumalı, yt-dlp başarısız olabilir)
+  - turkanime.tv: popup selector = button.site-popup-close | sunucu btn = button.btn.btn-sm.btn-default
+  - turkanime.tv: IndexIcerik('ajax/videosec&b=...') AJAX → embed iframe src yakala
+  - anizmplayer.com m3u8 → Referer: anizm.net/ şart (yt-dlp --add-header)
+  - manga.py: reading-content check kaldırıldı, fallback img extraction aktif
   - DB: episode tablosu (çoğulsuz), kolon: number
-  - Backend restart ŞART (Bat [10]→[1])
+  - MANUAL_SITES.md: 383+71+29 eşleşmeyen içerik → Lord manuel URL ekleyecek
 ```
 
 ---
