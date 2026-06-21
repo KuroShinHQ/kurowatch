@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-59) · **Aktif sürüm:** v1.1.0 · **Son commit:** `aa3c10f`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-60) · **Aktif sürüm:** v1.1.0 · **Son commit:** `1dd682a`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,47 +10,43 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-59):
-  - 676 içerik, backend aa3c10f aktif — restart GEREKMİYOR
+MEVCUT DURUM (21 Haz sohbet-60):
+  - 676 içerik, backend 1dd682a aktif — restart GEREKMİYOR
   - Test: http://localhost:8099
-  - 151 fallback URL DB'ye eklendi (enrich çalıştı ✅)
-  - 608 ölü site is_dead=True işaretlendi (audit çalıştı ✅)
 
-SOHBET-59 YAPILANLARI:
-  ✅ enrich_fallback_sites.py çalıştı: 101 anime(turkanime) + 45 manga + 5 manhwa → DB'ye eklendi
-  ✅ audit_all_media.py: 608 ölü site işaretlendi
-  ✅ manga.py: reading-content hard-check kaldırıldı → ragnarscans.com 25 sayfa OK ✅
-  ✅ stream_finder.py: _is_embed JS/CSS filtresi eklendi, /ifr.html pattern eklendi
-  ✅ docs/MANUAL_SITES.md: 383 anime + 71 manga + 29 manhwa eşleşmeyen liste
-  ✅ anizm.net indirme ÇALIŞIYOR: stream_finder → m3u8 → yt-dlp (test OK)
-  ✅ mangawow.com indirme ÇALIŞIYOR: 12 sayfa test OK
-  ✅ ragnarscans.com indirme ÇALIŞIYOR: 25 sayfa test OK
-  🔄 anizm.net tam indirme testi arka planda (bh0wii1ej) — sonuç bekleniyor
+SOHBET-60 YAPILANLARI:
+  ✅ anizm.net tam indirme: 422.5 MB MP4 (sousou-no-frieren ep1)
+  ✅ turkanime.tv indirme TAMAMLANDI: 885.6 MB (commit 1dd682a)
+     - FORCE_PLAYWRIGHT + popup/sunucu-click + 32sn bekleme
+     - on_request MP4 header yakalama → yt-dlp CF bypass (sec-ch-ua vb.)
+  ✅ hayalistic.com.tr manga: ch0149 indirildi
+  ✅ title_tr: API+frontend kod doğrulandı
+  ✅ Manga "Düzelt" PUT endpoint mevcut (translate.py:178)
+  ⏸️ dizibox.live: 429 rate limit (daha sonra dene)
 
 İNDİRME DURUM HARİTASI:
   ANİME:
-    anizm.net    ✅ stream_finder m3u8 buluyor → yt-dlp OK (tam test sonucu bekle)
-    tranimaci.com ✅ Playwright CDN MP4 (önceden çalışıyor)
-    turkanime.tv  ❌ CF bot koruması — embed URL session-specific, headless'ta geçersiz
-    dizibox.live  🟡 test edilmedi
+    anizm.net    ✅ 422.5 MB OK
+    tranimaci.com ✅ Playwright CDN MP4
+    turkanime.tv  ✅ Playwright 32sn + header capture → alucard.click 885MB
+    dizibox.live  ⏸️ 429 rate limit
     hdfilmcehennemi.nl 🟡 test edilmedi
   MANGA:
     mangawow.com    ✅ 12 sayfa OK
-    ragnarscans.com ✅ 25 sayfa OK (reading-content fix sonrası)
+    ragnarscans.com ✅ 25 sayfa OK
     ragnarscans.net ✅ aynı fix geçerli
-    hayalistic.com.tr 🟡 test edilmedi
+    hayalistic.com.tr ✅ ch0149 OK
 
 SIRADAKİ GÖREVLER:
-  [1] anizm.net indirme sonucunu doğrula (bh0wii1ej task tamamlandıysa)
-  [2] turkanime.tv için alternatif: turkanime.tv embed'i → IndexIcerik AJAX → iframe yakala
-      → stream_finder'a popup+sunucu-click ekle (popup: button.site-popup-close)
-  [3] hayalistic.com.tr + dizibox.live + hdfilmcehennemi.nl indirme testleri
-  [4] title_tr UI testi: Düzenle modal → "Türkçe Başlık" → kaydet → kart/detay
-  [5] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
-
+  [1] dizibox.live testi (rate limit geçince)
+  [2] hdfilmcehennemi.nl indirme testi
+  [3] PCT:0 sorunu — alucard.click progress parse düzelt
+  [4] title_tr null temizleme fix (exclude_none=True → exclude_unset=True)
+  [5] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
 ⚠️ ÖNEMLİ:
-  - turkanime.tv: popup selector = button.site-popup-close | sunucu btn = button.btn.btn-sm.btn-default
-  - turkanime.tv: IndexIcerik('ajax/videosec&b=...') AJAX → embed iframe src yakala
+  - turkanime.tv: on_request MP4 header → _SESSION_HEADERS → yt-dlp --add-header
+  - turkanime.tv: alucard.click 885MB (720p seçilse de 1080p geliyor, tek kalite)
+  - PCT:0 sorunu: yt-dlp alucard.click indirmesinde progress satırı parse edilemiyor
   - anizmplayer.com m3u8 → Referer: anizm.net/ şart (yt-dlp --add-header)
   - manga.py: reading-content check kaldırıldı, fallback img extraction aktif
   - DB: episode tablosu (çoğulsuz), kolon: number
