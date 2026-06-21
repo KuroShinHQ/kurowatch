@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-62) · **Aktif sürüm:** v1.1.0 · **Son commit:** `3647be3`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-63) · **Aktif sürüm:** v1.1.0 · **Son commit:** `fd442f4`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,32 +10,32 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-62):
-  - 676 içerik, backend 7d920ea aktif (restart yapıldı)
-  - turkanime.tv: 232 anime eşleşti (+131 yeni, sohbet-62)
+MEVCUT DURUM (21 Haz sohbet-63):
+  - 676 içerik, backend 7d920ea aktif
+  - Çalışan kaynağı olan: ~280 içerik
   - Test: http://localhost:8099
 
-SOHBET-62 YAPILANLARI:
-  ✅ build_ta_index.py: sitemap'tan 4713 unique turkanime slug çekildi
-  ✅ fetch_romaji_cache.py: 250/329 AniList romaji cache'lendi
-  ✅ enrich_turkanime.py: index lookup + güven kontrolü → 131 anime DB'ye eklendi
-     - Strateji: romaji slug → ta_index exact/prefix match → title overlap check
-     - ~4 false positive (Samurai Jack, Green Mile, Toy Story, Twilight) — manuel düzelt
-  ✅ PCT:0 fix: anime.py chunk-based stdout (sohbet-61)
-  ✅ title_tr null fix: content.py exclude_unset (sohbet-61)
+SOHBET-63 YAPILANLARI:
+  ✅ turkanime.tv: 131 anime eşleşti (toplam 232) — enrich_turkanime.py
+  ✅ ragnarscans.net + hayalistic.blog katalog çekildi (87 + 411 slug)
+  ✅ +5 manga/manhwa daha eşleşti (Sonsuz Döngüde Hapsolan, Tanrıçanın Kulu, vs)
+  ✅ docs/ESLESMEYEN.md oluşturuldu:
+     - 78 gerçek anime (bazılarında turkanime öneri var)
+     - 86 manga + 32 manhwa (ragnarscans/hayalistic'te yok)
+     - 181 Türk dizi/Batı içerik (anime sitede olmaz)
 
-SOHBET-63 SIRASI:
-  [1] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
-  [2] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
-  [3] Yanlış eşleşmeleri temizle (opsiyonel):
-        sqlite3 kurowatch.db "DELETE FROM site WHERE content_id IN (515,594,631,637)
-        AND site_url LIKE '%turkanime%'"
-  [4] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
+SOHBET-64 SIRASI:
+  [1] Lord ESLESMEYEN.md'i incelesin → URL bildirenler için:
+        python3 scripts/ekle_manual_url.py [ID] [URL] [site_adi]
+  [2] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
+  [3] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
+  [4] Yanlış eşleşme temizle (false positive 4 adet):
+        ID 515(Samurai Jack), 594(Green Mile), 631(Toy Story), 637(Twilight)
 
 ⚠️ ÖNEMLİ:
-  - turkanime.tv: on_request MP4 header → _SESSION_HEADERS → yt-dlp --add-header
+  - ESLESMEYEN.md: docs/ESLESMEYEN.md — Lord URL bildirir, Claude DB'ye ekler
   - enrich_turkanime.py: SQLite'a direkt yazar (API değil — WSL←→Windows port sorunu)
-  - ta_index.json + ta_romaji_cache.json → scripts/ altında (yeniden çalıştırmaya gerek yok)
+  - ta_index.json + ta_romaji_cache.json → scripts/ (yeniden çalıştırmaya gerek yok)
   - dizibox.so + hdfilmcehennemi.nl: CF bypass yok, cookies.txt şart (askıya)
   - anizmplayer.com m3u8 → Referer: anizm.net/ şart
   - DB: episode tablosu (çoğulsuz), kolon: number
