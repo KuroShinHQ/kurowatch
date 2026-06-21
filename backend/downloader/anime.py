@@ -4,7 +4,7 @@ import re
 from typing import Callable, Optional
 from urllib.parse import urlparse
 
-from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg
+from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg, get_session_header_args
 
 
 async def download_anime(
@@ -29,6 +29,9 @@ async def download_anime(
         referer = f"{parsed.scheme}://{parsed.netloc}/"
         referer_args = ["--add-header", f"Referer:{referer}"]
 
+    # Playwright'ın MP4 isteğindeki header'lar (CF cookie dahil, alucard.click vb.)
+    session_header_args = get_session_header_args(actual_url)
+
     cmd = [
         "yt-dlp",
         "--no-playlist",
@@ -43,6 +46,7 @@ async def download_anime(
         "--sub-format", "vtt",
         *cookies_args,
         *referer_args,
+        *session_header_args,
         "-o", output_path + ".%(ext)s",
         actual_url,
     ]
