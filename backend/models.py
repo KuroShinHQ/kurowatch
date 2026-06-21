@@ -17,6 +17,7 @@ class Content(Base):
 
     id:              Mapped[int]            = mapped_column(Integer, primary_key=True, autoincrement=True)
     title:           Mapped[str]            = mapped_column(String(500), nullable=False)
+    title_tr:        Mapped[Optional[str]]  = mapped_column(String(500), nullable=True)   # Türkçe başlık
     type:            Mapped[str]            = mapped_column(String(20),  nullable=False)   # CONTENT_TYPES
     cover_url:       Mapped[Optional[str]]  = mapped_column(Text,   nullable=True)
     external_id:     Mapped[Optional[str]]  = mapped_column(String(100), nullable=True)   # AniList/IGDB id

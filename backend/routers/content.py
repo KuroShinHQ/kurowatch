@@ -43,6 +43,7 @@ class ContentCreate(BaseModel):
 
 class ContentPatch(BaseModel):
     title: Optional[str] = None
+    title_tr: Optional[str] = None
     type: Optional[str] = None
     status: Optional[str] = None
     cover_url: Optional[str] = None
@@ -65,6 +66,7 @@ def _serialize(c: Content) -> dict:
     return {
         "id": c.id,
         "title": c.title,
+        "title_tr": c.title_tr or "",
         "type": c.type,
         "cover_url": c.cover_url,
         "external_id": c.external_id,
