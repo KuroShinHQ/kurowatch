@@ -59,16 +59,30 @@ async def download_anime(
 
     last_pct = 0
     output_lines: list[str] = []
-    async for raw in proc.stdout:
-        line = raw.decode("utf-8", errors="ignore").strip()
+    # yt-dlp \r (in-place) veya \n kullanır; chunk okuyarak ikisini de yakala
+    _buf = b""
+    while True:
+        chunk = await proc.stdout.read(4096)
+        if not chunk:
+            break
+        _buf += chunk
+        parts = re.split(b"[\r\n]+", _buf)
+        _buf = parts[-1]  # son yarım satır bir sonraki chunk'a taşı
+        for raw in parts[:-1]:
+            line = raw.decode("utf-8", errors="ignore").strip()
+            if line:
+                output_lines.append(line)
+            m = re.search(r"(\d+\.?\d*)%", line)
+            if m and on_progress:
+                pct = min(99, int(float(m.group(1))))
+                if pct != last_pct:
+                    last_pct = pct
+                    on_progress(pct)
+    # Kalan buffer'ı işle
+    if _buf:
+        line = _buf.decode("utf-8", errors="ignore").strip()
         if line:
             output_lines.append(line)
-        m = re.search(r"(\d+\.?\d*)%", line)
-        if m and on_progress:
-            pct = min(99, int(float(m.group(1))))
-            if pct != last_pct:
-                last_pct = pct
-                on_progress(pct)
 
     await proc.wait()
     if proc.returncode != 0:

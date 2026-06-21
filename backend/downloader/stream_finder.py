@@ -69,6 +69,7 @@ _SITE_COOKIES = {
     "diziwatch.com":      "diziwatch_cookies.txt",
     "anizm.net":          "anizm_cookies.txt",
     "dizibox.live":       "dizibox_cookies.txt",
+    "dizibox.so":         "dizibox_cookies.txt",
     "hdfilmcehennemi.nl": "hdfilmcehennemi_cookies.txt",
 }
 
@@ -81,6 +82,7 @@ _SKIP_IFRAME_DOMAINS = (
 # Bu domainler JS-render gerektirir — requests fetch atla, direkt Playwright'a git
 _FORCE_PLAYWRIGHT = {
     "dizibox.live",
+    "dizibox.so",
     "hdfilmcehennemi.nl",
     "turkanime.tv",
 }
@@ -93,7 +95,8 @@ _POPUP_CLOSE_SELECTORS = {
 # Site-spesifik play butonu CSS selector'ları (Playwright için)
 _PLAY_BUTTON_SELECTORS = {
     "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
-    "hdfilmcehennemi.nl": [".play-button", "#play", ".jw-icon-playback", "[aria-label='play']"],
+    "dizibox.so":         [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
+    "hdfilmcehennemi.nl": [".play-that-video", "[aria-label='Play video']", ".play-button", "#play", ".jw-icon-playback"],
     # IndexIcerik AJAX → iframe inject eder; ilk sunucu butonunu tıkla
     "turkanime.tv":       ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
     "tranimeizle.co":     [
@@ -271,7 +274,7 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         "speedfiles", "sibnet", "ok.ru", "fembed", "upstream",
         "rapidvid", "mixdrop", "gounlimited", "mp4upload",
         "odnoklassniki", "mail.ru", "vk.com/video",
-        "dizibox.live/embed", "hdfilmcehennemi.nl/embed",
+        "dizibox.live/embed", "dizibox.so/embed", "hdfilmcehennemi.nl/embed",
         "pichive.online/iframe", "aso1.net",
         "anizmplayer.com", "media.aso",
     )
@@ -357,9 +360,11 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 except Exception:
                     pass
 
-            # Player yüklensin (turkanime.tv iframe 25-30sn içinde mp4 isteği yapar)
+            # Player yüklensin
             if "turkanime.tv" in domain:
                 wait_secs = 32
+            elif "hdfilmcehennemi.nl" in domain:
+                wait_secs = 20  # rplayer iframe lazy-load + CF geçişi
             elif "tranimeizle" in domain:
                 wait_secs = 15
             elif any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT):

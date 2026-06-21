@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-60) · **Aktif sürüm:** v1.1.0 · **Son commit:** `1dd682a`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-61) · **Aktif sürüm:** v1.1.0 · **Son commit:** TBD
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -14,23 +14,21 @@ MEVCUT DURUM (21 Haz sohbet-60):
   - 676 içerik, backend 1dd682a aktif — restart GEREKMİYOR
   - Test: http://localhost:8099
 
-SOHBET-60 YAPILANLARI:
-  ✅ anizm.net tam indirme: 422.5 MB MP4 (sousou-no-frieren ep1)
-  ✅ turkanime.tv indirme TAMAMLANDI: 885.6 MB (commit 1dd682a)
-     - FORCE_PLAYWRIGHT + popup/sunucu-click + 32sn bekleme
-     - on_request MP4 header yakalama → yt-dlp CF bypass (sec-ch-ua vb.)
-  ✅ hayalistic.com.tr manga: ch0149 indirildi
-  ✅ title_tr: API+frontend kod doğrulandı
-  ✅ Manga "Düzelt" PUT endpoint mevcut (translate.py:178)
-  ⏸️ dizibox.live: 429 rate limit (daha sonra dene)
+SOHBET-61 YAPILANLARI:
+  ✅ PCT:0 fix — anime.py chunk-based stdout (\r ve \n yakala; turkanime/alucard.click progress güncellenir)
+  ✅ title_tr null fix — content.py exclude_none→exclude_unset (PATCH null göndererek siler)
+  ✅ dizibox.so → stream_finder'a eklendi (_FORCE_PLAYWRIGHT + selector + cookies mapping)
+  ✅ hdfilmcehennemi.nl play selector düzeltildi → .play-that-video, wait_secs=20
+  ❌ dizibox.so/live: king.php player CF challenge döngüsü → cookies şart
+  ❌ hdfilmcehennemi.nl: rplayer/404/check/performance CF JS challenge → cookies şart
 
 İNDİRME DURUM HARİTASI:
   ANİME:
-    anizm.net    ✅ 422.5 MB OK
+    anizm.net     ✅ 422.5 MB OK
     tranimaci.com ✅ Playwright CDN MP4
     turkanime.tv  ✅ Playwright 32sn + header capture → alucard.click 885MB
-    dizibox.live  ⏸️ 429 rate limit
-    hdfilmcehennemi.nl 🟡 test edilmedi
+    dizibox.so    ❌ CF challenge (cookies gerekli)
+    hdfilmcehennemi.nl ❌ CF challenge (cookies gerekli)
   MANGA:
     mangawow.com    ✅ 12 sayfa OK
     ragnarscans.com ✅ 25 sayfa OK
@@ -38,15 +36,17 @@ SOHBET-60 YAPILANLARI:
     hayalistic.com.tr ✅ ch0149 OK
 
 SIRADAKİ GÖREVLER:
-  [1] dizibox.live testi (rate limit geçince)
-  [2] hdfilmcehennemi.nl indirme testi
-  [3] PCT:0 sorunu — alucard.click progress parse düzelt
-  [4] title_tr null temizleme fix (exclude_none=True → exclude_unset=True)
-  [5] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
+  [1] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
+  [2] Backend restart et (anime.py + content.py değişti)
+  [3] PCT fix doğrula: turkanime.tv bölümü indir → progress bar 0'dan yukarı çıkıyor mu?
+  [4] title_tr null fix doğrula: frontend edit → Türkçe Başlık sil → kaydeder mi?
 ⚠️ ÖNEMLİ:
   - turkanime.tv: on_request MP4 header → _SESSION_HEADERS → yt-dlp --add-header
   - turkanime.tv: alucard.click 885MB (720p seçilse de 1080p geliyor, tek kalite)
-  - PCT:0 sorunu: yt-dlp alucard.click indirmesinde progress satırı parse edilemiyor
+  - PCT:0 FIX: anime.py chunk-based okuma (\r\n her ikisi split edilir) — yt-dlp progress artık güncellenir
+  - title_tr null FIX: content.py exclude_unset=True — PATCH ile null gönderince DB'de temizlenir
+  - dizibox.so: DB'de dizibox.live redirectiyle çalışır; CF bypass için cookies gerekli
+  - hdfilmcehennemi.nl: rplayer CF JS challenge — cookies.txt ile dene (tranimeizle gibi)
   - anizmplayer.com m3u8 → Referer: anizm.net/ şart (yt-dlp --add-header)
   - manga.py: reading-content check kaldırıldı, fallback img extraction aktif
   - DB: episode tablosu (çoğulsuz), kolon: number

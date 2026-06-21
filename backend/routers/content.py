@@ -177,7 +177,7 @@ async def patch_content(content_id: int, body: ContentPatch, db: AsyncSession = 
     if not c:
         raise HTTPException(404, "Bulunamadı")
 
-    for field, val in body.model_dump(exclude_none=True).items():
+    for field, val in body.model_dump(exclude_unset=True).items():
         if field == "genres":
             setattr(c, field, json.dumps(val))
         else:
