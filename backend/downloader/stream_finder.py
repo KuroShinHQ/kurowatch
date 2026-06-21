@@ -2,19 +2,21 @@
 stream_finder.py — Türk anime/dizi sitelerinden gerçek video URL'si çıkar.
 
 Strateji:
-  1. cookies.txt varsa → requests + CF bypass → iframe/embed URL çıkar
-  2. iframe URL yt-dlp'nin desteklediği bir player ise (Filemoon, Vidmoly vb.) → direkt kullan
-  3. Hiçbiri çalışmazsa → orijinal episode URL'yi döndür (yt-dlp denesin)
+  1. CF korumalı site → nodriver ile cf_clearance al (23 saat cache) → curl-cffi ile sayfa çek
+  2. cookies.txt varsa → requests + CF bypass → iframe/embed URL çıkar
+  3. JS-render gereken siteler → Playwright fallback
+  4. Hiçbiri çalışmazsa → orijinal episode URL'yi döndür (yt-dlp denesin)
 
 Desteklenen siteler:
-  - tranimeizle.co (cookies.txt gerekli)
-  - diziwatch.com
-  - turkanime.co
-  - dizibox.live     (Playwright — JS-render + CF korumalı)
-  - hdfilmcehennemi.nl (Playwright — JS-render)
+  - dizibox.so/live   (nodriver CF bypass → curl-cffi)
+  - hdfilmcehennemi.nl (nodriver CF bypass → curl-cffi)
+  - tranimeizle.co    (nodriver CF bypass → curl-cffi)
+  - diziwatch.com     (cookies.txt)
+  - turkanime.co/tv   (Playwright)
 """
 import os
 import re
+import time
 import asyncio
 import logging
 from pathlib import Path
@@ -29,6 +31,23 @@ _COOKIES_DIR = Path(__file__).parent.parent.parent / "cookies"
 # Playwright'ın MP4 URL'sine yaptığı isteğin header'ları (CF cookie dahil)
 # anime.py yt-dlp çağrısında kullanır; her find_stream_url çağrısında sıfırlanır
 _SESSION_HEADERS: dict[str, str] = {}
+
+# CF bypass: nodriver ile alınan cookie cache'i
+# domain → (cookies_dict, user_agent, timestamp)
+_cf_cache: dict[str, tuple[dict, str, float]] = {}
+_CF_CACHE_TTL = 23 * 3600  # 23 saat (CF cookie ömrü ~24 saat)
+
+# Bu domainler nodriver + curl-cffi CF bypass gerektirir
+_CF_SITES = {
+    "dizibox.live",
+    "dizibox.so",
+    "hdfilmcehennemi.nl",
+    "tranimeizle.co",
+    "tranimeizle.io",
+}
+
+# nodriver Chromium binary yolu
+_CHROMIUM_BIN = "/usr/bin/chromium-browser"
 
 
 def get_session_header_args(actual_url: str) -> list[str]:
@@ -162,15 +181,28 @@ def _extract_embed_from_html(html: str) -> Optional[str]:
 async def find_stream_url(episode_url: str) -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
-    Sıra: cookies fetch → Playwright JS-render → orijinal URL.
-
-    JS-render gerektiren siteler (dizibox.live, hdfilmcehennemi.nl) için
-    requests fetch atlanır, direkt Playwright kullanılır.
+    Sıra: CF bypass (nodriver+curl-cffi) → cookies fetch → Playwright → orijinal URL.
     """
     _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
+
+    # 1. CF korumalı site: nodriver cf_clearance + curl-cffi fetch
+    if any(domain.endswith(d) for d in _CF_SITES):
+        logger.info("CF site tespit edildi (%s) — nodriver bypass deneniyor", domain)
+        try:
+            html = await _fetch_with_cf_bypass(episode_url)
+            if html:
+                embed = _extract_embed_from_html(html)
+                if embed:
+                    logger.info("CF bypass embed buldu: %s", embed[:80])
+                    return embed
+                logger.warning("CF bypass HTML alındı ama embed bulunamadı (len=%d)", len(html))
+        except Exception as exc:
+            logger.error("CF bypass hatası: %s", exc)
+
     force_pw = any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT)
 
+    # 2. Cookies.txt varsa dene
     if not force_pw:
         cookies_file = _cookies_path(episode_url)
         if cookies_file:
@@ -187,8 +219,7 @@ async def find_stream_url(episode_url: str) -> str:
     else:
         logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
-    # Playwright: JS-render + ağ isteği izleme
-    # turkanime.tv iframe yüklemesi uzun sürer, timeout artırılır
+    # 3. Playwright: JS-render + ağ isteği izleme (fallback)
     pw_timeout = 60000 if "turkanime.tv" in domain else 15000
     try:
         embed = await _playwright_find_embed(episode_url, timeout_ms=pw_timeout)
@@ -200,6 +231,86 @@ async def find_stream_url(episode_url: str) -> str:
 
     logger.info("Embed bulunamadı, orijinal URL kullanılıyor: %s", episode_url[:60])
     return episode_url
+
+
+async def _nodriver_get_cookies(domain: str, base_url: str) -> tuple[dict, str]:
+    """
+    nodriver ile siteye git, tüm cookie'leri + user_agent al. 23 saat cache'lenir.
+    CF Turnstile olan siteler için cf_clearance dahil; olmayanlarda session cookie'leri alır.
+    """
+    cached = _cf_cache.get(domain)
+    if cached:
+        cookies_dict, ua, ts = cached
+        if time.time() - ts < _CF_CACHE_TTL:
+            logger.info("nodriver cookie cache'den kullanıldı: %s", domain)
+            return cookies_dict, ua
+
+    import nodriver as uc
+    logger.info("nodriver başlıyor: %s (ilk seferinde ~10sn sürer)", domain)
+    browser = await uc.start(
+        headless=True,
+        browser_executable_path=_CHROMIUM_BIN,
+        no_sandbox=True,
+    )
+    cookies_dict: dict = {}
+    user_agent = (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+    )
+    try:
+        page = await browser.get(base_url)
+        await asyncio.sleep(10)
+        raw_cookies = await browser.cookies.get_all()
+        cookies_dict = {c.name: c.value for c in raw_cookies}
+        cf_ok = "cf_clearance" in cookies_dict
+        logger.info(
+            "nodriver tamamlandı: %s | %d cookie | cf_clearance=%s",
+            domain, len(cookies_dict), cf_ok,
+        )
+        try:
+            ua_js = await page.evaluate("navigator.userAgent")
+            if ua_js:
+                user_agent = ua_js
+        except Exception:
+            pass
+        _cf_cache[domain] = (cookies_dict, user_agent, time.time())
+    except Exception as exc:
+        logger.error("nodriver hatası: %s", exc)
+    finally:
+        browser.stop()
+    return cookies_dict, user_agent
+
+
+async def _fetch_with_cf_bypass(url: str) -> Optional[str]:
+    """nodriver cookie'leri + curl-cffi ile CF korumalı sayfayı getir."""
+    from curl_cffi.requests import AsyncSession
+
+    domain = _domain(url)
+    base_url = f"{urlparse(url).scheme}://{urlparse(url).netloc}/"
+    cookies_dict, user_agent = await _nodriver_get_cookies(domain, base_url)
+    if not cookies_dict:
+        return None
+
+    headers = {
+        "User-Agent": user_agent,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5",
+        "Referer": base_url,
+    }
+    try:
+        async with AsyncSession(impersonate="chrome131") as s:
+            resp = await s.get(url, headers=headers, cookies=cookies_dict, timeout=20)
+            if resp.status_code == 200:
+                text = resp.text
+                if "challenge" not in resp.url.lower() and "captcha" not in text[:500].lower():
+                    return text
+                logger.warning("CF yeniden challenge (%s) — cache temizleniyor", domain)
+                _cf_cache.pop(domain, None)
+            else:
+                logger.warning("curl-cffi %s → HTTP %d", url[:60], resp.status_code)
+    except Exception as exc:
+        logger.error("curl-cffi fetch hatası: %s", exc)
+    return None
 
 
 async def _fetch_with_cookies(url: str, cookies_file: Path) -> Optional[str]:
