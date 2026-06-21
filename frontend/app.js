@@ -1619,7 +1619,8 @@
     function _buildEpisodeView() {
       const seasonEps = episodes.filter(function(e) { return (e.season || 1) === activeSeason; });
 
-      const primarySite = (sites || []).find(function(s) { return s.is_primary; }) || (sites || [])[0];
+      // En iyi site: ölü değil + en yüksek bölüm sayısı (backend zaten sıralı gönderir)
+      const primarySite = (sites || []).find(function(s) { return !s.is_dead; }) || (sites || [])[0];
       // myProgress = izlenen bölüm sayısı. Sıradaki = myProgress+1 (0 ise Bölüm 1'den başla)
       const nextEpNum = myProgress + 1;
       const nextEp = seasonEps.find(function(e) { return e.number === nextEpNum; }) || null;
@@ -1930,7 +1931,11 @@
   }
 
   function renderDetailSites(el, sites, contentId) {
+    // Çalışan siteler önce, kendi içinde en yüksek bölüm sayısına göre
     const sorted = sites.slice().sort(function(a, b) {
+      const deadA = a.is_dead ? 1 : 0;
+      const deadB = b.is_dead ? 1 : 0;
+      if (deadA !== deadB) return deadA - deadB;
       const av = a.latest_known_ep != null ? a.latest_known_ep : -1;
       const bv = b.latest_known_ep != null ? b.latest_known_ep : -1;
       return bv - av;
@@ -1942,8 +1947,12 @@
             '<div class="flex items-center gap-3 min-w-0">' +
             '<div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold flex-shrink-0">' + abbr + '</div>' +
             '<div class="flex flex-col min-w-0">' +
-            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + (s.latest_known_ep != null ? ' <span style="color:#9090b0;font-weight:normal;font-size:12px;">[' + s.latest_known_ep + ']</span>' : '') + (s.is_dead ? ' <span style="color:#ffb4ab;font-size:11px;font-weight:700;">⚠️ Ölü</span>' : '') + '</span>' +
-            (s.is_primary ? '<span class="text-[10px] text-[#00d4ff]">Ana Site</span>' : '') +
+            '<span class="font-bold text-[14px] text-[#e1e0ff] truncate">' + escapeHtml(s.site_name) + (s.latest_known_ep != null ? ' <span style="color:#9090b0;font-weight:normal;font-size:12px;">[' + s.latest_known_ep + '. bölüm]</span>' : '') + (s.is_dead ? ' <span style="color:#ffb4ab;font-size:11px;font-weight:700;">⚠️ Ölü</span>' : '') + '</span>' +
+            '<div class="flex gap-1 flex-wrap mt-0.5">' +
+            (sorted.indexOf(s) === 0 && !s.is_dead ? '<span style="background:#00d4ff22;color:#00d4ff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;">✓ Aktif</span>' : '') +
+            (s.is_primary ? '<span style="background:#ffffff11;color:#9090b0;font-size:10px;padding:1px 6px;border-radius:4px;">Birincil</span>' : '') +
+            (s.is_dead ? '<span style="background:#ffb4ab22;color:#ffb4ab;font-size:10px;padding:1px 6px;border-radius:4px;">Ölü — Yedek yok</span>' : '') +
+            '</div>' +
             '</div></div>' +
             '<div class="flex items-center gap-2 flex-shrink-0">' +
             '<a href="' + escapeHtml(s.site_url) + '" target="_blank" rel="noopener" class="px-3 py-2 bg-[#31324d] border border-white/10 rounded-lg text-[#e1e0ff] text-[13px] hover:text-[#00d4ff] transition-colors flex items-center gap-1 active:scale-[0.97]">' +

@@ -7,9 +7,15 @@ from urllib.parse import urlparse
 import httpx
 
 _MADARA_DOMAINS = [
-    "mangawow.com", "manga-sehri.net", "mangakeyf.com", "mangahost.net",
-    "okumangatr.com", "mangadenizi.com", "turkmanga.net", "mangaturk.org",
-    # 20 Haz 2026 — httpx testi ile onaylanan yeni siteler
+    # 21 Haz 2026 — gerçek chapter testi ile onaylanan siteler
+    "mangawow.com", "mangawow.org",
+    "hayalistic.com.tr",
+    "ragnarscans.com", "ragnarscans.net",
+    "merlintoon.com",
+    "mangadenizi.com",
+    # Eski (şimdilik 403/offline — fallback için kodda kalır)
+    "manga-sehri.net", "mangakeyf.com", "mangahost.net",
+    "okumangatr.com", "turkmanga.net", "mangaturk.org",
     "ruyamanga.com", "ruyamanga.net", "asurascans.com.tr",
 ]
 
