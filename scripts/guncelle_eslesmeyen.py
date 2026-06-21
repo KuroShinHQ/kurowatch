@@ -1,0 +1,123 @@
+"""ESLESMEYEN.md'yi toplu güncelle"""
+from pathlib import Path
+
+fpath = Path('/mnt/c/Kuroshin/kurowatch/docs/ESLESMEYEN.md')
+content = fpath.read_text(encoding='utf-8')
+
+replacements = [
+    # Anime — eklenenler [x]
+    ('[ ] [102] **Isekai Shikkaku (No Longer Allowed in Another World)** ← öneri: isekai-shikkaku',
+     '[x] [102] **Isekai Shikkaku** ← TA: isekai-shikkaku (EKLENDİ)'),
+    ('[ ] [224] **Appraisal Skill**',
+     '[x] [224] **Appraisal Skill** ← TA: ...kanteishi-kari-rashii (EKLENDİ)'),
+    # Back Street already done above — skip
+    ('[ ] [238] **Baki Serisi**',
+     '[x] [238] **Baki Serisi** ← TA: baki (EKLENDİ)'),
+    ('[ ] [239] **Baki Serisi (Tüm Sezonlar)**',
+     '[x] [239] **Baki Serisi (Tüm Sezonlar)** ← TA: baki (EKLENDİ)'),
+    ('[ ] [678] **Baki\'s Path 2. Kısım**',
+     '[x] [678] **Baki\'s Path 2. Kısım** ← TA: baki-dou (EKLENDİ)'),
+    ('[ ] [271] **DanMachi**',
+     '[x] [271] **DanMachi** ← TA: dungeon-ni-deai-wo-motomeru... (EKLENDİ)'),
+    ('[ ] [277] **Dawn of the Witch**',
+     '[x] [277] **Dawn of the Witch** ← TA: mahoutsukai-reimeiki (EKLENDİ)'),
+    ('[ ] [284] **Demon Lord 2099**',
+     '[x] [284] **Demon Lord 2099** ← TA: maou-2099 (EKLENDİ)'),
+    ('[ ] [285] **Demon Slayer**',
+     '[x] [285] **Demon Slayer** ← TA: kimetsu-no-yaiba (EKLENDİ)'),
+    ('[ ] [302] **Failure Frame**',
+     '[x] [302] **Failure Frame** ← TA: hazurewaku-no (EKLENDİ)'),
+    ('[ ] [303] **Faraway Paladin**',
+     '[x] [303] **Faraway Paladin** ← TA: saihate-no-paladin (EKLENDİ)'),
+    ('[ ] [305] **Farmer Skill**',
+     '[x] [305] **Farmer Skill** ← TA: noumin-kanren-no-skill... (EKLENDİ)'),
+    ('[ ] [308] **Fate Serisi**',
+     '[x] [308] **Fate Serisi** ← TA: fate-stay-night (EKLENDİ)'),
+    ('[ ] [309] **Fate Serisi (Stay Night, Zero, Unlimited Blade Works)**',
+     '[x] [309] **Fate Serisi (Stay Night, Zero, UBW)** ← TA: fate-stay-night (EKLENDİ, 308 ile)'),
+    ('[ ] [315] **Frieren: Beyond Journey\'s End**',
+     '[x] [315] **Frieren: Beyond Journey\'s End** ← TA: sousou-no-frieren (EKLENDİ)'),
+    ('[ ] [318] **Full Dive RPG**',
+     '[x] [318] **Full Dive RPG** ← TA: kyuukyoku-shinka-shita-full-dive-rpg... (EKLENDİ)'),
+    ('[ ] [336] **Gokudols**',
+     '[x] [336] **Gokudols** ← TA: back-street-girls-gokudolls (EKLENDİ)'),
+    ('[ ] [374] **Isekai One Turn Kill Neesan**',
+     '[ ] [374] **Isekai One Turn Kill Neesan** ← TURKANİME\'DE YOK'),
+    ('[ ] [375] **Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita**',
+     '[ ] [375] **Isekai One Turn Kill Neesan: Ane Douhan...** ← TURKANİME\'DE YOK'),
+    ('[ ] [387] **JoJo Serisi**',
+     '[x] [387] **JoJo Serisi** ← TA: jojo-s-bizarre-adventure-2012 (EKLENDİ)'),
+    ('[ ] [406] **Kiseijetû: Sei no Kakuritsu (Parasyte -the maxim-)**',
+     '[x] [406] **Kiseijetû/Parasyte** ← TA: kiseijuu-sei-no-kakuritsu (EKLENDİ)'),
+    ('[ ] [431] **Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life**',
+     '[ ] [431] **Lv2 kara Cheat** ← TURKANİME\'DE YOK (sitemap\'ta bulunamadı)'),
+    ('[ ] [114] **Marvel\'s What If (S3)**',
+     '[ ] [114] **Marvel\'s What If (S3)** ← TURKANİME\'DE YOK (Marvel/Netflix)'),
+    ('[ ] [450] **Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)** ← öneri: mo-dao-zu-shi-wanjie-pian, mo-dao-zu-shi',
+     '[x] [450] **Mo Dao Zu Shi** ← TA: mo-dao-zu-shi (EKLENDİ)'),
+    ('[ ] [464] **Mynoghra 4X**',
+     '[x] [464] **Mynoghra 4X** ← TA: isekai-mokushiroku-mynoghra... (EKLENDİ)'),
+    ('[ ] [480] **Oregairu**',
+     '[x] [480] **Oregairu** ← TA: yahari-ore-no-seishun-love-come... (EKLENDİ)'),
+    ('[ ] [495] **Punishment Hero**',
+     '[ ] [495] **Punishment Hero** ← TURKANİME\'DE YOK'),
+    ('[ ] [506] **Rookie Older Adventurer**',
+     '[ ] [506] **Rookie Older Adventurer** ← TURKANİME\'DE YOK (Shinmai Ossan)'),
+    ('[ ] [521] **Sekai Saikou no Ansatsusha (Suikastu Isekai)** ← öneri: sekai-saikou-no-ansatsusha-isekai-kizoku-ni-tensei-suru',
+     '[x] [521] **Sekai Saikou no Ansatsusha** ← TA: sekai-saikou-no-ansatsusha... (EKLENDİ)'),
+    ('[ ] [525] **Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)** ← öneri: sentouin-hakenshimasu',
+     '[x] [525] **Sentouin, Haken shimasu!** ← TA: sentouin-hakenshimasu (EKLENDİ)'),
+    ('[ ] [527] **Seventh Prince**',
+     '[ ] [527] **Seventh Prince** ← TURKANİME\'DE YOK (muhtemelen Cin animesi)'),
+    ('[ ] [551] **Solo Leveling (Anime)**',
+     '[x] [551] **Solo Leveling (Anime)** ← TA: ore-dake-level-up-na-ken (EKLENDİ)'),
+    ('[ ] [566] **Tales of Zestiria the Cross** ← öneri: tales-of-symphonia-the-animation-tethe-alla-hen, tales-of-gekijou',
+     '[x] [566] **Tales of Zestiria the Cross** ← TA: tales-of-zestiria-the-x (EKLENDİ)'),
+    ('[ ] [588] **The Eminence in Shadow**',
+     '[x] [588] **The Eminence in Shadow** ← TA: kage-no-jitsuryokusha-ni-naritakute (EKLENDİ)'),
+    ('[ ] [591] **The Faraway Paladin**',
+     '[x] [591] **The Faraway Paladin** ← TA: saihate-no-paladin (EKLENDİ)'),
+    ('[ ] [638] **Uncle from Another World**',
+     '[x] [638] **Uncle from Another World** ← TA: isekai-ojisan (EKLENDİ)'),
+    ('[ ] [646] **Villager A**',
+     '[ ] [646] **Villager A** ← TURKANİME\'DE YOK'),
+    ('[ ] [650] **What If...?**',
+     '[ ] [650] **What If...?** ← TURKANİME\'DE YOK (Marvel)'),
+    ('[ ] [669] **Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)**',
+     '[x] [669] **Classroom of the Elite** ← TA: youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-tv (EKLENDİ)'),
+    # Manga - yanlish oneri duzelt
+    ('[ ] [1] **Martial Peak** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/',
+     '[ ] [1] **Martial Peak** ← ⚠️ YANLIS ONERI (martial-genius farklı manga)'),
+    ('[ ] [19] **Murim Login** ← RG: ragnarscans.net/manga/murim-psychopath/',
+     '[ ] [19] **Murim Login** ← ⚠️ YANLIS ONERI (murim-psychopath farklı manhwa)'),
+    ('[ ] [92] **Kahramanin Dönüşü** ← HY: hayalistic.blog/manga/kahraman-katili/',
+     '[ ] [92] **Kahramanın Dönüşü** ← ⚠️ YANLIS ONERI (kahraman-katili = hero killer, farklı)'),
+    # Manga - eklenenler
+    ('[ ] [4] **Büyü İmparatoru** ← RG: ragnarscans.net/manga/buyu-imparatoru/ ← HY: hayalistic.blog/manga/buyu-imparatoru/',
+     '[x] [4] **Büyü İmparatoru** ← RG+HY: buyu-imparatoru (EKLENDİ)'),
+    ('[ ] [8] **Geri Dönen Büyücü** ← HY: hayalistic.blog/manga/seni-geri-dondurmek/',
+     '[ ] [8] **Geri Dönen Büyücü** ← HY: seni-geri-dondurmek (doğrulu gerek)'),
+    ('[ ] [45] **Kılıcı Hanesinin Genç Efendisi** ← HY: hayalistic.blog/manga/kilic-kralinin-fantezi-dunyasinda-hayatta-kalma-hikayesi/',
+     '[ ] [45] **Kılıcı Hanesinin Genç Efendisi** ← HY: kilic-kralinin-fantezi... (doğrulu gerek)'),
+    ('[ ] [64] **Regresör Kullanım Kılavuzu** ← RG: ragnarscans.net/manga/regressor-instruction-manual/ ← HY: hayalistic.blog/manga/ben-regresor-degilim/',
+     '[x] [64] **Regresör Kullanım Kılavuzu** ← RG: regressor-instruction-manual (EKLENDİ)'),
+    ('[ ] [70] **Oyuncunun Son Şansı** ← HY: hayalistic.blog/manga/oyunculari-fethet/',
+     '[ ] [70] **Oyuncunun Son Şansı** ← HY: oyunculari-fethet (doğrulu gerek)'),
+    ('[ ] [23] **Seçkinin İkinci Yaşamı** ← RG: ragnarscans.net/manga/seckinin-ikinci-yasami/ ← HY: hayalistic.blog/manga/seckinin-ikinci-yasami/',
+     '[x] [23] **Seçkinin İkinci Yaşamı** ← RG+HY: seckinin-ikinci-yasami (EKLENDİ)'),
+    ('[ ] [56] **Yıldız Hocası Baek** ← HY: hayalistic.blog/manga/yildiz-tozundan/',
+     '[ ] [56] **Yıldız Hocası Baek** ← HY: yildiz-tozundan (doğrulu gerek)'),
+    # Manhwa
+    ('[ ] [83] **Regressing with the King\'s Power** ← RG: ragnarscans.net/manga/a-dragonslayers-peerless-regression/',
+     '[x] [83] **Regressing with the King\'s Power** ← RG: a-dragonslayers-peerless-regression (EKLENDİ)'),
+]
+
+count = 0
+for old, new in replacements:
+    if old in content:
+        content = content.replace(old, new, 1)
+        count += 1
+
+# The already-done Back Street Girls fix from earlier edit
+fpath.write_text(content, encoding='utf-8')
+print(f'{count} satir guncellendi')
