@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-61b) · **Aktif sürüm:** v1.1.0 · **Son commit:** `7d920ea`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-62) · **Aktif sürüm:** v1.1.0 · **Son commit:** `3647be3`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,32 +10,32 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-61b):
-  - 676 içerik, backend RESTART GEREKİYOR (7d920ea — bat menüsü)
+MEVCUT DURUM (21 Haz sohbet-62):
+  - 676 içerik, backend 7d920ea aktif (restart yapıldı)
+  - turkanime.tv: 232 anime eşleşti (+131 yeni, sohbet-62)
   - Test: http://localhost:8099
 
-SOHBET-61 YAPILANLARI:
-  ✅ PCT:0 fix: anime.py chunk-based stdout — yt-dlp \r progress artık güncellenir
-  ✅ title_tr null fix: content.py exclude_unset — PATCH null ile DB'den siler
-  ✅ dizibox.so stream_finder'a eklendi; CF confirmed → askıya
-  ✅ hdfilmcehennemi.nl play selector .play-that-video; CF confirmed → askıya
-  🔍 turkanime eşleştirme araştırması TAMAMLANDI:
-     - slug tahmin yöntemi çalışmıyor (İngilizce vs Japonca romaji)
-     - turkanime.tv/sitemap/tv/sitemap1-3.xml.gz bulundu (TÜM animeler burada)
-     - build_ta_index.py YAZILDI → sitemap'tan {slug→ep1_url} JSON üretir
-     - Sonraki adım: index'i oluştur → AniList romaji ile eşleştir → DB'ye ekle
+SOHBET-62 YAPILANLARI:
+  ✅ build_ta_index.py: sitemap'tan 4713 unique turkanime slug çekildi
+  ✅ fetch_romaji_cache.py: 250/329 AniList romaji cache'lendi
+  ✅ enrich_turkanime.py: index lookup + güven kontrolü → 131 anime DB'ye eklendi
+     - Strateji: romaji slug → ta_index exact/prefix match → title overlap check
+     - ~4 false positive (Samurai Jack, Green Mile, Toy Story, Twilight) — manuel düzelt
+  ✅ PCT:0 fix: anime.py chunk-based stdout (sohbet-61)
+  ✅ title_tr null fix: content.py exclude_unset (sohbet-61)
 
-SOHBET-62 SIRASI:
-  [1] backend restart (bat menüsü — 7d920ea kodu aktif değil)
-  [2] python3 scripts/build_ta_index.py
-        → scripts/ta_index.json oluşturur (~binlerce slug)
-  [3] match_ta.py yaz: ta_index × AniList romaji → 329 anime eşleştir → DB ekle
-        Mantık: get_detail(anilist_id) → romaji → slug → ta_index lookup
-  [4] PCT + title_tr null fix doğrula (frontend)
+SOHBET-63 SIRASI:
+  [1] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
+  [2] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
+  [3] Yanlış eşleşmeleri temizle (opsiyonel):
+        sqlite3 kurowatch.db "DELETE FROM site WHERE content_id IN (515,594,631,637)
+        AND site_url LIKE '%turkanime%'"
+  [4] MANUAL_SITES.md'den seçilen URL'leri DB'ye ekle
 
 ⚠️ ÖNEMLİ:
   - turkanime.tv: on_request MP4 header → _SESSION_HEADERS → yt-dlp --add-header
-  - build_ta_index.py: sitemap1-3.xml.gz → /mnt/c/.../scripts/ta_index.json
+  - enrich_turkanime.py: SQLite'a direkt yazar (API değil — WSL←→Windows port sorunu)
+  - ta_index.json + ta_romaji_cache.json → scripts/ altında (yeniden çalıştırmaya gerek yok)
   - dizibox.so + hdfilmcehennemi.nl: CF bypass yok, cookies.txt şart (askıya)
   - anizmplayer.com m3u8 → Referer: anizm.net/ şart
   - DB: episode tablosu (çoğulsuz), kolon: number
