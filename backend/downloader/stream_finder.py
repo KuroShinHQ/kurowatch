@@ -109,6 +109,9 @@ def _extract_embed_from_html(html: str) -> Optional[str]:
     for src in iframes:
         if any(skip in src for skip in _SKIP_IFRAME_DOMAINS):
             continue
+        # Protocol-relative URL (//) → https: ekle
+        if src.startswith("//"):
+            src = "https:" + src
         if src.startswith("http"):
             logger.info("iframe bulundu: %s", src[:80])
             return src
@@ -236,10 +239,14 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         "rapidvid", "mixdrop", "gounlimited", "mp4upload",
         "odnoklassniki", "mail.ru", "vk.com/video",
         "dizibox.live/embed", "hdfilmcehennemi.nl/embed",
+        "pichive.online/iframe", "aso1.net",
+        "anizmplayer.com", "media.aso",
     )
 
     def _is_embed(url: str) -> bool:
         if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd", ".mp4")):
+            return True
+        if "/iframe.php" in url or "/embed/" in url or "/player/" in url:
             return True
         return any(p in url for p in _KNOWN_PLAYERS)
 
@@ -254,6 +261,14 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             locale="tr-TR",
         )
         page = await ctx.new_page()
+
+        # Bot tespiti atla (playwright-stealth)
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(page)
+            logger.info("playwright-stealth aktif")
+        except Exception as _se:
+            logger.warning("playwright-stealth bypass yok: %s", _se)
 
         # GET ve XHR/fetch isteklerini izle
         async def on_request(req):
@@ -325,7 +340,12 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 for el in els:
                     for attr in ("src", "data-src"):
                         src = await el.get_attribute(attr) or ""
-                        if not src or not src.startswith("http"):
+                        if not src:
+                            continue
+                        # Protocol-relative URL (//) → https: ekle
+                        if src.startswith("//"):
+                            src = "https:" + src
+                        if not src.startswith("http"):
                             continue
                         if any(skip in src for skip in _SKIP_IFRAME_DOMAINS):
                             logger.info("Lisanslı iframe atlandı: %s", src[:80])

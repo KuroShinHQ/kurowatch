@@ -87,7 +87,14 @@ def _serialize(c: Content) -> dict:
         "sites": [
             {"id": s.id, "site_name": s.site_name, "site_url": s.site_url,
              "is_primary": s.is_primary, "latest_known_ep": s.latest_known_ep, "is_dead": s.is_dead}
-            for s in (c.sites or [])
+            for s in sorted(
+                c.sites or [],
+                key=lambda s: (
+                    1 if s.is_dead else 0,
+                    -(s.latest_known_ep or -1),
+                    0 if s.is_primary else 1,
+                )
+            )
         ],
         "tags": [
             {"id": ct.tag.id, "name": ct.tag.name, "tag_type": ct.tag.tag_type, "color": ct.tag.color}
