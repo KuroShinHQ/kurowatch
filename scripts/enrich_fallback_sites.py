@@ -116,30 +116,25 @@ async def search_anizm(session, title: str, site_url: str = "") -> Optional[str]
     return None
 
 
-async def _get_first_chapter(session, manga_url: str, base_url: str) -> str:
-    """Manga sayfasından ilk/son chapter URL'sini bul."""
-    try:
-        async with session.get(manga_url, headers={**HEADERS, "Referer": base_url}, timeout=TIMEOUT) as r:
-            html = await r.text()
-        domain = re.search(r'https?://(?:www\.)?([^/]+)', base_url).group(1)
-        # Chapter linkleri — liste genellikle yeniden eskiye sıralı, son = 1. bölüm
-        ch_links = re.findall(
-            rf'href=["\']([^"\']*{re.escape(domain)}/[^"\']*(?:bolum|chapter|ch-|blm)[^"\']*/?)["\']',
-            html, re.IGNORECASE
-        )
-        if ch_links:
-            return ch_links[-1]  # Son link = 1. bölüm
-    except Exception:
-        pass
-    return manga_url
+_BAD_URL_PARTS = {"bolum-acma-merkezi", "/feed", "/page/", "wp-json", "wp-admin", "#"}
+
+
+def _slug_similarity(title: str, url: str) -> bool:
+    """URL'deki slug başlıkla yeterince örtüşüyor mu? (False positive engeli)"""
+    title_words = set(re.findall(r'[a-z0-9]+', title.lower())) - {"the", "a", "an", "of", "in", "to"}
+    url_slug = re.search(r'/(?:manga|manhwa)/([^/]+)', url)
+    if not url_slug:
+        return False
+    slug_words = set(re.sub(r'-+', ' ', url_slug.group(1)).split())
+    common = title_words & slug_words
+    return len(common) >= max(1, len(title_words) // 3)
 
 
 async def search_manga_site(session, title: str, base_url: str, site_name: str) -> Optional[str]:
-    """Madara tema sitelerde manga arama: slug + WordPress search."""
-    domain = re.search(r'https?://(?:www\.)?([^/]+)', base_url).group(1)
+    """Madara tema sitelerde manga arama: direkt slug + WordPress search."""
     slug = _title_slug(title)
 
-    # 1. Direkt slug dene
+    # 1. Direkt slug dene — manga sayfası URL'ini döndür (chapter değil)
     for prefix in ("manga", "manhwa"):
         slug_url = base_url.rstrip("/") + f"/{prefix}/{slug}/"
         try:
@@ -147,11 +142,12 @@ async def search_manga_site(session, title: str, base_url: str, site_name: str) 
                 if r.status == 200:
                     html = await r.text()
                     if "reading-content" in html or "wp-manga" in html or "chapter" in html.lower():
-                        return await _get_first_chapter(session, slug_url, base_url)
+                        return slug_url
         except Exception:
             pass
 
-    # 2. WordPress search
+    # 2. WordPress search — başlık benzerliği kontrolü ile
+    domain = re.search(r'https?://(?:www\.)?([^/]+)', base_url).group(1)
     search_url = base_url.rstrip("/") + f"/?s={urllib.parse.quote(title)}&post_type=wp-manga"
     try:
         async with session.get(search_url, headers={**HEADERS, "Referer": base_url}, timeout=TIMEOUT) as r:
@@ -162,8 +158,11 @@ async def search_manga_site(session, title: str, base_url: str, site_name: str) 
             rf'href=["\']([^"\']*{re.escape(domain)}/(?:manga|manhwa)/[^"\']+)["\']',
             html, re.IGNORECASE
         )
-        if links:
-            return await _get_first_chapter(session, links[0], base_url)
+        links = [l for l in links if not any(p in l for p in _BAD_URL_PARTS)]
+        # Sadece başlıkla örtüşen slug'ı kabul et
+        for link in links:
+            if _slug_similarity(title, link):
+                return link
     except Exception:
         pass
     return None
