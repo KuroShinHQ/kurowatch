@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-63) · **Aktif sürüm:** v1.1.0 · **Son commit:** `fd442f4`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-64) · **Aktif sürüm:** v1.1.0 · **Son commit:** `fd442f4`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -15,22 +15,21 @@ MEVCUT DURUM (21 Haz sohbet-63):
   - Çalışan kaynağı olan: ~280 içerik
   - Test: http://localhost:8099
 
-SOHBET-63 YAPILANLARI:
-  ✅ turkanime.tv: 131 anime eşleşti (toplam 232) — enrich_turkanime.py
-  ✅ ragnarscans.net + hayalistic.blog katalog çekildi (87 + 411 slug)
-  ✅ +5 manga/manhwa daha eşleşti (Sonsuz Döngüde Hapsolan, Tanrıçanın Kulu, vs)
-  ✅ docs/ESLESMEYEN.md oluşturuldu:
-     - 78 gerçek anime (bazılarında turkanime öneri var)
-     - 86 manga + 32 manhwa (ragnarscans/hayalistic'te yok)
-     - 181 Türk dizi/Batı içerik (anime sitede olmaz)
+SOHBET-64 YAPILANLARI:
+  ✅ ta_index.json (4713 slug) + site_catalogs.json üzerinden toplu eşleşme araştırması
+  ✅ +30 turkanime anime eklendi DB'ye (bulk_add_eslesmeyen.py):
+     Demon Slayer, Solo Leveling, Frieren, Oregairu, DanMachi, JoJo, Parasyte, vb.
+  ✅ +6 manga/manhwa eklendi: Büyü İmparatoru, Seçkinin İkinci Yaşamı, Regresör Kılavuzu, vb.
+  ✅ ESLESMEYEN.md güncellendi: eklenenler [x], turkanime'de olmayanlar "YOK" notu aldı
+  ✅ 3 yanlış manga önerisi düzeltildi (Martial Peak, Murim Login, Kahraman Dönüşü)
 
-SOHBET-64 SIRASI:
-  [1] Lord ESLESMEYEN.md'i incelesin → URL bildirenler için:
-        python3 scripts/ekle_manual_url.py [ID] [URL] [site_adi]
-  [2] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
-  [3] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
-  [4] Yanlış eşleşme temizle (false positive 4 adet):
+SOHBET-65 SIRASI:
+  [1] PCT fix doğrula: turkanime.tv indir → progress bar 0→100 çalışıyor mu?
+  [2] title_tr null doğrula: Edit modalde Türkçe Başlık sil + kaydet
+  [3] Yanlış eşleşme temizle (false positive 4 adet):
         ID 515(Samurai Jack), 594(Green Mile), 631(Toy Story), 637(Twilight)
+  [4] ESLESMEYEN.md kalan anime için Lord URL bildirir → DB'ye ekleriz
+        Önemli eksikler: Isekai One Turn Kill, Lv2 kara Cheat, Rookie Older Adventurer
 
 ⚠️ ÖNEMLİ:
   - ESLESMEYEN.md: docs/ESLESMEYEN.md — Lord URL bildirir, Claude DB'ye ekler

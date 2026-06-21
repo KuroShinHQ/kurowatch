@@ -9,77 +9,77 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 
 - [ ] [216] **Aladdin (Çizgi Dizi)**
 - [ ] [220] **Amerikan Sapığı**
-- [ ] [224] **Appraisal Skill**
+- [x] [224] **Appraisal Skill** ← TA: ...kanteishi-kari-rashii (EKLENDİ)
 - [ ] [227] **Asena ve Oniriks**
 - [ ] [228] **Assassin Isekai**
 - [ ] [231] **Assessment Assassin**
 - [ ] [232] **Asteriks ve Oniriks**
-- [ ] [237] **Back Street Girls: Gokudols** ← öneri: back-street-girls-gokudolls
-- [ ] [238] **Baki Serisi**
-- [ ] [239] **Baki Serisi (Tüm Sezonlar)**
-- [ ] [678] **Baki's Path 2. Kısım**
+- [x] [237] **Back Street Girls: Gokudols** ← TA: back-street-girls-gokudolls (EKLENDİ)
+- [x] [238] **Baki Serisi** ← TA: baki (EKLENDİ)
+- [x] [239] **Baki Serisi (Tüm Sezonlar)** ← TA: baki (EKLENDİ)
+- [x] [678] **Baki's Path 2. Kısım** ← TA: baki-dou (EKLENDİ)
 - [ ] [257] **Cem Yılmaz Fundamentals**
 - [ ] [260] **Chihiro Gidişi**
-- [ ] [271] **DanMachi**
+- [x] [271] **DanMachi** ← TA: dungeon-ni-deai-wo-motomeru... (EKLENDİ)
 - [ ] [273] **Dark**
-- [ ] [277] **Dawn of the Witch**
-- [ ] [284] **Demon Lord 2099**
-- [ ] [285] **Demon Slayer**
+- [x] [277] **Dawn of the Witch** ← TA: mahoutsukai-reimeiki (EKLENDİ)
+- [x] [284] **Demon Lord 2099** ← TA: maou-2099 (EKLENDİ)
+- [x] [285] **Demon Slayer** ← TA: kimetsu-no-yaiba (EKLENDİ)
 - [ ] [298] **Ed, Edd n Eddy**
-- [ ] [302] **Failure Frame**
-- [ ] [303] **Faraway Paladin**
-- [ ] [305] **Farmer Skill**
-- [ ] [308] **Fate Serisi**
-- [ ] [309] **Fate Serisi (Stay Night, Zero, Unlimited Blade Works)**
-- [ ] [315] **Frieren: Beyond Journey's End**
-- [ ] [318] **Full Dive RPG**
+- [x] [302] **Failure Frame** ← TA: hazurewaku-no (EKLENDİ)
+- [x] [303] **Faraway Paladin** ← TA: saihate-no-paladin (EKLENDİ)
+- [x] [305] **Farmer Skill** ← TA: noumin-kanren-no-skill... (EKLENDİ)
+- [x] [308] **Fate Serisi** ← TA: fate-stay-night (EKLENDİ)
+- [x] [309] **Fate Serisi (Stay Night, Zero, UBW)** ← TA: fate-stay-night (EKLENDİ, 308 ile)
+- [x] [315] **Frieren: Beyond Journey's End** ← TA: sousou-no-frieren (EKLENDİ)
+- [x] [318] **Full Dive RPG** ← TA: kyuukyoku-shinka-shita-full-dive-rpg... (EKLENDİ)
 - [ ] [331] **Ghost Rider (Hayalet Sürücü)**
 - [ ] [334] **Gladio**
 - [ ] [335] **Gladyatör**
-- [ ] [336] **Gokudols**
+- [x] [336] **Gokudols** ← TA: back-street-girls-gokudolls (EKLENDİ)
 - [ ] [344] **Hacivat Karagöz Neden Öldürüldü?**
 - [ ] [361] **Immortal King**
-- [ ] [374] **Isekai One Turn Kill Neesan**
-- [ ] [375] **Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita**
-- [ ] [102] **Isekai Shikkaku (No Longer Allowed in Another World)** ← öneri: isekai-shikkaku
-- [ ] [387] **JoJo Serisi**
-- [ ] [406] **Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)**
+- [ ] [374] **Isekai One Turn Kill Neesan** ← TURKANİME'DE YOK
+- [ ] [375] **Isekai One Turn Kill Neesan: Ane Douhan...** ← TURKANİME'DE YOK
+- [x] [102] **Isekai Shikkaku** ← TA: isekai-shikkaku (EKLENDİ)
+- [x] [387] **JoJo Serisi** ← TA: jojo-s-bizarre-adventure-2012 (EKLENDİ)
+- [x] [406] **Parasyte (Kiseijuu)** ← TA: kiseijuu-sei-no-kakuritsu (EKLENDİ)
 - [ ] [407] **Koleksiyoncu**
 - [ ] [409] **Komedi Dükkanı**
 - [ ] [410] **Komedi Dükkanı (Tolga Çevik)**
 - [ ] [423] **Limitless**
 - [ ] [429] **Love, Death & Robots**
-- [ ] [431] **Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life**
+- [ ] [431] **Lv2 kara Cheat** ← TURKANİME'DE YOK (sitemap'ta bulunamadı)
 - [ ] [436] **Malefiz**
-- [ ] [114] **Marvel's What If (S3)**
-- [ ] [450] **Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)** ← öneri: mo-dao-zu-shi-wanjie-pian, mo-dao-zu-shi
+- [ ] [114] **Marvel's What If (S3)** ← TURKANİME'DE YOK (Marvel/Netflix)
+- [x] [450] **Mo Dao Zu Shi** ← TA: mo-dao-zu-shi (EKLENDİ)
 - [ ] [458] **Mr. White)**
-- [ ] [464] **Mynoghra 4X**
-- [ ] [480] **Oregairu**
+- [x] [464] **Mynoghra 4X** ← TA: isekai-mokushiroku-mynoghra... (EKLENDİ)
+- [x] [480] **Oregairu** ← TA: yahari-ore-no-seishun-love-come... (EKLENDİ)
 - [ ] [492] **Planet of the Apes (Maymunlar Cehennemi Serisi)**
-- [ ] [495] **Punishment Hero**
-- [ ] [506] **Rookie Older Adventurer**
-- [ ] [521] **Sekai Saikou no Ansatsusha (Suikastçı Isekai)** ← öneri: sekai-saikou-no-ansatsusha-isekai-kizoku-ni-tensei-suru
-- [ ] [525] **Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)** ← öneri: sentouin-hakenshimasu
-- [ ] [527] **Seventh Prince**
-- [ ] [551] **Solo Leveling (Anime)**
-- [ ] [566] **Tales of Zestiria the Cross** ← öneri: tales-of-symphonia-the-animation-tethe-alla-hen, tales-of-gekijou
+- [ ] [495] **Punishment Hero** ← TURKANİME'DE YOK
+- [ ] [506] **Rookie Older Adventurer** ← TURKANİME'DE YOK (Shinmai Ossan)
+- [x] [521] **Sekai Saikou no Ansatsusha** ← TA: sekai-saikou-no-ansatsusha... (EKLENDİ)
+- [x] [525] **Sentouin, Haken shimasu!** ← TA: sentouin-hakenshimasu (EKLENDİ)
+- [ ] [527] **Seventh Prince** ← TURKANİME'DE YOK (muhtemelen Cin animesi)
+- [x] [551] **Solo Leveling (Anime)** ← TA: ore-dake-level-up-na-ken (EKLENDİ)
+- [x] [566] **Tales of Zestiria the Cross** ← TA: tales-of-zestiria-the-x (EKLENDİ)
 - [ ] [583] **The Collector (Koleksiyoncu)**
-- [ ] [588] **The Eminence in Shadow**
+- [x] [588] **The Eminence in Shadow** ← TA: kage-no-jitsuryokusha-ni-naritakute (EKLENDİ)
 - [ ] [590] **The Emperor's New School (Şaşkın İmparator'un Okulu)**
-- [ ] [591] **The Faraway Paladin**
+- [x] [591] **The Faraway Paladin** ← TA: saihate-no-paladin (EKLENDİ)
 - [ ] [597] **The Incredibles**
 - [ ] [601] **The Marvelous Misadventures of Flapjack**
 - [ ] [609] **The Secret Saturdays**
 - [ ] [628] **Totally Spies! (Ajanlar)**
-- [ ] [638] **Uncle from Another World**
+- [x] [638] **Uncle from Another World** ← TA: isekai-ojisan (EKLENDİ)
 - [ ] [641] **Undisputed (Yenilmez Serisi)**
 - [ ] [642] **Up**
-- [ ] [646] **Villager A**
-- [ ] [650] **What If...?**
+- [ ] [646] **Villager A** ← TURKANİME'DE YOK
+- [ ] [650] **What If...?** ← TURKANİME'DE YOK (Marvel)
 - [ ] [659] **Yeşil Yol**
 - [ ] [661] **You**
-- [ ] [669] **Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)**
+- [x] [669] **Classroom of the Elite** ← TA: youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-tv (EKLENDİ)
 - [ ] [670] **Zamana Karşı**
 - [ ] [674] **Çok Güzel Hareketler Bunlar**
 - [ ] [675] **Çok Güzel Hareketler Bunlar (1. Kuşak)**
@@ -93,7 +93,7 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [12] **Above Ten Thousand People**
 - [ ] [136] **Absolute Reign**
 - [ ] [137] **After Ten Millennia in Hell**
-- [ ] [4] **Büyü İmparatoru** ← RG: ragnarscans.net/manga/buyu-imparatoru/ ← HY: hayalistic.blog/manga/buyu-imparatoru/
+- [x] [4] **Büyü İmparatoru** ← RG+HY: buyu-imparatoru (EKLENDİ)
 - [ ] [94] **Cultivator Against Hero Society**
 - [ ] [71] **Damn Reincarnation**
 - [ ] [26] **Deli Mühendis**
@@ -103,7 +103,7 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [13] **Dünyanın En İyi Mühendisi**
 - [ ] [20] **FFF-Class Trashero**
 - [ ] [93] **Forced to Become the Villain's Son-in-Law**
-- [ ] [8] **Geri Dönen Büyücü** ← HY: hayalistic.blog/manga/seni-geri-dondurmek/
+- [ ] [8] **Geri Dönen Büyücü** ← HY: seni-geri-dondurmek (doğrulu gerek)
 - [ ] [24] **Hardcore Leveling Warrior**
 - [ ] [147] **Hardcore Leveling Warrior: Earth Game**
 - [ ] [148] **Heavenly Demon Reborn!**
@@ -121,11 +121,11 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [84] **Library of Heaven's Path**
 - [ ] [152] **Lout of Count's Family (Trash of the Count's Family)**
 - [ ] [153] **Martial Divine Demon** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
-- [ ] [1] **Martial Peak** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [ ] [1] **Martial Peak** ← ⚠️ YANLIS ONERI (martial-genius farklı manga)
 - [ ] [154] **Masters of Lightning Knives**
 - [ ] [59] **Mağdur Sıralamacının Dönüşü**
 - [ ] [155] **Mercenary Enrollment**
-- [ ] [19] **Murim Login** ← RG: ragnarscans.net/manga/murim-psychopath/
+- [ ] [19] **Murim Login** ← ⚠️ YANLIS ONERI (murim-psychopath farklı manhwa)
 - [ ] [156] **My Avatars' Path to Greatness**
 - [ ] [157] **My Blasted Reincarnated Life**
 - [ ] [158] **My S-Class Hunters**
@@ -134,15 +134,15 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [161] **Omniscient Reader's Viewpoint (ORV)**
 - [ ] [69] **Overpowered Sword**
 - [ ] [91] **Oyun Obu Familia Aile Senki**
-- [ ] [70] **Oyuncunun Son Şansı** ← HY: hayalistic.blog/manga/oyunculari-fethet/
+- [ ] [70] **Oyuncunun Son Şansı** ← HY: oyunculari-fethet (doğrulu gerek)
 - [ ] [36] **Player Who Returned 10,000 Years Later**
-- [ ] [64] **Regresör Kullanım Kılavuzu** ← RG: ragnarscans.net/manga/regressor-instruction-manual/ ← HY: hayalistic.blog/manga/ben-regresor-degilim/
+- [x] [64] **Regresör Kullanım Kılavuzu** ← RG: regressor-instruction-manual (EKLENDİ)
 - [ ] [61] **Return of the Shattered Constellation**
 - [ ] [171] **Returning With Absolutely Nothing**
 - [ ] [172] **Revenge of the Baskerville Bloodhound**
 - [ ] [176] **SSS-Class Revival Hunter (SSS-Class Suicide Hunter)**
 - [ ] [173] **Second Life Ranker**
-- [ ] [23] **Seçkinin İkinci Yaşamı** ← RG: ragnarscans.net/manga/seckinin-ikinci-yasami/ ← HY: hayalistic.blog/manga/seckinin-ikinci-yasami/
+- [x] [23] **Seçkinin İkinci Yaşamı** ← RG+HY: seckinin-ikinci-yasami (EKLENDİ)
 - [ ] [174] **Shadow of the Supreme**
 - [ ] [68] **Sokakta Hayatta Kalma Kılavuzu**
 - [ ] [177] **Standard Of Reincarnation**
@@ -173,7 +173,7 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [198] **Trash of the Count's Family (Lout of Count's Family)**
 - [ ] [74] **Yetenek Yutan Sihirbaz**
 - [ ] [88] **Yıldırım Bıçağı Ustası**
-- [ ] [56] **Yıldız Hocası Baek** ← HY: hayalistic.blog/manga/yildiz-tozundan/
+- [ ] [56] **Yıldız Hocası Baek** ← HY: yildiz-tozundan (doğrulu gerek)
 
 ## 🗂️ Manhwa (32 adet)
 
@@ -193,7 +193,7 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 - [ ] [87] **Raising Newbie Heroes in Another World**
 - [ ] [46] **Ranker's Return (Remake)**
 - [ ] [165] **Reborn as a Scholar**
-- [ ] [83] **Regressing with the King's Power** ← RG: ragnarscans.net/manga/a-dragonslayers-peerless-regression/
+- [x] [83] **Regressing with the King's Power** ← RG: a-dragonslayers-peerless-regression (EKLENDİ)
 - [ ] [166] **Reincarnated Murim Lord**
 - [ ] [52] **Reincarnation of the Murim Clan's Former Ranker**
 - [ ] [169] **Return of the Disaster-Class Hero**
