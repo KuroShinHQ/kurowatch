@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-57) · **Aktif sürüm:** v1.1.0 · **Son commit:** `acc5467`
+**Son güncelleme:** 21 Haziran 2026 (sohbet-58) · **Aktif sürüm:** v1.1.0 · **Son commit:** `faa4b38`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,32 +10,38 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-57):
-  - 676 içerik, backend acc5467 — RESTART LAZIM (Bat [10]→[1])
+MEVCUT DURUM (21 Haz sohbet-58):
+  - 676 içerik, backend faa4b38 — RESTART LAZIM (Bat [10]→[1])
   - Test: http://localhost:8099
 
-SOHBET-57 YAPILANLARI:
-  ✅ title_tr: models.py + DB migration + content router + Edit modal + kart/detay (acc5467)
-  ✅ Crawlee/Playwright/stealth bot bypass → HEPSİ başarısız (server-side tespit)
-  ✅ Bot korumalı siteler ASKIYA ALINDI
+SOHBET-58 YAPILANLARI:
+  ✅ 31 manga/manhwa + 10 anime sitesi gerçek URL testi yapıldı
+  ✅ stream_finder.py: protocol-relative (//) bug fix + pichive/aso1/anizmplayer tanıma
+  ✅ manga.py: _MADARA_DOMAINS güncellendi (mangawow.com/org, ragnarscans.net vb. eklendi)
+  ✅ content.py: site sıralaması — çalışan önce, en yüksek bölüm sayısı
+  ✅ app.js: primarySite=best non-dead; Sites tab ölü→sona; "✓ Aktif" badge
+  ✅ scripts/enrich_fallback_sites.py YENİ: anime (tranimeizle slug→turkanime/anizm) + manga oto eşleştirme
 
-ASKIYA ALINAN SİTELER (cookies/çözüm gelene kadar):
-  ❌ tranimeizle.co → Bot Kontrol CAPTCHA (cookies/tranimeizle_cookies.txt şart)
-  ❌ mangatr.net → JS bot redirect
-  ❌ mangaokutr.com → DNS fail (offline)
+ÇALIŞAN SİTELER (21 Haz test):
+  ANİME/DİZİ: tranimaci.com ✅ | hdfilmcehennemi.nl ✅ | turkanime.tv 🟡 | dizibox.live 🟡 | anizm.net ✅ | diziwatch.ac 🟡
+  MANGA: mangawow.com ✅ | mangawow.org ✅ | ragnarscans.com ✅ | ragnarscans.net ✅ | hayalistic.com.tr ✅ | merlintoon.com ✅
+  ÖLÜLER: tranimeizle.co (CF), mangaokutr.com (offline), mangatr.net (bot), ruyamanga.net (403)
 
 SIRADAKİ GÖREVLER:
-  [1] Backend restart: Bat [10] → [1] (acc5467 + title_tr migration aktif)
+  [1] Backend restart: Bat [10] → [1] (faa4b38 aktif etmek için)
   [2] title_tr test: Düzenle modal → "Türkçe Başlık" → kaydet → kart/detay güncellenmeli
-  [3] audit_all_media.py: --no-mark kaldır → gerçek DB güncelle
-  [4] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
-  [5] tranimeizle.io URL: Lord manuel bölüm URL'si Siteler sekmesine girecek
+  [3] enrich_fallback_sites.py full run: python3 scripts/enrich_fallback_sites.py --type all
+      (429 anime + 172 manga/manhwa için fallback URL ekler, dry-run önce test et)
+  [4] audit_all_media.py: --no-mark kaldır → gerçek DB güncelle
+  [5] Manga çeviri "Düzelt" butonu (FAZ-5 kalan)
 
 ⚠️ ÖNEMLİ:
-  - title_tr: kart+detay title_tr || title gösteriyor, Edit modal'da "Türkçe Başlık" alanı var
-  - Crawlee Bridge port 3006: gerekince Start-Process ile başlat
+  - enrich_fallback_sites.py: dry-run ile önce test et: --dry-run --limit 20
+  - Slug eşleşme oranı: ~%30-50 (tranimeizle slug turkanime'de aynı değilse bulamıyor)
+  - anizm.net arama sayfası 403 — direkt slug tahmini kullanılıyor
+  - diziwatch.ac embed: four.pichive.online (CF korumalı, yt-dlp başarısız olabilir)
   - DB: episode tablosu (çoğulsuz), kolon: number
-  - Backend restart ŞART
+  - Backend restart ŞART (Bat [10]→[1])
 ```
 
 ---
