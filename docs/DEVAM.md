@@ -20,16 +20,20 @@ SOHBET-70 YAPILANLARI:
   ✅ manga.py: CF blocked sites (mangasehri.net) → düzgün hata mesajı
   ✅ manga.py: uzaymanga.com yeni format scraper + eski URL→yeni URL dönüşümü (22c4e8f)
 
-SOHBET-71 TAMAMLANDI — Download URL Sağlık Operasyonu ✅
+SOHBET-71 TAMAMLANDI — Download URL Sağlık Operasyonu (Manga + Anime) ✅
   
-  YAPILAN:
-    - Nano Machine (content_id=18, 178 ep): mangasehri.net → ragnarscans.com/manga/nano-makine/bolum-N/
-    - Büyü İmparatoru (content_id=4, 465 ep): uzaymanga.com → ragnarscans.com/manga/buyu-imparatoru/bolum-N/
-    - The Hunter (content_id=9, 109 ep): mangawow.com — zaten çalışıyordu
-    - Ping test: 3/3 manga bolum-1 → 200 OK
-    - Script: scripts/update_manga_urls.py
+  MANGA:
+    - Nano Machine (178 ep): mangasehri.net → ragnarscans.com/manga/nano-makine/bolum-N/
+    - Büyü İmparatoru (465 ep): uzaymanga.com → ragnarscans.com/manga/buyu-imparatoru/bolum-N/
+    - The Hunter (109 ep): mangawow.com — zaten çalışıyordu
+  ANİME (38 ep, tranimeizle.co/io → tranimaci.com):
+    - Dungeon Meshi (24 ep): tranimaci.com/video/dungeon-meshi-N-bolum
+    - Faraway Paladin (12 ep): tranimaci.com/video/saihate-no-paladin-N-bolum
+    - Uncle from Another World (1 ep): tranimaci.com/video/uncle-from-another-world-N-bolum
+    - Baki's Path 2 (1 ep): tranimaci.com/video/bakis-path-2-kisim-N-bolum
+  Ping test: 3/3 manga ✅ + 4/4 anime ✅
 
-SOHBET-72 SIRASI — Lord karar verir (olası: yeni manga ep yükleme / anime test)
+SOHBET-72 SIRASI — Lord karar verir (olası: yeni içerik ep yükleme / UI)
 
 ⚠️ ÖNEMLİ:
 
