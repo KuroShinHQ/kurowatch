@@ -82,6 +82,8 @@ def _serialize(c: Content) -> dict:
         "synopsis": c.synopsis or "",
         "synopsis_tr": c.synopsis_tr or "",
         "genres": genres,
+        "season_number": c.season_number if hasattr(c, 'season_number') else 1,
+        "parent_id": c.parent_id if hasattr(c, 'parent_id') else None,
         "added_at": c.added_at.isoformat() if c.added_at else None,
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
         "sites": [
@@ -145,6 +147,26 @@ async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)
     await db.refresh(c)
     new_id = c.id
     return await get_content(new_id, db)
+
+
+@router.get("/content/{content_id}/seasons")
+async def get_seasons(content_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "Bulunamadı")
+    pid = getattr(c, 'parent_id', None)
+    root_id = pid if pid else c.id
+    stmt = select(Content).where(
+        or_(Content.id == root_id, Content.parent_id == root_id)
+    ).order_by(Content.season_number)
+    res2 = await db.execute(stmt)
+    seasons = res2.scalars().all()
+    return [
+        {"id": s.id, "season_number": getattr(s, 'season_number', 1) or 1,
+         "title": s.title_tr or s.title, "cover_url": s.cover_url, "status": s.status}
+        for s in seasons
+    ]
 
 
 @router.get("/content/{content_id}")

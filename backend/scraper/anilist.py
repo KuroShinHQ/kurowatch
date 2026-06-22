@@ -47,6 +47,30 @@ query ($id: Int) {
 """
 
 
+_RELATIONS_QUERY = """
+query ($id: Int) {
+  Media(id: $id) {
+    id
+    relations {
+      edges {
+        relationType
+        node {
+          id
+          title { english romaji }
+          type
+          format
+          episodes
+          status
+          coverImage { large }
+          seasonYear
+        }
+      }
+    }
+  }
+}
+"""
+
+
 async def _post(query: str, variables: dict) -> dict:
     async with httpx.AsyncClient(timeout=10.0) as client:
         r = await client.post(ANILIST_URL, json={"query": query, "variables": variables})
@@ -90,6 +114,30 @@ async def get_detail(external_id: str) -> dict | None:
         return _format(m)
     except Exception:
         return None
+
+
+async def get_relations(external_id: str) -> list:
+    """AniList id → SEQUEL/PREQUEL listesi (anime tipi)."""
+    try:
+        data = await _post(_RELATIONS_QUERY, {"id": int(external_id)})
+        edges = data["data"]["Media"]["relations"]["edges"]
+        result = []
+        for edge in edges:
+            rtype = edge.get("relationType", "")
+            node = edge.get("node", {})
+            if rtype in ("SEQUEL", "PREQUEL") and node.get("type") == "ANIME":
+                result.append({
+                    "relation_type": rtype,
+                    "external_id": str(node["id"]),
+                    "title": node["title"].get("english") or node["title"].get("romaji") or "",
+                    "episodes": node.get("episodes"),
+                    "status": node.get("status"),
+                    "cover_url": (node.get("coverImage") or {}).get("large"),
+                    "year": node.get("seasonYear"),
+                })
+        return result
+    except Exception:
+        return []
 
 
 def _format(m: dict) -> dict:

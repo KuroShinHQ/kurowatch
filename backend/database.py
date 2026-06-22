@@ -45,6 +45,15 @@ async def init_db():
             await conn.execute(text("ALTER TABLE content ADD COLUMN title_tr TEXT"))
         except Exception:
             pass
+        # Migration: sezon desteği
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN season_number INTEGER NOT NULL DEFAULT 1"))
+        except Exception:
+            pass
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN parent_id INTEGER REFERENCES content(id)"))
+        except Exception:
+            pass
         # Migration: FAZ-4 intro_timestamp tablosu (create_all ile zaten oluşur, sadece safeguard)
         try:
             await conn.execute(text(
