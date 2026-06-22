@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 import httpx
 
 _MADARA_DOMAINS = [
-    # 21 Haz 2026 — gerçek chapter testi ile onaylanan siteler
+    # 22 Haz 2026 — gerçek chapter testi ile onaylanan siteler
     "mangawow.com", "mangawow.org",
     "hayalistic.com.tr",
     "ragnarscans.com", "ragnarscans.net",
@@ -18,6 +18,14 @@ _MADARA_DOMAINS = [
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
     "ruyamanga.com", "ruyamanga.net", "asurascans.com.tr",
 ]
+
+# CF turnstile veya kalıcı blok olan siteler — gallery-dl da geçemez
+_CF_BLOCKED = {"mangasehri.net", "mangasehri.com"}
+
+# uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
+_UZAY_OLD_RE = re.compile(r"/manga/\d+/([^/]+)/\d+/(\d+)-bolum")
+# uzaymanga.com yeni format chapter URL ve CDN pattern
+_UZAY_CDN_RE = re.compile(r"cdn-u\.efsaneler\d+\.can\.re/_manga/\d+/\d+/[^\s\"'<>]+")
 
 _HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -39,8 +47,19 @@ async def download_manga_chapter(
     """Manga bölümü indir. Sayfa dosyalarının yol listesini döner."""
     os.makedirs(output_dir, exist_ok=True)
 
+    host = urlparse(url).netloc.lstrip("www.")
+
+    # CF turnstile ile kalıcı bloklu siteler
+    if any(host.endswith(d) for d in _CF_BLOCKED):
+        raise RuntimeError(
+            f"Bu site Cloudflare koruması altında, indirme yapılamıyor: {host}\n"
+            "Çözüm: Bölüm URL'sini çalışan bir kaynakla güncelle (mangawow.org vb.)"
+        )
+
     if "mangadex.org" in url:
         return await _mangadex_chapter(url, output_dir, on_progress)
+    elif host.endswith("uzaymanga.com"):
+        return await _uzaymanga_chapter(url, output_dir, on_progress)
     elif _is_madara(url):
         return await _madara_chapter(url, output_dir, on_progress)
     else:
@@ -152,6 +171,60 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
 
     if not files:
         raise RuntimeError(f"Madara: hiç sayfa indirilemedi — {url}")
+    return files
+
+
+async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str]:
+    """uzaymanga.com chapter indir. Eski URL formatını otomatik yeni formata çevirir."""
+    fetch_url = url
+
+    # Eski format: /manga/{num}/{slug}/{id}/{ch}-bolum → yeni: /manga/{slug}/{ch}-bolum-oku
+    m = _UZAY_OLD_RE.search(url)
+    if m:
+        slug, ch_num = m.group(1), m.group(2)
+        fetch_url = f"https://uzaymanga.com/manga/{slug}/{ch_num}-bolum-oku"
+
+    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
+        r = await client.get(fetch_url)
+        if r.status_code == 404 and m:
+            raise RuntimeError(
+                f"uzaymanga.com URL 404: '{fetch_url}'\n"
+                f"Bu manga uzaymanga.com'dan kaldırılmış olabilir. "
+                f"Bölüm URL'sini çalışan bir kaynakla güncelle."
+            )
+        r.raise_for_status()
+        html = r.text
+
+    # CDN image URL'lerini çıkar: cdn-u.efsanelerN.can.re/_manga/{id}/{ch}/{page}.avif
+    cdn_urls = _UZAY_CDN_RE.findall(html)
+    if not cdn_urls:
+        raise RuntimeError(f"uzaymanga.com: chapter görselleri bulunamadı — {fetch_url}")
+
+    # Tekrarları kaldır, sırala
+    seen: set[str] = set()
+    img_urls: list[str] = []
+    for u in cdn_urls:
+        full = "https://" + u
+        if full not in seen:
+            seen.add(full)
+            img_urls.append(full)
+
+    total = len(img_urls)
+    files: list[str] = []
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=_HEADERS) as client:
+        for i, img_url in enumerate(img_urls):
+            ext = os.path.splitext(img_url.split("?")[0])[1] or ".avif"
+            dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
+            img_r = await client.get(img_url)
+            img_r.raise_for_status()
+            with open(dest, "wb") as fh:
+                fh.write(img_r.content)
+            files.append(dest)
+            if on_progress:
+                on_progress(i + 1, total)
+
+    if not files:
+        raise RuntimeError(f"uzaymanga.com: hiç sayfa indirilemedi — {fetch_url}")
     return files
 
 
