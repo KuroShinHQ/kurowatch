@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-70) · **Aktif sürüm:** v1.1.0 · **Son commit:** `22c4e8f`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-71) · **Aktif sürüm:** v1.1.0 · **Son commit:** `22c4e8f`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -20,25 +20,16 @@ SOHBET-70 YAPILANLARI:
   ✅ manga.py: CF blocked sites (mangasehri.net) → düzgün hata mesajı
   ✅ manga.py: uzaymanga.com yeni format scraper + eski URL→yeni URL dönüşümü (22c4e8f)
 
-SOHBET-71 SIRASI — ANA GÖREV: Download URL Sağlık Operasyonu
-  HEDEF: Tüm manga/manhwa episode URL'lerini çalışan kaynaklarla eşleştir ve test et
+SOHBET-71 TAMAMLANDI — Download URL Sağlık Operasyonu ✅
   
-  SORUNLAR TESPİT EDİLDİ:
-    - mangasehri.net: 178 episode URL → CF turnstile, indirilemez
-    - uzaymanga.com: 465 episode URL → eski format (404), yeni sitede bu manga'lar yok
-    - mangawow.org: ~109 episode URL → ✅ ÇALIŞIYOR (Madara)
-  
-  YAPILACAK:
-    [1] Çalışan manga siteleri listesi çıkar (hangi manga hangi adreste var)
-        Öncelikli kontrol: mangawow.org, hayalistic.com.tr, ragnarscans.com
-    [2] mangasehri + uzaymanga içeriklerini bu sitelerde ara (slug matching)
-    [3] Bulunanların episode URL'lerini DB'de güncelle (UPDATE episode SET url=... WHERE content_id=...)
-    [4] URL'lerin download ping testi (HEAD req veya madara ?style=list 200 OK mu)
-    [5] Tüm manga/manhwa: her içeriğin en az 1 çalışan bölüm URL'si olmalı
+  YAPILAN:
+    - Nano Machine (content_id=18, 178 ep): mangasehri.net → ragnarscans.com/manga/nano-makine/bolum-N/
+    - Büyü İmparatoru (content_id=4, 465 ep): uzaymanga.com → ragnarscans.com/manga/buyu-imparatoru/bolum-N/
+    - The Hunter (content_id=9, 109 ep): mangawow.com — zaten çalışıyordu
+    - Ping test: 3/3 manga bolum-1 → 200 OK
+    - Script: scripts/update_manga_urls.py
 
-  ÖNCELİK: mangasehri.net kullanan 178 chapter → ~20 farklı manga title olabilir
-            uzaymanga.com kullanan 465 chapter → ~15-20 farklı manga title olabilir
-  ARAÇ: DB'ye direkt SQL ile güncelleme (enrich gibi script yaz)
+SOHBET-72 SIRASI — Lord karar verir (olası: yeni manga ep yükleme / anime test)
 
 ⚠️ ÖNEMLİ:
 
