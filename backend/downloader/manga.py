@@ -13,6 +13,7 @@ _MADARA_DOMAINS = [
     "ragnarscans.com", "ragnarscans.net",
     "merlintoon.com",
     "mangadenizi.com",
+    "manhwahentai.me",   # A Returner's Magic — chapter-N formatı, ?style=list destekli
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
     "manga-sehri.net", "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
