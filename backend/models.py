@@ -33,6 +33,8 @@ class Content(Base):
     synopsis:        Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # EN (AniList/IGDB'den)
     synopsis_tr:     Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # TR çeviri
     genres:          Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # JSON list: ["Action","Fantasy"]
+    season_number:   Mapped[int]            = mapped_column(Integer, nullable=False, default=1)
+    parent_id:       Mapped[Optional[int]]  = mapped_column(Integer, ForeignKey("content.id"), nullable=True)
     added_at:        Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at:      Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 

@@ -855,6 +855,41 @@
       synSec.style.display = 'flex';
     }
 
+    // ── Sezon Tabları ─────────────────────────────────────────────
+    (function() {
+      var seasonBar  = document.getElementById('detail-season-bar');
+      var seasonTabs = document.getElementById('detail-season-tabs');
+      if (!seasonBar || !seasonTabs) return;
+      seasonBar.style.display = 'none';
+      seasonTabs.innerHTML = '';
+      apiGet('/api/content/' + id + '/seasons').then(function(seasons) {
+        if (!seasons || seasons.length <= 1) return;
+        seasonBar.style.display = '';
+        seasonTabs.innerHTML = '';
+        seasons.forEach(function(s) {
+          var btn = document.createElement('button');
+          var isCurrent = s.id === id;
+          btn.style.cssText = [
+            'flex-shrink:0',
+            'padding:4px 14px',
+            'border-radius:20px',
+            'font-size:12px',
+            'font-weight:700',
+            'border:1px solid',
+            isCurrent
+              ? 'background:#00d4ff1a;border-color:#00d4ff;color:#00d4ff'
+              : 'background:transparent;border-color:#ffffff22;color:#9090b0',
+          ].join(';');
+          btn.textContent = 'S' + (s.season_number || 1);
+          btn.title = s.title || '';
+          if (!isCurrent) {
+            btn.addEventListener('click', function() { renderDetail(s.id); });
+          }
+          seasonTabs.appendChild(btn);
+        });
+      }).catch(function() {});
+    })();
+
     // ── Edit butonu bağla ─────────────────────────────────────────
     const editBtn = document.getElementById('detail-edit-btn');
     if (editBtn) {
