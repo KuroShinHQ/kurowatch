@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-71b) · **Aktif sürüm:** v1.1.0 · **Son commit:** `29e205c`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-71c) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c52af79`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -28,8 +28,14 @@ SOHBET-71 TAMAMLANDI — URL Sağlık + Kapsamlı Ping ✅
     - Sonuç: scripts/ping_results.json
   Episodeli içerik özeti: 8/8 Madara img doğrulaması ✅
 
+SOHBET-71c ARAŞTIRMA — Sezon özelliği:
+  - tranimaci.com bot koruması → Playwright şart, sade HEAD 200 = içerik garantisi değil
+  - Her sezon ayrı content item (KonoSuba S3 ayrı kart) — yeterli, özel UI gerekmez
+  - episode.season DB'de mevcut (default 1), UI'da şimdilik kullanılmıyor
+  - Anime indirebilir: 38 episodeli 4 anime → tranimaci.com Playwright ✅
+
 SOHBET-72 SIRASI — Lord karar verir
-  [A] 0-ep'li içeriklere toplu episode URL yükleme (slug zaten doğrulandı)
+  [A] Toplu episode URL yükleme (459 anime + 160 manga/manhwa — 0 episodeli)
   [B] UI / FloatingUI geliştirme
   [C] KuroRecon alarm
 
