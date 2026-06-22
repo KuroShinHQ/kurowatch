@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 21 Haziran 2026 (sohbet-64) · **Aktif sürüm:** v1.1.0 · **Son commit:** `fd442f4`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-69) · **Aktif sürüm:** v1.1.0 · **Son commit:** `a35d399`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,31 +10,31 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (21 Haz sohbet-63):
-  - 676 içerik, backend 7d920ea aktif
+MEVCUT DURUM (22 Haz sohbet-69):
+  - 676 içerik, backend a35d399 aktif (WSL'de çalışıyor, PID 644 uvicorn port 8099)
+  - ⚠️ SORUN: localhost:8099 Windows tarayıcıdan ERR_FAILED — port forward çalışmıyor
+    (WSL mirrored mode aktif; Kuroshin.bat portproxy eklenirse çözülür)
   - Çalışan kaynağı olan: ~280 içerik
-  - Test: http://localhost:8099
+  - Test: http://localhost:8099 (önce backend erişim sorununu çöz!)
 
-SOHBET-64 YAPILANLARI:
-  ✅ ta_index.json (4713 slug) + site_catalogs.json üzerinden toplu eşleşme araştırması
-  ✅ +30 turkanime anime eklendi DB'ye (bulk_add_eslesmeyen.py):
-     Demon Slayer, Solo Leveling, Frieren, Oregairu, DanMachi, JoJo, Parasyte, vb.
-  ✅ +6 manga/manhwa eklendi: Büyü İmparatoru, Seçkinin İkinci Yaşamı, Regresör Kılavuzu, vb.
-  ✅ ESLESMEYEN.md güncellendi: eklenenler [x], turkanime'de olmayanlar "YOK" notu aldı
-  ✅ 3 yanlış manga önerisi düzeltildi (Martial Peak, Murim Login, Kahraman Dönüşü)
+SOHBET-69 YAPILANLARI:
+  ✅ DESIGN.md + FEATURE_MAP.md mevcut kodla uyumlu güncellendi (a35d399)
+     nav/settings/detail/archive/downloads ekranları dokümante edildi
+  ❌ T-06 test edilemedi: localhost:8099 ulaşılamıyor (port forwarding sorunu)
 
-SOHBET-65 YAPILANLARI (devam):
-  ✅ PCT fix doğrulandı: turkanime.tv indir → status=done PCT=100 (başarılı)
-     Ara PCT:0 → turkanime/alucard.click için beklenen davranış, indirme çalışıyor
-  ✅ title_tr null fix doğrulandı: PATCH null → DB'de gerçek NULL yazıldı
-  ✅ False positive 3 silindi: samurai-deeper-kyo(515), green-green(594), phantom-in-twilight(637)
-
-SOHBET-66 SIRASI:
-  [1] ESLESMEYEN.md kalan anime için Lord URL bildirir → DB'ye ekleriz
-        Eksikler: Isekai One Turn Kill, Lv2 kara Cheat, Rookie Older Adventurer
-  [2] Yeni özellik / başka konu — Lord yönlendirir
+SOHBET-70 SIRASI:
+  [1] ÖNCE: localhost:8099 erişim sorununu çöz
+      → Kuroshin.bat KUROWATCH bölümüne portproxy 8099 ekle (admin gerektirmez mı?) VEYA
+      → .wslconfig'de networkingMode=mirrored zaten var, sorun başka olabilir
+      → WSL'den curl http://localhost:8099 çalışıyor ✅ — sorun Windows→WSL yönünde
+  [2] TEST_PLAN.md T-06 testi: "Herhangi karta tıkla → Detail ekranı açılır mı?"
+  [3] T-07..T-38 devam
 
 ⚠️ ÖNEMLİ:
+
+⚠️ ÖNEMLİ:
+  - PORT SORUNU: networkingMode=mirrored var ama 8099 Windows'a gelmiyor
+    Bat'ta portproxy 8099→WSL IP'si eklenebilir (Kuroshin.bat :KUROWATCH bölümü)
   - ESLESMEYEN.md: docs/ESLESMEYEN.md — Lord URL bildirir, Claude DB'ye ekler
   - enrich_turkanime.py: SQLite'a direkt yazar (API değil — WSL←→Windows port sorunu)
   - ta_index.json + ta_romaji_cache.json → scripts/ (yeniden çalıştırmaya gerek yok)
