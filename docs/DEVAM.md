@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-71) · **Aktif sürüm:** v1.1.0 · **Son commit:** `22c4e8f`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-71b) · **Aktif sürüm:** v1.1.0 · **Son commit:** `29e205c`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,30 +10,28 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (22 Haz sohbet-70):
-  - 676 içerik, backend 22c4e8f aktif
-  - localhost:8099 ✅ ÇALIŞIYOR (NAT mode + portproxy 172.25.89.7:8099, bat→10→1 ile başlat)
+MEVCUT DURUM (22 Haz sohbet-71b):
+  - 679 içerik, backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
   - Test: http://localhost:8099
 
-SOHBET-70 YAPILANLARI:
-  ✅ localhost:8099 düzeltildi: mirrored→NAT, Kuroshin.bat portproxy otomasyonu (21bfc8b)
-  ✅ manga.py: CF blocked sites (mangasehri.net) → düzgün hata mesajı
-  ✅ manga.py: uzaymanga.com yeni format scraper + eski URL→yeni URL dönüşümü (22c4e8f)
+SOHBET-71 TAMAMLANDI — URL Sağlık + Kapsamlı Ping ✅
+  MANGA/MANHWA URL FIX:
+    - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
+    - Büyü İmparatoru (465 ep): ragnarscans.com/manga/buyu-imparatoru/bolum-N/
+    - A Returner's Magic (268 ep): manhwahentai.me/manhwa/.../chapter-N/ (29e205c)
+    - The Hunter (109 ep): mangawow.com — değişmedi
+  ANİME URL FIX (38 ep → tranimaci.com):
+    - Dungeon Meshi / Faraway Paladin / Uncle / Baki's Path 2
+  KAPSAMLİ PİNG (scripts/ping_all_content.py):
+    - 660/660 içerik %100 OK (anime+manga+manhwa)
+    - tranimaci.com (497 anime) | manhwahentai.me (118) | ragnarscans.com (39)
+    - Sonuç: scripts/ping_results.json
+  Episodeli içerik özeti: 8/8 Madara img doğrulaması ✅
 
-SOHBET-71 TAMAMLANDI — Download URL Sağlık Operasyonu (Manga + Anime) ✅
-  
-  MANGA:
-    - Nano Machine (178 ep): mangasehri.net → ragnarscans.com/manga/nano-makine/bolum-N/
-    - Büyü İmparatoru (465 ep): uzaymanga.com → ragnarscans.com/manga/buyu-imparatoru/bolum-N/
-    - The Hunter (109 ep): mangawow.com — zaten çalışıyordu
-  ANİME (38 ep, tranimeizle.co/io → tranimaci.com):
-    - Dungeon Meshi (24 ep): tranimaci.com/video/dungeon-meshi-N-bolum
-    - Faraway Paladin (12 ep): tranimaci.com/video/saihate-no-paladin-N-bolum
-    - Uncle from Another World (1 ep): tranimaci.com/video/uncle-from-another-world-N-bolum
-    - Baki's Path 2 (1 ep): tranimaci.com/video/bakis-path-2-kisim-N-bolum
-  Ping test: 3/3 manga ✅ + 4/4 anime ✅
-
-SOHBET-72 SIRASI — Lord karar verir (olası: yeni içerik ep yükleme / UI)
+SOHBET-72 SIRASI — Lord karar verir
+  [A] 0-ep'li içeriklere toplu episode URL yükleme (slug zaten doğrulandı)
+  [B] UI / FloatingUI geliştirme
+  [C] KuroRecon alarm
 
 ⚠️ ÖNEMLİ:
 
