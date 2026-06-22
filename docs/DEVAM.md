@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-71c) · **Aktif sürüm:** v1.1.0 · **Son commit:** `c52af79`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-72) · **Aktif sürüm:** v1.2.0 · **Son commit:** `b877af5`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -28,16 +28,27 @@ SOHBET-71 TAMAMLANDI — URL Sağlık + Kapsamlı Ping ✅
     - Sonuç: scripts/ping_results.json
   Episodeli içerik özeti: 8/8 Madara img doğrulaması ✅
 
-SOHBET-71c ARAŞTIRMA — Sezon özelliği:
-  - tranimaci.com bot koruması → Playwright şart, sade HEAD 200 = içerik garantisi değil
-  - Her sezon ayrı content item (KonoSuba S3 ayrı kart) — yeterli, özel UI gerekmez
-  - episode.season DB'de mevcut (default 1), UI'da şimdilik kullanılmıyor
-  - Anime indirebilir: 38 episodeli 4 anime → tranimaci.com Playwright ✅
+SOHBET-72 TAMAMLANDI — Sezon Sistemi ✅:
+  - DB: content.season_number + parent_id eklendi (migration otomatik)
+  - API: GET /api/content/{id}/seasons → sezon listesi
+  - AniList: get_relations() SEQUEL/PREQUEL desteklendi
+  - Script: scripts/season_linker.py çalıştırıldı:
+    → 8 mevcut S2/S3 parent_id ile S1'e bağlandı
+    → 2 yeni S1 oluşturuldu (Tate no Yuusha 682, Spy x Family 683)
+    → 35 yeni sequel kartı AniList'ten çekildi (cover+tranimaci URL)
+    → Toplam anime: 497 → 534
+  - UI: detail view sezon tab bar eklendi (S1/S2/S3 butonlar, tıkla geç)
+  - ⚠️ Backend RESTART gerekiyor (bat→5→1 veya 6→restart)
+  
+  Sezon zinciri örnekleri:
+    KonoSuba: S1(412)→S2(714)→S3(101), Spy: S1(683)→S2(106)
+    Dungeon Meshi: S1(96)→S2(684), Shangri-La: S1(104)→S2(109+685)[duplikat]
 
-SOHBET-72 SIRASI — Lord karar verir
-  [A] Toplu episode URL yükleme (459 anime + 160 manga/manhwa — 0 episodeli)
-  [B] UI / FloatingUI geliştirme
+SOHBET-73 SIRASI — Lord karar verir
+  [A] Toplu episode URL yükleme (534 anime — 0 episodeli olanlar)
+  [B] UI geliştirme / FloatingUI
   [C] KuroRecon alarm
+  [D] Shangri-La S2 duplikatı temizle (ID=685 veya 109 sil)
 
 ⚠️ ÖNEMLİ:
 
