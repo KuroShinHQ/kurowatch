@@ -8,29 +8,35 @@
 
 ## 🗺️ Ekran & Özellik Haritası
 
+> Son güncelleme: 22 Haz 2026 — mevcut index.html kodu ile uyumlu
+
 ```
-╔══════════════════════════════════════════════════════════════════════════╗
-║                        KUROWATCH APP SHELL                             ║
-║                    (index.html — tek SPA sayfası)                      ║
-╠══════════════════════════════════════════════════════════════════════════╣
-║                                                                        ║
-║  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ║
-║  │  🏠 HOME    │  │  🔍 SEARCH  │  │  🔔 UPDATES │  │  📊 STATS   │  ║
-║  │  (ana sayfa)│  │  (arama)    │  │  (bildirim) │  │  (istatistik│  ║
-║  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  ║
-║         │                │                 │                │          ║
-║  ┌──────▼──────────────────────────────────────────────────▼──────┐   ║
-║  │                    ⚙️ SETTINGS (ayarlar)                       │   ║
-║  └────────────────────────────────────────────────────────────────┘   ║
-║                                                                        ║
-║  ┌────────────────────────────────────────────────────────────────┐   ║
-║  │               📋 DETAIL (içerik detay — overlay)               │   ║
-║  └────────────────────────────────────────────────────────────────┘   ║
-║                                                                        ║
-║  ┌────────────────────────────────────────────────────────────────┐   ║
-║  │               ➕ ADD MODAL (ekleme formu — overlay)             │   ║
-║  └────────────────────────────────────────────────────────────────┘   ║
-╚══════════════════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                      KUROWATCH APP SHELL (index.html)                      ║
+║              Mobil: Bottom Nav (6 öğe)  |  PC: Sol Sidebar                 ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║                                                                            ║
+║  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       ║
+║  │🏠 HOME   │ │🔍 SEARCH │ │➕ EKLE   │ │🔔 UPDATES│ │📥 İNDİR  │       ║
+║  │(ana sayfa│ │(kütüphane│ │(add modal│ │(bildirim)│ │(downloads│       ║
+║  │ + filtre)│ │+ keşfet) │ │ açar)    │ │          │ │ ekranı)  │       ║
+║  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘       ║
+║                                                                            ║
+║  ┌────────────────────────────────────────────────────────────────────┐   ║
+║  │  ⚙️ SETTINGS — Stats kısayolu, Arşiv kısayolu, Export/Import,    │   ║
+║  │     API (IGDB/MAL), Etiketler, İndirme ayarları, PWA, Push,      │   ║
+║  │     Cookies (CF bypass), Hakkında                                 │   ║
+║  └────────────────────────────────────────────────────────────────────┘   ║
+║                                                                            ║
+║  ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐  ║
+║  │ 📋 DETAIL (ekran)  │  │ 📦 ARCHIVE (ekran) │  │ 📊 STATS (ekran)  │  ║
+║  │ settings'ten erişim│  │ settings → arşiv   │  │ settings kısayolu │  ║
+║  └────────────────────┘  └────────────────────┘  └────────────────────┘  ║
+║                                                                            ║
+║  MODALLER: ADD (bottom sheet) | EDIT (bottom sheet) | CONFLICT (centered) ║
+║            COVER DEBUGGER (centered) | VIDEO PLAYER | MANGA READER        ║
+║  OVERLAY:  READ OVERLAY (iframe fullscreen)                                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 ```
 
 ---
@@ -41,38 +47,38 @@
 ```
 ┌─────────────────────────────────────────────────────┐
 │ HOME SCREEN                                         │
-│ Dosya: frontend/index.html #home-screen             │
-│        frontend/app.js → renderHome()               │
-│        backend/routers/content.py GET /api/content  │
+│ id: #screen-home                                    │
+│ app.js → renderHome()                               │
+│ API: GET /api/content?type=X&status=Y&q=Z           │
 ├─────────────────────────────────────────────────────┤
-│ ÖZELLİKLER:                                         │
+│ [A] Sayfa İçi Arama Kutusu (#home-search-input)     │
+│     - placeholder: "Kütüphanende ara..."            │
+│     - Yazarken anlık filtre (debounce)              │
+│     - Üst kısımda, filtre chip'lerinin üzerinde     │
 │                                                     │
-│ [A] Filter Chips (yatay kaydır)                     │
-│     - Tümü / 🎬Anime / 📖Manga / 📱Manhwa / 🎮Oyun │
-│     - İzliyor / Tamamlandı / Askıda / ...           │
-│     → GET /api/content?type=anime&status=watching   │
+│ [B] Filter Chips — Tür (satır 1, yatay kaydır)     │
+│     - [TÜM TÜRLER] [ANİME] [MANGA] [MANHWA] [OYUN] │
+│     → GET /api/content?type=anime                   │
 │                                                     │
-│ [B] Poster Grid                                     │
-│     - 2 sütun (mobil) / 3 (tablet) / 5 (PC)        │
-│     - Varsayılan sıra: puan azalan                  │
-│     - Kartlar: 2:3 dikey poster                     │
+│ [C] Filter Chips — Durum (satır 2, yatay kaydır)   │
+│     - [TÜMÜ] [İZLİYOR] [TAMAMLANDI] [BEKLEMEDE]    │
+│     → GET /api/content?status=watching              │
 │                                                     │
-│ [C] Content Card (her kart)                         │
-│     - Kapak resmi (lazy load, error fallback)       │
-│     - Sol tip renk şeridi (4px)                     │
-│     - Sağ üst: tip ikon badge (🎬📖📱🎮)            │
-│     - Sol üst: update badge "+N SiteName" (koşullu) │
-│     - Border glow (yeni bölüm varsa)                │
-│     - Alt overlay: başlık + ★puan + progress bar    │
-│     - Hover: scale(1.03) + haptic.snap()            │
-│     - Tıklama → DETAIL ekranı aç                   │
+│ [D] Poster Grid (#home-library-grid)                │
+│     - 2 sütun (mobil) / 4 (md) / 5 (xl PC)         │
+│     - aspect-[2/3] dikey poster kartlar             │
 │                                                     │
-│ [D] Boş Durum                                       │
-│     - Hiç içerik yoksa: ikon + "Ekle" butonu        │
+│ [E] Content Card (her kart)                         │
+│     - Kapak bg-image (initials fallback)            │
+│     - Sol tip renk şeridi (tip rengiyle)            │
+│     - Sağ üst: tip badge (TYPE_COLOR)               │
+│     - Sol üst: update badge "+N Site" (koşullu)     │
+│     - Alt gradient overlay: başlık + puan + bar     │
+│     - Hover: scale(1.02) + border cyan              │
+│     - Tıklama → openDetail(id)                      │
 │                                                     │
-│ [E] Sıralama                                        │
-│     - Varsayılan: puan azalan                       │
-│     - (gelecek: sıralama menüsü)                    │
+│ [F] Boş Durum                                       │
+│     - İçerik yok → ikon + mesaj                     │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -107,89 +113,93 @@
 ### 3. ➕ ADD MODAL — İçerik Ekleme
 ```
 ┌─────────────────────────────────────────────────────┐
-│ ADD MODAL (bottom sheet / centered modal)           │
-│ Dosya: frontend/index.html #add-modal               │
-│        frontend/app.js → openAddModal()             │
-│        backend/routers/content.py POST /api/content │
+│ ADD MODAL (bottom sheet — 85vh)                     │
+│ id: #modal-add  |  açılır: data-modal-open          │
+│ app.js → openAddModal(), addSave()                  │
+│ API: POST /api/content                              │
 ├─────────────────────────────────────────────────────┤
-│ ÖZELLİKLER:                                         │
+│ ADIM 1 (#add-step-1) — AniList/IGDB Arama          │
+│   Tip seçici: 🎬Anime 📖Manga 📱Manhwa 🎮Oyun       │
+│   Arama kutusu (#add-step1-search-input)            │
+│   Sonuç listesi: kapak + başlık + yıl + tip badge   │
+│   [Ekle +] buton → Adım 2'ye geç, form dolar        │
+│   "Bulamadın mı? Manuel ekle →" → Adım 2 (boş)     │
 │                                                     │
-│ [A] Adım 1: API Arama                               │
-│     - "Search title..." canlı arama                 │
-│     - AniList / IGDB API'den sonuçlar               │
-│     - Seçince form otomatik dolar                   │
-│     - "Manuel Ekle" link'i (API bulamazsa)          │
+│ ADIM 2 (#add-step-2) — Form                         │
+│   ← Geri (Adım 1'e), ✕ Kapat                       │
+│   Başlık (text)                                     │
+│   Tür: [🎬Anime][📖Manga][📱Manhwa][🎮Oyun]         │
+│   Durum: dropdown (İzliyor/Tamamlandı/Planlı/Bırak) │
+│   Puan: yıldız rating (★ × 10, tamsayı 1-10)        │
+│   Kapak URL: opsiyonel text input                   │
+│   Gizli alanlar: genres, external_id,               │
+│                  total_episodes, total_chapters      │
+│   Notlar: textarea                                  │
 │                                                     │
-│ [B] Adım 2: Form                                    │
-│     - Başlık (text, İngilizce)                      │
-│     - Tip: [Anime][Manga][Manhwa][Game]             │
-│     - Durum: dropdown (6 seçenek)                   │
-│     - Puan: slider 0–10, adım 0.1 (canlı değer)    │
-│     - Kapak URL: opsiyonel override                 │
-│     - Siteler: tekrarlı satır [ad][url][☆][✕]      │
-│       "+ Site Ekle" butonu                          │
-│     - Oyun için: % ilerleme (opsiyonel)             │
-│     - Notlar: textarea + spoiler toggle             │
-│                                                     │
-│ [C] Kaydet                                          │
-│     → POST /api/content (metadata + sites)          │
-│     → haptic.heavy() + success animasyonu           │
-│     → Ana sayfaya yönlendir                         │
+│ [Kütüphaneye Ekle] → POST /api/content              │
 └─────────────────────────────────────────────────────┘
 ```
 
 ### 4. 📋 DETAIL — İçerik Detay
 ```
 ┌─────────────────────────────────────────────────────┐
-│ DETAIL SCREEN (full screen overlay)                 │
-│ Dosya: frontend/index.html #detail-screen           │
-│        frontend/app.js → openDetail(id)             │
-│        backend/routers/content.py GET /api/content/{id}│
-│        backend/routers/episodes.py                  │
-│        backend/routers/sites.py                     │
+│ DETAIL SCREEN (tam ekran, slide-up geçiş)           │
+│ id: #screen-detail                                  │
+│ app.js → openDetail(id)                             │
+│ API: GET /api/content/{id}, /episodes, /sites       │
 ├─────────────────────────────────────────────────────┤
-│ ÖZELLİKLER:                                         │
+│ [A] Hero Kapak (353px yükseklik)                    │
+│     #detail-cover-bg (bg-cover bg-center)           │
+│     ← Geri (#detail-cover-bg → data-nav=screen-home)│
+│     📤 Cover Yükle butonu (label → file input)      │
+│     ✏️ Düzenle (#detail-edit-btn → modal-edit açar) │
+│     Tip badge + Durum badge                         │
+│     Başlık (#detail-title)                          │
 │                                                     │
-│ [A] Hero Kapak                                      │
-│     - 40vh yükseklik, full width                    │
-│     - Geri ← butonu (floating)                      │
-│     - Düzenle ✏️ butonu (floating)                  │
+│ [B] Yıldız Puan (#detail-rating-container)          │
+│     10 adet ★ ikon (Material Symbols, tıklanabilir) │
+│     "#X / 10" sayısal gösterim (#detail-score-text) │
+│     → PATCH /api/content/{id} {my_score: x}        │
 │                                                     │
-│ [B] İçerik Bilgisi                                  │
-│     - Başlık (bold, büyük)                          │
-│     - Tip badge + Durum badge                       │
-│     - ★ interaktif yıldız (10 yarım yıldız)         │
-│       → PATCH /api/content/{id} {score: x}         │
-│     - "8.5 / 10" sayısal gösterim                   │
+│ [C] İlerleme Kutusu                                 │
+│     #detail-progress-current / #detail-progress-total│
+│     Tıklanabilir sayı → quick-edit popup açılır     │
+│     Quick-edit: [−] [input] [+] [Kaydet]            │
+│     % gösterge (#detail-progress-pct)               │
+│     Progress bar (#detail-progress-bar)             │
+│     Slider (#detail-progress-slider, 0–max)         │
 │                                                     │
-│ [C] İlerleme                                        │
-│     - "Episode 87 / 139" büyük progress bar         │
-│     - "Sonraki Bölümü İşaretle ✓" butonu            │
-│       → PATCH /api/content/{id} {my_progress: +1}  │
-│       → haptic.medium()                             │
-│     - Hızlı slider: "87. bölüme kadar izledim"      │
-│       → toplu güncelleme                            │
+│ [D] "Sonraki Bölümü İşaretle" butonu (#detail-mark-btn)│
+│     → PATCH /api/content/{id} {my_progress: +1}    │
 │                                                     │
-│ [D] Sekmeler                                        │
+│ [E] Özet / Synopsis (gizlenebilir)                  │
+│     #detail-synopsis-section (display:none default) │
+│     Next airing banner + özet paragraph             │
+│     "Devamını Gör" toggle                           │
 │                                                     │
-│  SEKMEi: BÖLÜMLER                                   │
-│     - Bölüm listesi (scroll)                        │
-│     - Her satır: no + başlık + ✓ checkbox           │
-│     - İzlendi: muted + ✓ / İzlenmedi: normal        │
+│ [F] Genres satırı (#detail-genres-row)              │
+│     AniList'ten gelen türler (hidden → JS ile açılır)│
+│                                                     │
+│ [G] Etiketler satırı (#detail-tags-row)             │
+│     Kullanıcının oluşturduğu tag'ler                │
+│                                                     │
+│ [H] Sekmeler (sticky)                               │
+│   [Bölümler] [Siteler] [Notlar]                     │
+│   onclick: detailSwitchTab()                        │
+│                                                     │
+│  SEKME: BÖLÜMLER (#detail-tab-episodes)             │
+│     Bölüm listesi (virtual scroll, uzun seriler)    │
+│     Her satır: no + başlık + ✓ checkbox + İndir btn │
 │     → PATCH /api/episodes/{id}/watch               │
-│     → haptic.medium()                               │
 │                                                     │
-│  SEKME: SİTELER                                     │
-│     - Her satır: favicon + ad + son EP + "Aç →"    │
-│     - Birincil site: ★ işareti                      │
-│     - Farklı EP sayısı: vurgulu satır               │
-│     → Tıklama: window.open(site.url)               │
+│  SEKME: SİTELER (#detail-tab-sites)                 │
+│     Her satır: ikon + ad + "Aç →" butonu            │
+│     + Site ekle formu                               │
 │                                                     │
-│  SEKME: NOTLAR                                      │
-│     - Yorum textarea                                │
-│     - "Spoiler İçeriyor" toggle                     │
-│     - Spoiler açıkken not bulanık → "Göster" butonu │
-│     → PATCH /api/content/{id} {note, is_spoiler}   │
+│  SEKME: NOTLAR (#detail-tab-notes)                  │
+│     Kişisel Notlar textarea (#detail-notes-area)    │
+│     "Spoiler Gizle" toggle (#detail-spoiler-toggle) │
+│     Blur overlay + "SPOILER GİZLİ" badge            │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -255,57 +265,133 @@
 ```
 ┌─────────────────────────────────────────────────────┐
 │ SETTINGS SCREEN                                     │
-│ Dosya: frontend/index.html #settings-screen         │
-│        frontend/app.js → renderSettings()           │
-│        backend/routers/sync.py                      │
+│ id: #screen-settings                                │
+│ app.js → renderSettings()                           │
+│ API: GET/POST /api/settings, /api/export, /api/import│
 ├─────────────────────────────────────────────────────┤
-│ ÖZELLİKLER:                                         │
+│ [A] Kısayollar                                      │
+│     "İstatistiklerimi Gör" → screen-stats           │
+│     "Arşiv" → screen-archive                        │
 │                                                     │
-│ [A] Senkronizasyon                                  │
-│     - "Kütüphaneyi Dışa Aktar" → GET /api/export   │
-│       (kurowatch_backup.json indirir)               │
-│     - "Kütüphaneyi İçe Aktar" → file picker        │
-│       → POST /api/import                            │
-│       → Çakışma varsa: conflict modal               │
+│ [B] Veri Bölümü                                     │
+│     "Dışa Aktar (JSON)" → GET /api/export           │
+│     "İçe Aktar" → modal-conflict açar               │
+│                  → POST /api/import                 │
+│     "Türleri AniList'ten Güncelle"                  │
+│       (#settings-genres-patch-btn)                  │
+│     "Cover'ları AniList'ten Zenginleştir"           │
+│       (#settings-enrich-covers-btn)                 │
+│     "Cover Debugger" → modal-cover-debug açar       │
+│       (#settings-cover-debug-btn)                   │
 │                                                     │
-│ [B] API Kimlik Bilgileri                            │
-│     - IGDB Client ID (input)                        │
-│     - IGDB Client Secret (input, masked)            │
-│     - "Kaydet" → POST /api/settings                │
+│ [C] API Kimlik Bilgileri                            │
+│     IGDB Client ID + Secret → "Token Yenile"        │
+│     MAL Client ID + Secret → "Kaydet"               │
+│     MAL OAuth: "MAL'a Bağlan" / "Listemi İçe Aktar"│
+│       / "Bağlantıyı Kes" (duruma göre görünür)      │
+│     → GET /api/settings, POST /api/settings         │
 │                                                     │
-│ [C] Varsayılan Süreler (dakika)                     │
-│     - Anime bölümü: [24] dk                         │
-│     - Manga chapter: [5] dk                         │
-│     - Manhwa chapter: [3] dk                        │
-│     - Oyun oturumu: [60] dk                         │
-│     → POST /api/settings                           │
+│ [D] Etiketler (#tag-list-settings)                  │
+│     "Yeni" butonu → #tag-create-form açılır         │
+│     Tag oluştur: ad + renk seç (6 renk) + Oluştur   │
+│     Mevcut tag'ler: listele + sil                   │
+│     → GET/POST /api/tags                            │
 │                                                     │
-│ [D] Kontrol Zamanlaması                             │
-│     - "Açılışta güncelleme kontrol et" toggle       │
+│ [E] İndirme Ayarları (FAZ-3)                        │
+│     "Otomatik Sil" toggle (N-1 bölüm sil)          │
+│     Manuel kalite: [480p] [720p] [1080p]            │
+│     Otomatik (daisy-chain) kalite: ayrı seçenek     │
+│     → config.json                                   │
 │                                                     │
-│ [E] İndirici (FAZ-3)                                │
-│     - Kalite: [360p] [480p] [720p] [1080p] [En İyi] │
-│       → config.json: default_quality (Netflix mod)  │
-│       → Seçilen kalite tüm indirmelere uygulanır    │
-│     - Eşzamanlı İndirme: [1] [2] [3]               │
-│       → config.json: max_concurrent_downloads       │
-│     - "İzledikten Sonra Otomatik Sil" toggle        │
-│       ON → modal yok, otomatik sil                  │
-│       OFF → "Dosyayı Sil?" modal (varsayılan)       │
-│       → config.json: auto_delete_after_watch        │
+│ [F] PWA Yükle (koşullu — beforeinstallprompt var)   │
+│     #pwa-install-section (hidden → JS açar)         │
+│     "Uygulamayı Yükle" → install_mobile ikonu       │
 │                                                     │
-│ [F] İndirilenler (FAZ-3)                            │
-│     - Toplam disk kullanımı: "2.3 GB / downloads/"  │
-│       → GET /api/download/stats                     │
-│     - "Tümünü Temizle" (onay modal ile)             │
-│     - Tamamlanmış seri → "Seriyi Temizle" toplu sil │
+│ [G] Push Bildirimleri                               │
+│     Toggle (#push-toggle-btn)                       │
+│     Durum satırı + "Test Bildirimi Gönder"          │
+│     → /api/subscribe, /api/push/test                │
 │                                                     │
-│ [G] Hakkında                                        │
-│     - "KuroWatch v1.0.0"                            │
+│ [H] Site Cookies (CF bypass)                        │
+│     Açıklama: "Get cookies.txt LOCALLY" ext.        │
+│     Site seç: [tranimeizle / turkanime / diziwatch  │
+│                / Genel]                             │
+│     "cookies.txt Yükle" (file input .txt)           │
+│     "CAPTCHA ile Cookie Al (Otomatik)"              │
+│       (#captcha-browser-btn) → nodriver bypass      │
+│     Durum kutusu (#captcha-status-box)              │
+│                                                     │
+│ [I] Hakkında                                        │
+│     "KuroWatch v0.3.0" (#settings-version)          │
+│     "Güncelle" butonu (#settings-update-btn)        │
 └─────────────────────────────────────────────────────┘
 ```
 
-### 8. ⚡ IMPORT CONFLICT MODAL
+### 8. 📦 ARCHIVE — Arşiv
+```
+┌─────────────────────────────────────────────────────┐
+│ ARCHIVE SCREEN                                      │
+│ id: #screen-archive                                 │
+│ Erişim: Settings → Arşiv                           │
+│ API: GET /api/content?status=archived               │
+├─────────────────────────────────────────────────────┤
+│ [A] Header (sticky)                                 │
+│     ← Geri (data-nav=screen-home)                  │
+│     "Arşiv" başlık + içerik sayısı badge            │
+│                                                     │
+│ [B] Arşiv Listesi (#archive-list)                   │
+│     Her satır (56px): küçük kapak + başlık + tip badge│
+│     "X gün önce arşivlendi" alt başlık             │
+│     "Geri Al" butonu → PATCH geri yükle            │
+└─────────────────────────────────────────────────────┘
+```
+
+### 9. 📥 DOWNLOADS — İndirmeler
+```
+┌─────────────────────────────────────────────────────┐
+│ DOWNLOADS SCREEN                                    │
+│ id: #screen-downloads                               │
+│ Nav: Bottom nav 5. ikon (download ikonu)            │
+│ API: GET /api/download/queue, WS /api/download/ws   │
+├─────────────────────────────────────────────────────┤
+│ [A] Header                                          │
+│     "İndirmeler" + depolama göstergesi              │
+│     (#downloads-storage)                            │
+│                                                     │
+│ [B] Yardım Kutusu                                   │
+│     "İçerik detayından → Bölümler → İndir"          │
+│                                                     │
+│ [C] İndirme Listesi (#downloads-list)               │
+│     Her job: başlık + ilerleme bar + % + durum      │
+│     Tamamlanan: "▶ Oynat" butonu → video player     │
+│     Hatalı: "Tekrar Dene" butonu                    │
+│     Boş: emoji + "Henüz indirme yok"                │
+│                                                     │
+│ [D] Floating Progress (#download-float)             │
+│     Sağ alt (bottom:80px, right:12px), fixed        │
+│     İndirme devam ederken görünür: ikon + % bar     │
+└─────────────────────────────────────────────────────┘
+```
+
+### 10. ✏️ EDIT MODAL — İçerik Düzenleme
+```
+┌─────────────────────────────────────────────────────┐
+│ EDIT MODAL (bottom sheet — 80vh)                    │
+│ id: #modal-edit  |  açılır: detail-edit-btn         │
+│ API: PATCH /api/content/{id}, DELETE /api/content/{id}│
+├─────────────────────────────────────────────────────┤
+│ Başlık (orijinal) + Türkçe Başlık alanları          │
+│ Tür seçici: [🎬Anime][📖Manga][📱Manhwa][🎮Oyun]    │
+│ Durum dropdown (İzliyor/Tamamlandı/Planlı/Bırakıldı)│
+│ Puan: range slider 0–10 adım 1 + canlı "X / 10"     │
+│ Notlar: textarea                                    │
+│ Tehlikeli bölge: "Kütüphaneden Sil" (kırmızı btn)   │
+│   → DELETE /api/content/{id}                        │
+│ [Kaydet] → PATCH /api/content/{id}                  │
+└─────────────────────────────────────────────────────┘
+```
+
+### 11. ⚡ IMPORT CONFLICT MODAL
 ```
 ┌─────────────────────────────────────────────────────┐
 │ CONFLICT MODAL (import sırasında)                   │
