@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-69) · **Aktif sürüm:** v1.1.0 · **Son commit:** `a35d399`
+**Son güncelleme:** 22 Haziran 2026 (sohbet-70) · **Aktif sürüm:** v1.1.0 · **Son commit:** `22c4e8f`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -10,31 +10,41 @@
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (22 Haz sohbet-69):
-  - 676 içerik, backend a35d399 aktif (WSL'de çalışıyor, PID 644 uvicorn port 8099)
-  - ⚠️ SORUN: localhost:8099 Windows tarayıcıdan ERR_FAILED — port forward çalışmıyor
-    (WSL mirrored mode aktif; Kuroshin.bat portproxy eklenirse çözülür)
-  - Çalışan kaynağı olan: ~280 içerik
-  - Test: http://localhost:8099 (önce backend erişim sorununu çöz!)
+MEVCUT DURUM (22 Haz sohbet-70):
+  - 676 içerik, backend 22c4e8f aktif
+  - localhost:8099 ✅ ÇALIŞIYOR (NAT mode + portproxy 172.25.89.7:8099, bat→10→1 ile başlat)
+  - Test: http://localhost:8099
 
-SOHBET-69 YAPILANLARI:
-  ✅ DESIGN.md + FEATURE_MAP.md mevcut kodla uyumlu güncellendi (a35d399)
-     nav/settings/detail/archive/downloads ekranları dokümante edildi
-  ❌ T-06 test edilemedi: localhost:8099 ulaşılamıyor (port forwarding sorunu)
+SOHBET-70 YAPILANLARI:
+  ✅ localhost:8099 düzeltildi: mirrored→NAT, Kuroshin.bat portproxy otomasyonu (21bfc8b)
+  ✅ manga.py: CF blocked sites (mangasehri.net) → düzgün hata mesajı
+  ✅ manga.py: uzaymanga.com yeni format scraper + eski URL→yeni URL dönüşümü (22c4e8f)
 
-SOHBET-70 SIRASI:
-  [1] ÖNCE: localhost:8099 erişim sorununu çöz
-      → Kuroshin.bat KUROWATCH bölümüne portproxy 8099 ekle (admin gerektirmez mı?) VEYA
-      → .wslconfig'de networkingMode=mirrored zaten var, sorun başka olabilir
-      → WSL'den curl http://localhost:8099 çalışıyor ✅ — sorun Windows→WSL yönünde
-  [2] TEST_PLAN.md T-06 testi: "Herhangi karta tıkla → Detail ekranı açılır mı?"
-  [3] T-07..T-38 devam
+SOHBET-71 SIRASI — ANA GÖREV: Download URL Sağlık Operasyonu
+  HEDEF: Tüm manga/manhwa episode URL'lerini çalışan kaynaklarla eşleştir ve test et
+  
+  SORUNLAR TESPİT EDİLDİ:
+    - mangasehri.net: 178 episode URL → CF turnstile, indirilemez
+    - uzaymanga.com: 465 episode URL → eski format (404), yeni sitede bu manga'lar yok
+    - mangawow.org: ~109 episode URL → ✅ ÇALIŞIYOR (Madara)
+  
+  YAPILACAK:
+    [1] Çalışan manga siteleri listesi çıkar (hangi manga hangi adreste var)
+        Öncelikli kontrol: mangawow.org, hayalistic.com.tr, ragnarscans.com
+    [2] mangasehri + uzaymanga içeriklerini bu sitelerde ara (slug matching)
+    [3] Bulunanların episode URL'lerini DB'de güncelle (UPDATE episode SET url=... WHERE content_id=...)
+    [4] URL'lerin download ping testi (HEAD req veya madara ?style=list 200 OK mu)
+    [5] Tüm manga/manhwa: her içeriğin en az 1 çalışan bölüm URL'si olmalı
+
+  ÖNCELİK: mangasehri.net kullanan 178 chapter → ~20 farklı manga title olabilir
+            uzaymanga.com kullanan 465 chapter → ~15-20 farklı manga title olabilir
+  ARAÇ: DB'ye direkt SQL ile güncelleme (enrich gibi script yaz)
 
 ⚠️ ÖNEMLİ:
 
 ⚠️ ÖNEMLİ:
-  - PORT SORUNU: networkingMode=mirrored var ama 8099 Windows'a gelmiyor
-    Bat'ta portproxy 8099→WSL IP'si eklenebilir (Kuroshin.bat :KUROWATCH bölümü)
+  - NAT MODE: .wslconfig networkingMode=NAT (mirrored kaldırıldı)
+    Bat→10→1 portproxy otomatik kurar (UAC bir kez)
   - ESLESMEYEN.md: docs/ESLESMEYEN.md — Lord URL bildirir, Claude DB'ye ekler
   - enrich_turkanime.py: SQLite'a direkt yazar (API değil — WSL←→Windows port sorunu)
   - ta_index.json + ta_romaji_cache.json → scripts/ (yeniden çalıştırmaya gerek yok)
