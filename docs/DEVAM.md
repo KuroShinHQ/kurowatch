@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-79c) · **Aktif sürüm:** v1.2.0 → FAZ-V7-0..10 + V7-11 kısmen · **Son commit:** `2f822b6`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-80) · **Aktif sürüm:** v1.2.0 → FAZ-V7 TAMAMLANDI (12/12) · **Son commit:** `8073473`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -202,16 +202,18 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
     tailwind.css v40 rebuild
 ```
 
-**FAZ-V7-11: Iron Inquisitor Kalite Testi** ⚠️ YARIM (sohbet-79c)
+**FAZ-V7-11: Iron Inquisitor Kalite Testi** ✅ TAMAMLANDI (commit 8073473)
 ```
 [x] CDN bağımlılığı → SIFIR ✅
 [x] Renk drift → #1a1b2e → #1a1a2e düzeltildi (2 yer)
 [x] glass-card tanımı doğrulandı (index.html style tag, 16 kullanım)
 [x] v7 ekranlar layout tutarlı (pt-20/pb-6/px-4 pattern)
-[ ] spin @keyframes eksik → PTR indicator animasyonu çalışmıyor (style.css'e ekle)
-[ ] 4px grid: legacy popup'lar (progress-quick-edit, download-float) kabul edilebilir
-[ ] Son kalite geçişi + commit
+[x] @keyframes spin → style.css'e eklendi (PTR indicator + animate-spin class)
+[x] 4px grid: legacy popup'lar (progress-quick-edit, download-float) kabul edilebilir
+[x] Son kalite geçişi + commit ✅
 ```
+
+### 🎉 FAZ-V7 TAMAMEN TAMAMLANDI (V7-0..11 = 12/12)
 
 ---
 
@@ -220,16 +222,13 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (23 Haz sohbet-79c):
-  - FAZ-V7-0..10 TAMAMLANDI, FAZ-V7-11 kısmen yapıldı
-  - Son commit: 2f822b6
+MEVCUT DURUM (23 Haz sohbet-80):
+  - FAZ-V7 TAMAMEN TAMAMLANDI (V7-0..11 = 12/12) ✅
+  - Son commit: 8073473 (style.css @keyframes spin)
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
 
-SOHBET-79c TAMAMLANDI — FAZ-V7-10 spring+PTR+validate + FAZ-V7-11 başladı ✅
-  KALAN (FAZ-V7-11 tamamlanacak):
-    1. style.css → @keyframes spin ekle (PTR indicator için)
-    2. Son kalite kontrol + commit
-    FAZ-V7 TAMAMEN BİTMİŞ OLACAK
+SOHBET-80 TAMAMLANDI — FAZ-V7-11 tamamlandı, FAZ-V7 KAPANDI ✅
+  style.css → @keyframes spin + .animate-spin → commit 8073473
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
     - Büyü İmparatoru (465 ep): ragnarscans.com/manga/buyu-imparatoru/bolum-N/
