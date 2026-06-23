@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=36"/>
+<link rel="stylesheet" href="tailwind.css?v=37"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -1271,27 +1271,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- EKRAN: İNDİRMELER                                              -->
+<!-- EKRAN: DOWNLOADS — İndirmeler v7                               -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<section id="screen-downloads" class="screen hidden w-full pt-4 pb-safe-nav px-4 max-w-4xl mx-auto">
-  <div class="flex flex-col gap-6 mt-4">
-    <!-- Başlık + Depolama -->
-    <div class="flex items-center justify-between">
-      <h2 class="text-xl font-bold text-[#e1e0ff]">İndirmeler</h2>
-      <span id="downloads-storage" class="text-xs text-[#9090b0] bg-[#1c1d37] border border-white/5 rounded-full px-3 py-1">— kullanılıyor</span>
+<section id="screen-downloads" class="screen hidden w-full pb-safe-nav">
+  <div class="pt-20 pb-6 px-4">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-[20px] font-bold text-[#e1e0ff]">İndirmeler</h1>
+      <span id="downloads-storage" class="text-[10px] text-[#9090b0] rounded-full px-3 py-1"
+        style="background:rgba(26,26,46,0.6);border:1px solid rgba(255,255,255,0.05)">— kullanılıyor</span>
     </div>
-    <!-- Hızlı Yardım -->
-    <div class="bg-[#1c1d37] border border-white/5 rounded-xl p-4 text-sm text-[#9090b0]">
-      <span class="text-[#00d4ff] font-medium">📥 Nasıl indirilir?</span>
-      <span class="ml-2">İçerik detayından → Bölümler sekmesi → İndir butonuna tıkla.</span>
-    </div>
-    <!-- İndirme Listesi -->
-    <div id="downloads-list" class="flex flex-col gap-3">
-      <div class="text-center text-[#9090b0] py-12">
-        <div class="text-4xl mb-3">📥</div>
-        <div>Henüz indirme yok</div>
-        <div class="text-xs mt-1">İçerik detayından bölüm indir</div>
-      </div>
-    </div>
+    <!-- İndirme Listesi — player.js tarafından doldurulur (gruplama: İndiriliyor / Tamamlandı / Hata) -->
+    <div id="downloads-list" class="space-y-6"></div>
   </div>
 </section>
 

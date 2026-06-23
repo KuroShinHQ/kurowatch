@@ -181,11 +181,12 @@
     updateNavActive(id);
 
     // Ekran başına render
-    if (id === 'screen-home')     renderHome();
-    if (id === 'screen-updates')  renderUpdates();
-    if (id === 'screen-stats')    renderStats();
-    if (id === 'screen-archive')  renderArchive();
-    if (id === 'screen-settings')   renderSettings();
+    if (id === 'screen-home')      renderHome();
+    if (id === 'screen-updates')   renderUpdates();
+    if (id === 'screen-stats')     renderStats();
+    if (id === 'screen-archive')   renderArchive();
+    if (id === 'screen-settings')  renderSettings();
+    if (id === 'screen-downloads' && window.kuroDownload) window.kuroDownload.render();
     if (id === 'screen-downloads' && window.kuroDownload) window.kuroDownload.render();
     if (id === 'screen-search') {
       setTimeout(() => {
