@@ -7,6 +7,7 @@ from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import Optional
+import httpx
 
 router = APIRouter()
 
@@ -66,6 +67,81 @@ async def update_settings(body: dict):
             cfg[k] = body[k]
     _save(cfg)
     return cfg
+
+
+# ── Proxy: validate-key ──────────────────────────────────────────────
+
+class ValidateKeyBody(BaseModel):
+    service: str  # "anilist" | "mal" | "igdb" | "deepl"
+    key: str
+
+
+@router.post("/proxy/validate-key")
+async def validate_key(body: ValidateKeyBody):
+    svc = body.service
+    key = body.key.strip()
+    if not key:
+        return {"valid": False, "message": "Key boş olamaz"}
+
+    try:
+        async with httpx.AsyncClient(timeout=8) as client:
+            if svc == "anilist":
+                # AniList public GraphQL — key gerekmiyor ama format kontrolü
+                r = await client.post(
+                    "https://graphql.anilist.co",
+                    json={"query": "{ Viewer { id } }"},
+                    headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                )
+                if r.status_code == 200 and "data" in r.json():
+                    return {"valid": True, "message": "AniList bağlantısı başarılı"}
+                return {"valid": False, "message": f"AniList yanıtı: {r.status_code}"}
+
+            elif svc == "mal":
+                r = await client.get(
+                    "https://api.myanimelist.net/v0.20/anime?limit=1",
+                    headers={"Authorization": f"Bearer {key}"},
+                )
+                if r.status_code == 200:
+                    return {"valid": True, "message": "MAL token geçerli"}
+                if r.status_code == 401:
+                    return {"valid": False, "message": "MAL token geçersiz veya süresi dolmuş"}
+                return {"valid": False, "message": f"MAL yanıtı: {r.status_code}"}
+
+            elif svc == "igdb":
+                # key = bearer token (Twitch OAuth2 sonucu)
+                cfg = _load()
+                r = await client.post(
+                    "https://api.igdb.com/v4/games",
+                    content="fields name; limit 1;",
+                    headers={
+                        "Client-ID": cfg.get("igdb_client_id", ""),
+                        "Authorization": f"Bearer {key}",
+                        "Content-Type": "text/plain",
+                    },
+                )
+                if r.status_code == 200:
+                    return {"valid": True, "message": "IGDB token geçerli"}
+                return {"valid": False, "message": f"IGDB yanıtı: {r.status_code}"}
+
+            elif svc == "deepl":
+                url = "https://api-free.deepl.com/v2/usage" if key.endswith(":fx") else "https://api.deepl.com/v2/usage"
+                r = await client.get(url, headers={"Authorization": f"DeepL-Auth-Key {key}"})
+                if r.status_code == 200:
+                    data = r.json()
+                    used = data.get("character_count", 0)
+                    limit = data.get("character_limit", 0)
+                    return {"valid": True, "message": f"DeepL geçerli: {used:,}/{limit:,} karakter"}
+                if r.status_code == 403:
+                    return {"valid": False, "message": "DeepL key geçersiz"}
+                return {"valid": False, "message": f"DeepL yanıtı: {r.status_code}"}
+
+            else:
+                return {"valid": False, "message": f"Bilinmeyen servis: {svc}"}
+
+    except httpx.TimeoutException:
+        return {"valid": False, "message": "Bağlantı zaman aşımı"}
+    except Exception as e:
+        return {"valid": False, "message": str(e)}
 
 
 # ── Cookies yönetimi ─────────────────────────────────────────────────
