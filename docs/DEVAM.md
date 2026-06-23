@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-77b) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `584869d`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-78) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `10c7979`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -86,14 +86,18 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 [x] style.css: glass-btn / spring-bounce / animate-pulse-cyan / shimmer-bar
 ```
 
-**FAZ-V7-2: Search v7** (kurowatch_search_filter_v7_master/code.html)
+**FAZ-V7-2: Search v7** ✅ TAMAMLANDI (commit 10c7979)
 ```
-[ ] index.html #screen-search → Stitch v7 ile replace et
-[ ] app.js renderSearchV7():
-    → mevcut GET /api/content?type=X&q=Y çağrıları aynı
-    → filtre panel toggle: slide-in/out CSS animation
-    → yıl/puan range slider state → query param'a dönüştür
-    → sonuç kartlarını v7 card spec ile render
+[x] index.html #screen-search → v7 Hybrid layout
+    - Sekme (Kütüphanem/Keşfet) + FİLTRELE toggle butonu
+    - Filtre paneli: Tip (anime/manga/manhwa/game) + Tür chip + Sıralama
+    - Kütüphanem: #library-search-results grid cols-3
+    - Keşfet: #search-results grid cols-3
+[x] renderLibrarySearch(): v7 aspect-[2/3] cover kartlar (stripe+badge+başlık+skor)
+[x] renderSearch(): v7 grid kartlar + alt Ekle butonu
+[x] _buildDiscoverGenreChips(): v7 chip stili
+[x] _initSearchTabs(): v7 tab class + filtre toggle mantığı
+[x] tailwind.css v32 rebuild
 ```
 
 **FAZ-V7-3: Detail v7** (kurowatch_detail_solo_leveling_sim/code.html)
