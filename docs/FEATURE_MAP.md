@@ -755,9 +755,120 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ---
 
+## 🚀 FAZ-V7 — Ultra-Precision Frontend Revizyon (23 Haz 2026 sohbet-77)
+
+> Stitch v7 HTML'leri mevcut KuroWatch SPA'sına entegre etme. Kaynak dizin:
+> `C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_netflix_tasar_m_rehberi\`
+
+### v7 Ekran Envanteri & Entegrasyon Durumu
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│ #  EKRAN                STITCH KAYNAK                  SATIR DURUM │
+├─────────────────────────────────────────────────────────────────────┤
+│ 1  HOME v7              kurowatch_home_solo_leveling_sim  337  [ ]  │
+│ 2  SEARCH v7            kurowatch_search_filter_v7_master 383  [ ]  │
+│    SEARCH Filtre Hybrid kurowatch_arama_filtreleme_v7_*   —    [ ]  │
+│ 3  DETAIL v7            kurowatch_detail_solo_leveling_*  361  [ ]  │
+│ 4  PLAYER v7 Gold       kurowatch_video_oynat_c_v7_gold*  250  [ ]  │
+│    Player Altyazı/Ses   kurowatch_video_oynat_c_altyaz*   —    [ ]  │
+│    Player Bölüm         kurowatch_video_oynat_c_b_l_m*    —    [ ]  │
+│    Player Kalite        kurowatch_video_oynat_c_kalite*   —    [ ]  │
+│ 5  MANGA READER v7      kurowatch_manga_okuyucu_v7_master 311  [ ]  │
+│    Kuro Translate v7    kurowatch_kuro_translate_v7_master —   [ ]  │
+│    Smart Clean Sim      kurowatch_kuro_translate_v7_*_sim  —   [ ]  │
+│    Çeviri Ayarları      kurowatch_eviri_ayarlar_v7_*       —   [ ]  │
+│ 6  UPDATES v7           kurowatch_updates_v7_master_*     315  [ ]  │
+│ 7  DOWNLOADS v7         kurowatch_downloads_v7_master_*   386  [ ]  │
+│ 8  STATS v7             kurowatch_stats_v7_master         438  [ ]  │
+│ 9  SETTINGS v7          kurowatch_settings_v7_final_*     583  [ ]  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### v7 API Şemaları (kurowatch_teknik_api_spesifikasyonu_coder_ready.md)
+
+```
+HOME:    GET /api/home/hero + /api/home/sections + /api/user/continue-watching
+DETAIL:  GET /api/series/:id/metadata + /episodes + /characters
+PLAYER:  GET /api/v7/player/init/:episode_id (stream+markers+assets)
+         POST /api/v7/player/sync (heartbeat 30sn)
+         POST /api/v7/analytics/event (skip_intro vb.)
+READER:  GET /api/v7/reader/chapter/:id
+         POST /api/v7/translate/vision (OCR + overlay)
+         POST /api/v7/reader/sync (last_page heartbeat)
+SETTINGS: PATCH /api/user/settings
+          POST /api/proxy/validate-key (AniList/MAL/IGDB/DeepL)
+DL/UPD:  POST /api/download/queue + GET /api/user/notifications
+```
+
+### v7 Design Tokens (tüm ekranlarda zorunlu)
+
+```css
+/* v7 renk anayasası — inline renk YASAK */
+--v7-bg:        #0d0d1a    /* sayfa zemini */
+--v7-surface:   #0e1417    /* kart/panel zemini */
+--v7-card:      #1a1a2e    /* içerik kartı */
+--v7-raised:    #16213e    /* modal/overlay */
+--v7-input:     #1c1d37    /* form input */
+--v7-cyan:      #00d4ff    /* Electric Cyan — primary */
+--v7-cyan-dim:  rgba(0,212,255,0.1)   /* cyan bg */
+--v7-cyan-brd:  rgba(0,212,255,0.3)   /* cyan border */
+--v7-text:      #e1e0ff    /* birincil metin */
+--v7-muted:     #9090b0    /* ikincil metin */
+--v7-border:    rgba(255,255,255,0.05)/* çizgiler */
+
+/* v7 animasyon kuralı */
+transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* spring */
+active:scale-[0.95]   /* her tıklanabilir element */
+hover:scale-[1.02]    /* kart hover */
+hover:scale-[1.18]    /* büyük kart hover */
+
+/* v7 spacing kuralı — 4'ün katları */
+gap: 8px | 12px | 16px | 24px | 32px | 48px  ONLY
+```
+
+### v7 Kritik Sorunlar (Stitch çıktılarından bilinenlr)
+
+```
+❌ CDN BAĞIMLILIĞI — Her HTML'de tailwindcss.com + fonts.googleapis.com CDN
+   FIX: tailwindcss.exe ile local build → tailwind.css?v=7
+   FIX: Google Fonts → local font veya system font stack
+
+❌ AYRI HTML DOSYALARI — SPA değil, her biri bağımsız
+   FIX: index.html içinde <section id="screen-*"> olarak entegre et
+
+❌ RENK DRIFT — Her ekran bağımsız generate → token kayması
+   FIX: :root v7 token sistemi, inline renk SIFIRLA
+
+❌ JS YOK — Tüm butonlar statik
+   FIX: app.js event handler'lar + v7 logic
+
+❌ MATERIAL TOKEN İSİMLERİ — surface-container-high vb. Tailwind'e özgü string
+   FIX: --v7-* CSS değişkenleri ile replace
+```
+
+### v7 Entegrasyon Adımları (sıralı)
+
+```
+1. FAZ-V7-0: CSS Token kur + tailwind local build       [ ]
+2. FAZ-V7-1: HOME ekranı replace                        [ ]
+3. FAZ-V7-2: SEARCH + filtre paneli                     [ ]
+4. FAZ-V7-3: DETAIL + karakter galerisi                 [ ]
+5. FAZ-V7-4: VIDEO PLAYER + 3 overlay                  [ ]
+6. FAZ-V7-5: MANGA READER + Kuro Translate              [ ]
+7. FAZ-V7-6: UPDATES v7                                 [ ]
+8. FAZ-V7-7: DOWNLOADS v7                               [ ]
+9. FAZ-V7-8: STATS v7                                   [ ]
+10. FAZ-V7-9: SETTINGS v7 + API key form'ları           [ ]
+11. FAZ-V7-10: app.js tüm event wiring                  [ ]
+12. FAZ-V7-11: Iron Inquisitor kalite testi             [ ]
+```
+
+---
+
 ## ✅ Özellik Tamamlanma Durumu
 
-> Son güncelleme: 23 Haz 2026 (sohbet-74)
+> Son güncelleme: 23 Haz 2026 (sohbet-77)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
