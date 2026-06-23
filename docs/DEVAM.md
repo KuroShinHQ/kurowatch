@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-78) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `10c7979`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-78) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `cb5b13a`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -100,15 +100,15 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 [x] tailwind.css v32 rebuild
 ```
 
-**FAZ-V7-3: Detail v7** (kurowatch_detail_solo_leveling_sim/code.html)
+**FAZ-V7-3: Detail v7** ✅ TAMAMLANDI (commit cb5b13a)
 ```
-[ ] index.html #screen-detail → Stitch v7 ile replace et
-[ ] app.js openDetailV7(id):
-    → GET /api/content/:id (başlık, kapak, skor, sinopsis)
-    → GET /api/content/:id/episodes (bölüm listesi, is_watched)
-    → GET /api/content/:id/anilist → characters[] → karakter galerisi render
-    → Karakter galerisi: yatay scroll, isim + resim kartları
-    → Bölüm listesi: is_watched badge, progress odaklı sıra
+[x] #screen-detail hero: 480px yükseklik, cinema gradient, floating header
+    badges + title (uppercase 26px) + DEVAM ET CTA + 3 secondary action
+[x] detail-continue-btn: progress 1-99%'de görünür, "DEVAM ET — Bölüm N" etiketi
+[x] detailSwitchTab: 'characters' tab eklendi (matchMap ile eşleşme)
+[x] detail-tab-characters: yatay scroll karakter galerisi (avatar, isim, rol, VA)
+[x] anilist.py: characters(sort:ROLE, perPage:20) query + _format() entegrasyonu
+[x] tailwind.css v33 rebuild
 ```
 
 **FAZ-V7-4: Video Player v7 Cinema Master**
