@@ -310,6 +310,95 @@
     });
   }
 
+  // ── v7 Hero + Satır render ────────────────────────────────────────
+  async function renderHomeV7(items) {
+    if (!items || items.length === 0) return;
+    const tc = TYPE_COLOR;
+
+    // Hero: en yüksek skorlu veya en son eklenen
+    const hero = items.slice().sort((a,b) => (b.my_score||0) - (a.my_score||0))[0];
+    const heroBg  = document.getElementById('home-hero-bg');
+    const heroTit = document.getElementById('home-hero-title');
+    const heroMet = document.getElementById('home-hero-meta');
+    const heroSyn = document.getElementById('home-hero-synopsis');
+    const heroBadge = document.getElementById('home-hero-status-badge');
+    const heroCont  = document.getElementById('home-hero-continue-btn');
+    const heroDetail= document.getElementById('home-hero-detail-btn');
+
+    if (hero) {
+      if (heroBg && hero.cover_url) heroBg.style.backgroundImage = 'url(' + escapeHtml(hero.cover_url) + ')';
+      if (heroTit) heroTit.textContent = hero.title_tr || hero.title;
+      const col = (tc[hero.type]||tc.anime).color;
+      if (heroMet) heroMet.textContent = (hero.type||'').toUpperCase() + (hero.my_score ? ' · ★' + hero.my_score.toFixed(1) : '');
+      if (heroSyn) { heroSyn.textContent = hero.note_text || ''; heroSyn.classList.toggle('hidden', !hero.note_text); }
+      const statusMap = {watching:'● İZLİYORUM',completed:'● TAMAMLANDI',on_hold:'● ASKIDA',dropped:'● BIRAKTIM',plan_to_watch:'● PLANLANDI'};
+      if (heroBadge) heroBadge.textContent = statusMap[hero.status] || '● —';
+      if (heroCont) heroCont.onclick = () => window.openDetail(hero.id);
+      if (heroDetail) heroDetail.onclick = () => window.openDetail(hero.id);
+    }
+
+    // Devam Et: progress 1-99%
+    const continueItems = items.filter(it => {
+      const total = it.type==='game' ? 100 : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
+      const pct = it.type==='game' ? (it.my_progress_pct||0) : Math.min(100,Math.round((it.my_progress||0)/total*100));
+      return pct > 0 && pct < 100;
+    });
+    const contRow = document.getElementById('home-continue-row');
+    const contSec = document.getElementById('home-continue-section');
+    if (contRow && continueItems.length > 0) {
+      contSec && contSec.classList.remove('hidden');
+      contRow.innerHTML = continueItems.slice(0,10).map(it => {
+        const col = (tc[it.type]||tc.anime);
+        const total = it.type==='game' ? 100 : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
+        const pct = it.type==='game' ? (it.my_progress_pct||0) : Math.min(100,Math.round((it.my_progress||0)/total*100));
+        const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
+        return `<div class="flex-none w-[260px] aspect-video relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-transform cursor-pointer snap-start group" data-content-id="${it.id}">
+          <div class="absolute inset-0 bg-cover bg-center" ${bg}></div>
+          <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/95 via-black/40 to-transparent">
+            <h4 class="text-[13px] font-bold text-[#e1e0ff] mb-1 line-clamp-1">${escapeHtml(it.title_tr||it.title)}</h4>
+            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden shimmer-bar">
+              <div class="h-full rounded-full" style="background:${col.color};width:${pct}%;box-shadow:0 0 8px ${col.color}99"></div>
+            </div>
+          </div>
+          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <span class="material-symbols-outlined fill-1 text-[#00d4ff]" style="font-size:40px">play_circle</span>
+          </div>
+        </div>`;
+      }).join('');
+      contRow.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
+    }
+
+    // Tip satırları
+    const rows = [
+      {key:'anime', secId:'home-anime-section', rowId:'home-anime-row', label:'Animeler'},
+      {key:'manga', secId:'home-manga-section', rowId:'home-manga-row', label:'Manga & Manhwa'},
+      {key:'manhwa',secId:'home-manga-section', rowId:'home-manga-row', label:'Manga & Manhwa'},
+      {key:'game',  secId:'home-games-section', rowId:'home-games-row', label:'Oyunlar'},
+    ];
+    const rowMap = {};
+    rows.forEach(r => {
+      if (!rowMap[r.rowId]) rowMap[r.rowId] = {secId:r.secId, items:[]};
+      rowMap[r.rowId].items.push(...items.filter(it => it.type===r.key));
+    });
+    Object.entries(rowMap).forEach(([rowId, {secId, items:rowItems}]) => {
+      const row = document.getElementById(rowId);
+      const sec = document.getElementById(secId);
+      if (!row || rowItems.length === 0) return;
+      sec && sec.classList.remove('hidden');
+      row.innerHTML = rowItems.slice(0,20).map(it => {
+        const col = (tc[it.type]||tc.anime);
+        const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
+        return `<div class="flex-none w-[130px] md:w-[160px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
+          <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
+          <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
+            <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
+          </div>
+        </div>`;
+      }).join('');
+      row.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
+    });
+  }
+
   async function renderHome() {
     const grid = document.getElementById('home-library-grid');
     if (!grid) return;
@@ -322,7 +411,8 @@
       return;
     }
 
-    // Genre chip satırı home'dan kaldırıldı
+    // v7 Hero + satırları doldur (paralel, bağımsız)
+    renderHomeV7(items).catch(() => {});
 
     // Background: genres boş ama external_id varsa otomatik patch
     const needsPatch = items.some(function(it) { return it.external_id && (!it.genres || it.genres.length === 0); });

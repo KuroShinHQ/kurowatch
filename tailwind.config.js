@@ -51,7 +51,11 @@ module.exports = {
         "inverse-on-surface":         "#2d2e49",
         "outline":                    "#859398",
         "outline-variant":            "#3c494e",
-        "surface-tint":               "#3cd7ff"
+        "surface-tint":               "#3cd7ff",
+        /* ── v7 Ultra-Precision ── */
+        "v7-cyan":                    "#00d4ff",
+        "bg-overlay":                 "#0a0a12",
+        "on-surface-alt":             "#dde3e7"
       },
       borderRadius: {
         "DEFAULT": "0.25rem",
@@ -74,7 +78,13 @@ module.exports = {
         "list-row-height":   "56px",
         "nav-height":        "56px",
         "page-padding":      "16px",
-        "section-gap":       "24px"
+        "section-gap":       "24px",
+        /* ── v7 spacing ── */
+        "margin-mobile":     "16px",
+        "margin-desktop":    "20px",
+        "nav-bottom-h":      "64px",
+        "touch-target-min":  "44px",
+        "nav-sidebar-w":     "240px"
       },
       fontFamily: {
         "sans":           ["system-ui", "sans-serif"],

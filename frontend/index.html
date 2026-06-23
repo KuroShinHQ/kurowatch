@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=30"/>
+<link rel="stylesheet" href="tailwind.css?v=31"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -171,20 +171,78 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 
 
 <!-- ════════════════════════════════════════════════════════════════ -->
-<!-- EKRAN: HOME — Kütüphane Grid                                    -->
+<!-- EKRAN: HOME — v7 Netflix Stili + Kütüphane Grid                 -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<section id="screen-home" class="screen active w-full pt-4 pb-safe-nav px-4 max-w-7xl mx-auto">
-  <div class="flex flex-col gap-6">
-    <!-- Başlık + Arama -->
-    <section class="flex flex-col gap-4 mt-4">
-      <div class="relative w-full group">
-        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
-        <input id="home-search-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" autocomplete="new-password" name="kw_search_no_fill"/>
+<section id="screen-home" class="screen active w-full pb-safe-nav overflow-x-hidden">
+
+  <!-- ── v7 Hero Banner ───────────────────────────────────────────── -->
+  <div id="home-hero" class="relative w-full h-[480px] md:h-[600px] overflow-hidden shadow-[0_0_50px_rgba(0,212,255,0.12)]">
+    <div id="home-hero-bg" class="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105" style="background-image:none;background-color:#16213e"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/50 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0d0d1a]/70 via-transparent to-transparent hidden md:block"></div>
+    <div class="absolute bottom-0 left-0 w-full px-4 md:px-5 pb-8 md:pb-12 flex flex-col max-w-2xl gap-3">
+      <div class="flex items-center gap-2 mb-1">
+        <span id="home-hero-status-badge" class="px-2 py-0.5 rounded text-[10px] font-label-caps uppercase bg-status-watching text-[#432c00] tracking-wider shadow-[0_0_8px_rgba(254,181,40,0.4)]">● İZLİYORUM</span>
+        <span id="home-hero-meta" class="text-[#9090b0] text-xs font-body-md">—</span>
       </div>
-    </section>
+      <h2 id="home-hero-title" class="font-display-lg text-[28px] md:text-[44px] leading-tight font-bold text-[#e1e0ff] drop-shadow-2xl">—</h2>
+      <p id="home-hero-synopsis" class="text-[13px] md:text-[15px] text-[#9090b0] mb-4 line-clamp-2 opacity-90 hidden md:block">—</p>
+      <div class="flex items-center gap-3">
+        <button id="home-hero-continue-btn" class="flex items-center justify-center gap-2 h-11 px-7 bg-[#00d4ff] text-[#003642] rounded-lg font-semibold text-[14px] active:scale-[0.95] transition-all duration-200 hover:brightness-110 shadow-[0_0_20px_rgba(0,212,255,0.3)]">
+          <span class="material-symbols-outlined fill-1" style="font-size:20px">play_arrow</span> Devam Et
+        </button>
+        <button id="home-hero-detail-btn" class="flex items-center justify-center gap-2 h-11 px-7 bg-[#1c1d37]/70 backdrop-blur-md border border-white/10 text-[#e1e0ff] rounded-lg font-semibold text-[14px] active:scale-[0.95] transition-all duration-200 hover:bg-[#272842]/70">
+          <span class="material-symbols-outlined" style="font-size:18px">info</span> Bilgi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Devam Et Satırı ────────────────────────────────────────── -->
+  <div id="home-continue-section" class="mb-8 mt-4 hidden">
+    <h3 class="font-headline-md text-[18px] text-[#e1e0ff] mb-3 px-4 md:px-5 flex items-center gap-2">
+      Devam Et <span class="material-symbols-outlined text-[#9090b0]" style="font-size:16px">arrow_forward_ios</span>
+    </h3>
+    <div id="home-continue-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-3 px-4 md:px-5 snap-x"></div>
+  </div>
+
+  <!-- ── Popüler Anime Satırı ─────────────────────────────────── -->
+  <div id="home-anime-section" class="mb-8 hidden">
+    <h3 class="font-headline-md text-[18px] text-[#e1e0ff] mb-3 px-4 md:px-5 flex items-center gap-2">
+      Animeler <span class="material-symbols-outlined text-[#9090b0]" style="font-size:16px">arrow_forward_ios</span>
+    </h3>
+    <div id="home-anime-row" class="flex gap-3 overflow-x-auto hide-scrollbar pb-3 px-4 md:px-5 snap-x"></div>
+  </div>
+
+  <!-- ── Manga / Manhwa Satırı ───────────────────────────────── -->
+  <div id="home-manga-section" class="mb-8 hidden">
+    <h3 class="font-headline-md text-[18px] text-[#e1e0ff] mb-3 px-4 md:px-5 flex items-center gap-2">
+      Manga & Manhwa <span class="material-symbols-outlined text-[#9090b0]" style="font-size:16px">arrow_forward_ios</span>
+    </h3>
+    <div id="home-manga-row" class="flex gap-3 overflow-x-auto hide-scrollbar pb-3 px-4 md:px-5 snap-x"></div>
+  </div>
+
+  <!-- ── Oyunlar Satırı ─────────────────────────────────────── -->
+  <div id="home-games-section" class="mb-8 hidden">
+    <h3 class="font-headline-md text-[18px] text-[#e1e0ff] mb-3 px-4 md:px-5 flex items-center gap-2">
+      Oyunlar <span class="material-symbols-outlined text-[#9090b0]" style="font-size:16px">arrow_forward_ios</span>
+    </h3>
+    <div id="home-games-row" class="flex gap-3 overflow-x-auto hide-scrollbar pb-3 px-4 md:px-5 snap-x"></div>
+  </div>
+
+  <!-- ── Kütüphane (Filtre + Grid) ──────────────────────────── -->
+  <div class="px-4 md:px-5 max-w-7xl mx-auto">
+    <h3 id="home-library-heading" class="font-headline-md text-[18px] text-[#e1e0ff] mb-4 flex items-center gap-2">
+      Tüm Kütüphane
+    </h3>
+    <!-- Arama -->
+    <div class="relative w-full group mb-4">
+      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#9090b0] group-focus-within:text-[#00d4ff] transition-colors">search</span>
+      <input id="home-search-input" class="w-full bg-[#1c1d37] inner-glow border border-white/5 rounded-lg py-3 pl-12 pr-4 min-h-[44px] text-[#e1e0ff] text-base focus:outline-none focus:border-[#00d4ff]/50 focus:ring-1 focus:ring-[#00d4ff]/30 transition-all placeholder:text-[#9090b0]" placeholder="Kütüphanende ara..." type="text" autocomplete="new-password" name="kw_search_no_fill"/>
+    </div>
     <!-- Filtre Chips: Tür -->
-    <div class="flex flex-col gap-3">
-      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 lg:mx-0 lg:px-0">
+    <div class="flex flex-col gap-3 mb-4">
+      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
         <button class="filter-type shrink-0 bg-[#00d4ff]/15 border border-[#00d4ff] text-[#00d4ff] font-label-caps text-label-caps px-4 min-h-[44px] rounded inner-glow" data-filter-type="all">TÜM TÜRLER</button>
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="anime">ANİME</button>
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="manga">MANGA</button>
@@ -192,35 +250,17 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="game">OYUN</button>
       </div>
       <!-- Filtre Chips: Durum -->
-      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1 -mx-4 px-4 lg:mx-0 lg:px-0">
+      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
         <button class="filter-status shrink-0 bg-[#3b4665] border border-[#3b4665] text-[#e1e0ff] font-label-caps text-label-caps px-4 min-h-[44px] rounded inner-glow" data-filter-status="all">TÜMÜ</button>
         <button class="filter-status shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-status="watching">İZLİYOR</button>
         <button class="filter-status shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-status="completed">TAMAMLANDI</button>
         <button class="filter-status shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-status="on_hold">BEKLEMEDE</button>
       </div>
-      <!-- Genre chips kaldırıldı — home'da gereksiz kalabalık -->
     </div>
-    <!-- Poster Grid — app.js tarafından doldurulur -->
-    <div id="home-library-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4">
-      <!-- Placeholder kartlar (app.js renderHome() ile değişir) -->
-      <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow animate-pulse">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent opacity-100"></div>
-        <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
-          <div class="h-2 bg-white/10 rounded w-2/3"></div>
-          <div class="h-3 bg-white/20 rounded"></div>
-          <div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden"><div class="bg-[#00d4ff] h-full w-3/4"></div></div>
-        </div>
-      </div>
-      <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow animate-pulse">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent opacity-100"></div>
-        <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
-          <div class="h-2 bg-white/10 rounded w-1/2"></div>
-          <div class="h-3 bg-white/20 rounded"></div>
-          <div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden"><div class="bg-[#ffd9a1] h-full w-1/4"></div></div>
-        </div>
-      </div>
-    </div>
+    <!-- Poster Grid — app.js renderHome() tarafından doldurulur (ID korundu) -->
+    <div id="home-library-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-4"></div>
   </div>
+
 </section>
 
 
