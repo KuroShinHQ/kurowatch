@@ -94,19 +94,17 @@
   animation: shimmer 2s infinite;
 }
 
-/* ── Player: Theater Mode ────────────────────────────────────────── */
-#modal-player.player-theater #player-header {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+/* ── Player v7: Theater Mode (controls overlay geçici gizli kalır — JS yönetir) */
+#modal-player.player-theater #controls-overlay {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
-#modal-player.player-theater:hover #player-header,
-#modal-player.player-theater #player-header:focus-within {
-  opacity: 1;
-  pointer-events: auto;
+#modal-player.player-theater #video-master:hover #controls-overlay {
+  opacity: 1 !important;
+  pointer-events: auto !important;
 }
 
-/* ── Player: Mini Player ─────────────────────────────────────────── */
+/* ── Player v7: Mini Player ─────────────────────────────────────── */
 #modal-player.player-mini {
   inset: auto !important;
   bottom: 1rem;
@@ -119,11 +117,14 @@
   box-shadow: 0 8px 40px rgba(0,0,0,0.8);
   transition: all 0.25s ease;
 }
-#modal-player.player-mini #player-header { display: none; }
-#modal-player.player-mini #player-video-wrap { flex: 1; }
+#modal-player.player-mini #controls-overlay { display: none; }
+#modal-player.player-mini #video-master { width: 100%; height: 100%; }
 #modal-player.player-mini #player-video { max-height: 200px; }
 #modal-player.player-mini #autonext-overlay,
 #modal-player.player-mini #skip-intro-btn { display: none !important; }
+#modal-player.player-mini #panel-episodes,
+#modal-player.player-mini #panel-quality,
+#modal-player.player-mini #panel-subtitle { display: none !important; }
 
 /* ── Complete Modal Animasyonları ───────────────────────────────── */
 @keyframes completeIn {

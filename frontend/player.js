@@ -279,6 +279,110 @@
     },
   };
 
+  // ── Controls Overlay v7 ──────────────────────────────────────────
+  const _controls = {
+    _uiTimer: null,
+    _isPlaying: false,
+
+    show() {
+      const overlay = document.getElementById('controls-overlay');
+      if (overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+      const vm = document.getElementById('video-master');
+      if (vm) vm.style.cursor = 'default';
+      clearTimeout(this._uiTimer);
+    },
+
+    resetTimer() {
+      this.show();
+      if (this._isPlaying) {
+        this._uiTimer = setTimeout(function () {
+          const overlay = document.getElementById('controls-overlay');
+          if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+          const vm = document.getElementById('video-master');
+          if (vm) vm.style.cursor = 'none';
+        }, 3500);
+      }
+    },
+
+    setPlaying(playing) {
+      this._isPlaying = playing;
+      const icon = document.getElementById('play-icon');
+      if (icon) icon.textContent = playing ? 'pause' : 'play_arrow';
+      if (playing) this.resetTimer(); else this.show();
+    },
+
+    updateTime(currentTime, duration) {
+      const progress = document.getElementById('timeline-progress');
+      if (progress) progress.style.width = (duration > 0 ? (currentTime / duration) * 100 : 0) + '%';
+      const timeEl = document.getElementById('player-time');
+      if (timeEl) timeEl.innerHTML = _fmtTime(currentTime) + ' <span style="color:rgba(255,255,255,0.4);padding:0 4px">/</span> ' + _fmtTime(duration || 0);
+    },
+
+    reset() {
+      clearTimeout(this._uiTimer);
+      this._isPlaying = false;
+      const overlay = document.getElementById('controls-overlay');
+      if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+    },
+  };
+
+  function _fmtTime(s) {
+    if (!s || isNaN(s) || !isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+
+  // ── Screen Lock v7 ───────────────────────────────────────────────
+  const _lock = {
+    _active: false,
+
+    toggle() {
+      this._active = !this._active;
+      const lockOverlay = document.getElementById('player-lock-overlay');
+      const lockBtn = document.getElementById('player-lock-btn');
+      if (this._active) {
+        clearTimeout(_controls._uiTimer);
+        const overlay = document.getElementById('controls-overlay');
+        if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+        if (lockOverlay) { lockOverlay.classList.remove('hidden'); lockOverlay.style.display = 'flex'; }
+        if (lockBtn) lockBtn.querySelector('span').textContent = 'lock';
+      } else {
+        if (lockOverlay) { lockOverlay.classList.add('hidden'); lockOverlay.style.display = ''; }
+        if (lockBtn) lockBtn.querySelector('span').textContent = 'lock_open';
+        _controls.resetTimer();
+      }
+    },
+
+    isActive() { return this._active; },
+
+    reset() {
+      this._active = false;
+      const lockOverlay = document.getElementById('player-lock-overlay');
+      if (lockOverlay) { lockOverlay.classList.add('hidden'); lockOverlay.style.display = ''; }
+      const lockBtn = document.getElementById('player-lock-btn');
+      if (lockBtn) lockBtn.querySelector('span').textContent = 'lock_open';
+    },
+  };
+
+  // ── Capture (Screenshot) v7 ──────────────────────────────────────
+  function _captureFrame() {
+    const video = document.getElementById('player-video');
+    if (!video) return;
+    const canvas = document.createElement('canvas');
+    canvas.width  = video.videoWidth  || 1280;
+    canvas.height = video.videoHeight || 720;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(function (blob) {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'kurowatch-frame.png'; a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+    }, 'image/png');
+    if (window.showToast) window.showToast('Ekran görüntüsü kaydedildi', 'success', 3000);
+  }
+
   // ── Theater Mode ─────────────────────────────────────────────────
   let _theaterActive = false;
   function _toggleTheater() {
@@ -350,6 +454,7 @@
     _ccActive = !_ccActive;
     video.textTracks[0].mode = _ccActive ? 'showing' : 'hidden';
     if (btn) btn.classList.toggle('text-[#00d4ff]', _ccActive);
+    if (_panelSubtitle) _panelSubtitle.syncCC();
   }
 
   // ── Auto-Next Episode ────────────────────────────────────────────
@@ -501,6 +606,171 @@
     },
   };
 
+  // ── Episodes Panel v7 ────────────────────────────────────────────
+  const _panelEpisodes = {
+    _contentId: null,
+    _episodes: [],
+    _currentEp: null,
+
+    async open(contentId, contentTitle, currentEpNumber) {
+      const panel = document.getElementById('panel-episodes');
+      if (!panel) return;
+      this._currentEp = currentEpNumber;
+      const titleEl = document.getElementById('panel-episodes-title');
+      if (titleEl) titleEl.textContent = contentTitle || '';
+      panel.classList.remove('hidden');
+
+      if (this._contentId !== contentId || !this._episodes.length) {
+        this._contentId = contentId;
+        this._episodes = [];
+        const listEl = document.getElementById('panel-episodes-list');
+        if (listEl) listEl.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-sm">Yükleniyor…</div>';
+        try {
+          const r = await fetch(API + '/api/content/' + contentId + '/episodes');
+          if (!r.ok) throw new Error(r.status);
+          this._episodes = await r.json();
+        } catch (_e) {
+          const listEl2 = document.getElementById('panel-episodes-list');
+          if (listEl2) listEl2.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-sm">Bölümler yüklenemedi</div>';
+          return;
+        }
+      }
+      this._render();
+    },
+
+    _render() {
+      const listEl = document.getElementById('panel-episodes-list');
+      if (!listEl || !this._episodes.length) return;
+      const cid = this._contentId;
+      listEl.innerHTML = this._episodes.map(function (ep) {
+        const isCurrent = ep.number === _panelEpisodes._currentEp;
+        const job = Object.values(_jobs).find(function (j) {
+          return j.content_id === cid && j.episode_number === ep.number && j.status === 'done';
+        });
+        return '<div class="episode-panel-card flex gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.97]' +
+          (isCurrent ? '' : ' hover:bg-white/5') + '"' +
+          ' style="' + (isCurrent ? 'background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.25)' : 'border:1px solid transparent') + '"' +
+          ' data-ep-num="' + ep.number + '" data-ep-job="' + (job ? job.id : '') + '">' +
+          '<div class="w-10 h-10 flex items-center justify-center rounded-lg text-sm font-bold flex-shrink-0"' +
+          ' style="' + (isCurrent ? 'background:#00d4ff;color:#003642' : 'background:#1c1d37;color:#9090b0') + '">' + ep.number + '</div>' +
+          '<div class="flex flex-col gap-0.5 min-w-0 flex-1 justify-center">' +
+          '<p class="text-[13px] truncate" style="' + (isCurrent ? 'color:#00d4ff;font-weight:600' : 'color:#dde3e7') + '">Bölüm ' + ep.number + '</p>' +
+          (ep.duration ? '<p class="text-[11px] text-[#9090b0]">' + ep.duration + 'dk</p>' : '') +
+          '</div>' +
+          (job ? '<span class="material-symbols-outlined text-lg flex-shrink-0 self-center" style="color:#4caf50;font-variation-settings:\'FILL\' 1">download_done</span>' : '') +
+          '</div>';
+      }).join('');
+
+      listEl.querySelectorAll('.episode-panel-card').forEach(function (card) {
+        card.addEventListener('click', function () {
+          const jobId = parseInt(card.dataset.epJob, 10);
+          if (!jobId || !_jobs[jobId]) return;
+          const job = _jobs[jobId];
+          const epNum = parseInt(card.dataset.epNum, 10);
+          _panelEpisodes.close();
+          setTimeout(function () {
+            _player.close();
+            setTimeout(function () { _player.open(jobId, job.content_title + ' — Bölüm ' + epNum, job.content_id, epNum); }, 200);
+          }, 300);
+        });
+      });
+
+      setTimeout(function () {
+        const active = listEl.querySelector('[style*="rgba(0,212,255,0.08)"]');
+        if (active) active.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    },
+
+    close() {
+      const panel = document.getElementById('panel-episodes');
+      if (panel) panel.classList.add('hidden');
+    },
+  };
+
+  // ── Quality Panel v7 ─────────────────────────────────────────────
+  const _panelQuality = {
+    _qualities: ['1080p', '720p', '480p', '360p'],
+    _current: '720p',
+
+    open(currentQuality) {
+      const panel = document.getElementById('panel-quality');
+      if (!panel) return;
+      this._current = currentQuality || '720p';
+      this._render();
+      panel.classList.remove('hidden');
+    },
+
+    _render() {
+      const listEl = document.getElementById('panel-quality-list');
+      if (!listEl) return;
+      listEl.innerHTML = this._qualities.map(function (q) {
+        const isActive = q === _panelQuality._current;
+        return '<div class="flex items-center justify-between p-4 rounded-xl"' +
+          ' style="' + (isActive ? 'background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.4)' : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)') + '">' +
+          '<span class="text-[15px] font-semibold text-[#dde3e7]">' + q + (isActive ? ' — Mevcut' : '') + '</span>' +
+          (isActive ? '<span class="material-symbols-outlined" style="color:#00d4ff;font-variation-settings:\'FILL\' 1">check_circle</span>' : '') +
+          '</div>';
+      }).join('');
+    },
+
+    close() {
+      const panel = document.getElementById('panel-quality');
+      if (panel) panel.classList.add('hidden');
+    },
+  };
+
+  // ── Subtitle / Speed Panel v7 ────────────────────────────────────
+  const _panelSubtitle = {
+    _speeds: [0.5, 0.75, 1, 1.25, 1.5, 2],
+
+    open() {
+      const panel = document.getElementById('panel-subtitle');
+      if (!panel) return;
+      this._renderSpeeds();
+      this.syncCC();
+      panel.classList.remove('hidden');
+    },
+
+    syncCC() {
+      const thumb  = document.getElementById('panel-cc-thumb');
+      const toggle = document.getElementById('panel-cc-toggle');
+      if (!thumb || !toggle) return;
+      toggle.style.background = _ccActive ? '#00d4ff' : 'rgba(255,255,255,0.1)';
+      thumb.style.transform   = _ccActive ? 'translateX(24px)' : '';
+    },
+
+    _renderSpeeds() {
+      const listEl = document.getElementById('panel-speed-list');
+      const video  = document.getElementById('player-video');
+      if (!listEl) return;
+      const cur = video ? video.playbackRate : 1;
+      listEl.innerHTML = this._speeds.map(function (s) {
+        const active = Math.abs(s - cur) < 0.01;
+        return '<button class="speed-opt h-10 rounded-lg text-sm font-medium transition-all"' +
+          ' style="' + (active ? 'background:#00d4ff;color:#003642;font-weight:700' : 'background:rgba(255,255,255,0.05);color:#9090b0') + '"' +
+          ' data-speed="' + s + '">' + (s === 1 ? '1× Normal' : s + '×') + '</button>';
+      }).join('');
+
+      listEl.querySelectorAll('.speed-opt').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const video = document.getElementById('player-video');
+          if (video) video.playbackRate = parseFloat(btn.dataset.speed);
+          _panelSubtitle._renderSpeeds();
+          const speedEl = document.getElementById('player-speed-display');
+          if (speedEl && video) {
+            const r = video.playbackRate;
+            speedEl.textContent = (r === Math.floor(r) ? r.toFixed(0) : r.toFixed(2)) + '×';
+          }
+        });
+      });
+    },
+
+    close() {
+      const panel = document.getElementById('panel-subtitle');
+      if (panel) panel.classList.add('hidden');
+    },
+  };
+
   // ── Video Player ─────────────────────────────────────────────────
   const _player = {
     open: function (jobId, title, contentId, episodeNumber) {
@@ -514,19 +784,47 @@
       video.load();
       if (ttl) ttl.textContent = title || '';
 
-      // Mini modunu çıkar, tam ekrana aç
+      // Bölüm etiketi (örn: "Bölüm 3")
+      const epLabel = document.getElementById('player-ep-label');
+      if (epLabel) epLabel.textContent = episodeNumber ? 'Bölüm ' + episodeNumber : '';
+
+      // Mini/theater sıfırla
       modal.classList.remove('player-mini', 'player-theater');
       _miniActive    = false;
       _theaterActive = false;
       modal.classList.remove('hidden');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
-      video.play().catch(() => {});
 
-      video.dataset.jobId        = jobId;
-      video.dataset.contentId    = contentId || '';
+      video.dataset.jobId         = jobId;
+      video.dataset.contentId     = contentId || '';
       video.dataset.episodeNumber = episodeNumber || '';
-      video._daisyTriggered      = false;
+      video.dataset.quality       = (_jobs[jobId] && _jobs[jobId].quality) || '720p';
+      video._daisyTriggered       = false;
+
+      // Controls v7 başlat
+      _controls.reset();
+      _controls.show();
+      _lock.reset();
+      _panelEpisodes.close();
+      _panelQuality.close();
+      _panelSubtitle.close();
+
+      // Hız göstergesini sıfırla
+      video.playbackRate = 1;
+      const speedEl = document.getElementById('player-speed-display');
+      if (speedEl) speedEl.textContent = '1×';
+
+      // Timeline sıfırla
+      const progress = document.getElementById('timeline-progress');
+      if (progress) progress.style.width = '0%';
+      const buffer = document.getElementById('timeline-buffer');
+      if (buffer) buffer.style.width = '0%';
+      const timeEl = document.getElementById('player-time');
+      if (timeEl) timeEl.innerHTML = '0:00 <span style="color:rgba(255,255,255,0.4);padding:0 4px">/</span> 0:00';
+
+      video.play().catch(function () {});
+      _controls.setPlaying(true);
 
       _intro.load(contentId, episodeNumber);
       _outro.load(contentId, episodeNumber);
@@ -552,9 +850,14 @@
       if (outroBtn) outroBtn.classList.add('hidden');
       _ambient.stop();
       _autoNext.reset();
+      _controls.reset();
+      _lock.reset();
+      _panelEpisodes.close();
+      _panelQuality.close();
+      _panelSubtitle.close();
       _miniActive    = false;
       _theaterActive = false;
-      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
     },
 
     openVideo: function (jobId, title) {
@@ -565,11 +868,12 @@
     },
   };
 
-  // timeupdate: Skip Intro + Auto-Next + Daisy-chain
+  // timeupdate: v7 timeline + Skip Intro + Auto-Next + Daisy-chain
   document.addEventListener('timeupdate', function (e) {
     const video = e.target;
     if (!video || video.tagName !== 'VIDEO') return;
 
+    _controls.updateTime(video.currentTime, video.duration);
     _intro.tick(video.currentTime);
     _outro.tick(video.currentTime);
     _autoNext.check(video.currentTime, video.duration);
@@ -992,18 +1296,133 @@
   document.addEventListener('DOMContentLoaded', function () {
     connectDownloadWS();
 
-    // ── Player Butonları ──────────────────────────────────────────
-    const _pb = (id, fn) => { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
-    _pb('player-close',        () => _player.close());
-    _pb('skip-intro-btn',      () => _intro.skip());
-    _pb('skip-outro-btn',      () => _outro.skip());
-    _pb('player-ambient-btn',  () => _ambient.toggle());
-    _pb('player-theater-btn',  () => _toggleTheater());
-    _pb('player-pip-btn',      () => _togglePiP());
-    _pb('player-mini-btn',     () => _toggleMini());
-    _pb('player-fullscreen-btn', () => _toggleFullscreen());
-    _pb('player-cc-btn',       () => _toggleCC());
-    _pb('autonext-cancel',     () => _autoNext.reset());
+    // ── Player Butonları (v7) ─────────────────────────────────────
+    const _pb = function (id, fn) { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };
+    _pb('player-close',        function () { _player.close(); });
+    _pb('skip-intro-btn',      function () { _intro.skip(); });
+    _pb('skip-outro-btn',      function () { _outro.skip(); });
+    _pb('player-ambient-btn',  function () { _ambient.toggle(); });
+    _pb('player-theater-btn',  function () { _toggleTheater(); });
+    _pb('player-pip-btn',      function () { _togglePiP(); });
+    _pb('player-mini-btn',     function () { _toggleMini(); });
+    _pb('player-fullscreen-btn', function () { _toggleFullscreen(); });
+    _pb('player-cc-btn',       function () { _panelSubtitle.open(); });
+    _pb('autonext-cancel',     function () { _autoNext.reset(); });
+
+    // v7 yeni butonlar
+    _pb('master-play-pause',   function () {
+      const video = document.getElementById('player-video');
+      if (!video) return;
+      if (video.paused) { video.play().catch(function () {}); _controls.setPlaying(true); }
+      else { video.pause(); _controls.setPlaying(false); }
+    });
+    _pb('player-rewind-btn', function () {
+      const video = document.getElementById('player-video');
+      if (video) { video.currentTime = Math.max(0, video.currentTime - 10); _controls.resetTimer(); }
+    });
+    _pb('player-forward-btn', function () {
+      const video = document.getElementById('player-video');
+      if (video) { video.currentTime = Math.min(video.duration || 0, video.currentTime + 10); _controls.resetTimer(); }
+    });
+    _pb('player-lock-btn',     function () { _lock.toggle(); });
+    _pb('player-unlock-btn',   function () { _lock.toggle(); });
+    _pb('player-capture-btn',  function () { _captureFrame(); _controls.resetTimer(); });
+    _pb('player-quality-btn',  function () {
+      const video = document.getElementById('player-video');
+      const q = (video && video.dataset.quality) || '720p';
+      _panelQuality.open(q);
+    });
+    _pb('player-episodes-btn', function () {
+      const video = document.getElementById('player-video');
+      const cid   = video && video.dataset.contentId;
+      const epNum = video && parseInt(video.dataset.episodeNumber, 10);
+      const jobId = video && parseInt(video.dataset.jobId, 10);
+      const job   = _jobs[jobId];
+      if (cid) _panelEpisodes.open(parseInt(cid, 10), job ? job.content_title : '', epNum || null);
+    });
+    _pb('player-speed-btn',    function () { _panelSubtitle.open(); });
+    _pb('player-ep-next-btn',  function () {
+      const video = document.getElementById('player-video');
+      if (!video) return;
+      const jobId = parseInt(video.dataset.jobId, 10);
+      const job   = _jobs[jobId];
+      if (!job) return;
+      const nextEp  = job.episode_number + 1;
+      const nextJob = Object.values(_jobs).find(function (j) {
+        return j.content_id === job.content_id && j.episode_number === nextEp && j.status === 'done';
+      });
+      if (nextJob) {
+        _player.close();
+        setTimeout(function () { _player.open(nextJob.id, nextJob.content_title + ' — Bölüm ' + nextEp, nextJob.content_id, nextEp); }, 200);
+      }
+    });
+    _pb('panel-cc-toggle',       function () { _toggleCC(); });
+    _pb('panel-episodes-close',  function () { _panelEpisodes.close(); });
+    _pb('panel-episodes-backdrop', function () { _panelEpisodes.close(); });
+    _pb('panel-quality-close',   function () { _panelQuality.close(); });
+    _pb('panel-quality-backdrop', function () { _panelQuality.close(); });
+    _pb('panel-quality-apply',   function () { _panelQuality.close(); });
+    _pb('panel-subtitle-close',  function () { _panelSubtitle.close(); });
+    _pb('panel-subtitle-backdrop', function () { _panelSubtitle.close(); });
+
+    // v7 Video element events
+    const _playerVideo = document.getElementById('player-video');
+    if (_playerVideo) {
+      _playerVideo.addEventListener('play',  function () { _controls.setPlaying(true); });
+      _playerVideo.addEventListener('pause', function () { _controls.setPlaying(false); });
+      _playerVideo.addEventListener('ended', function () { _controls.setPlaying(false); });
+      _playerVideo.addEventListener('progress', function () {
+        const video = document.getElementById('player-video');
+        if (!video || !video.duration) return;
+        const buf = document.getElementById('timeline-buffer');
+        if (buf && video.buffered.length) {
+          buf.style.width = ((video.buffered.end(video.buffered.length - 1) / video.duration) * 100) + '%';
+        }
+      });
+    }
+
+    // v7 Controls overlay interaction (touch/mouse)
+    const vm = document.getElementById('video-master');
+    if (vm) {
+      vm.addEventListener('mousemove',  function () { if (!_lock.isActive()) _controls.resetTimer(); });
+      vm.addEventListener('touchstart', function () { if (!_lock.isActive()) _controls.resetTimer(); }, { passive: true });
+      vm.addEventListener('click', function (e) {
+        if (_lock.isActive()) return;
+        const overlay = document.getElementById('controls-overlay');
+        const isVisible = overlay && overlay.style.opacity !== '0';
+        if (!isVisible) { _controls.show(); return; }
+        const inControls = e.target.closest('#controls-overlay');
+        if (!inControls) {
+          const video = document.getElementById('player-video');
+          if (video) {
+            if (video.paused) { video.play().catch(function () {}); _controls.setPlaying(true); }
+            else { video.pause(); _controls.setPlaying(false); }
+          }
+        }
+      });
+    }
+
+    // v7 Timeline seeking
+    const timelineSlider = document.getElementById('timeline-slider');
+    if (timelineSlider) {
+      let _seeking = false;
+      function _doSeek(e) {
+        const video = document.getElementById('player-video');
+        if (!video || !video.duration) return;
+        const rect = timelineSlider.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        video.currentTime = pct * video.duration;
+        _controls.resetTimer();
+      }
+      timelineSlider.addEventListener('mousedown',  function (e) { _seeking = true; _doSeek(e); });
+      timelineSlider.addEventListener('touchstart', function (e) { _seeking = true; _doSeek(e); }, { passive: true });
+      document.addEventListener('mousemove',  function (e) { if (_seeking) _doSeek(e); });
+      document.addEventListener('touchmove',  function (e) { if (_seeking) _doSeek(e); }, { passive: true });
+      document.addEventListener('mouseup',  function () { _seeking = false; });
+      document.addEventListener('touchend', function () { _seeking = false; });
+      timelineSlider.addEventListener('click', _doSeek);
+    }
 
     // ── Reader Butonları ──────────────────────────────────────────
     _pb('reader-close',          () => _reader.close());
