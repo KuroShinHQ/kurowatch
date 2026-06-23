@@ -97,18 +97,53 @@ slideUp       → 0.32s (Detail ekranı)
 
 ## 🃏 Bileşen Kataloğu
 
-### Content Card (Home Grid)
+### Hero Banner (HOME üstü)
 ```
-aspect-[2/3]  relative  rounded-card  overflow-hidden
-bg: cover resim veya initials kutu
-Sol renk şeridi: 4px, tip rengi
-Sağ üst: tip badge (TYPE_COLOR)
-Sol üst: "+N Site" update badge (koşullu, cyan)
-Alt gradient overlay:
-  - başlık (truncate)
-  - ★X.X puan
-  - renkli progress bar
-Hover: scale(1.02) + border-[#00d4ff]/50
+height: 55vh, full-width, bg-cover object-position: center top
+Overlays:
+  top: rgba(13,13,26,0.4) vignette (top 25%)
+  bottom: transparent(50%) → #0d0d1a(100%), heavy gradient
+Content (absolute bottom-left, p-20px):
+  - status chip: "● İZLİYORUM" amber pill, 11px uppercase
+  - series title: 28px bold white, text-shadow 0 2px 8px rgba(0,0,0,0.8)
+  - meta: "Anime · ★8.9 · 12/24 bölüm" — 12px #9090b0
+  - progress bar: 4px, rgba(255,255,255,0.15) bg, #00d4ff fill
+  - buttons: "▶ Devam Et — B.13" (primary cyan) + "ℹ Detay" (ghost cyan)
+```
+
+### Category Row (HOME satır sistemi)
+```
+Row header (px-16px mb-10px):
+  Left: 5px colored dot + title 13px semibold uppercase letter-spacing #e1e0ff
+  Right: "Tümü ›" 11px #9090b0
+Row cards:
+  display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none;
+  padding: 0 16px; scroll-snap-type: x mandatory;
+  4 tam kart + %25 beşinci kart (scroll hint)
+Row dots: Devam=#feb528 | Planlıyorum=#00d4ff | Anime=#00d4ff | Manga=#ffd9a1 | Manhwa=#bbc5eb | Tamamlandı=#22c55e
+```
+
+### Content Card (Row & Grid)
+```
+width: 140px; aspect-ratio: 2/3; border-radius: 10px; overflow: hidden;
+box-shadow: 0 4px 12px rgba(0,0,0,0.4)
+
+Katmanlar (alt→üst):
+  1. Cover image: bg-cover center
+  2. Sol kenar şeridi: 4px dikey, tip rengi
+  3. Sağ üst tip badge: "ANIME"/"MANGA"/"MANHWA"
+     9px bold uppercase, bg: type/10, border: type/25, rounded-full, px-6px py-2px
+  4. Alt gradient: #1a1a2e→transparent 65%
+     İçinde: başlık 11px white (2 satır truncate) + ★X.X 10px #ffd9a1
+  5. Alt kenar progress bar: 3px, bg rgba(255,255,255,0.08), fill #00d4ff
+
+Hover (scale 1.18 Netflix-level, önceki: 1.02):
+  transform: scale(1.18) translateY(-14px); z-index: 20;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.75);
+  Alt overlay açılır: "B.12/24 · 50%" + "▶ Devam Et" küçük cyan buton
+
+NOT: overflow:hidden parent hover'ı kırar → overflow:clip + clip-path kullan
+     veya hover sırasında card'ı position:fixed portal'a al
 Tıklama: openDetail(id)
 ```
 
@@ -183,22 +218,89 @@ bg-[#1a2123] border border-white/5 ring-1 ring-white/10
 Backdrop: bg-black/75 backdrop-blur-sm
 ```
 
-### Video Player Modal
+### Video Player Modal (Netflix-level spec)
 ```
 z-index: 200, full inset-0, bg-black
-Header: flex butonlar (CC, Ambient, Theater, PiP, Mini, Fullscreen)
-Video: HTML5 <video> controls, z-index:1
-Canvas: ambient-canvas, absolute, blur(40px) saturate(1.8), z-index:0
-Skip Intro btn: bottom-16 right-6, z-index:10
-Auto-next overlay: bottom-16 left-6, progress bar + geri sayım
+
+Ambient canvas (absolute fill, z-index:0):
+  Video frame blurred: filter blur(60px) saturate(1.8) brightness(0.25)
+  Cinema glow effect
+
+Video (center, 16:9 max-h-90vh, z-index:1)
+
+Top controls (hover/tap, absolute top-0, gradient rgba(0,0,0,0.7)→transparent, 80px):
+  Left: "← Geri" ghost rounded white
+  Center: "Serie — Bölüm N" 13px #e1e0ff
+  Right: CC | Ambient[active=cyan] | Theater | PiP | Fullscreen (30px circles bg rgba(255,255,255,0.1))
+
+Bottom controls (absolute bottom-0, gradient transparent→rgba(0,0,0,0.85), 110px):
+  Progress: 4px track rgba(255,255,255,0.2), cyan fill, 14px white playhead
+  Controls: ⏮ ⏪ ⏯(40px) ⏩ ⏭ | "18:34/24:10" center | volume + quality + fullscreen
+
+Skip Intro: bottom-100px right-20px
+  "INTRO'YU ATLA →" — bg #00d4ff, text #0d0d1a, 13px bold, h-38px, rounded-lg
+  pulse animation: box-shadow 0 0 20px rgba(0,212,255,0.6) in/out
+
+Auto-next card: bottom-110px left-20px, w-200px
+  bg rgba(26,26,46,0.9) blur, rounded-xl, p-14px
+  "Sıradaki Bölüm" 10px muted + title 15px bold + countdown bar 4px cyan + "✕ İptal"
 ```
 
-### Manga Reader Modal
+### Manga Reader Modal (Netflix-level spec)
 ```
-z-index: 200, overflow-y-auto
-Header (sticky): close + başlık + mode btn + TR/JP toggle + Çevir + Fullscreen
-Sayfa modu: reader-nav (fixed bottom) ile ◀ Önceki / Sonraki ▶
-Webtoon modu: dikey scroll, nav gizli
+z-index: 200, bg #0a0a12
+
+Sticky header (64px, bg #0d0d1a, border-bottom rgba(255,255,255,0.06)):
+  Left: "← Kapat" muted
+  Center: title + "N sayfa" sub
+  Right: Mode pill toggle (Webtoon/Sayfa, cyan=active) | TR pill | Translate | Fullscreen
+
+Webtoon mode:
+  Images stacked full-width, no gaps, bg #0a0a12
+  Right: 4px cyan scroll indicator track
+  Chapter nav popup (tap): "◀ B.N" | "Bölüm N/M" | "B.N+1 ▶" — rgba(13,13,26,0.9) blur pill
+
+Page mode:
+  Single page contained centered, bg #000
+  Fixed bottom bar 64px: "◀ Önceki" | "N/M" | "Sonraki ▶"
+```
+
+### Update Card (UPDATES ekranı)
+```
+bg #1a1a2e, rounded-xl, mx-16px mb-10px, p-14px
+Layout: flex row
+  Left: cover 56×80px 2:3 rounded-md
+  Right:
+    type badge + time "2 saat önce" right-aligned 10px muted
+    title 14px bold #e1e0ff
+    "Bölüm N yayınlandı" 12px muted
+    site chips small
+    "▶ Oku/İzle" primary 34px | "✓ Gördüm" ghost
+Unread: border-l-3px #00d4ff + slightly lighter bg
+Read: no border
+```
+
+### Download Item (DOWNLOADS ekranı)
+```
+bg #1a1a2e, rounded-xl, mx-16px mb-10px, p-14px, flex row
+Left: cover 48×64px rounded
+Right: title 13px bold | source 10px cyan | progress bar 6px cyan shimmer
+  "N MB / M MB · X kaldı" 10px muted | speed "420 KB/s ↓" 10px green right
+Far right: ⏸ | ✕ icons 28px
+
+Completed: ✓ green large + "Tamamlandı" muted
+Error: ⚠ red + "Bağlantı hatası" + "Tekrar Dene" ghost red button
+```
+
+### Search Result Card (SEARCH ekranı)
+```
+flex row, py-12px px-16px, border-bottom rgba(255,255,255,0.04)
+Left: cover 60×90px 2:3 rounded-md
+Right:
+  title 14px bold white
+  meta "Manhwa · 179 bölüm · ★ 9.1" 11px muted
+  status badge cyan pill
+  "+ Ekle" ghost cyan button right-aligned
 ```
 
 ### Read Overlay (Iframe)
