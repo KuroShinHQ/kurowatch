@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-79b) · **Aktif sürüm:** v1.2.0 → FAZ-V7-0..9 TAMAMLANDI · **Son commit:** `e60dfbe`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-79c) · **Aktif sürüm:** v1.2.0 → FAZ-V7-0..10 + V7-11 kısmen · **Son commit:** `2f822b6`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -193,20 +193,24 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
     tailwind.css v39 rebuild
 ```
 
-**FAZ-V7-10: app.js Wiring** ← SONRAKİ
+**FAZ-V7-10: app.js Wiring** ✅ TAMAMLANDI (commit 2f822b6)
 ```
-[ ] showScreen() → v7 spring geçiş (cubic-bezier 0.34,1.56,0.64,1)
-[ ] Pull-to-refresh → Updates + Home (touchstart→touchmove→refresh)
-[ ] renderSettings() → settings-igdb-id/mal-client-id form populate + save
-[ ] validate-key buton wiring: settings sayfasındaki KONTROL ET butonu
+[x] showScreen() → spring geçiş cubic-bezier(0.34,1.56,0.64,1), translateX 24px / translateY 18px
+[x] Pull-to-refresh: screen-home + screen-updates, touchstart/move/end, 72px eşik, ptr-indicator FAB
+[x] renderSettings(): _validateKey() helper + settings-igdb-test buton wiring
+[x] settings HTML: settings-igdb-test butonu + settings-validate-result div eklendi
+    tailwind.css v40 rebuild
 ```
 
-**FAZ-V7-11: Iron Inquisitor Kalite Testi**
+**FAZ-V7-11: Iron Inquisitor Kalite Testi** ⚠️ YARIM (sohbet-79c)
 ```
-[ ] CDN bağımlılığı sıfır mı kontrol
-[ ] Renk drift: inline renk kalmadı mı (#0d0d1a / #00d4ff tutarlılık)
-[ ] 4px grid ihlali yok mu (spacing: 8/12/16/24/32/48px only)
-[ ] v7 tasarım kalitesi testi
+[x] CDN bağımlılığı → SIFIR ✅
+[x] Renk drift → #1a1b2e → #1a1a2e düzeltildi (2 yer)
+[x] glass-card tanımı doğrulandı (index.html style tag, 16 kullanım)
+[x] v7 ekranlar layout tutarlı (pt-20/pb-6/px-4 pattern)
+[ ] spin @keyframes eksik → PTR indicator animasyonu çalışmıyor (style.css'e ekle)
+[ ] 4px grid: legacy popup'lar (progress-quick-edit, download-float) kabul edilebilir
+[ ] Son kalite geçişi + commit
 ```
 
 ---
@@ -216,12 +220,16 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (23 Haz sohbet-79b):
-  - FAZ-V7-0..9 TAMAMLANDI — tüm ekranlar v7 görsel stile geçti
-  - Son commit: e60dfbe
+MEVCUT DURUM (23 Haz sohbet-79c):
+  - FAZ-V7-0..10 TAMAMLANDI, FAZ-V7-11 kısmen yapıldı
+  - Son commit: 2f822b6
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
 
-SOHBET-79b TAMAMLANDI — FAZ-V7-8 Stats + FAZ-V7-9 Settings + validate-key ✅
+SOHBET-79c TAMAMLANDI — FAZ-V7-10 spring+PTR+validate + FAZ-V7-11 başladı ✅
+  KALAN (FAZ-V7-11 tamamlanacak):
+    1. style.css → @keyframes spin ekle (PTR indicator için)
+    2. Son kalite kontrol + commit
+    FAZ-V7 TAMAMEN BİTMİŞ OLACAK
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
     - Büyü İmparatoru (465 ep): ragnarscans.com/manga/buyu-imparatoru/bolum-N/
