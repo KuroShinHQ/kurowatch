@@ -757,7 +757,7 @@ C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_media_tracker\
 
 ## ✅ Özellik Tamamlanma Durumu
 
-> Son güncelleme: 20 Haz 2026 (sohbet-39)
+> Son güncelleme: 23 Haz 2026 (sohbet-74)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -898,4 +898,46 @@ FAZ-6 — BROWSER EXTENSION ✅ TAMAMLANDI (sohbet-37/38)
 MOBİL ADB (Kuroshin.bat, 15 Haz sohbet-19)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [x] Kuroshin.bat KUROWATCH [3] — adb reverse tcp:8099 + PWA talimatları
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-7 — VERİ & EPISODE SİSTEMİ (Haz 2026, sohbet-57~74)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SEZON SİSTEMİ (sohbet-71/72):
+[x] content tablosuna season_number + parent_id kolonları eklendi
+[x] API: GET /api/content?parent_id=X (sezon zinciri)
+[x] scripts/season_linker.py — AniList sezon zinciri builder
+[x] UI: 35 yeni kart eklendi, sezon zinciri UI gösterimi
+[x] Duplikat temizleme: Shangri-La S2 ID=685 silindi, zincir 104→109
+
+URL SAĞLIK SİSTEMİ (sohbet-71):
+[x] scripts/ping_all_content.py — 660/660 %100 OK ping testi
+[x] URL fix: Nano Machine → ragnarscans.com (178 ep)
+[x] URL fix: Büyü İmparatoru → ragnarscans.com (465 ep)
+[x] URL fix: A Returner's Magic → manhwahentai.me (268 ep)
+[x] manga.py: manhwahentai.me Madara domain desteği eklendi
+[x] scripts/ping_results.json — ping sonuçları (660 içerik)
+
+TOPLU EPİSODE SYNC (sohbet-73):
+[x] scripts/bulk_episode_sync.py — ping_results.json + listing URL slug
+[x] 8658 episode eklendi (509 anime)
+[x] 253 anime → turkanime.tv URL | 256 anime → tranimaci.com URL
+
+TURKANIME.TV MODAL FİX (sohbet-73, commit cda45e2):
+[x] Sorun: Bootstrap modal backdrop tıklamayı engelliyordu
+[x] Çözüm: JS force-remove + click(force=True) + stealth context
+[x] Test: FMA / Elfen Lied / Peter Grill — 3/3 stream URL ✅
+
+TRANİMACİ → TURKANİME.TV MİGRATİON (sohbet-74, commit e0d65d6):
+[x] scripts/fetch_turkanime_list.py — sitemap.xml.gz ile 6613 slug çekildi
+[x] scripts/find_anime_slugs.py — slug eşleştirme (sitemap + HTTP test)
+[x] scripts/apply_turkanime_migration.py — DB güncelleme scripti
+[x] 22 anime turkanime.tv'ye geçirildi:
+    Bleach TYBW, Code Geass R2, Hell's Paradise S2, KONOSUBA S3,
+    SPY×FAMILY, Shield Hero, High School DxD NEW, ISHURA S2,
+    Blood Blockade & Beyond, Kaguya-sama, Danmachi II,
+    Isekai Cheat Magician, By the Grace of Gods 2, Chunibyo S2,
+    Another, Miyazaki filmleri (Totoro/Spirited Away/Howl's), Immortal King
+[x] 194 tranimaci ep silindi, 194 turkanime.tv ep eklendi
+[x] 16/16 URL doğrulama 200 OK ✅
+[ ] Kalan 234 tranimaci anime (Türk dizi/film/Western) — kaynak yok
 ```
