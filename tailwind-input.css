@@ -11,10 +11,41 @@
   --font-label-caps:  ui-monospace, monospace;
 
   /* Spacing */
-  --spacing-gutter: 16px;
+  --spacing-gutter:         16px;
+  --spacing-margin-mobile:  16px;
+  --spacing-margin-desktop: 20px;
+  --spacing-nav-bottom-h:   64px;
 
   /* Border radius */
   --radius-card: 12px;
+
+  /* ── KuroWatch renk paleti ── */
+  --color-background:         #0d0d1a;
+  --color-surface:            #0e1417;
+  --color-on-surface:         #e1e0ff;
+  --color-on-surface-alt:     #dde3e7;
+  --color-bg-card:            #1a1a2e;
+  --color-bg-raised:          #16213e;
+  --color-bg-input:           #1c1d37;
+  --color-bg-overlay:         #0a0a12;
+  --color-surface-container:  #1a2123;
+  --color-surface-high:       #242b2e;
+  --color-surface-highest:    #2f3639;
+  --color-outline-variant:    #3c494e;
+  --color-text-muted:         #9090b0;
+  --color-text-primary:       #e1e0ff;
+  /* ── Primary / Cyan ── */
+  --color-primary:            #a8e8ff;
+  --color-primary-container:  #00d4ff;
+  --color-v7-cyan:            #00d4ff;
+  /* ── Durum renkleri ── */
+  --color-status-watching:    #feb528;
+  --color-status-completed:   #22c55e;
+  --color-status-dropped:     #ef4444;
+  --color-tertiary-container: #feb528;
+  /* ── Tür renkleri ── */
+  --color-type-manhwa:        #bbc5eb;
+  --color-type-game:          #ffb4ab;
 }
 
 /* Custom composite text utilities — font-size + line-height + letter-spacing + font-weight */
