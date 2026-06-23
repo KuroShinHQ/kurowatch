@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=40"/>
+<link rel="stylesheet" href="tailwind.css?v=41"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -71,15 +71,13 @@ a:active, button:active, .interactive:active, .interactive-card:active {
   color: #00d4ff;
   border-right: 4px solid #00d4ff;
 }
-.bottom-nav-item.active-nav { color: #00d4ff; }
-.bottom-nav-item.active-nav::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: 32px; height: 4px;
-  background: #00d4ff; border-radius: 0 0 4px 4px;
-  box-shadow: 0 0 8px rgba(0,212,255,0.8);
+.bottom-nav-item { border-top: 3px solid transparent; transition: border-color 0.2s, color 0.2s; }
+.bottom-nav-item.active-nav {
+  color: #00d4ff;
+  border-top: 3px solid #00d4ff;
+  box-shadow: 0 -8px 16px rgba(0,212,255,0.18), inset 0 0 12px rgba(0,212,255,0.06);
 }
+.bottom-nav-item.active-nav .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
 
 /* ── Safe Area ── */
 .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
@@ -131,11 +129,6 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
     <li>
       <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-[#9090b0] hover:text-white hover:bg-white/5 transition-all cursor-pointer text-sm min-h-[44px]" data-nav="screen-search">
         <span class="material-symbols-outlined">search</span><span>Search</span>
-      </a>
-    </li>
-    <li>
-      <a class="nav-item flex items-center gap-3 px-4 py-3 rounded-lg text-[#9090b0] hover:text-white hover:bg-white/5 transition-all cursor-pointer text-sm min-h-[44px]" data-modal-open="modal-add">
-        <span class="material-symbols-outlined">add_box</span><span>Add</span>
       </a>
     </li>
     <li>
@@ -1197,29 +1190,25 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- PAYLAŞILAN NAV — Mobil Bottom Nav                              -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <nav id="bottom-nav" class="fixed bottom-0 w-full z-50 h-[64px] bg-[#0d0d1a]/95 backdrop-blur-md border-t border-white/10 flex justify-around items-center pb-safe">
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-home">
+  <a class="bottom-nav-item flex flex-col items-center justify-center text-[#9090b0] hover:text-[#00d4ff] active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-home">
     <span class="material-symbols-outlined mb-1">home</span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">Home</span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">ANA SAYFA</span>
   </a>
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-search">
+  <a class="bottom-nav-item flex flex-col items-center justify-center text-[#9090b0] hover:text-[#00d4ff] active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-search">
     <span class="material-symbols-outlined mb-1">search</span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">Keşfet</span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">ARA</span>
   </a>
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-modal-open="modal-add">
-    <span class="material-symbols-outlined mb-1">add_box</span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">Ekle</span>
-  </a>
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-updates">
+  <a class="bottom-nav-item flex flex-col items-center justify-center text-[#9090b0] hover:text-[#00d4ff] active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-updates">
     <span class="material-symbols-outlined mb-1">notifications</span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">Güncelle</span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">GÜNCELLEMELER</span>
   </a>
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-downloads">
+  <a class="bottom-nav-item flex flex-col items-center justify-center text-[#9090b0] hover:text-[#00d4ff] active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-downloads">
     <span class="relative"><span class="material-symbols-outlined mb-1">download</span><span id="download-badge-mobile" class="hidden absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#00d4ff] text-[#0d0d1a] text-[8px] font-bold items-center justify-center"></span></span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">İndir</span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">İNDİRMELER</span>
   </a>
-  <a class="bottom-nav-item relative flex flex-col items-center justify-center text-[#9090b0] hover:bg-white/5 active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-settings">
+  <a class="bottom-nav-item flex flex-col items-center justify-center text-[#9090b0] hover:text-[#00d4ff] active:scale-90 duration-200 w-full h-full cursor-pointer" data-nav="screen-settings">
     <span class="material-symbols-outlined mb-1">settings</span>
-    <span class="text-[10px] uppercase font-bold tracking-wider">Ayarlar</span>
+    <span class="text-[10px] uppercase font-bold tracking-wider">AYARLAR</span>
   </a>
 </nav>
 
