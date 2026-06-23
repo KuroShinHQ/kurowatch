@@ -1560,40 +1560,179 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- MODAL: MANGA READER                                             -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<div id="modal-reader" class="modal-overlay hidden fixed inset-0 z-[200] bg-[#0a0a12] overflow-y-auto overflow-x-hidden">
-  <!-- Sticky Header -->
-  <div class="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 bg-[#0a0a12]/95 backdrop-blur-md border-b border-white/10">
-    <button id="reader-close" class="w-10 h-10 flex items-center justify-center text-white hover:text-[#00d4ff] transition-colors rounded-lg hover:bg-white/10">
-      <span class="material-symbols-outlined">close</span>
-    </button>
-    <span id="reader-title" class="text-sm font-medium text-[#e1e0ff] truncate flex-1"></span>
-    <button id="reader-mode-btn" class="text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-white transition-colors min-h-[36px]">↕ Webtoon</button>
-    <!-- FAZ-5: Dil toggle — çeviri tamamlanınca görünür -->
-    <div id="reader-lang-toggle" class="hidden items-center rounded-lg overflow-hidden border border-white/10 text-xs">
-      <button id="reader-lang-original" class="px-3 py-1.5 bg-[#00d4ff]/20 text-[#00d4ff] font-medium transition-colors">JP</button>
-      <button id="reader-lang-tr" class="px-3 py-1.5 bg-[#1c1d37] text-[#9090b0] hover:text-white transition-colors">TR</button>
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!-- MODAL: MANGA READER v7 Hybrid Master                            -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+<div id="modal-reader" class="modal-overlay hidden fixed inset-0 z-[200] overflow-y-auto overflow-x-hidden" style="background:#0d0d1a">
+
+  <!-- TOP APP BAR (fixed, glass, auto-hide on scroll) -->
+  <header id="reader-header" class="fixed top-0 left-0 w-full z-[100] transition-all duration-300"
+    style="background:rgba(13,13,26,0.82);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05)">
+    <div class="h-16 flex items-center justify-between px-4 gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <button id="reader-close" class="w-10 h-10 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-white/10 active:scale-95 transition-all text-white">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div class="flex flex-col min-w-0">
+          <span id="reader-title" class="text-[15px] font-semibold text-white truncate"></span>
+          <span id="reader-chapter-label" class="text-[10px] font-bold uppercase tracking-[0.12em]" style="color:rgba(168,232,255,0.7)"></span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <!-- WEB/SAYFA toggle -->
+        <div class="flex p-1 rounded-xl" style="background:rgba(26,33,35,0.5);border:1px solid rgba(255,255,255,0.05)">
+          <button id="reader-webtoon-btn" class="px-3 py-1.5 rounded-lg flex items-center gap-1 text-[10px] font-bold transition-all"
+            style="background:#00d4ff;color:#003642">
+            <span class="material-symbols-outlined" style="font-size:16px">vertical_align_bottom</span>
+            WEB
+          </button>
+          <button id="reader-page-btn" class="px-3 py-1.5 rounded-lg flex items-center gap-1 text-[10px] font-bold text-[#9090b0] transition-all hover:text-white">
+            <span class="material-symbols-outlined" style="font-size:16px">menu_book</span>
+            SAYFA
+          </button>
+        </div>
+        <!-- JP/TR toggle (FAZ-5) -->
+        <div id="reader-lang-toggle" class="hidden items-center rounded-lg overflow-hidden text-[10px]" style="border:1px solid rgba(255,255,255,0.1);background:rgba(26,33,35,0.5)">
+          <button id="reader-lang-original" class="px-3 py-1.5 font-bold transition-colors" style="background:rgba(0,212,255,0.2);color:#00d4ff">JP</button>
+          <button id="reader-lang-tr" class="px-3 py-1.5 text-[#9090b0] hover:text-white transition-colors">TR</button>
+        </div>
+        <!-- Translate status button (FAZ-5, GPU gerekli) -->
+        <button id="reader-translate-btn" class="hidden items-center gap-1 text-[10px] px-3 py-1.5 rounded-xl transition-all min-h-[36px]"
+          style="background:rgba(26,33,35,0.5);border:1px solid rgba(255,255,255,0.1);color:#9090b0">
+          🌐 <span id="reader-translate-label">Çevir</span>
+        </button>
+        <!-- Fix button (FAZ-5, TR modda) -->
+        <button id="reader-fix-btn" class="hidden items-center gap-1 text-[10px] px-3 py-1.5 rounded-xl transition-all min-h-[36px]"
+          style="border:1px solid rgba(255,217,161,0.3);color:#ffd9a1">
+          ✏️ Düzelt
+        </button>
+        <!-- Fullscreen -->
+        <button id="reader-fullscreen-btn" class="w-9 h-9 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all text-[#9090b0]" title="Tam Ekran (F)">
+          <span class="material-symbols-outlined text-xl">fullscreen</span>
+        </button>
+        <!-- Kuro Translate panel aç -->
+        <button id="reader-kuro-translate-btn" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all" style="color:#00d4ff" title="Kuro Translate">
+          <span class="material-symbols-outlined">translate</span>
+        </button>
+      </div>
     </div>
-    <!-- FAZ-5: Çeviri butonu — sadece GPU varsa görünür -->
-    <button id="reader-translate-btn" class="hidden items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[#1c1d37] border border-white/10 text-[#9090b0] hover:text-[#00d4ff] transition-colors min-h-[36px]" title="Türkçeye Çevir (GPU gerekli)">
-      🌐 <span id="reader-translate-label">Çevir</span>
-    </button>
-    <!-- FAZ-5: Düzelt butonu — TR modda görünür -->
-    <button id="reader-fix-btn" class="hidden items-center gap-1 text-xs px-3 py-1.5 rounded-lg border border-[#ffd9a1]/30 text-[#ffd9a1] hover:bg-[#ffd9a1]/10 transition-colors min-h-[36px]" title="Bu sayfanın çevirisini düzelt">
-      ✏️ Düzelt
-    </button>
-    <button id="reader-fullscreen-btn" class="w-9 h-9 flex items-center justify-center text-[#9090b0] hover:text-white transition-colors rounded-lg hover:bg-white/10" title="Tam Ekran (F)">
-      <span class="material-symbols-outlined text-xl">fullscreen</span>
-    </button>
-  </div>
-  <!-- Sayfalar -->
-  <div id="reader-pages" class="flex flex-col items-center gap-0 min-h-screen pb-20 w-full overflow-x-hidden">
+  </header>
+
+  <!-- READER PAGES AREA -->
+  <div id="reader-pages" class="flex flex-col items-center gap-0 w-full overflow-x-hidden" style="padding-top:64px;padding-bottom:128px">
     <div class="text-[#9090b0] py-20 text-center">Yükleniyor…</div>
   </div>
-  <!-- Sayfa Modu Nav (gizli webtoon modunda) -->
-  <div id="reader-nav" class="hidden fixed bottom-0 left-0 right-0 flex items-center justify-between px-6 py-4 bg-[#0a0a12]/95 backdrop-blur-md border-t border-white/10">
-    <button id="reader-prev" class="px-5 py-2.5 rounded-xl bg-[#1c1d37] border border-white/10 text-[#e1e0ff] hover:border-[#00d4ff]/50 transition-colors min-h-[44px]">◀ Önceki</button>
-    <button id="reader-next" class="px-5 py-2.5 rounded-xl bg-[#1c1d37] border border-white/10 text-[#e1e0ff] hover:border-[#00d4ff]/50 transition-colors min-h-[44px]">Sonraki ▶</button>
+
+  <!-- BOTTOM CONTROLS BAR (always visible v7) -->
+  <nav id="reader-nav" class="fixed bottom-0 left-0 w-full z-[100]"
+    style="background:rgba(13,13,26,0.85);backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,0.05)">
+    <!-- Progress bar -->
+    <div class="px-4 pt-2.5">
+      <div class="relative w-full h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,0.1)">
+        <div id="reader-progress-bar" class="absolute top-0 left-0 h-full rounded-full" style="background:#00d4ff;box-shadow:0 0 10px rgba(0,212,255,0.5);width:0%;transition:width 0.3s ease"></div>
+      </div>
+      <div class="flex justify-between items-center mt-1">
+        <span id="reader-page-num" class="text-[10px] font-bold" style="color:#00d4ff">— / —</span>
+        <span id="reader-pct-label" class="text-[10px] font-bold text-[#9090b0]">%0 OKUNDU</span>
+      </div>
+    </div>
+    <!-- Nav row -->
+    <div class="flex items-center justify-between px-4 h-14">
+      <button id="reader-prev" class="flex flex-col items-center gap-0.5 text-[#9090b0] hover:text-white transition-colors">
+        <span class="material-symbols-outlined">skip_previous</span>
+        <span class="text-[8px] font-bold uppercase mt-0.5">Önceki</span>
+      </button>
+      <div class="flex items-center gap-3 px-5 py-2 rounded-xl" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.05)">
+        <button id="reader-prev-page" class="active:scale-90 transition-transform">
+          <span class="material-symbols-outlined" style="color:#00d4ff">remove_circle</span>
+        </button>
+        <div class="flex flex-col items-center min-w-[60px]">
+          <span id="reader-cur-page" class="text-[15px] font-semibold text-white">1</span>
+          <span id="reader-of-pages" class="text-[10px] text-[#9090b0] uppercase tracking-widest">/ 0</span>
+        </div>
+        <button id="reader-next-page" class="active:scale-90 transition-transform">
+          <span class="material-symbols-outlined" style="color:#00d4ff">add_circle</span>
+        </button>
+      </div>
+      <button id="reader-next" class="flex flex-col items-center gap-0.5 transition-colors" style="color:#00d4ff">
+        <span class="material-symbols-outlined">skip_next</span>
+        <span class="text-[8px] font-bold uppercase mt-0.5">Sonraki</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- UI Visibility Toggle FAB -->
+  <button id="reader-ui-toggle" class="fixed z-[120] w-12 h-12 flex items-center justify-center rounded-2xl transition-all active:scale-90"
+    style="bottom:78px;left:50%;transform:translateX(-50%);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);color:#00d4ff;backdrop-filter:blur(8px)">
+    <span class="material-symbols-outlined" id="reader-ui-icon">visibility</span>
+  </button>
+
+  <!-- KURO TRANSLATE BOTTOM SHEET -->
+  <div id="panel-translate" class="fixed inset-0 z-[210] pointer-events-none opacity-0 transition-opacity duration-300" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
+    <div id="panel-translate-sheet" class="absolute bottom-0 left-0 w-full max-h-[85vh] overflow-y-auto rounded-t-[32px] border-t border-white/10 shadow-2xl flex flex-col transform translate-y-full transition-transform duration-500"
+      style="background:rgba(22,29,31,0.97);backdrop-filter:blur(40px)">
+      <!-- Handle + Header -->
+      <div class="flex flex-col items-center py-4 flex-shrink-0">
+        <div class="w-12 h-1.5 rounded-full mb-5" style="background:rgba(255,255,255,0.2)"></div>
+        <div class="w-full px-6 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background:rgba(0,212,255,0.1)">
+              <span class="material-symbols-outlined text-3xl" style="color:#00d4ff;font-variation-settings:'FILL' 1">auto_fix_high</span>
+            </div>
+            <div>
+              <h3 class="text-[11px] font-bold tracking-widest uppercase" style="color:#00d4ff">KURO TRANSLATE AI</h3>
+              <p class="text-[12px] text-[#9090b0] font-medium mt-0.5" id="translate-status-label">Hazır</p>
+            </div>
+          </div>
+          <button id="panel-translate-close" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all" style="background:rgba(255,255,255,0.05)">
+            <span class="material-symbols-outlined text-[#9090b0]">close</span>
+          </button>
+        </div>
+      </div>
+      <!-- Content -->
+      <div class="px-6 pb-8 space-y-5">
+        <!-- Smart Clean toggle -->
+        <div class="flex items-center justify-between p-4 rounded-2xl" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#9090b0]">brush</span>
+            <div>
+              <p class="text-[14px] font-semibold text-[#dde3e7]">Smart Clean</p>
+              <p class="text-[11px] text-[#9090b0]">Orijinal metinleri temizle + çeviri yerleştir</p>
+            </div>
+          </div>
+          <button id="smart-clean-toggle" class="w-12 h-6 rounded-full relative transition-all flex-shrink-0" style="background:#00d4ff">
+            <div id="smart-clean-thumb" class="absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-200" style="transform:translateX(24px)"></div>
+          </button>
+        </div>
+        <!-- Font Size Slider -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-[12px] text-[#9090b0]">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">format_size</span>Font Boyutu</span>
+            <span class="text-white font-mono" id="val-font">14px</span>
+          </div>
+          <input id="range-font" type="range" min="8" max="24" value="14"
+            class="w-full h-1.5 rounded-full appearance-none cursor-pointer" style="accent-color:#00d4ff;background:rgba(255,255,255,0.1)">
+        </div>
+        <!-- Opacity Slider -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-[12px] text-[#9090b0]">
+            <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">opacity</span>Overlay Opaklığı</span>
+            <span class="text-white font-mono" id="val-opacity">85%</span>
+          </div>
+          <input id="range-opacity" type="range" min="0" max="100" value="85"
+            class="w-full h-1.5 rounded-full appearance-none cursor-pointer" style="accent-color:#00d4ff;background:rgba(255,255,255,0.1)">
+        </div>
+        <!-- Action -->
+        <button id="panel-translate-start" class="w-full h-16 rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-95"
+          style="background:#00d4ff;color:#003642;box-shadow:0 12px 24px rgba(0,212,255,0.3)">
+          <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">auto_fix_high</span>
+          SAYFAYI ÇEVİR
+        </button>
+        <p class="text-center text-[9px] uppercase tracking-widest" style="color:rgba(255,255,255,0.2)">Powered by Kuro Engine V7</p>
+      </div>
+    </div>
   </div>
+
 </div>
 
 

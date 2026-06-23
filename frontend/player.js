@@ -1265,6 +1265,60 @@
     },
   };
 
+  // ── Reader UI Visibility Toggle v7 ──────────────────────────────
+  const _readerUI = {
+    _visible: true,
+    _lastScroll: 0,
+
+    toggle() {
+      this._visible = !this._visible;
+      const header = document.getElementById('reader-header');
+      const nav    = document.getElementById('reader-nav');
+      const fab    = document.getElementById('reader-ui-toggle');
+      const icon   = document.getElementById('reader-ui-icon');
+      if (header) header.style.transform = this._visible ? '' : 'translateY(-100%)';
+      if (nav)    nav.style.transform    = this._visible ? '' : 'translateY(100%)';
+      if (fab)    fab.style.opacity      = this._visible ? '1' : '0.5';
+      if (icon)   icon.textContent       = this._visible ? 'visibility' : 'visibility_off';
+    },
+
+    show() {
+      if (this._visible) return;
+      this.toggle();
+    },
+
+    reset() {
+      this._visible = false;
+      this.toggle();
+      this._lastScroll = 0;
+    },
+  };
+
+  // ── Kuro Translate Panel v7 ───────────────────────────────────────
+  const _panelTranslate = {
+    _open: false,
+
+    open() {
+      this._open = true;
+      const overlay = document.getElementById('panel-translate');
+      const sheet   = document.getElementById('panel-translate-sheet');
+      if (overlay) { overlay.style.opacity = '1'; overlay.style.pointerEvents = 'auto'; }
+      if (sheet)   sheet.style.transform = 'translateY(0)';
+    },
+
+    close() {
+      this._open = false;
+      const sheet   = document.getElementById('panel-translate-sheet');
+      const overlay = document.getElementById('panel-translate');
+      if (sheet)   sheet.style.transform = 'translateY(100%)';
+      setTimeout(function () {
+        if (overlay) { overlay.style.opacity = '0'; overlay.style.pointerEvents = 'none'; }
+      }, 300);
+    },
+
+    isOpen() { return this._open; },
+  };
+
   // ── Yardımcı ─────────────────────────────────────────────────────
   function escHtml(s) {
     if (s == null) return '';
