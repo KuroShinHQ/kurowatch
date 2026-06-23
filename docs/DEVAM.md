@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-78c) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `c193dab`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-79b) · **Aktif sürüm:** v1.2.0 → FAZ-V7-0..9 TAMAMLANDI · **Son commit:** `e60dfbe`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -156,54 +156,49 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
     - tailwind.css v35 rebuild
 ```
 
-**FAZ-V7-6: Updates v7** (kurowatch_updates_v7_master_rafine/code.html)
+**FAZ-V7-6: Updates v7** ✅ TAMAMLANDI (commit 8a0a41e)
 ```
-[ ] index.html #screen-updates → Stitch v7 ile replace et
-[ ] app.js renderUpdatesV7():
-    → GET /api/updates (mevcut) → v7 zaman akışı formatında render
-    → Okunmamış: left-border-cyan + bright bg
-    → PATCH /api/updates/:id/read (mevcut)
-```
-
-**FAZ-V7-7: Downloads v7** (kurowatch_downloads_v7_master_rafine/code.html)
-```
-[ ] index.html #screen-downloads → Stitch v7 ile replace et
-[ ] app.js renderDownloadsV7():
-    → GET /api/download/queue (mevcut) → v7 job kartları
-    → GET /api/download/storage (mevcut) → storage bar render
-    → WS /api/download/ws (mevcut) → progress % canlı güncelle
+[x] index.html #screen-updates → v7 replace (zaman gruplu: Bugün/Dün/Bu Hafta/Daha Önce)
+[x] app.js renderUpdates(): kart v7 (56×80 cover + badge + action/read btn)
+    GÖRDÜM → PATCH /api/updates/:id/read, DETAYLAR → renderDetail
+    tailwind.css v36 rebuild
 ```
 
-**FAZ-V7-8: Stats v7** (kurowatch_stats_v7_master/code.html)
+**FAZ-V7-7: Downloads v7** ✅ TAMAMLANDI (commit 7c0d971)
 ```
-[ ] index.html #screen-stats → Stitch v7 ile replace et
-[ ] app.js renderStatsV7():
-    → GET /api/content (mevcut) → JS'te tip/skor/süre hesapla
-    → Donut chart: SVG arc hesabı (tip dağılımı)
-    → Bar chart: CSS width% (skor dağılımı)
-    → En çok izlenen: sort my_progress desc
-```
-
-**FAZ-V7-9: Settings v7 Master** (kurowatch_settings_v7_final_master/code.html)
-```
-[ ] index.html #screen-settings → Stitch v7 ile replace et
-[ ] Çeviri ayarları overlay HTML → settings içine gömülü
-[ ] app.js renderSettingsV7():
-    → GET /api/settings (mevcut) → form'ları doldur
-    → POST /api/settings (mevcut) → form kaydet
-    → API key validate butonu → POST /api/proxy/validate-key (YENİ)
-[ ] backend/routers/settings.py'e ekle:
-    POST /api/proxy/validate-key
-    body: {service: "anilist"|"mal"|"igdb"|"deepl", key: str}
-    → her servis için test isteği at → {valid: bool, message: str} dön
+[x] index.html #screen-downloads → v7 replace (gruplama: İndiriliyor/Tamamlandı/Hata)
+[x] player.js _jobCard(): 56×80 cover box + progress HTML + v7 action butonlar
+[x] player.js _renderDownloadScreen(): _section() ile grup başlıkları
+[x] app.js showScreen(): screen-downloads → window.kuroDownload.render()
+    tailwind.css v37 rebuild
 ```
 
-**FAZ-V7-10: app.js Wiring**
+**FAZ-V7-8: Stats v7** ✅ TAMAMLANDI (commit a814825)
+```
+[x] index.html #screen-stats → bento 2×2 + donut SVG + CSS bars + genre chips
+[x] app.js renderStats(): stats-completed + CSS bar tip dağılımı + genre chip v7 stil
+    TYPE_LABELS map, donut dashoffset düzeltme
+    tailwind.css v38 rebuild
+```
+
+**FAZ-V7-9: Settings v7 Master** ✅ TAMAMLANDI (commit e60dfbe)
+```
+[x] index.html #screen-settings → v7 glass section layout, tüm ID korundu
+    Hızlı Gezinti / API & Bağlantılar / Veri Yönetimi / Etiketler
+    İndirme Ayarları / Site Cookies / Bildirimler / Hakkında
+[x] backend/routers/settings.py: POST /api/proxy/validate-key
+    anilist/mal/igdb/deepl için httpx async doğrulama
+    {valid: bool, message: str}
+[x] app.js showScreen() duplicate satır kaldırıldı
+    tailwind.css v39 rebuild
+```
+
+**FAZ-V7-10: app.js Wiring** ← SONRAKİ
 ```
 [ ] showScreen() → v7 spring geçiş (cubic-bezier 0.34,1.56,0.64,1)
-[ ] Tüm renderXV7() fonksiyonlarını showScreen() ile entegre et
-[ ] active:scale-[0.95] → tüm interaktif elemanlara event listener ekle
 [ ] Pull-to-refresh → Updates + Home (touchstart→touchmove→refresh)
+[ ] renderSettings() → settings-igdb-id/mal-client-id form populate + save
+[ ] validate-key buton wiring: settings sayfasındaki KONTROL ET butonu
 ```
 
 **FAZ-V7-11: Iron Inquisitor Kalite Testi**
@@ -221,11 +216,12 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (22 Haz sohbet-71b):
-  - 679 içerik, backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
-  - Test: http://localhost:8099
+MEVCUT DURUM (23 Haz sohbet-79b):
+  - FAZ-V7-0..9 TAMAMLANDI — tüm ekranlar v7 görsel stile geçti
+  - Son commit: e60dfbe
+  - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
 
-SOHBET-71 TAMAMLANDI — URL Sağlık + Kapsamlı Ping ✅
+SOHBET-79b TAMAMLANDI — FAZ-V7-8 Stats + FAZ-V7-9 Settings + validate-key ✅
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
     - Büyü İmparatoru (465 ep): ragnarscans.com/manga/buyu-imparatoru/bolum-N/
