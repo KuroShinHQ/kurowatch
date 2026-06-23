@@ -389,3 +389,400 @@ Hover'da video oynat:
 4. [DÜŞÜK]  Stitch ile yeni HOME (Aşama 4) — sadece büyük redesign kararı alınırsa
 5. [ÇOK DÜŞÜK] Trailer preview (Aşama 5) — autoplay policy sorunları riski
 ```
+
+---
+
+## 8. Stitch AI Mega Prompt — TAM UYGULAMA REVİZYONU
+
+> Oluşturulma: 23 Haz 2026 (sohbet-76) — tüm ekranları kapsayan tek büyük Stitch prompt.
+> Bu prompt Stitch AI'ya yapıştırılacak, 12 ekran + overlay tek canvas'ta üretilecek.
+
+```
+══════════════════════════════════════════════════════════════════
+KUROWATCH — NETFLIX-STYLE ANIME & MANGA TRACKER
+Complete App Redesign — 7 Screens + 5 Overlays
+══════════════════════════════════════════════════════════════════
+
+DESIGN PHILOSOPHY:
+KuroWatch is a personal media tracker (anime, manga, manhwa, games).
+Visual identity: deep space darkness + electric cyan. NOT Netflix red.
+Every screen feels premium, immersive, content-forward.
+Inspiration: Netflix layout logic, with KuroWatch's dark space soul.
+
+══════════════════════════════════════════════════════════════════
+DESIGN SYSTEM
+══════════════════════════════════════════════════════════════════
+
+COLORS:
+  App background:     #0d0d1a   (deep space black)
+  Card/section bg:    #1a1a2e   (dark navy)
+  Raised elements:    #16213e
+  Input fields:       #1c1d37
+  Modal bg:           #1a2123
+  Reader bg:          #0a0a12
+
+  Primary accent:     #00d4ff   (electric cyan)
+  Accent dim:         rgba(0,212,255,0.1)
+  Accent border:      rgba(0,212,255,0.3)
+
+  Text primary:       #e1e0ff
+  Text muted:         #9090b0
+  Text on accent:     #0d0d1a
+
+  Type colors:
+    Anime:   #00d4ff   (cyan)
+    Manga:   #ffd9a1   (warm cream)
+    Manhwa:  #bbc5eb   (soft violet)
+    Game:    #ffb4ab   (pink)
+
+  Status colors:
+    Watching:   #feb528   (amber)
+    Completed:  #22c55e   (green)
+    On Hold:    #9090b0   (grey)
+    Dropped:    #ef4444   (red)
+    Planning:   #00d4ff   (cyan)
+
+TYPOGRAPHY:
+  Font: System UI (sans-serif)
+  App title: italic bold, cyan gradient
+  Screen titles: 20px bold #e1e0ff
+  Card titles: 11-13px truncated
+  Meta text: 10-12px #9090b0
+
+GLOBAL CHROME:
+  TOP APP BAR (mobile, 64px, transparent→#0d0d1a gradient):
+    Left: back arrow or hamburger (contextual)
+    Center: "KuroWatch" italic bold, cyan gradient text, subtle glow
+    Right: avatar 32px circle or context actions
+
+  BOTTOM NAVIGATION (mobile, fixed, 64px, bg #0d0d1a, top border rgba(255,255,255,0.06)):
+    6 tabs equally spaced:
+    🏠 Home | 🔍 Keşfet | ➕ Ekle | 🔔 Güncel | 📥 İndir | ⚙️ Ayarlar
+    Active: #00d4ff color + 3px top glow bar + label below icon
+    Inactive: #9090b0 + label
+    Ekle (center): slightly raised, cyan circle bg rgba(0,212,255,0.12)
+
+  PC SIDEBAR (left, 240px, bg #0d0d1a, border-right rgba(255,255,255,0.06)):
+    Top: KuroWatch logo with cyan glow
+    Nav: same 6 items vertical, active has left border-l-4 cyan + bg rgba(0,212,255,0.08)
+
+══════════════════════════════════════════════════════════════════
+SCREEN 1 — HOME (#screen-home)
+══════════════════════════════════════════════════════════════════
+
+HERO BANNER (55vh, full-width):
+  Background: anime cover image, object-fit cover, object-position: center top
+  Overlays:
+    Top: rgba(13,13,26,0.4) vignette (top 25%)
+    Bottom: transparent (50%)→#0d0d1a (bottom edge), heavy gradient
+    Left edge: subtle rgba(13,13,26,0.2)
+
+  Content (absolute, bottom-left, padding 20px 20px 28px):
+    Row 1: Status chip "● İZLİYORUM" — amber bg/15, amber text, pill, 11px uppercase
+    Row 2: Series title — 28px bold white, shadow 0 2px 8px rgba(0,0,0,0.8)
+            Example: "Solo Leveling"
+    Row 3: "Anime · Sezon 1 · ★ 8.9 · 12/24 bölüm" — 12px #9090b0
+    Row 4: Progress bar — 4px, full-width, bg rgba(255,255,255,0.15), fill #00d4ff 50%
+    Row 5: Buttons (flex, gap 10px, mt-14px):
+      "▶  Devam Et — B.13" — bg #00d4ff, text #0d0d1a, 14px bold, h-44px, rounded-full, px-22px, shadow 0 0 20px rgba(0,212,255,0.3)
+      "ℹ  Detay" — border rgba(0,212,255,0.5), text #00d4ff, h-44px, rounded-full, px-18px, bg rgba(0,212,255,0.08)
+
+FILTER CHIPS (horizontal scroll, py-12px px-16px):
+  "Tümü" [active] | "İzliyorum" | "Planlıyorum" | "Tamamlandı"
+  Active: bg rgba(0,212,255,0.12), border #00d4ff, text #00d4ff
+  Inactive: bg #1c1d37, border rgba(255,255,255,0.05), text #9090b0
+  No scrollbar, pill 36px height, px-14px
+
+CATEGORY ROWS (vertical stack, gap 28px between rows):
+  ROW HEADER (px-16px mb-10px):
+    Left: colored dot 5px + title 13px semibold #e1e0ff uppercase letter-spacing
+    Right: "Tümü ›" 11px #9090b0
+
+  ROW CARDS (horizontal scroll, px-16px, gap 10px, no scrollbar):
+    4 full cards + ~25% of 5th peeking (scroll hint)
+
+  ROW 1 — "DEVAM EDİYORUM" — dot #feb528 amber
+  ROW 2 — "PLANLIYORUm" — dot #00d4ff cyan
+  ROW 3 — "ANİME" — dot #00d4ff cyan
+  ROW 4 — "MANGA" — dot #ffd9a1 cream
+  ROW 5 — "MANHWA" — dot #bbc5eb violet
+  ROW 6 — "TAMAMLANANLAR" — dot #22c55e green
+
+CONTENT CARD (140×210px, 2:3 ratio, all rows):
+  Container: rounded-xl 10px, overflow-hidden, shadow 0 4px 12px rgba(0,0,0,0.4)
+
+  Layers bottom-to-top:
+    1. Cover image: bg-cover center
+    2. Left edge strip: 4px vertical, type color
+    3. Top-right type badge: "ANIME"/"MANGA"/"MANHWA" — 9px bold uppercase
+       bg type-color/10, border type-color/25, rounded-full, px-6px py-2px
+    4. Bottom gradient: #1a1a2e 0%→transparent 65%
+       Inside: title 11px white (2 lines truncate) + "★ 8.9" 10px #ffd9a1
+    5. Bottom edge: progress bar 3px, bg rgba(255,255,255,0.08), fill #00d4ff
+
+  HOVER STATE (show 3rd card in expanded state):
+    transform: scale(1.18) translateY(-14px), z-index 20
+    box-shadow: 0 24px 48px rgba(0,0,0,0.75)
+    Bottom overlay reveals: "Bölüm 12 / 24 · 50%" + small "▶ Devam Et" cyan button
+
+══════════════════════════════════════════════════════════════════
+SCREEN 2 — SEARCH / DISCOVER (#screen-search)
+══════════════════════════════════════════════════════════════════
+
+Show TWO states side by side:
+
+STATE A — EMPTY SEARCH (no query):
+  Search bar (full-width, h-48px, rounded-full, bg #1a1a2e, border rgba(255,255,255,0.06)):
+    Left: 🔍 icon #9090b0 | Placeholder: "Anime, manga ara..." #9090b0 | Right: 🎤 mic
+
+  TRENDING (below, label "TREND" uppercase #9090b0):
+    5 rows: rank# (24px bold cyan) + thumbnail (48×64px 2:3 rounded) + title + type badge
+    Odd rows: #1a1a2e bg tint
+
+  BROWSE CATEGORIES (grid 2×3, label "KATEGORİLER" uppercase):
+    6 tiles (160×100px rounded-xl each):
+      "Anime" cyan gradient | "Manga" amber gradient | "Manhwa" violet gradient
+      "Oyun" pink gradient | "Tamamlananlar" green tint | "İzleme Listesi" amber tint
+    Each: bold 16px center white + icon above
+
+STATE B — WITH RESULTS ("solo" typed):
+  Search bar: filled, cyan border ring, text "solo", ✕ right
+  Results: vertical list
+  Each result row:
+    Thumbnail 60×90px 2:3 rounded-md (left)
+    Title 14px bold white | Meta 11px muted | Status badge cyan pill
+    "+ Ekle" ghost button right-aligned
+
+══════════════════════════════════════════════════════════════════
+SCREEN 3 — CONTENT DETAIL (#screen-detail)
+══════════════════════════════════════════════════════════════════
+
+HERO (48vh, full-width):
+  Cover image, heavy bottom gradient to #0d0d1a
+  Top controls (absolute top-12px px-16px):
+    "← Geri" ghost (rounded-full, bg rgba(22,33,62,0.8), backdrop-blur)
+    "✏️" edit ghost (same, right)
+  Bottom-left content:
+    Badges row: type badge + status badge
+    Title: 22px bold white
+    Meta: year · studio · genres chips (small pills)
+    "★ 9.1 AniList" (cyan star)
+    Buttons: "▶ B.13'ten Devam Et" primary | "📌 Listeye Ekle" ghost
+
+INFO TABS (sticky, h-48px, bg #0d0d1a, border-bottom rgba(255,255,255,0.06)):
+  "BÖLÜMLER" [active, cyan underline] | "BİLGİ" | "SİTELER"
+
+EPISODES TAB:
+  Progress bar section (px-16px py-12px, bg #1a1a2e):
+    "12 / 24 bölüm" + progress bar 6px cyan 50% + "+ İlerleme Güncelle" ghost button
+  
+  Episode list (virtual scroll):
+    Each row: episode# (bold cyan if current) | title + meta center | "▶ İzle" right
+    Watched row: bg rgba(34,197,94,0.04), ✓ green right
+    Current row: bg rgba(0,212,255,0.06), cyan left border, "▶ DEVAM" cyan button
+
+══════════════════════════════════════════════════════════════════
+SCREEN 4 — UPDATES (#screen-updates)
+══════════════════════════════════════════════════════════════════
+
+Header: "YENİ BÖLÜMLER" + Refresh icon right
+Filter pills: "Tümü" | "Anime" | "Manga" | "Manhwa"
+
+Group label: "BUGÜN" / "DÜN" / "BU HAFTA" (11px uppercase #9090b0, px-16px py-8px)
+
+UPDATE CARD (bg #1a1a2e, rounded-xl, mx-16px mb-10px, p-14px):
+  Left: cover thumbnail 56×80px 2:3 rounded-md
+  Right flex column:
+    Line 1: type badge + "2 saat önce" right-aligned 10px #9090b0
+    Line 2: series title 14px bold #e1e0ff
+    Line 3: "Bölüm 47 yayınlandı" 12px #9090b0
+    Line 4: site chips small "ragnarscans" "+2 site"
+    Line 5: "▶ Oku/İzle" primary cyan 34px | "✓ Gördüm" ghost
+
+  UNREAD: left border-l-3px cyan + slightly lighter bg
+  READ: normal bg, no border
+
+══════════════════════════════════════════════════════════════════
+SCREEN 5 — DOWNLOADS (#screen-downloads)
+══════════════════════════════════════════════════════════════════
+
+Header: "İNDİRMELER" + storage chip "2.3 GB kullanıldı" right
+Filter pills: "Aktif" [active] | "Tamamlandı" | "Hata"
+
+STORAGE GAUGE (bg #1a1a2e, rounded-xl, mx-16px, p-16px):
+  Bar 8px: Anime cyan 40% | Manga cream 25% | empty rest
+  "4.2 GB / 20 GB · Anime: 1.7 GB · Manga: 1.0 GB" below
+
+DOWNLOAD ITEM — ACTIVE:
+  bg #1a1a2e, rounded-xl, mx-16px mb-10px, p-14px, flex
+  Left: cover 48×64px rounded
+  Right: title 13px bold | source "ragnarscans.com" 10px cyan
+    Progress bar 6px cyan animated shimmer
+    "3.4 MB / 8.1 MB · 2 sayfa kaldı" 10px muted | "420 KB/s ↓" 10px green right
+  Far right: ⏸ pause | ✕ cancel icons 28px
+
+DOWNLOAD ITEM — COMPLETED:
+  ✓ green checkmark + "8.1 MB · Tamamlandı" 11px muted right
+
+DOWNLOAD ITEM — ERROR:
+  ⚠ red + "Bağlantı hatası" | "Tekrar Dene" ghost red button
+
+══════════════════════════════════════════════════════════════════
+SCREEN 6 — STATS (#screen-stats)
+══════════════════════════════════════════════════════════════════
+
+Header: "İSTATİSTİKLERİM"
+Profile: 48px circle avatar (gradient cyan→violet, initials "YS") + "kuroshin_user" 18px bold + "146 seri · 3842 bölüm · 312 saat" 12px muted
+
+HERO STAT CARDS (3 horizontal, px-16px gap-10px):
+  Each: bg #1a1a2e rounded-xl flex-1 py-20px center
+  Big number: 24px cyan bold (146 / 312h / 3842)
+  Label: 11px #9090b0 (Seri / Saat / Bölüm)
+
+DONUT CHART SECTION (bg #1a1a2e, rounded-xl, mx-16px, p-20px):
+  Title: "TÜR DAĞILIMI" 13px uppercase muted
+  Donut 160px: Anime cyan | Manga cream | Manhwa violet | Game pink segments
+  Center: "146\nSeri" bold
+  Legend below: colored dot + label + count for each type
+
+MONTHLY BAR CHART:
+  Title: "AYLIK AKTİVİTE — 2026"
+  12 bars Jan-Dec, cyan gradient fill, active bar highlighted
+  X-axis: month abbreviations #9090b0
+
+TOP SERIES LIST:
+  Title: "EN ÇOK TAKİP"
+  Ranked 1-5: same format as search trending
+
+══════════════════════════════════════════════════════════════════
+SCREEN 7 — SETTINGS (#screen-settings)
+══════════════════════════════════════════════════════════════════
+
+PROFILE HEADER (gradient bg #16213e→#0d0d1a, py-32px, center-aligned):
+  Avatar 72px: gradient bg cyan→violet, "YS" bold initials, glow ring
+  Name: "kuroshin_user" 18px bold #e1e0ff
+  Sub: "146 seri · 3842 bölüm · 312 saat" 12px #9090b0
+  Link: "İstatistikler →" 13px cyan
+
+SETTINGS GROUPS (bg #1a1a2e, rounded-xl, mx-16px, mb-16px):
+  Row border-bottom: rgba(255,255,255,0.04) between rows
+
+  GROUP 1 — GÖRÜNÜM:
+    "Tema" → "Koyu" + chevron
+    "Görünüm" → Grid/Satır custom toggle (cyan when Satır)
+    "Dil" → "Türkçe" + chevron
+
+  GROUP 2 — VERİ:
+    "Dışa Aktar" → chevron
+    "İçe Aktar" → chevron
+    "Veritabanı Boyutu" → "12 MB" right
+
+  GROUP 3 — BAĞLANTI:
+    "AniList Senkron" → toggle ON cyan + "Bağlandı ✓" green badge
+    "MAL Senkron" → toggle OFF
+
+  GROUP 4 — HAKKINDA:
+    "Sürüm" → "v1.0.0"
+    "Cover Debugger" → chevron
+    "Arşiv" → chevron
+
+══════════════════════════════════════════════════════════════════
+OVERLAY 1 — ADD MODAL (#modal-add)
+══════════════════════════════════════════════════════════════════
+
+Bottom sheet 85vh, slides up, backdrop rgba(0,0,0,0.75) blur(4px)
+Container: bg #1a2123, rounded-t-2xl
+Handle: w-12 h-1.5 bg #3c494e center
+
+Header: "İçerik Ekle" bold + ✕ right
+Search: full-width rounded-full h-44px bg #0d0d1a border rgba(255,255,255,0.08)
+  "🔍 Anime, manga, manhwa ara..."
+
+Type tabs: "Anime" [active cyan pill] | "Manga" | "Manhwa" | "Oyun"
+
+Results list (scrollable):
+  Row: thumbnail 52×75px + title + year + AniList score + "+ Ekle" button right
+  Expanded row: synopsis, episode count, status selector, "Listeye Ekle" primary CTA
+
+══════════════════════════════════════════════════════════════════
+OVERLAY 2 — VIDEO PLAYER (#modal-player)
+══════════════════════════════════════════════════════════════════
+
+Full-screen z-200, bg #000
+
+AMBIENT LAYER (absolute fill, behind video):
+  Blurred saturated video frame: blur(60px) saturate(1.8) brightness(0.25)
+  Creates cinema glow effect
+
+VIDEO: 16:9 centered, max 90vh, black letterbox
+
+TOP CONTROLS (hover/tap, absolute top-0, gradient rgba(0,0,0,0.7)→transparent 80px):
+  Left: "← Geri" ghost rounded white
+  Center: "Solo Leveling — Bölüm 13" 13px #e1e0ff
+  Right: CC | 🎨 Ambient [cyan glow=ON] | 📺 Theater | ⊡ PiP | ⛶ Fullscreen
+    Each: 30px circle bg rgba(255,255,255,0.1)
+
+BOTTOM CONTROLS (absolute bottom-0, gradient transparent→rgba(0,0,0,0.85) 110px):
+  Progress: 4px track rgba(255,255,255,0.2), cyan fill 60%, 14px playhead circle white
+  Controls: ⏮ ⏪ ⏯(40px) ⏩ ⏭ white | "18:34 / 24:10" 12px muted center | 🔊 + volume 80px slim bar right
+
+  SKIP INTRO BTN (absolute bottom-100px right-20px):
+    "INTRO'YU ATLA →" — bg #00d4ff, text #0d0d1a, 13px bold, h-38px, rounded-lg, px-16px
+    Pulsing: box-shadow 0 0 20px rgba(0,212,255,0.6) keyframe in/out
+
+  AUTO-NEXT CARD (absolute bottom-110px left-20px, w-200px):
+    bg rgba(26,26,46,0.9) blur, rounded-xl, p-14px
+    "Sıradaki Bölüm" 10px #9090b0
+    "Bölüm 14" 15px bold white
+    Countdown bar: 4px cyan, animated shrink
+    "5s içinde başlıyor · ✕ İptal" 10px muted
+
+══════════════════════════════════════════════════════════════════
+OVERLAY 3 — MANGA / WEBTOON READER (#modal-reader)
+══════════════════════════════════════════════════════════════════
+
+Full-screen z-200, bg #0a0a12
+
+STICKY HEADER (64px, bg #0d0d1a, border-bottom rgba(255,255,255,0.06)):
+  Left: "← Kapat" #9090b0
+  Center: "A Returner's Magic — B.142" 13px bold + "143 sayfa" 10px muted below
+  Right: Mode toggle pill "📖 Webtoon"↔"📄 Sayfa" (cyan=active) | "🇹🇷 TR" cyan pill | 🌐 | ⛶
+
+WEBTOON MODE (main, vertical scroll):
+  bg #0a0a12, images stacked full-width, no gaps
+  Right scroll indicator: thin 4px cyan track, 35% position dot
+  Chapter nav popup (tap, bottom-center):
+    bg rgba(13,13,26,0.9) blur, rounded-xl, fixed bottom-80px
+    "◀ B.141" | "Bölüm 142 / 409" | "B.143 ▶"
+
+PAGE MODE (second state, right of canvas):
+  Single page contained centered, bg #000
+  Bottom bar (64px, #0d0d1a): "◀ Önceki" | "14 / 43" | "Sonraki ▶"
+  Top-right chip: "14/43" bg #1a1a2e
+
+══════════════════════════════════════════════════════════════════
+OVERLAY 4 — EDIT MODAL (#modal-edit) — compact version of ADD
+══════════════════════════════════════════════════════════════════
+
+Bottom sheet 80vh, same style as ADD
+Pre-filled form: cover image preview left | title + type right
+Fields: Status (watching/planning/etc.), My Progress (number input), Score (1-10 slider, cyan)
+Actions: "Kaydet" primary | "Sil" danger ghost
+
+══════════════════════════════════════════════════════════════════
+OVERLAY 5 — ADD MODAL SUCCESS STATE (animation frame)
+══════════════════════════════════════════════════════════════════
+
+Centered toast (bottom, above bottom nav):
+  bg #1a1a2e, rounded-xl, px-20px py-14px, shadow
+  "✓ Solo Leveling eklendi" — ✓ green icon + text 14px
+  Fades out after 2s
+
+══════════════════════════════════════════════════════════════════
+CANVAS LAYOUT FOR STITCH (place in 3 rows):
+  Row 1: HOME | SEARCH-empty | SEARCH-results | DETAIL
+  Row 2: UPDATES | DOWNLOADS | STATS | SETTINGS
+  Row 3: ADD MODAL | VIDEO PLAYER | MANGA READER (webtoon) | MANGA READER (page)
+  All screens: 390×844px mobile dimensions, 24px gap between screens
+══════════════════════════════════════════════════════════════════
+```
