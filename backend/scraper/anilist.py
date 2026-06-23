@@ -42,6 +42,18 @@ query ($id: Int) {
     description
     nextAiringEpisode { episode airingAt }
     streamingEpisodes { title url thumbnail }
+    characters(sort: ROLE, perPage: 20) {
+      edges {
+        role
+        node {
+          name { full }
+          image { medium }
+        }
+        voiceActors(language: JAPANESE) {
+          name { full }
+        }
+      }
+    }
   }
 }
 """
@@ -150,6 +162,17 @@ def _format(m: dict) -> dict:
         for se in (m.get("streamingEpisodes") or [])
     ]
     nae = m.get("nextAiringEpisode")
+    chars = []
+    for edge in (m.get("characters") or {}).get("edges") or []:
+        node = edge.get("node") or {}
+        va_list = edge.get("voiceActors") or []
+        va_name = va_list[0]["name"]["full"] if va_list and va_list[0].get("name", {}).get("full") else ""
+        chars.append({
+            "name": (node.get("name") or {}).get("full") or "",
+            "image": (node.get("image") or {}).get("medium") or "",
+            "role": edge.get("role", ""),
+            "voice_actor": va_name,
+        })
     return {
         "external_id": str(m["id"]),
         "title": title,
@@ -164,4 +187,5 @@ def _format(m: dict) -> dict:
         "streaming_episodes": streaming,
         "synopsis": m.get("description") or "",
         "next_airing_episode": {"episode": nae["episode"], "airing_at": nae["airingAt"]} if nae else None,
+        "characters": chars,
     }
