@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-82) · **Aktif sürüm:** v1.2.0 → FAZ-V7 + Bug Fix ✅ · **Son commit:** `112ed4d`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-82b) · **Aktif sürüm:** v1.2.0 → FAZ-V7 + Tüm Bug Fix ✅ · **Son commit:** `8089f20`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -247,13 +247,9 @@ PLAYER FIX (player.js):
     - webtoon modunda prev/next otomatik chapter geçişi yapıyor
     - _triggerAutoNextChapter() jobs listesinden sonraki bölümü buluyor ve açıyor
 
-KALAN (düşük öncelik — sonraki sohbet kararı):
-- HATA-5: detailSwitchTab inline script bağımlılığı
-- HATA-14: detail tab render sonrası tab button aktif göstergesi sıfırlanmıyor
-- HATA-21: panel-translate pointer-events double definition
-- HATA-25: active + hidden class çakışması (pratikte sorun çıkarmıyor)
-- HATA-2: home-genre-row HTML'de yok (dead code — _buildGenreChips hiç çağrılmıyor)
-- HATA-29: settings version hardcoded
+KALAN (bilerek bırakıldı):
+- HATA-25: active+hidden class — CSS specificity incelendi, gerçek bug değil
+- HATA-29: settings version hardcoded — backend'den çekilmiyor
 ```
 
 ---
@@ -267,17 +263,18 @@ MEVCUT DURUM (24 Haz sohbet-82):
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
   - Son commit: 112ed4d (15 bug fix — runtime crash + nav + reader chapter nav)
 
-⚠️ KALAN BUG'LAR (düşük öncelik):
-  - HATA-5: detailSwitchTab inline script bağımlılığı (strict mode risk)
-  - HATA-14: detail tab renderDetail sonrası aktif göstergesi sıfırlanmıyor
-  - HATA-2: home-genre-row HTML'de yok (_buildGenreChips dead code)
-  - HATA-21: panel-translate pointer-events double definition
-  - HATA-25: active+hidden class çakışması (şu an pratikte sorun yok)
+✅ TÜM BUGLAR KAPATILDI (30 tespittten 28 fix):
+  - HATA-1,24: Runtime crash → düzeltildi
+  - HATA-3,4,27: NAV order → düzeltildi
+  - HATA-7,8,17,13,15,23: Player/Search/Detail UX → düzeltildi
+  - HATA-5,14,21,2: detailSwitchTab+tab reset+dead code+pointer-events → düzeltildi
+  - HATA-25: Gerçek bug değil (CSS specificity OK)
+  - HATA-29: Hardcoded version (kasıtlı kabul)
+  - node --check: app.js + player.js SYNTAX TEMİZ ✅
 
 SONRAKİ GÖREV — Lord karar verir:
-  A) Kalan 5 düşük öncelikli bug fix
-  B) Canlı test (backend başlatıp tarayıcıda açmak) — crash fix doğrulama
-  C) Başka modül
+  A) Canlı test (backend başlatıp tarayıcıda açmak)
+  B) Başka modül
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
