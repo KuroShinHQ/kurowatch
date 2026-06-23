@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-77) · **Aktif sürüm:** v1.2.0 → v7 revizyon başladı · **Son commit:** `b877af5`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-77b) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `584869d`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -64,29 +64,26 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 
 ---
 
-**FAZ-V7-0: CSS Token Temeli** ← BAŞLANGIÇ NOKTASI
+**FAZ-V7-0: CSS Token Temeli** ✅ TAMAMLANDI (commit 584869d)
 ```
-[ ] tailwind.config.js → v7 token sistemi merge et
+[x] tailwind.config.js → v7 token sistemi merge et
     (bg-primary:#0d0d1a, bg-card:#1a1a2e, primary-container:#00d4ff)
     Stitch'in Material token adlarını --v7-* CSS değişkenlerine map et
-[ ] style.css :root → v7 CSS değişkenlerini unify et
-    --v7-bg / --v7-surface / --v7-card / --v7-cyan / --v7-text / --v7-muted
-[ ] tailwindcss.exe ile local build → tailwind.css?v=7 üret (CDN kaldır)
-[ ] Stitch HTML'lerdeki CDN scriptleri remove listesi çıkar
+[x] style.css :root → v7 CSS değişkenlerini unify et
+[x] tailwindcss.exe ile local build → tailwind.css?v=31 üret (CDN yok)
+[x] Stitch HTML'lerdeki CDN scriptleri remove listesi çıkar
 ```
 
-**FAZ-V7-1: Home v7** (kurowatch_home_solo_leveling_sim/code.html)
+**FAZ-V7-1: Home v7** ✅ TAMAMLANDI (commit 584869d)
 ```
-[ ] Stitch HTML'den <body> içeriğini çıkar, CDN/script tag'lerini at
-[ ] index.html #screen-home → Stitch v7 HTML ile replace et
-[ ] v7 token adlarını (bg-primary-container vb.) CSS var ile normalize et
-[ ] app.js renderHomeV7():
-    → GET /api/content → sort my_score desc → hero (ilk item)
-    → hero: kapak bg, başlık, tür, "Devam Et" butonu
-    → GET /api/content → filter progress 1-99% → "Devam Et" satırı
-    → GET /api/content?type=anime → anime satırı (scroll)
-    → GET /api/content?type=manga → manga satırı (scroll)
-    → shimmer progress bar + Electric Cyan glow render
+[x] index.html #screen-home → v7 Hybrid layout (Hero + satırlar + kütüphane grid)
+    IDs: home-hero-bg/title/meta/synopsis/status-badge/continue-btn/detail-btn
+         home-continue-row / home-anime-row / home-manga-row / home-games-row
+         home-library-grid (KORUNDU — mevcut app.js kırılmaz)
+[x] app.js renderHomeV7() ekle:
+    → GET /api/content → hero (top my_score), devam-et (pct 1-99%), tip satırları
+    → renderHome() içinden paralel çağrılıyor (bağımsız)
+[x] style.css: glass-btn / spring-bounce / animate-pulse-cyan / shimmer-bar
 ```
 
 **FAZ-V7-2: Search v7** (kurowatch_search_filter_v7_master/code.html)
