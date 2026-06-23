@@ -148,7 +148,7 @@
   window.kuroAPI = { get: apiGet, post: apiPost, patch: apiPatch, del: apiDelete, setMockMode: m => USE_MOCK = m };
 
   // ── Navigasyon Sistemi ────────────────────────────────────────────
-  const _NAV_ORDER = ['screen-home','screen-search','screen-updates','screen-stats','screen-settings','screen-downloads'];
+  const _NAV_ORDER = ['screen-home','screen-search','screen-updates','screen-downloads','screen-settings','screen-stats','screen-archive'];
   let _currentScreen = 'screen-home';
 
   function showScreen(id) {
@@ -280,6 +280,7 @@
 
   // Expose
   window.kuroNav   = { show: showScreen, openModal: openModal, closeModal: closeModal };
+  window.openDetail = function(id) { renderDetail(id); showScreen('screen-detail'); };
   window.kuroToast = showToast;
 
   // ── Render: Home (Kütüphane Grid) ────────────────────────────────
@@ -585,6 +586,8 @@
 
   // ── Render: Detail ───────────────────────────────────────────────
   async function renderDetail(id) {
+    const qePanel = document.getElementById('progress-quick-edit');
+    if (qePanel) qePanel.style.display = 'none';
     let item;
     try { item = await apiGet('/api/content/' + id); }
     catch (err) { console.error('renderDetail', err); return; }
@@ -2441,8 +2444,9 @@
     const filterGenreSection = document.getElementById('discover-genre-section');
     if (!tabLib || !tabDis) return;
 
-    // FİLTRELE butonu toggle
-    if (filterBtn && filterPanel) {
+    // FİLTRELE butonu toggle (bir kez bağla)
+    if (filterBtn && filterPanel && !filterBtn._filterListenerAdded) {
+      filterBtn._filterListenerAdded = true;
       filterBtn.addEventListener('click', function() {
         filterPanel.classList.toggle('hidden');
         if (!filterPanel.classList.contains('hidden') && _activeSearchTab === 'discover') {
@@ -2475,8 +2479,10 @@
       }
     }
 
-    // Keşfet tip seçici
+    // Keşfet tip seçici (birikmeli listener önlemek için her düğmeye bir kez bağla)
     document.querySelectorAll('.discover-type-btn').forEach(function(btn) {
+      if (btn._discoverListenerAdded) return;
+      btn._discoverListenerAdded = true;
       btn.addEventListener('click', function() {
         _discoverType = this.dataset.discoverType;
         _discoverGenre = null;
@@ -2754,8 +2760,7 @@
       showToast('Başlık gerekli', 'error');
       return;
     }
-    const activeType = document.querySelector('.add-type-btn.text-\\[\\#00d4ff\\]');
-    const type = activeType ? activeType.dataset.addType : 'anime';
+    const type = _addActiveType || 'anime';
     const status = (document.getElementById('add-form-status') || {}).value || 'planning';
     const cover_url = (document.getElementById('add-form-cover') || {}).value.trim() || null;
     const note_text = (document.getElementById('add-form-note') || {}).value.trim() || null;
@@ -2847,10 +2852,14 @@
     }
   });
 
+  // Add-form aktif tip takibi
+  let _addActiveType = 'anime';
+
   // Add-form type butonları
   document.addEventListener('click', function(e) {
     const typeBtn = e.target.closest('.add-type-btn');
     if (typeBtn) {
+      _addActiveType = typeBtn.dataset.addType || 'anime';
       document.querySelectorAll('.add-type-btn').forEach(b => {
         const active = b === typeBtn;
         b.classList.toggle('bg-[#1a2123]', active);
@@ -3014,6 +3023,29 @@
     });
   }
 
+  // ── Read Overlay: aç/kapat (IIFE scope — renderDetailEpisodes'dan erişilebilir) ──
+  function openReadOverlay(url, label) {
+    const el = document.getElementById('read-overlay');
+    if (!el) return;
+    const titleEl = document.getElementById('read-overlay-title');
+    const extEl   = document.getElementById('read-overlay-external');
+    const frameEl = document.getElementById('read-overlay-frame');
+    if (titleEl) titleEl.textContent = label || '';
+    if (extEl)   extEl.href = url;
+    if (frameEl) frameEl.src = url;
+    el.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeReadOverlay() {
+    const el = document.getElementById('read-overlay');
+    if (!el) return;
+    el.style.display = 'none';
+    document.body.style.overflow = '';
+    const frameEl = document.getElementById('read-overlay-frame');
+    if (frameEl) frameEl.src = '';
+  }
+
   // ── Init ─────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
     // Arama kutularını autocomplete önlemek için temizle
@@ -3027,7 +3059,7 @@
 
     // İlk hash'e göre ekran aç
     const initial = (location.hash || '').replace('#','') || 'screen-home';
-    const valid = ['screen-home','screen-detail','screen-search','screen-updates','screen-stats','screen-settings','screen-archive'];
+    const valid = ['screen-home','screen-detail','screen-search','screen-updates','screen-downloads','screen-stats','screen-settings','screen-archive'];
     showScreen(valid.includes(initial) ? initial : 'screen-home');
 
     // ── Pull-to-refresh (Home + Updates) ──────────────────────────
@@ -3098,33 +3130,13 @@
       window.kuroI18n.apply();
     }
 
-    // ── Read Overlay: aç/kapat ─────────────────────────────────────
-    var _readOverlayEl    = document.getElementById('read-overlay');
-    var _readOverlayFrame = document.getElementById('read-overlay-frame');
-    var _readOverlayTitle = document.getElementById('read-overlay-title');
-    var _readOverlayExt   = document.getElementById('read-overlay-external');
+    // ── Read Overlay: event wiring ──────────────────────────────────
     var _readOverlayClose = document.getElementById('read-overlay-close');
-
-    function openReadOverlay(url, label) {
-      if (!_readOverlayEl) return;
-      if (_readOverlayTitle) _readOverlayTitle.textContent = label || '';
-      if (_readOverlayExt)   _readOverlayExt.href = url;
-      if (_readOverlayFrame) _readOverlayFrame.src = url;
-      _readOverlayEl.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeReadOverlay() {
-      if (!_readOverlayEl) return;
-      _readOverlayEl.style.display = 'none';
-      document.body.style.overflow = '';
-      if (_readOverlayFrame) _readOverlayFrame.src = '';
-    }
-
     if (_readOverlayClose) _readOverlayClose.addEventListener('click', closeReadOverlay);
 
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && _readOverlayEl && _readOverlayEl.style.display === 'flex') {
+      const ro = document.getElementById('read-overlay');
+      if (e.key === 'Escape' && ro && ro.style.display === 'flex') {
         closeReadOverlay();
       }
     });

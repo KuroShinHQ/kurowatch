@@ -731,7 +731,8 @@
     open(currentQuality) {
       const panel = document.getElementById('panel-quality');
       if (!panel) return;
-      this._current = currentQuality || '720p';
+      this._current  = currentQuality || '720p';
+      this._selected = this._current;
       this._render();
       panel.classList.remove('hidden');
     },
@@ -739,14 +740,23 @@
     _render() {
       const listEl = document.getElementById('panel-quality-list');
       if (!listEl) return;
+      const selected = this._selected || this._current;
       listEl.innerHTML = this._qualities.map(function (q) {
-        const isActive = q === _panelQuality._current;
-        return '<div class="flex items-center justify-between p-4 rounded-xl"' +
-          ' style="' + (isActive ? 'background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.4)' : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)') + '">' +
-          '<span class="text-[15px] font-semibold text-[#dde3e7]">' + q + (isActive ? ' — Mevcut' : '') + '</span>' +
-          (isActive ? '<span class="material-symbols-outlined" style="color:#00d4ff;font-variation-settings:\'FILL\' 1">check_circle</span>' : '') +
-          '</div>';
+        const isCurrent  = q === _panelQuality._current;
+        const isSelected = q === selected;
+        return '<button class="quality-opt w-full flex items-center justify-between p-4 rounded-xl transition-all active:scale-[0.97]"' +
+          ' data-quality="' + q + '"' +
+          ' style="' + (isSelected ? 'background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.4)' : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)') + '">' +
+          '<span class="text-[15px] font-semibold text-[#dde3e7]">' + q + (isCurrent ? ' — Mevcut' : '') + '</span>' +
+          (isSelected ? '<span class="material-symbols-outlined" style="color:#00d4ff;font-variation-settings:\'FILL\' 1">check_circle</span>' : '') +
+          '</button>';
       }).join('');
+      listEl.querySelectorAll('.quality-opt').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          _panelQuality._selected = btn.dataset.quality;
+          _panelQuality._render();
+        });
+      });
     },
 
     close() {
@@ -1102,17 +1112,22 @@
     },
 
     prev: function () {
+      if (this._webtoon) { this.prevChapter(); return; }
       if (this._current > 0) { this._current--; this._render(); }
       document.getElementById('modal-reader').scrollTop = 0;
     },
 
     next: function () {
+      if (this._webtoon) {
+        // Webtoon modunda tüm sayfalar görünür — page-next butonu chapter geçişi yapar
+        this.nextChapter();
+        return;
+      }
       if (this._current < this._pages.length - 1) {
         this._current++;
         this._render();
         document.getElementById('modal-reader').scrollTop = 0;
-      } else if (!this._webtoon) {
-        // Son sayfa → auto-next chapter
+      } else {
         this._triggerAutoNextChapter();
       }
     },
@@ -1155,10 +1170,50 @@
           clearInterval(this._autoNextTimer);
           this._autoNextTimer = null;
           overlay.remove();
-          // Sonraki bölüm yükle (jobId context reader close ile kaybolur — şimdilik kapat)
-          this.close();
+          // Sonraki bölüm: jobs listesinden bul, yoksa kapat
+          const cid = _reader._contentId;
+          const nep = (_reader._episodeNumber || 0) + 1;
+          const nj  = Object.values(_jobs).find(function(j) {
+            return j.content_id == cid && j.episode_number === nep && j.status === 'done';
+          });
+          if (nj) {
+            _reader.close();
+            setTimeout(function() { _reader.open(nj.id, nj.content_title + ' — Bölüm ' + nep, cid, nep); }, 200);
+          } else {
+            _reader.close();
+          }
         }
       }, 1000);
+    },
+
+    nextChapter: function() {
+      const cid = this._contentId;
+      const ep  = this._episodeNumber;
+      if (!cid || !ep) return;
+      const nep = ep + 1;
+      const nj  = Object.values(_jobs).find(function(j) {
+        return j.content_id == cid && j.episode_number === nep && j.status === 'done';
+      });
+      if (nj) {
+        this.close();
+        setTimeout(function() { _reader.open(nj.id, nj.content_title + ' — Bölüm ' + nep, cid, nep); }, 200);
+      } else {
+        this._triggerAutoNextChapter();
+      }
+    },
+
+    prevChapter: function() {
+      const cid = this._contentId;
+      const ep  = this._episodeNumber;
+      if (!cid || !ep || ep <= 1) return;
+      const pep = ep - 1;
+      const pj  = Object.values(_jobs).find(function(j) {
+        return j.content_id == cid && j.episode_number === pep && j.status === 'done';
+      });
+      if (pj) {
+        this.close();
+        setTimeout(function() { _reader.open(pj.id, pj.content_title + ' — Bölüm ' + pep, cid, pep); }, 200);
+      }
     },
   };
 
@@ -1438,6 +1493,14 @@
     _pb('player-mini-btn',     function () { _toggleMini(); });
     _pb('player-fullscreen-btn', function () { _toggleFullscreen(); });
     _pb('player-cc-btn',       function () { _panelSubtitle.open(); });
+    _pb('player-volume-btn',   function () {
+      const video = document.getElementById('player-video');
+      if (!video) return;
+      video.muted = !video.muted;
+      const btn = document.getElementById('player-volume-btn');
+      const icon = btn ? btn.querySelector('.material-symbols-outlined') : null;
+      if (icon) icon.textContent = video.muted ? 'volume_off' : 'volume_up';
+    });
     _pb('autonext-cancel',     function () { _autoNext.reset(); });
 
     // v7 yeni butonlar
@@ -1492,7 +1555,14 @@
     _pb('panel-episodes-backdrop', function () { _panelEpisodes.close(); });
     _pb('panel-quality-close',   function () { _panelQuality.close(); });
     _pb('panel-quality-backdrop', function () { _panelQuality.close(); });
-    _pb('panel-quality-apply',   function () { _panelQuality.close(); });
+    _pb('panel-quality-apply',   function () {
+      const video = document.getElementById('player-video');
+      if (video && _panelQuality._selected) {
+        video.dataset.quality = _panelQuality._selected;
+        _panelQuality._current = _panelQuality._selected;
+      }
+      _panelQuality.close();
+    });
     _pb('panel-subtitle-close',  function () { _panelSubtitle.close(); });
     _pb('panel-subtitle-backdrop', function () { _panelSubtitle.close(); });
 
@@ -1560,8 +1630,8 @@
     _pb('reader-webtoon-btn',        function () { _reader.toggleMode(true); });
     _pb('reader-page-btn',           function () { _reader.toggleMode(false); });
     _pb('reader-kuro-translate-btn', function () { _panelTranslate.open(); });
-    _pb('reader-prev',               function () { _reader.prev(); });
-    _pb('reader-next',               function () { _reader.next(); });
+    _pb('reader-prev',               function () { _reader.prevChapter(); });
+    _pb('reader-next',               function () { _reader.nextChapter(); });
     _pb('reader-prev-page',          function () { _reader.prev(); });
     _pb('reader-next-page',          function () { _reader.next(); });
     _pb('reader-ui-toggle',          function () { _readerUI.toggle(); });
