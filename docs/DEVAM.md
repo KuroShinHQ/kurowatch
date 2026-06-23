@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-78b) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `78f1115`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-78c) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `c193dab`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -136,16 +136,29 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 [x] tailwind.css v34 rebuild
 ```
 
-**FAZ-V7-5: Manga Reader v7 Hybrid**
+**FAZ-V7-5: Manga Reader v7 Hybrid** ⚠️ YARIM (sohbet-78c, devam gerek)
 ```
-[ ] index.html manga reader → Stitch v7 ile replace et
-[ ] Kuro Translate panel HTML → reader içine gömülü panel
-[ ] reader logic güncellemeleri:
-    → Webtoon: IntersectionObserver → GET /api/download/pages/:id
-    → Sayfa modu: swipe + prefetch n+1, n+2
-    → Kuro Translate butonu → POST /api/translate/:id/:ep (mevcut route)
-    → Smart Clean opacity slider → translate overlay CSS opacity
-    → Text block overlay → _translate.showTranslated() (mevcut)
+[x] index.html #modal-reader → Stitch v7 ile replace (commit c193dab kısmı)
+    - reader-header: glass sticky, WEB/SAYFA toggle, JP/TR, fullscreen, kuro-translate-btn
+    - reader-pages: padding-top:64px, padding-bottom:128px
+    - reader-nav: ALWAYS visible (v7), progress bar + cur/total + prev/next chapter + ±page
+    - reader-ui-toggle: FAB orta-alt (visibility toggle)
+    - panel-translate: Kuro Translate bottom sheet — Smart Clean toggle, font/opacity slider
+[x] player.js: _readerUI + _panelTranslate nesneleri eklendi (sohbet-78c)
+
+[ ] player.js DEVAM GEREKİYOR (sohbet-78c'de yarım kaldı):
+    - _reader._render() → progress bar + IntersectionObserver + webtoon/sayfa toggle update
+    - _reader._updateProgress() yeni metod
+    - _reader.open() → reader-chapter-label set, _readerUI.reset()
+    - _reader.close() → _panelTranslate.close(), _readerUI.reset(), observer.disconnect()
+    - _reader.toggleMode() → webtoon-btn/page-btn style güncelle
+    - DOMContentLoaded yeni butonlar:
+        reader-webtoon-btn, reader-page-btn, reader-kuro-translate-btn
+        reader-prev-page, reader-next-page, reader-ui-toggle
+        panel-translate-close, panel-translate-start (→ _translate.startTranslate())
+        range-font/opacity slider (→ CSS değişkeni)
+        reader-pages merkez-tap (toggle UI), modal-reader scroll (auto-hide)
+    - tailwind.css v35 rebuild
 ```
 
 **FAZ-V7-6: Updates v7** (kurowatch_updates_v7_master_rafine/code.html)
