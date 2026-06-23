@@ -937,6 +937,7 @@
     _showTr: false,
     _contentId: null,
     _episodeNumber: null,
+    _observer: null,
 
     open: async function (jobId, title, contentId, episodeNumber) {
       const modal = document.getElementById('modal-reader');
@@ -956,9 +957,12 @@
       if (trLabel) trLabel.textContent = 'Çevir';
 
       if (ttl) ttl.textContent = title || '';
+      const chLabel = document.getElementById('reader-chapter-label');
+      if (chLabel) chLabel.textContent = episodeNumber ? 'BÖLÜM ' + episodeNumber : '';
       modal.classList.remove('hidden');
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      _readerUI.reset();
 
       if (contentId && episodeNumber) {
         _translate.init(contentId, episodeNumber);
@@ -984,18 +988,28 @@
       this._pages = [];
       this._trPages = null;
       this._showTr  = false;
+      if (this._observer) { this._observer.disconnect(); this._observer = null; }
       if (this._autoNextTimer) { clearInterval(this._autoNextTimer); this._autoNextTimer = null; }
       const overlay = document.getElementById('reader-autonext');
       if (overlay) overlay.remove();
+      _panelTranslate.close();
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     },
 
-    toggleMode: function () {
-      this._webtoon = !this._webtoon;
+    toggleMode: function (forceWebtoon) {
+      this._webtoon = (forceWebtoon !== undefined) ? forceWebtoon : !this._webtoon;
       this._current = 0;
       this._render();
-      const btn = document.getElementById('reader-mode-btn');
-      if (btn) btn.textContent = this._webtoon ? '↕ Webtoon' : '📄 Sayfa';
+      const webBtn  = document.getElementById('reader-webtoon-btn');
+      const pageBtn = document.getElementById('reader-page-btn');
+      if (webBtn) {
+        webBtn.style.background = this._webtoon ? '#00d4ff' : 'transparent';
+        webBtn.style.color      = this._webtoon ? '#003642' : '#9090b0';
+      }
+      if (pageBtn) {
+        pageBtn.style.background = !this._webtoon ? '#00d4ff' : 'transparent';
+        pageBtn.style.color      = !this._webtoon ? '#003642' : '#9090b0';
+      }
     },
 
     _render: function () {
@@ -1005,23 +1019,50 @@
       if (!pagesEl || pages.length === 0) return;
 
       if (this._webtoon) {
-        // Dikey scroll — tüm sayfalar
-        pagesEl.innerHTML = pages.map((url, i) =>
-          `<img src="${API + url}" alt="Sayfa ${i + 1}"
-                loading="lazy"
-                style="width:100%;max-width:800px;margin:0 auto;display:block;height:auto;">`
-        ).join('');
-        document.getElementById('reader-nav') && (document.getElementById('reader-nav').style.display = 'none');
+        pagesEl.innerHTML = pages.map(function (url, i) {
+          return '<img src="' + API + url + '" alt="Sayfa ' + (i + 1) + '" loading="lazy" data-page-idx="' + i + '" style="width:100%;max-width:800px;margin:0 auto;display:block;height:auto;">';
+        }).join('');
+        this._initScrollObserver(pages.length);
+        this._updateProgress(0, pages.length);
       } else {
-        // Sayfa modu — tek sayfa, viewport yüksekliğine sığdır
-        const nav = document.getElementById('reader-nav');
-        if (nav) nav.style.display = 'flex';
-        pagesEl.innerHTML = `
-          <img src="${API + pages[this._current]}"
-               alt="Sayfa ${this._current + 1}"
-               style="width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);margin:0 auto;display:block;object-fit:contain;">
-          <div class="text-center text-[#9090b0] text-sm py-2">${this._current + 1} / ${pages.length}</div>`;
+        pagesEl.innerHTML =
+          '<img src="' + API + pages[this._current] + '" alt="Sayfa ' + (this._current + 1) + '"' +
+          ' style="width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);margin:0 auto;display:block;object-fit:contain;">';
+        this._updateProgress(this._current, pages.length);
       }
+    },
+
+    _updateProgress: function (pageIndex, total) {
+      const pct  = total > 0 ? Math.round(((pageIndex + 1) / total) * 100) : 0;
+      const bar  = document.getElementById('reader-progress-bar');
+      const pnum = document.getElementById('reader-page-num');
+      const plbl = document.getElementById('reader-pct-label');
+      const curP = document.getElementById('reader-cur-page');
+      const ofP  = document.getElementById('reader-of-pages');
+      if (bar)  bar.style.width  = pct + '%';
+      if (pnum) pnum.textContent = (pageIndex + 1) + ' / ' + total;
+      if (plbl) plbl.textContent = '%' + pct + ' OKUNDU';
+      if (curP) curP.textContent = pageIndex + 1;
+      if (ofP)  ofP.textContent  = '/ ' + total;
+    },
+
+    _initScrollObserver: function (total) {
+      if (this._observer) this._observer.disconnect();
+      const pagesEl = document.getElementById('reader-pages');
+      if (!pagesEl) return;
+      let maxIdx = 0;
+      this._observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            const idx = parseInt(entry.target.dataset.pageIdx, 10);
+            if (!isNaN(idx) && idx > maxIdx) maxIdx = idx;
+          }
+        });
+        _reader._updateProgress(maxIdx, total);
+      }, { threshold: 0.3 });
+      pagesEl.querySelectorAll('img[data-page-idx]').forEach(function (img) {
+        _reader._observer.observe(img);
+      });
     },
 
     prev: function () {
@@ -1478,16 +1519,23 @@
       timelineSlider.addEventListener('click', _doSeek);
     }
 
-    // ── Reader Butonları ──────────────────────────────────────────
-    _pb('reader-close',          () => _reader.close());
-    _pb('reader-mode-btn',       () => _reader.toggleMode());
-    _pb('reader-prev',           () => _reader.prev());
-    _pb('reader-next',           () => _reader.next());
-    _pb('reader-fullscreen-btn', () => _reader.toggleFullscreen());
-    _pb('reader-translate-btn',  () => _translate.startTranslate());
-    _pb('reader-lang-original',  () => _translate.showOriginal());
-    _pb('reader-lang-tr',        () => _translate.showTranslated());
-    _pb('reader-fix-btn',        () => _translate.showFixModal());
+    // ── Reader Butonları (v7) ─────────────────────────────────────
+    _pb('reader-close',              function () { _reader.close(); });
+    _pb('reader-webtoon-btn',        function () { _reader.toggleMode(true); });
+    _pb('reader-page-btn',           function () { _reader.toggleMode(false); });
+    _pb('reader-kuro-translate-btn', function () { _panelTranslate.open(); });
+    _pb('reader-prev',               function () { _reader.prev(); });
+    _pb('reader-next',               function () { _reader.next(); });
+    _pb('reader-prev-page',          function () { _reader.prev(); });
+    _pb('reader-next-page',          function () { _reader.next(); });
+    _pb('reader-ui-toggle',          function () { _readerUI.toggle(); });
+    _pb('reader-fullscreen-btn',     function () { _reader.toggleFullscreen(); });
+    _pb('reader-translate-btn',      function () { _translate.startTranslate(); });
+    _pb('reader-lang-original',      function () { _translate.showOriginal(); });
+    _pb('reader-lang-tr',            function () { _translate.showTranslated(); });
+    _pb('reader-fix-btn',            function () { _translate.showFixModal(); });
+    _pb('panel-translate-close',     function () { _panelTranslate.close(); });
+    _pb('panel-translate-start',     function () { _translate.startTranslate(); });
 
     // ── Reader Swipe ──────────────────────────────────────────────
     let _swipeStartX = 0, _swipeStartY = 0;
@@ -1507,6 +1555,35 @@
         }
       }, { passive: true });
     }
+
+    // ── Reader Sliders + merkez-tap + scroll (v7) ─────────────────
+    const _rFont = document.getElementById('range-font');
+    if (_rFont) _rFont.addEventListener('input', function () {
+      document.documentElement.style.setProperty('--reader-font-size', _rFont.value + 'px');
+      const lbl = document.getElementById('val-font');
+      if (lbl) lbl.textContent = _rFont.value + 'px';
+    });
+    const _rOp = document.getElementById('range-opacity');
+    if (_rOp) _rOp.addEventListener('input', function () {
+      document.documentElement.style.setProperty('--reader-overlay-opacity', _rOp.value / 100);
+      const lbl = document.getElementById('val-opacity');
+      if (lbl) lbl.textContent = _rOp.value + '%';
+    });
+    const _rPagesArea = document.getElementById('reader-pages');
+    if (_rPagesArea) _rPagesArea.addEventListener('click', function (e) {
+      const modal = document.getElementById('modal-reader');
+      if (!modal || !modal.classList.contains('open')) return;
+      if (e.target.tagName !== 'IMG') _readerUI.toggle();
+    });
+    const _rModal = document.getElementById('modal-reader');
+    if (_rModal) _rModal.addEventListener('scroll', function () {
+      if (!_reader._webtoon) return;
+      const st  = _rModal.scrollTop;
+      const dir = st - _readerUI._lastScroll;
+      _readerUI._lastScroll = st;
+      if (dir > 10  && _readerUI._visible)  _readerUI.toggle();
+      if (dir < -10 && !_readerUI._visible) _readerUI.toggle();
+    }, { passive: true });
 
     // ── Keyboard Shortcuts ────────────────────────────────────────
     document.addEventListener('keydown', function (e) {
