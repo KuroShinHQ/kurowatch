@@ -1,7 +1,157 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 22 Haziran 2026 (sohbet-72) · **Aktif sürüm:** v1.2.0 · **Son commit:** `b877af5`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-77) · **Aktif sürüm:** v1.2.0 → v7 revizyon başladı · **Son commit:** `b877af5`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
+
+---
+
+## 🔥 AKTİF GÖREV — FAZ-V7 Frontend Revizyon (sohbet-77 itibarıyla)
+
+### Stitch v7 Dosya Envanteri
+```
+C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_netflix_tasar_m_rehberi\
+  kurowatch_home_solo_leveling_sim\code.html         337 satır — HOME v7
+  kurowatch_detail_solo_leveling_sim\code.html       361 satır — DETAIL v7
+  kurowatch_search_filter_v7_master\code.html        383 satır — SEARCH v7
+  kurowatch_video_oynat_c_v7_gold_master_hybrid\code.html  250 satır — PLAYER v7
+  kurowatch_manga_okuyucu_v7_master\code.html        311 satır — READER v7
+  kurowatch_updates_v7_master_rafine\code.html       315 satır — UPDATES v7
+  kurowatch_downloads_v7_master_rafine\code.html     386 satır — DOWNLOADS v7
+  kurowatch_stats_v7_master\code.html                438 satır — STATS v7
+  kurowatch_settings_v7_final_master\code.html       583 satır — SETTINGS v7
+  kurowatch_video_oynat_c_altyaz_ve_ses_se_imi_v7\  — Player altyazı/ses overlay
+  kurowatch_video_oynat_c_b_l_m_se_imi_v7\          — Player bölüm seçimi overlay
+  kurowatch_video_oynat_c_kalite_se_imi_v7\          — Player kalite seçimi overlay
+  kurowatch_kuro_translate_v7_master\                — Kuro Translate v7
+  kurowatch_kuro_translate_v7_master_smart_clean_sim\ — Smart Clean sim
+  kurowatch_eviri_ayarlar_v7_final_simulation\       — Çeviri ayarları
+  kurowatch_arama_filtreleme_v7_master_hybrid\       — Search filtre hybrid
+  kurowatch_teknik_api_spesifikasyonu_coder_ready.md — Tüm API şemaları
+  kurowatch_backend_entegrasyon_rehberi_v7.md        — Backend entegrasyon
+  kurowatch_video_player_teknik_logic_spesifikasyonu_v7_master.md
+  kurowatch_manga_reader_teknik_api_logic_spesifikasyonu_v7_master_pro.md
+```
+
+### FAZ-V7 TODO Listesi
+
+**FAZ-V7-0: CSS Token Temeli** ← BAŞLANGIÇ NOKTASI
+```
+[ ] Stitch HTML'lerden ortak Tailwind config bloğunu çıkar
+[ ] kurowatch/frontend/tailwind.config.js → v7 token sistemi ekle
+    (bg-primary:#0d0d1a, bg-card:#1a1a2e, primary-container:#00d4ff)
+[ ] style.css :root → v7 CSS değişkenlerini unify et
+[ ] tailwindcss.exe ile local build → tailwind.css?v=7 üret
+[ ] Tüm Stitch HTML'lerdeki CDN linklerini listele → silinecekler
+```
+
+**FAZ-V7-1: Home v7** (kurowatch_home_solo_leveling_sim/code.html)
+```
+[ ] Sinematik Hero banner → radyal gradyan + "Nebula Genesis" benzeri
+[ ] "Devam Et" satırı → shimmer progress bar + Electric Cyan glow
+[ ] Poster grid v7 → hover scale(1.02→1.18) + active:scale-[0.95]
+[ ] index.html #screen-home içeriğini Stitch v7 ile replace et
+[ ] app.js renderHome() → v7 hero + devam-et satırı kısımları ekle
+```
+
+**FAZ-V7-2: Search v7** (kurowatch_search_filter_v7_master/code.html + arama_filtreleme_hybrid)
+```
+[ ] Akıllı filtre paneli (tür/yıl/puan slider) → v7 slide-in panel
+[ ] Sonuç kart grid → v7 card spec (hover 1.02→1.18)
+[ ] index.html #screen-search → Stitch v7 ile replace et
+[ ] app.js renderSearch() → filtre panel toggle + filtre state
+```
+
+**FAZ-V7-3: Detail v7** (kurowatch_detail_solo_leveling_sim/code.html)
+```
+[ ] v7 hero kapak → backdrop blur + renk ayarı
+[ ] Bölüm listesi → is_watched badge + progress odaklı sıralama
+[ ] Karakter galerisi → yatay scroll, karakter kartları
+[ ] index.html #screen-detail → Stitch v7 ile replace et
+[ ] app.js openDetail() → karakter galerisi + bölüm listesi render
+```
+
+**FAZ-V7-4: Video Player v7 Cinema Master**
+```
+Ana player (kurowatch_video_oynat_c_v7_gold_master_hybrid/code.html):
+[ ] Tüm alt overlay HTML'leri ana player'a gömülü hale getir:
+    - Altyazı/Ses seçimi (kurowatch_video_oynat_c_altyaz_ve_ses_se_imi_v7)
+    - Bölüm seçimi (kurowatch_video_oynat_c_b_l_m_se_imi_v7)
+    - Kalite seçimi (kurowatch_video_oynat_c_kalite_se_imi_v7)
+[ ] Ambient Glow canvas → requestAnimationFrame dominant renk
+[ ] Intro Atla / Sonraki Bölüm → markers.intro/outro logic
+[ ] Ekran kilidi → pointer-events-none + 2sn basılı tutma
+[ ] Capture → canvas.drawImage + Blob indir
+[ ] index.html #modal-player → Stitch v7 ile replace et
+[ ] player.js → v7 kontrol mantığı (hız/kalite/altyazı/ambient)
+[ ] API: GET /api/v7/player/init/:episode_id (stream + markers + assets)
+[ ] API: POST /api/v7/player/sync (heartbeat 30sn)
+```
+
+**FAZ-V7-5: Manga Reader v7 Hybrid**
+```
+[ ] Webtoon/Sayfa hybrid engine → IntersectionObserver (webtoon) + swipe (sayfa)
+[ ] Kuro Translate panel → v7 AI çeviri arayüzü
+    (kurowatch_kuro_translate_v7_master + smart_clean_sim)
+[ ] Smart Clean sim → opacity slider + text block overlay
+[ ] Lazy loading → loading="lazy" + decoding="async"
+[ ] Pre-fetch n+1, n+2 sayfaları
+[ ] index.html manga reader → Stitch v7 ile replace et
+[ ] API: GET /api/v7/reader/chapter/:id
+[ ] API: POST /api/v7/translate/vision (image_url + target_lang + smart_clean)
+[ ] API: POST /api/v7/reader/sync (heartbeat, last_page)
+```
+
+**FAZ-V7-6: Updates v7** (kurowatch_updates_v7_master_rafine/code.html)
+```
+[ ] Zaman akışı → yeniden eskiye sıralama
+[ ] Okunmamış → sol cyan border + parlak bg
+[ ] index.html #screen-updates → Stitch v7 ile replace et
+[ ] app.js renderUpdates() → v7 zaman akışı
+```
+
+**FAZ-V7-7: Downloads v7** (kurowatch_downloads_v7_master_rafine/code.html)
+```
+[ ] Depolama göstergesi → cihaz storage bar
+[ ] İndirme hızı → aktif job'lar için hız (MB/s)
+[ ] index.html #screen-downloads → Stitch v7 ile replace et
+[ ] app.js renderDownloads() → v7 storage bar + hız
+```
+
+**FAZ-V7-8: Stats v7** (kurowatch_stats_v7_master/code.html)
+```
+[ ] Tür dağılım grafikleri → CSS/SVG donut + bar chart v7
+[ ] İzleme süreleri → toplam saat + günlük ortalama
+[ ] index.html #screen-stats → Stitch v7 ile replace et
+[ ] app.js renderStats() → v7 grafik render
+```
+
+**FAZ-V7-9: Settings v7 Master** (kurowatch_settings_v7_final_master/code.html)
+```
+[ ] API key form'ları → AniList/MAL/IGDB/DeepL validate butonu
+[ ] Çeviri ayarları → (kurowatch_eviri_ayarlar_v7_final_simulation)
+[ ] İndirme ayarları → otomatik silme, kalite seçici
+[ ] index.html #screen-settings → Stitch v7 ile replace et
+[ ] app.js renderSettings() → v7 form'lar + API key doğrulama
+[ ] API: POST /api/proxy/validate-key (service + key)
+[ ] API: PATCH /api/user/settings
+```
+
+**FAZ-V7-10: JS Event Wiring (app.js refactor)**
+```
+[ ] Tüm v7 ekranları için event handler'ları app.js'e ekle
+[ ] showScreen() → v7 geçiş animasyonları (spring)
+[ ] data-api-endpoint + data-field özniteliklerini bağla
+[ ] 4px grid kuralı kontrolü (8/12/16/24px spacing)
+[ ] active:scale-[0.95] → tüm interaktif elemanlara
+```
+
+**FAZ-V7-11: Iron Inquisitor Kalite Testi**
+```
+[ ] v7 tasarım kalitesi testi — pixel-perfect kontrol
+[ ] Renk drift kontrolü (#0d0d1a / #00d4ff tutarlılığı)
+[ ] 4px grid kuralı ihlalleri
+[ ] CDN bağımlılığı kalmadı mı kontrol
+```
 
 ---
 
