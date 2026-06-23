@@ -1128,7 +1128,7 @@
     openModal('modal-edit');
   }
 
-  // ── Render: Updates ──────────────────────────────────────────────
+  // ── Render: Updates v7 ───────────────────────────────────────────
   async function renderUpdates() {
     const list = document.getElementById('updates-list');
     if (!list) return;
@@ -1149,53 +1149,96 @@
       return;
     }
 
-    list.innerHTML = items.map(u => {
-      const initials = u.content_title.split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
-      const time = formatRelativeTime(u.detected_at);
-      const tc = TYPE_COLOR[u.content_type] || TYPE_COLOR.anime;
-      const coverHtml = u.content_cover_url
-        ? `<img src="${escapeHtml(u.content_cover_url)}" class="w-full h-full object-cover" loading="lazy"/>`
-        : `<span class="font-bold text-xs" style="color:${tc.color}">${initials}</span>`;
+    // Zaman grupları
+    const groups = { 'Bugün': [], 'Dün': [], 'Bu Hafta': [], 'Daha Önce': [] };
+    const now = new Date();
+    items.forEach(function(u) {
+      const diff = Math.floor((now - new Date(u.detected_at)) / 86400000);
+      if      (diff === 0) groups['Bugün'].push(u);
+      else if (diff === 1) groups['Dün'].push(u);
+      else if (diff < 7)   groups['Bu Hafta'].push(u);
+      else                 groups['Daha Önce'].push(u);
+    });
+
+    const TYPE_BADGE = {
+      anime:  { bg: 'rgba(0,212,255,0.1)',     color: '#00d4ff', label: 'Anime'  },
+      manga:  { bg: 'rgba(255,217,161,0.1)',    color: '#ffd9a1', label: 'Manga'  },
+      manhwa: { bg: 'rgba(187,197,235,0.12)',   color: '#bbc5eb', label: 'Manhwa' },
+      game:   { bg: 'rgba(255,180,171,0.12)',   color: '#ffb4ab', label: 'Oyun'   },
+    };
+
+    function _card(u) {
+      const badge   = TYPE_BADGE[u.content_type] || TYPE_BADGE.anime;
+      const time    = formatRelativeTime(u.detected_at);
+      const initials = u.content_title.split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase();
+      const cover   = u.content_cover_url
+        ? '<img src="' + escapeHtml(u.content_cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
+        : '<span class="font-bold text-sm" style="color:' + badge.color + '">' + escapeHtml(initials) + '</span>';
+      const epText  = 'Bölüm ' + u.episode_number + ' yayınlandı';
+
+      const coverBox = '<div class="w-[56px] h-[80px] shrink-0 rounded-lg overflow-hidden border border-white/5 relative flex items-center justify-center" style="background:#16213e">' +
+        cover + '<div class="absolute bottom-0 left-0 w-full h-1/2 pointer-events-none" style="background:linear-gradient(to top,rgba(0,0,0,0.8),transparent)"></div></div>';
+
       if (u.is_read) {
-        return `
-          <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e]/60 border-l-[4px] border-transparent inner-glow cursor-pointer hover:bg-[#1a1a2e] transition-transform duration-200 opacity-70 hover:opacity-100 active:scale-[0.97]" data-content-id="${u.content_id}">
-            <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden grayscale-[50%]">${coverHtml}</div>
-            <div class="flex flex-col justify-center w-full min-w-0">
-              <div class="flex justify-between items-center mb-0.5">
-                <h3 class="text-[16px] font-bold text-white/70 group-hover:text-white transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
-                <span class="text-[10px] text-white/40 font-medium whitespace-nowrap ml-2">${time}</span>
-              </div>
-              <div class="flex items-center gap-2 text-white/50 text-[12px]">
-                <span class="px-1.5 py-0.5 rounded bg-[#16213e]/50 text-white/60 text-[9px] uppercase font-bold tracking-wider">BÖL ${u.episode_number}</span>
-                <span class="truncate">${escapeHtml(u.site_name)} üzerinde</span>
-              </div>
-            </div>
-          </div>`;
+        return '<div class="flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] opacity-60"' +
+          ' style="background:rgba(26,26,46,0.3);border-left:3px solid transparent" data-content-id="' + u.content_id + '">' +
+          coverBox +
+          '<div class="flex-1 space-y-1 min-w-0">' +
+          '<div class="flex justify-between items-center">' +
+          '<span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style="background:rgba(255,255,255,0.05);color:#9090b0">' + badge.label + '</span>' +
+          '<span class="text-[10px] text-[#9090b0] font-medium">' + time + '</span></div>' +
+          '<h3 class="text-[15px] font-semibold truncate" style="color:rgba(255,255,255,0.7)">' + escapeHtml(u.content_title) + '</h3>' +
+          '<p class="text-[12px]" style="color:#9090b0">' + epText + '</p>' +
+          '<div class="flex gap-2 pt-1">' +
+          '<button class="details-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+          ' style="background:rgba(255,255,255,0.1);color:#dde3e7" data-content-id="' + u.content_id + '">' +
+          'DETAYLAR</button></div></div></div>';
       }
-      return `
-        <div class="group flex items-center gap-4 px-4 h-[56px] rounded-xl bg-[#1a1a2e] border-l-[4px] border-[#00d4ff] inner-glow cursor-pointer hover:bg-[#1a1a2e]/80 transition-transform duration-200 relative overflow-hidden active:scale-[0.97]" data-content-id="${u.content_id}">
-          <div class="absolute inset-0 bg-gradient-to-r from-[#00d4ff]/5 to-transparent pointer-events-none"></div>
-          <div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden">${coverHtml}</div>
-          <div class="flex flex-col justify-center w-full min-w-0">
-            <div class="flex justify-between items-center mb-0.5">
-              <h3 class="text-[16px] font-bold text-white group-hover:text-[#00d4ff] transition-colors leading-tight truncate">${escapeHtml(u.content_title)}</h3>
-              <span class="text-[10px] text-[#00d4ff] font-medium whitespace-nowrap ml-2">${time}</span>
-            </div>
-            <div class="flex items-center gap-2 text-white/60 text-[12px]">
-              <span class="px-1.5 py-0.5 rounded bg-[#16213e] text-[#00d4ff] text-[9px] uppercase font-bold tracking-wider">BÖL ${u.episode_number}</span>
-              <span class="truncate">${escapeHtml(u.site_name)} üzerinde</span>
-            </div>
-          </div>
-        </div>`;
+
+      const actionLabel = (u.content_type === 'anime') ? 'İZLE' : 'OKU';
+      return '<div class="flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] shadow-[0_4px_12px_rgba(0,0,0,0.4)]"' +
+        ' style="background:rgba(26,26,46,0.6);border-left:4px solid #00d4ff" data-content-id="' + u.content_id + '">' +
+        coverBox +
+        '<div class="flex-1 space-y-1 min-w-0">' +
+        '<div class="flex justify-between items-center">' +
+        '<span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span>' +
+        '<span class="text-[10px] font-medium" style="color:' + badge.color + '">' + time + '</span></div>' +
+        '<h3 class="text-[15px] font-semibold text-white truncate">' + escapeHtml(u.content_title) + '</h3>' +
+        '<p class="text-[12px]" style="color:#9090b0">' + epText + '</p>' +
+        '<div class="flex gap-2 pt-1">' +
+        '<button class="action-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+        ' style="background:#00d4ff;color:#003642;box-shadow:0 0 12px rgba(0,212,255,0.3)" data-content-id="' + u.content_id + '">' +
+        actionLabel + '</button>' +
+        '<button class="read-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+        ' style="background:rgba(255,255,255,0.05);color:#9090b0" data-update-id="' + u.id + '">' +
+        'GÖRDÜM</button></div></div></div>';
+    }
+
+    const ORDER = ['Bugün', 'Dün', 'Bu Hafta', 'Daha Önce'];
+    list.innerHTML = ORDER.filter(function(g) { return groups[g].length > 0; }).map(function(g) {
+      return '<section class="space-y-3">' +
+        '<h2 class="text-[10px] font-bold uppercase tracking-widest px-1" style="color:#9090b0">' + g + '</h2>' +
+        groups[g].map(_card).join('') +
+        '</section>';
     }).join('');
 
-    list.querySelectorAll('[data-content-id]').forEach(card => {
-      card.addEventListener('click', function() {
-        const id = parseInt(this.dataset.contentId, 10);
-        renderDetail(id);
-        showScreen('screen-detail');
+    if (!list._v7ListenerAttached) {
+      list._v7ListenerAttached = true;
+      list.addEventListener('click', function(e) {
+        const readBtn = e.target.closest('.read-btn');
+        if (readBtn) {
+          e.stopPropagation();
+          const uid = readBtn.dataset.updateId;
+          if (uid) apiPatch('/api/updates/' + uid + '/read', {}).then(function() { renderUpdates(); }).catch(function(){});
+          return;
+        }
+        const card = e.target.closest('[data-content-id]');
+        if (card) {
+          const id = parseInt(card.dataset.contentId, 10);
+          if (id) { renderDetail(id); showScreen('screen-detail'); }
+        }
       });
-    });
+    }
   }
 
   // ── Updates: Kontrol Et ──────────────────────────────────────────
