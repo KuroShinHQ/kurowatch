@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 23 Haziran 2026 (sohbet-78) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `cb5b13a`
+**Son güncelleme:** 23 Haziran 2026 (sohbet-78b) · **Aktif sürüm:** v1.2.0 → v7 revizyon aktif · **Son commit:** `78f1115`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -111,19 +111,29 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 [x] tailwind.css v33 rebuild
 ```
 
-**FAZ-V7-4: Video Player v7 Cinema Master**
+**FAZ-V7-4: Video Player v7 Cinema Master** ✅ TAMAMLANDI (commit 78f1115)
 ```
-[ ] index.html #modal-player → Stitch Gold Master HTML ile replace et
-[ ] 3 overlay HTML'yi (altyazı/bölüm/kalite) player modal içine gömülü panel olarak ekle
-[ ] player.js v7 güncellemeleri:
-    → Ambient Glow: requestAnimationFrame + canvas dominantColor → box-shadow
-    → Intro Skip: _intro.tick() → mevcut GET /api/analyze/intro/:id kullan
-    → Ekran kilidi: pointer-events-none + 2sn long-press logic
-    → Capture: canvas.drawImage + Blob.download
-    → Altyazı/Ses panel toggle → mevcut subtitle track logic
-    → Bölüm seçimi panel → mevcut episode list render
-    → Kalite seçimi → mevcut quality select logic
-    (Yeni HTTP endpoint YOK — player.js local state yönetir)
+[x] index.html #modal-player → Stitch Gold Master HTML ile replace et
+    - video-master + controls-overlay (auto-hide 3.5sn, opacity transition)
+    - Orta: play/pause (büyük cyan) + rewind/forward 10s
+    - Üst: geri, başlık, bölüm etiketi, CC/hız/kalite/bölüm/kilit/capture butonları
+    - Alt: skip-intro (pulse-cyan), timeline (progress+buffer+knob), zaman, next-ep, fullscreen
+[x] 3 gömülü panel:
+    - panel-episodes: sağ drawer (85%/400px) — bölüm listesi + download_done badge
+    - panel-quality: alt bottom sheet — mevcut kalite gösterimi (1080p/720p/480p/360p)
+    - panel-subtitle: alt bottom sheet — CC toggle + oynatma hızı seçici (0.5x–2x)
+[x] player.js v7 güncellemeleri:
+    - _controls: show/resetTimer/setPlaying/updateTime (timeline + zaman display)
+    - _lock: toggle → controls-overlay gizle + kilit overlay göster
+    - _captureFrame: canvas.drawImage(video) → PNG indir
+    - _panelEpisodes: /api/content/:id/episodes fetch + render + tıkla geç
+    - _panelQuality / _panelSubtitle: open/render/close
+    - video play/pause/ended → _controls.setPlaying() (event listeners)
+    - timeline seek: mousedown+mousemove+touchstart → video.currentTime
+    - timeupdate → _controls.updateTime() (progress bar + zaman göstergesi)
+    - buffer progress → timeline-buffer dolumu
+[x] style.css: player-theater/mini kuralları → v7 ID'leri (controls-overlay, video-master)
+[x] tailwind.css v34 rebuild
 ```
 
 **FAZ-V7-5: Manga Reader v7 Hybrid**
