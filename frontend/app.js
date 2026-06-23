@@ -1291,73 +1291,79 @@
   }
   window.showToast = showToast;
 
-  // ── Render: Stats ────────────────────────────────────────────────
+  // ── Render: Stats v7 ─────────────────────────────────────────────
   async function renderStats() {
     let items;
     try { items = await apiGet('/api/content'); }
     catch (err) { console.error('renderStats', err); return; }
 
+    const total = items.length || 1;
+
+    // ── Bento sayılar ─────────────────────────────────────────────
     const countEl = document.getElementById('stats-library-count');
     if (countEl) countEl.textContent = items.length;
 
-    const scored = items.filter(i => i.my_score != null);
+    const completed = items.filter(function(i) { return i.status === 'completed'; }).length;
+    const completedEl = document.getElementById('stats-completed');
+    if (completedEl) completedEl.textContent = completed;
+
+    const scored = items.filter(function(i) { return i.my_score != null; });
     const avg = scored.length
-      ? (scored.reduce((s, i) => s + i.my_score, 0) / scored.length).toFixed(1)
+      ? (scored.reduce(function(s, i) { return s + i.my_score; }, 0) / scored.length).toFixed(1)
       : '—';
     const avgEl = document.getElementById('stats-avg-score');
     if (avgEl) avgEl.textContent = avg;
 
-    // ── Tahmini saat ──────────────────────────────────────────────
     const hoursEl = document.getElementById('stats-hours');
     if (hoursEl) {
       let totalMins = 0;
       items.forEach(function(it) {
-        if (it.type === 'anime')        totalMins += (it.my_progress || 0) * 24;
-        else if (it.type === 'manga')   totalMins += (it.my_progress || 0) * 5;
-        else if (it.type === 'manhwa')  totalMins += (it.my_progress || 0) * 3;
+        if (it.type === 'anime')       totalMins += (it.my_progress || 0) * 24;
+        else if (it.type === 'manga')  totalMins += (it.my_progress || 0) * 5;
+        else if (it.type === 'manhwa') totalMins += (it.my_progress || 0) * 3;
       });
-      const h = Math.round(totalMins / 60);
-      hoursEl.innerHTML = h.toLocaleString('tr-TR') + '<span class="text-[20px] font-bold text-[#9090b0] ml-2">s</span>';
+      hoursEl.textContent = Math.round(totalMins / 60).toLocaleString('tr-TR') + 's';
     }
 
     // ── Donut chart ───────────────────────────────────────────────
     const CIRC = 251.33;
+    const TYPE_LABELS = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
     const typeCounts = { anime: 0, manga: 0, manhwa: 0, game: 0 };
     items.forEach(function(it) { if (it.type in typeCounts) typeCounts[it.type]++; });
-    const total = items.length || 1;
-    const typeKeys = ['anime', 'manga', 'manhwa', 'game'];
-    const donutIds = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-game'];
-    let offset = 0;
+    const typeKeys  = ['anime', 'manga', 'manhwa', 'game'];
+    const donutIds  = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-game'];
+    let donutOffset = 0;
     donutIds.forEach(function(id, i) {
       const el = document.getElementById(id);
       if (!el) return;
       const count = typeCounts[typeKeys[i]];
       const dash = count > 0 ? Math.max(2, (count / total) * CIRC) : 0;
       el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + CIRC);
-      el.setAttribute('stroke-dashoffset', offset.toFixed(1));
-      offset -= dash;
+      el.setAttribute('stroke-dashoffset', (-donutOffset).toFixed(1));
+      donutOffset += dash;
     });
     const topType = typeKeys.reduce(function(a, b) { return typeCounts[a] >= typeCounts[b] ? a : b; });
-    const topPct = Math.round((typeCounts[topType] / total) * 100);
-    const centerPct = document.getElementById('stat-donut-center-pct');
+    const topPct  = Math.round((typeCounts[topType] / total) * 100);
+    const centerPct  = document.getElementById('stat-donut-center-pct');
     const centerType = document.getElementById('stat-donut-center-type');
-    if (centerPct) centerPct.textContent = topPct + '%';
-    if (centerType) centerType.textContent = (TYPE_COLOR[topType] || {}).label || topType;
+    if (centerPct)  centerPct.textContent  = topPct + '%';
+    if (centerType) centerType.textContent = TYPE_LABELS[topType] || topType;
 
-    // ── Bar chart ─────────────────────────────────────────────────
-    const statusCounts = { watching: 0, completed: 0, on_hold: 0, dropped: 0 };
-    items.forEach(function(it) { if (it.status in statusCounts) statusCounts[it.status]++; });
-    const maxCount = Math.max(1, statusCounts.watching, statusCounts.completed, statusCounts.on_hold, statusCounts.dropped);
-    const BASE_Y = 140, MAX_H = 120;
-    [['stat-bar-watching','watching'], ['stat-bar-completed','completed'], ['stat-bar-on-hold','on_hold'], ['stat-bar-dropped','dropped']].forEach(function(pair) {
-      const el = document.getElementById(pair[0]);
-      if (!el) return;
-      const h = Math.max(2, Math.round((statusCounts[pair[1]] / maxCount) * MAX_H));
-      el.setAttribute('height', h);
-      el.setAttribute('y', BASE_Y - h);
+    // ── CSS bar'lar (Platform Kullanımı = tip dağılımı) ───────────
+    const barTypes = [
+      { key: 'anime',  barId: 'stats-bar-anime',  pctId: 'stats-pct-anime'  },
+      { key: 'manga',  barId: 'stats-bar-manga',  pctId: 'stats-pct-manga'  },
+      { key: 'manhwa', barId: 'stats-bar-manhwa', pctId: 'stats-pct-manhwa' },
+    ];
+    barTypes.forEach(function(t) {
+      const pct = Math.round((typeCounts[t.key] / total) * 100);
+      const barEl = document.getElementById(t.barId);
+      const pctEl = document.getElementById(t.pctId);
+      if (barEl) barEl.style.width = pct + '%';
+      if (pctEl) pctEl.textContent = pct + '%';
     });
 
-    // ── Türler ───────────────────────────────────────────────────
+    // ── Favori Türler ─────────────────────────────────────────────
     const genreMap = {};
     items.forEach(function(it) {
       (it.genres || []).forEach(function(g) { genreMap[g] = (genreMap[g] || 0) + 1; });
@@ -1366,14 +1372,14 @@
     if (genresEl) {
       const sorted = Object.entries(genreMap).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
       if (sorted.length === 0) {
-        genresEl.innerHTML = '<span class="text-[14px] text-[#9090b0]">Henüz tür verisi yok</span>';
+        genresEl.innerHTML = '<span class="text-[11px] text-[#9090b0]">Henüz tür verisi yok</span>';
       } else {
-        const colors = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#ffb4ab', '#90e090', '#ff9a3c', '#a0a0d0', '#9090b0'];
+        const colors = ['#00d4ff', '#ffd9a1', '#bbc5eb', '#ffb4ab', '#90e090', '#ff9a3c', '#a0a0d0', '#9090b0'];
         genresEl.innerHTML = sorted.map(function(entry, i) {
-          const color = colors[i] || '#9090b0';
-          return '<span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold interactive cursor-pointer" ' +
-            'style="background:' + color + '20;color:' + color + ';border:1px solid ' + color + '40">' +
-            escapeHtml(genreTR(entry[0])) + ' (' + entry[1] + ')</span>';
+          const c = colors[i] || '#9090b0';
+          return '<span class="px-3 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer"' +
+            ' style="background:' + c + '18;color:' + c + ';border:1px solid ' + c + '30">' +
+            escapeHtml(genreTR(entry[0])) + ' <span style="opacity:0.6">(' + entry[1] + ')</span></span>';
         }).join('');
       }
     }

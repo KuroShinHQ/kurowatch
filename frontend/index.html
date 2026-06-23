@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=37"/>
+<link rel="stylesheet" href="tailwind.css?v=38"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -530,80 +530,96 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 </section>
 
 
-<!-- ════════════════════════════════════════════════════════════════ -->
-<!-- EKRAN: STATS — İstatistikler                                    -->
+<!-- EKRAN: STATS — İstatistikler v7                                 -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-stats" class="screen hidden w-full pb-safe-nav">
-  <div class="pt-20 lg:pt-8 pb-6 px-4 max-w-7xl mx-auto space-y-6">
-    <header class="mb-4">
-      <h2 class="text-[20px] font-bold text-[#e1e0ff]">Senin İstatistiklerin</h2>
-      <p class="text-[14px] text-[#9090b0] mt-2">Medya tüketiminin özeti.</p>
-    </header>
-    <!-- Özet Kartlar -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-[#1a1a2e] rounded-xl p-6 inner-glow border border-transparent hover:border-[#00d4ff]/30 transition-all duration-300 relative overflow-hidden group interactive">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#00d4ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex justify-between items-start mb-4 relative z-10"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Toplam Saat</span><span class="material-symbols-outlined text-[#00d4ff]">schedule</span></div>
-        <div class="text-[32px] font-bold text-[#00d4ff] relative z-10" id="stats-hours">1,248<span class="text-[20px] font-bold text-[#9090b0] ml-2">s</span></div>
+  <div class="pt-20 pb-6 px-4 space-y-5">
+    <div>
+      <h1 class="text-[20px] font-bold tracking-tight text-[#e1e0ff]">İSTATİSTİKLER</h1>
+      <p class="text-[12px] text-[#9090b0] mt-1">Medya tüketiminin özeti</p>
+    </div>
+
+    <!-- Bento 2×2 -->
+    <section class="grid grid-cols-2 gap-3">
+      <div class="glass-card p-4 rounded-xl">
+        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Toplam Saat</p>
+        <div class="text-[24px] font-bold mt-1" style="color:#00d4ff" id="stats-hours">—</div>
       </div>
-      <div class="bg-[#1a1a2e] rounded-xl p-6 inner-glow border border-transparent hover:border-[#00d4ff]/30 transition-all duration-300 relative overflow-hidden group interactive">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#00d4ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex justify-between items-start mb-4 relative z-10"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Kütüphane</span><span class="material-symbols-outlined text-[#00d4ff]">video_library</span></div>
-        <div class="text-[32px] font-bold text-[#e1e0ff] relative z-10" id="stats-library-count">5</div>
+      <div class="glass-card p-4 rounded-xl">
+        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Kütüphane</p>
+        <div class="text-[24px] font-bold text-[#e1e0ff] mt-1" id="stats-library-count">—</div>
       </div>
-      <div class="bg-[#1a1a2e] rounded-xl p-6 inner-glow border border-transparent hover:border-[#00d4ff]/30 transition-all duration-300 relative overflow-hidden group interactive">
-        <div class="absolute inset-0 bg-gradient-to-br from-[#00d4ff]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        <div class="flex justify-between items-start mb-4 relative z-10"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Ortalama Puan</span><span class="material-symbols-outlined text-[#00d4ff]">star</span></div>
-        <div class="text-[32px] font-bold text-[#00d4ff] relative z-10" id="stats-avg-score">8.8</div>
+      <div class="glass-card p-4 rounded-xl">
+        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Tamamlandı</p>
+        <div class="text-[24px] font-bold mt-1" style="color:#4caf50" id="stats-completed">—</div>
+      </div>
+      <div class="glass-card p-4 rounded-xl">
+        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Ort. Puan</p>
+        <div class="text-[24px] font-bold mt-1" style="color:#00d4ff" id="stats-avg-score">—</div>
       </div>
     </section>
-    <!-- Charts -->
-    <section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <!-- Donut Chart -->
-      <div class="bg-[#1a1a2e] rounded-xl p-6 inner-glow flex flex-col items-center">
-        <h3 class="text-[20px] font-bold text-[#e1e0ff] mb-6 self-start w-full border-b border-white/5 pb-4">Medya Dağılımı</h3>
-        <div class="relative w-[192px] h-[192px] mb-6">
-          <svg class="w-full h-full transform -rotate-90 drop-shadow-[0_0_8px_rgba(0,212,255,0.1)]" viewBox="0 0 100 100">
+
+    <!-- Medya Dağılımı (Donut SVG) -->
+    <section class="glass-card p-4 rounded-xl">
+      <h3 class="text-[13px] font-semibold text-[#dde3e7] mb-4">Medya Dağılımı</h3>
+      <div class="flex items-center gap-6">
+        <div class="relative w-28 h-28 flex-shrink-0">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" fill="transparent" r="40" stroke="#16213e" stroke-width="12"></circle>
-            <circle id="stat-donut-anime"   class="chart-path" cx="50" cy="50" fill="transparent" r="40" stroke="#00d4ff" stroke-dasharray="88 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="0"></circle>
-            <circle id="stat-donut-manga"   class="chart-path" cx="50" cy="50" fill="transparent" r="40" stroke="#bbc5eb" stroke-dasharray="75 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-88"></circle>
-            <circle id="stat-donut-manhwa"  class="chart-path" cx="50" cy="50" fill="transparent" r="40" stroke="#ffd9a1" stroke-dasharray="63 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-163"></circle>
-            <circle id="stat-donut-game"    class="chart-path" cx="50" cy="50" fill="transparent" r="40" stroke="#ffb4ab" stroke-dasharray="25 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-226"></circle>
+            <circle id="stat-donut-anime"  cx="50" cy="50" fill="transparent" r="40" stroke="#00d4ff" stroke-dasharray="88 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="0"></circle>
+            <circle id="stat-donut-manga"  cx="50" cy="50" fill="transparent" r="40" stroke="#ffd9a1" stroke-dasharray="75 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-88"></circle>
+            <circle id="stat-donut-manhwa" cx="50" cy="50" fill="transparent" r="40" stroke="#bbc5eb" stroke-dasharray="63 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-163"></circle>
+            <circle id="stat-donut-game"   cx="50" cy="50" fill="transparent" r="40" stroke="#ffb4ab" stroke-dasharray="25 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-226"></circle>
           </svg>
-          <div class="absolute inset-0 flex items-center justify-center flex-col"><span id="stat-donut-center-pct" class="text-[20px] font-bold text-[#00d4ff]">35%</span><span id="stat-donut-center-type" class="text-[12px] uppercase text-[#9090b0] font-semibold mt-1">Anime</span></div>
+          <div class="absolute inset-0 flex items-center justify-center flex-col">
+            <span id="stat-donut-center-pct" class="text-[16px] font-bold" style="color:#00d4ff">—</span>
+            <span id="stat-donut-center-type" class="text-[9px] uppercase text-[#9090b0] font-semibold mt-0.5">Anime</span>
+          </div>
         </div>
-        <div class="w-full flex flex-wrap justify-center gap-4 text-[14px] text-[#9090b0]">
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#00d4ff]"></span>Anime</div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#bbc5eb]"></span>Manga</div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#ffd9a1]"></span>Manhwa</div>
-          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#ffb4ab]"></span>Oyun</div>
-        </div>
-      </div>
-      <!-- Bar Chart -->
-      <div class="bg-[#1a1a2e] rounded-xl p-6 inner-glow flex flex-col">
-        <h3 class="text-[20px] font-bold text-[#e1e0ff] mb-6 border-b border-white/5 pb-4">Kütüphane Durumu</h3>
-        <div class="flex-1 w-full h-[192px] mt-auto flex items-end pt-4">
-          <svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 320 160">
-            <line stroke="#16213e" stroke-width="1" x1="0" x2="320" y1="140" y2="140"></line>
-            <line stroke="#16213e" stroke-dasharray="4" stroke-width="1" x1="0" x2="320" y1="70" y2="70"></line>
-            <g class="group"><rect id="stat-bar-watching"   class="bar-rect" fill="#00d4ffcc" rx="4" ry="4" height="56" y="84"  width="40" x="32"></rect><text fill="#9090b0" font-size="12" text-anchor="middle" x="52" y="160">İzli</text></g>
-            <g class="group"><rect id="stat-bar-completed"  class="bar-rect" fill="#bbc5ebcc" rx="4" ry="4" height="28" y="112" width="40" x="104"></rect><text fill="#9090b0" font-size="12" text-anchor="middle" x="124" y="160">Tamam</text></g>
-            <g class="group"><rect id="stat-bar-on-hold"    class="bar-rect" fill="#ffd9a1cc" rx="4" ry="4" height="14" y="126" width="40" x="176"></rect><text fill="#9090b0" font-size="12" text-anchor="middle" x="196" y="160">Bekle</text></g>
-            <g class="group"><rect id="stat-bar-dropped"    class="bar-rect" fill="#16213e"   rx="4" ry="4" height="8"  y="132" width="40" x="248"></rect><text fill="#9090b0" font-size="12" text-anchor="middle" x="268" y="160">Bırak</text></g>
-          </svg>
+        <div class="flex-1 space-y-1.5 text-[11px]">
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#00d4ff"></span><span class="text-[#9090b0]">Anime</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ffd9a1"></span><span class="text-[#9090b0]">Manga</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#bbc5eb"></span><span class="text-[#9090b0]">Manhwa</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ffb4ab"></span><span class="text-[#9090b0]">Oyun</span></div>
         </div>
       </div>
     </section>
-    <!-- Top Genres -->
-    <section class="bg-[#1a1a2e] rounded-xl p-6 inner-glow">
-      <h3 class="text-[20px] font-bold text-[#e1e0ff] mb-6 border-b border-white/5 pb-4">Favori Türler</h3>
-      <div id="stats-genres" class="flex flex-wrap gap-2">
-        <span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 interactive cursor-pointer">Aksiyon (84)</span>
-        <span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold bg-[#bbc5eb]/15 text-[#bbc5eb] border border-[#bbc5eb]/30 interactive cursor-pointer">Bilim Kurgu (62)</span>
-        <span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold bg-[#ffd9a1]/15 text-[#ffd9a1] border border-[#ffd9a1]/30 interactive cursor-pointer">Fantezi (58)</span>
-        <span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold bg-[#16213e] text-[#9090b0] border border-white/10 hover:border-[#00d4ff]/50 transition-colors interactive cursor-pointer">Dram (41)</span>
-        <span class="px-4 py-2 min-h-[36px] flex items-center rounded text-[14px] font-bold bg-[#16213e] text-[#9090b0] border border-white/10 hover:border-[#00d4ff]/50 transition-colors interactive cursor-pointer">Romantik (35)</span>
+
+    <!-- Platform Kullanımı (CSS bars) -->
+    <section class="glass-card p-4 rounded-xl space-y-3">
+      <h3 class="text-[13px] font-semibold text-[#dde3e7]">Platform Kullanımı</h3>
+      <div class="space-y-3 text-[11px]">
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Anime</span><span id="stats-pct-anime" style="color:#00d4ff">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-anime" class="h-full rounded-full transition-all duration-700" style="background:#00d4ff;width:0%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Manga</span><span id="stats-pct-manga" style="color:#ffd9a1">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-manga" class="h-full rounded-full transition-all duration-700" style="background:#ffd9a1;width:0%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Manhwa</span><span id="stats-pct-manhwa" style="color:#bbc5eb">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-manhwa" class="h-full rounded-full transition-all duration-700" style="background:#bbc5eb;width:0%"></div>
+          </div>
+        </div>
       </div>
+    </section>
+
+    <!-- Favori Türler -->
+    <section class="glass-card p-4 rounded-xl">
+      <h3 class="text-[13px] font-semibold text-[#dde3e7] mb-3">Favori Türler</h3>
+      <div id="stats-genres" class="flex flex-wrap gap-2"></div>
     </section>
   </div>
 </section>
