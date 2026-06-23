@@ -187,7 +187,6 @@
     if (id === 'screen-archive')   renderArchive();
     if (id === 'screen-settings')  renderSettings();
     if (id === 'screen-downloads' && window.kuroDownload) window.kuroDownload.render();
-    if (id === 'screen-downloads' && window.kuroDownload) window.kuroDownload.render();
     if (id === 'screen-search') {
       setTimeout(() => {
         _initSearchTabs();
