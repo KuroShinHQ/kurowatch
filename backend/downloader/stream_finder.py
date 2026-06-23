@@ -413,11 +413,11 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         )
         page = await ctx.new_page()
 
-        # Bot tespiti atla (playwright-stealth)
+        # Bot tespiti atla (playwright-stealth) — context'e uygula, navigation'dan önce
         try:
             from playwright_stealth import Stealth
-            await Stealth().apply_stealth_async(page)
-            logger.info("playwright-stealth aktif")
+            await Stealth().apply_stealth_async(ctx)
+            logger.info("playwright-stealth aktif (context)")
         except Exception as _se:
             logger.warning("playwright-stealth bypass yok: %s", _se)
 
@@ -454,7 +454,16 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                     if await btn.is_visible(timeout=2000):
                         await btn.click()
                         logger.info("Popup kapatıldı: %s", selector)
-                        await asyncio.sleep(1)
+                        await asyncio.sleep(0.5)
+                        # Bootstrap modal fade-out animasyonu bitmeden backdrop kalabilir.
+                        # JS ile #modallar + .modal-backdrop'ı zorla kaldır.
+                        await page.evaluate("""
+                            const m = document.querySelector('#modallar');
+                            if (m) { m.classList.remove('in'); m.style.display = 'none'; }
+                            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+                            document.body.classList.remove('modal-open');
+                        """)
+                        await asyncio.sleep(0.3)
                         break
                 except Exception:
                     pass
@@ -464,7 +473,8 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 try:
                     btn = page.locator(selector).first
                     if await btn.is_visible(timeout=2000):
-                        await btn.click()
+                        # force=True: backdrop kalmışsa bile tıklamayı zorunlu kıl
+                        await btn.click(force=True)
                         logger.info("Play butonu tıklandı: %s", selector)
                         await asyncio.sleep(3)  # tıklama sonrası iframe yüklensin
                         break
