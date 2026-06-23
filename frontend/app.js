@@ -2316,18 +2316,36 @@
     const panelLib = document.getElementById('search-panel-library');
     const panelDis = document.getElementById('search-panel-discover');
     const inp = document.getElementById('search-discover-input');
+    const filterBtn = document.getElementById('search-filter-toggle');
+    const filterPanel = document.getElementById('search-filter-panel');
+    const filterTypeSection = document.getElementById('filter-type-section');
+    const filterGenreSection = document.getElementById('discover-genre-section');
     if (!tabLib || !tabDis) return;
+
+    // FİLTRELE butonu toggle
+    if (filterBtn && filterPanel) {
+      filterBtn.addEventListener('click', function() {
+        filterPanel.classList.toggle('hidden');
+        if (!filterPanel.classList.contains('hidden') && _activeSearchTab === 'discover') {
+          _buildDiscoverGenreChips();
+        }
+      });
+    }
 
     function switchTab(tab) {
       _activeSearchTab = tab;
       const isLib = tab === 'library';
-      tabLib.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all ' + (isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#9090b0] hover:text-[#e1e0ff]');
-      tabDis.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[13px] font-bold transition-all ' + (!isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#9090b0] hover:text-[#e1e0ff]');
+      tabLib.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[12px] font-semibold tracking-wider uppercase transition-all ' + (isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#859398]');
+      tabDis.className = 'search-tab flex-1 py-2 min-h-[40px] rounded-lg text-[12px] font-semibold tracking-wider uppercase transition-all ' + (!isLib ? 'bg-[#00d4ff]/15 text-[#00d4ff]' : 'text-[#859398]');
       if (panelLib) { panelLib.classList.toggle('hidden', !isLib); }
       if (panelDis) {
         panelDis.classList.toggle('hidden', isLib);
         panelDis.classList.toggle('flex', !isLib);
       }
+      // Filtre panelini kapat ve tip/tür bölümlerini tab'a göre gizle/göster
+      if (filterPanel) filterPanel.classList.add('hidden');
+      if (filterTypeSection) filterTypeSection.classList.toggle('hidden', isLib);
+      if (filterGenreSection) filterGenreSection.classList.toggle('hidden', isLib);
       const typeLabels = { anime: 'AniList\'te ara...', manga: 'Manga ara...', manhwa: 'Manhwa ara...', game: 'Oyun ara (IGDB)...' };
       if (inp) inp.placeholder = isLib ? 'Kütüphanende ara...' : (typeLabels[_discoverType] || 'Ara...');
       if (inp && inp.value) {
@@ -2345,10 +2363,10 @@
         _discoverGenre = null;
         document.querySelectorAll('.discover-type-btn').forEach(function(b) {
           const active = b.dataset.discoverType === _discoverType;
-          b.className = 'discover-type-btn shrink-0 px-4 py-2 min-h-[38px] rounded-full text-[13px] font-bold transition-all ' +
-            (active ? 'bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40' : 'text-[#9090b0] border border-[#3c494e]/40 hover:text-[#e1e0ff]');
+          b.className = 'discover-type-btn flex-shrink-0 px-4 py-2 rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95] transition-all ' +
+            (active ? 'bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/50' : 'bg-[#2f3639] text-[#859398]');
         });
-        // Oyun tipinde genre bölümünü gizle
+        // Oyun tipinde tür bölümünü gizle
         const genreSection = document.getElementById('discover-genre-section');
         if (genreSection) genreSection.classList.toggle('hidden', _discoverType === 'game');
         const typeLabels2 = { anime: 'AniList\'te ara...', manga: 'Manga ara...', manhwa: 'Manhwa ara...', game: 'Oyun ara (IGDB)...' };
@@ -2358,7 +2376,7 @@
         else {
           _buildDiscoverGenreChips();
           const results = document.getElementById('search-results');
-          if (results) results.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">' + (typeLabels2[_discoverType] || 'Ara...') + '</div>';
+          if (results) results.innerHTML = '<div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">' + (typeLabels2[_discoverType] || 'Ara...') + '</div>';
         }
       });
     });
@@ -2383,40 +2401,43 @@
     const box = document.getElementById('library-search-results');
     if (!box) return;
     if (!q || q.trim().length < 1) {
-      box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Kütüphanende aramak için yaz...</div>';
+      box.innerHTML = '<div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">Kütüphanende aramak için yaz...</div>';
       return;
     }
+    box.innerHTML = '<div class="col-span-3 text-center py-8 flex items-center justify-center gap-2 text-[14px] text-[#859398]"><span class="material-symbols-outlined animate-spin" style="font-size:20px">progress_activity</span>Aranıyor...</div>';
     try {
       const items = await apiGet('/api/content?q=' + encodeURIComponent(q.trim()));
       if (!items || !items.length) {
-        box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Sonuç bulunamadı</div>';
+        box.innerHTML = '<div class="col-span-3 text-center py-12 flex flex-col items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]" style="font-size:48px;opacity:0.4">search_off</span><p class="text-[14px] font-medium text-[#9090b0]">Sonuç bulunamadı</p></div>';
         return;
       }
+      const _TYPE_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#ffb4ab'};
+      const _TYPE_LABEL  = {anime:'Anime',manga:'Manga',manhwa:'Manhwa',game:'Oyun'};
       box.innerHTML = items.map(function(it) {
-        const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
+        const stripe = _TYPE_STRIPE[it.type] || '#00d4ff';
+        const label  = _TYPE_LABEL[it.type]  || 'Anime';
         const cover = it.cover_url
-          ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
-          : '<span class="font-bold text-xs" style="color:' + tc.color + '">' + escapeHtml((it.title||'?').split(' ').slice(0,2).map(function(w){return w[0];}).join('').toUpperCase()) + '</span>';
-        const status = STATUS_LABEL[it.status] || it.status || '';
-        return '<div class="flex items-center gap-3 px-3 h-[64px] rounded-xl bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/30 cursor-pointer transition-colors active:scale-[0.97]" data-content-id="' + it.id + '">' +
-          '<div class="w-10 h-10 rounded-md bg-[#16213e] flex-shrink-0 flex items-center justify-center overflow-hidden">' + cover + '</div>' +
-          '<div class="flex flex-col justify-center min-w-0 flex-1">' +
-          '<h3 class="text-[14px] font-bold text-[#e1e0ff] truncate">' + escapeHtml(it.title || '') + '</h3>' +
-          '<div class="flex items-center gap-2 mt-0.5">' +
-          '<span class="text-[11px] font-bold" style="color:' + tc.color + '">' + tc.label + '</span>' +
-          '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(status) + '</span>' +
-          '</div></div>' +
-          (it.my_score != null ? '<span class="text-[13px] font-bold text-[#00d4ff] flex-shrink-0">' + it.my_score.toFixed(1) + '</span>' : '') +
+          ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"/>'
+          : '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-2xl font-bold">' + escapeHtml((it.title||'?').slice(0,2).toUpperCase()) + '</div>';
+        const score = it.my_score != null
+          ? '<div class="flex items-center gap-1"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:10px">star</span><span class="text-[9px] text-[#9090b0]">' + it.my_score.toFixed(1) + '</span></div>'
+          : '';
+        return '<div class="group relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/50 cursor-pointer active:scale-[0.95] transition-all" data-content-id="' + it.id + '">' +
+          '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
+          '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
+          cover +
+          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="background:rgba(0,212,255,0.8);color:#003642">' + label + '</div>' +
+          '<div class="absolute bottom-2 left-2 right-2 z-20"><p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title_tr||it.title||'') + '</p>' + score + '</div>' +
           '</div>';
       }).join('');
-      box.querySelectorAll('[data-content-id]').forEach(function(row) {
-        row.addEventListener('click', function() {
+      box.querySelectorAll('[data-content-id]').forEach(function(card) {
+        card.addEventListener('click', function() {
           renderDetail(parseInt(this.dataset.contentId, 10));
           showScreen('screen-detail');
         });
       });
     } catch(e) {
-      box.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Hata: ' + escapeHtml(e.message) + '</div>';
+      box.innerHTML = '<div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">Hata: ' + escapeHtml(e.message) + '</div>';
     }
   }
 
@@ -2427,9 +2448,9 @@
     if (!row) return;
     row.innerHTML = DISCOVER_GENRES.map(function(g) {
       const active = _discoverGenre === g;
-      return '<button class="discover-genre-chip shrink-0 font-label-caps text-label-caps px-4 min-h-[44px] rounded-full transition-all inner-glow border ' +
-        (active ? 'bg-[#00d4ff]/15 border-[#00d4ff] text-[#00d4ff]' : 'bg-[#1c1d37] border-white/5 text-[#9090b0] hover:text-[#e1e0ff] hover:border-white/20') +
-        '" data-genre="' + g + '">' + g.toUpperCase() + '</button>';
+      return '<button class="discover-genre-chip flex-shrink-0 px-4 py-2 rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95] transition-all border ' +
+        (active ? 'bg-[#00d4ff]/15 border-[#00d4ff] text-[#00d4ff]' : 'bg-[#2f3639] border-transparent text-[#859398] hover:text-[#e1e0ff]') +
+        '" data-genre="' + g + '">' + g + '</button>';
     }).join('');
     row.querySelectorAll('.discover-genre-chip').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -2448,30 +2469,32 @@
     _buildDiscoverGenreChips();
     const hasQ = q && q.trim().length >= 2;
     if (!hasQ && !_discoverGenre) {
-      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">En az 2 karakter yaz veya bir tür seç...</div>';
+      results.innerHTML = '<div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">En az 2 karakter yaz veya bir tür seç...</div>';
       return;
     }
     const sourceLabel = _discoverType === 'game' ? 'IGDB' : 'AniList';
-    results.innerHTML = '<div class="text-center text-[#9090b0] py-8 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> ' + sourceLabel + '\'te aranıyor...</div>';
+    results.innerHTML = '<div class="col-span-3 text-center py-8 flex items-center justify-center gap-2 text-[14px] text-[#859398]"><span class="material-symbols-outlined animate-spin" style="font-size:20px">progress_activity</span>' + sourceLabel + '\'te aranıyor...</div>';
     let url = '/api/discover?type=' + _discoverType;
     if (hasQ) url += '&q=' + encodeURIComponent(q.trim());
     if (_discoverGenre && _discoverType !== 'game') url += '&genre=' + encodeURIComponent(_discoverGenre);
     try {
       const items = await apiGet(url);
       if (!items || items.length === 0) {
-        results.innerHTML = '<div class="text-center text-[#9090b0] py-12 flex flex-col items-center gap-3">' +
-          '<span class="material-symbols-outlined" style="font-size:48px;opacity:0.4">search_off</span>' +
-          '<p class="text-[14px] font-medium">' + (hasQ ? '"' + escapeHtml(q.trim()) + '" için sonuç bulunamadı' : 'Bu türde sonuç yok') + '</p>' +
-          '<p class="text-[12px] opacity-60">Farklı bir arama dene</p>' +
+        results.innerHTML = '<div class="col-span-3 text-center py-12 flex flex-col items-center gap-3">' +
+          '<span class="material-symbols-outlined text-[#9090b0]" style="font-size:48px;opacity:0.4">search_off</span>' +
+          '<p class="text-[14px] font-medium text-[#9090b0]">' + (hasQ ? '"' + escapeHtml(q.trim()) + '" için sonuç bulunamadı' : 'Bu türde sonuç yok') + '</p>' +
+          '<p class="text-[12px] text-[#9090b0] opacity-60">Farklı bir arama dene</p>' +
           '</div>';
         return;
       }
-      results.innerHTML = items.map(it => {
-        const typeLabelMap = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
-        const typeLabel = typeLabelMap[it.type] || it.type || 'Anime';
+      const _DS_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#ffb4ab'};
+      const _DS_LABEL  = {anime:'Anime',manga:'Manga',manhwa:'Manhwa',game:'Oyun'};
+      results.innerHTML = items.map(function(it) {
+        const stripe = _DS_STRIPE[it.type] || '#00d4ff';
+        const typeLabel = _DS_LABEL[it.type] || it.type || 'Anime';
         const cover = it.cover_url
-          ? `<img src="${it.cover_url}" class="w-full h-full object-cover" loading="lazy"/>`
-          : `<span class="text-[#9090b0] font-bold text-xs">${escapeHtml((it.title||'??').slice(0,2).toUpperCase())}</span>`;
+          ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"/>'
+          : '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-2xl font-bold">' + escapeHtml((it.title||'??').slice(0,2).toUpperCase()) + '</div>';
         const discoverData = JSON.stringify({
           title: it.title,
           type: it.type || 'anime',
@@ -2479,23 +2502,19 @@
           external_id: String(it.external_id || ''),
           genres: it.genres || []
         });
-        return `
-          <div class="interactive-card flex items-center gap-4 p-3 rounded-xl bg-[#1c1d37] border border-white/5 inner-glow group hover:border-[#00d4ff]/30 transition-colors">
-            <div class="w-[40px] h-[56px] shrink-0 rounded bg-[#31324d] overflow-hidden flex items-center justify-center">${cover}</div>
-            <div class="flex flex-col gap-0.5 flex-grow min-w-0">
-              <h4 class="font-bold text-[14px] text-[#e1e0ff] leading-tight truncate">${escapeHtml(it.title)}</h4>
-              <div class="flex items-center gap-2 text-[#9090b0] text-[12px]">
-                ${it.year ? '<span>' + it.year + '</span>' : ''}
-                <span class="px-1.5 py-0.5 rounded-full bg-[#00d4ff]/15 text-[#00d4ff] text-[10px] font-bold">${typeLabel}</span>
-              </div>
-            </div>
-            <button class="h-9 px-3 border border-[#00d4ff] text-[#00d4ff] rounded-full text-[13px] font-semibold flex items-center gap-1 hover:bg-[#00d4ff]/10 transition-colors flex-shrink-0 active:scale-[0.97]"
-              data-discover-add='${discoverData}'
-            ><span class="material-symbols-outlined text-[16px]">add</span> Ekle</button>
-          </div>`;
+        return '<div class="group relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/50 cursor-pointer active:scale-[0.95] transition-all">' +
+          '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
+          '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
+          cover +
+          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="background:rgba(0,212,255,0.8);color:#003642">' + typeLabel + '</div>' +
+          '<div class="absolute bottom-0 left-0 right-0 z-20 p-2">' +
+          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1.5">' + escapeHtml(it.title) + '</p>' +
+          '<button class="w-full h-7 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 active:scale-[0.97] transition-all" style="background:rgba(0,212,255,0.9);color:#003642" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
+          '<span class="material-symbols-outlined" style="font-size:14px">add</span>Ekle</button>' +
+          '</div></div>';
       }).join('');
 
-      results.querySelectorAll('[data-discover-add]').forEach(btn => {
+      results.querySelectorAll('[data-discover-add]').forEach(function(btn) {
         btn.addEventListener('click', function() {
           const data = JSON.parse(this.dataset.discoverAdd);
           prefillAddForm(data);
@@ -2503,7 +2522,7 @@
         });
       });
     } catch (err) {
-      results.innerHTML = '<div class="text-center text-[#9090b0] py-8">Hata: ' + escapeHtml(err.message) + '</div>';
+      results.innerHTML = '<div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">Hata: ' + escapeHtml(err.message) + '</div>';
     }
   }
 
