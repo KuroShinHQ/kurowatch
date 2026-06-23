@@ -1748,6 +1748,38 @@
     renderTagColorPicker();
     if (window.kuroPWA) window.kuroPWA.initPushUI();
     _initMalSync();
+
+    // ── validate-key wiring ───────────────────────────────────────
+    const validateResult = document.getElementById('settings-validate-result');
+    async function _validateKey(service, key, labelEl) {
+      if (!key) { showToast('Key boş', 'error'); return; }
+      const origText = labelEl ? labelEl.textContent : '';
+      if (labelEl) { labelEl.textContent = '...'; labelEl.disabled = true; }
+      try {
+        const r = await apiPost('/api/proxy/validate-key', { service, key });
+        const color = r.valid ? '#22c55e' : '#ff5252';
+        if (validateResult) {
+          validateResult.classList.remove('hidden');
+          validateResult.style.color = color;
+          validateResult.textContent = (r.valid ? '✓ ' : '✗ ') + r.message;
+        }
+        showToast(r.message, r.valid ? 'success' : 'error');
+      } catch(e) {
+        showToast('Test hatası: ' + e.message, 'error');
+      } finally {
+        if (labelEl) { labelEl.textContent = origText; labelEl.disabled = false; }
+      }
+    }
+
+    const igdbTestBtn = document.getElementById('settings-igdb-test');
+    if (igdbTestBtn) {
+      igdbTestBtn.onclick = function() {
+        const id  = document.getElementById('settings-igdb-id');
+        const sec = document.getElementById('settings-igdb-secret');
+        const key = (sec && sec.value.trim()) || (id && id.value.trim()) || '';
+        _validateKey('igdb', key, igdbTestBtn);
+      };
+    }
   }
 
   // ── MAL OAuth2 Sync ──────────────────────────────────────────────
@@ -2997,6 +3029,69 @@
     const initial = (location.hash || '').replace('#','') || 'screen-home';
     const valid = ['screen-home','screen-detail','screen-search','screen-updates','screen-stats','screen-settings','screen-archive'];
     showScreen(valid.includes(initial) ? initial : 'screen-home');
+
+    // ── Pull-to-refresh (Home + Updates) ──────────────────────────
+    (function() {
+      var _ptrScreens = ['screen-home', 'screen-updates'];
+      var _ptrStartY  = 0;
+      var _ptrActive  = false;
+      var _ptrMinDist = 72;
+      var _ptrIndicator = null;
+
+      function _getIndicator() {
+        if (!_ptrIndicator) {
+          _ptrIndicator = document.createElement('div');
+          _ptrIndicator.id = 'ptr-indicator';
+          _ptrIndicator.style.cssText = [
+            'position:fixed;top:56px;left:50%;transform:translateX(-50%) translateY(-100%)',
+            'width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center',
+            'background:rgba(0,212,255,0.15);border:1px solid rgba(0,212,255,0.4)',
+            'transition:transform 0.2s ease,opacity 0.2s ease;opacity:0;z-index:200'
+          ].join(';');
+          _ptrIndicator.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;color:#00d4ff">arrow_downward</span>';
+          document.body.appendChild(_ptrIndicator);
+        }
+        return _ptrIndicator;
+      }
+
+      document.addEventListener('touchstart', function(e) {
+        if (!_ptrScreens.includes(_currentScreen)) return;
+        if (window.scrollY > 4) return;
+        _ptrStartY = e.touches[0].clientY;
+        _ptrActive = true;
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function(e) {
+        if (!_ptrActive) return;
+        var dy = e.touches[0].clientY - _ptrStartY;
+        if (dy < 0) { _ptrActive = false; return; }
+        var ratio = Math.min(dy / (_ptrMinDist * 1.5), 1);
+        var ind = _getIndicator();
+        ind.style.opacity = String(ratio);
+        ind.style.transform = 'translateX(-50%) translateY(' + (ratio * 20 - 100 + 100 * ratio) + '%)';
+      }, { passive: true });
+
+      document.addEventListener('touchend', function(e) {
+        if (!_ptrActive) return;
+        _ptrActive = false;
+        var dy = e.changedTouches[0].clientY - _ptrStartY;
+        var ind = _getIndicator();
+        if (dy >= _ptrMinDist) {
+          ind.querySelector('.material-symbols-outlined').style.animation = 'spin 0.6s linear infinite';
+          if (_currentScreen === 'screen-home') renderHome();
+          else if (_currentScreen === 'screen-updates') renderUpdates();
+          setTimeout(function() {
+            ind.style.opacity = '0';
+            ind.style.transform = 'translateX(-50%) translateY(-100%)';
+            if (ind.querySelector('.material-symbols-outlined'))
+              ind.querySelector('.material-symbols-outlined').style.animation = '';
+          }, 600);
+        } else {
+          ind.style.opacity = '0';
+          ind.style.transform = 'translateX(-50%) translateY(-100%)';
+        }
+      }, { passive: true });
+    })();
 
     // i18n uygula (varsa)
     if (window.kuroI18n && typeof window.kuroI18n.apply === 'function') {

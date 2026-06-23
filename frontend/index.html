@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=39"/>
+<link rel="stylesheet" href="tailwind.css?v=40"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -93,24 +93,24 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
   animation: none;
 }
 .screen.slide-in-right {
-  animation: slideInRight 0.28s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation: slideInRight 0.32s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 .screen.slide-in-left {
-  animation: slideInLeft 0.28s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation: slideInLeft 0.32s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 .screen.slide-up {
-  animation: slideUp 0.32s cubic-bezier(0.4,0,0.2,1) forwards;
+  animation: slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;
 }
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(32px); }
+  from { opacity: 0; transform: translateX(24px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-32px); }
+  from { opacity: 0; transform: translateX(-24px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 </style>
@@ -656,7 +656,10 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
           <input id="settings-igdb-id" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none focus:border-[#00d4ff]/60 transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Twitch Client ID" type="text"/>
           <label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">IGDB Client Secret</label>
           <input id="settings-igdb-secret" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none focus:border-[#00d4ff]/60 transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Twitch Client Secret" type="password"/>
-          <button id="settings-igdb-save" class="w-full h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Token Yenile</button>
+          <div class="flex gap-2">
+            <button id="settings-igdb-save" class="flex-1 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Token Yenile</button>
+            <button id="settings-igdb-test" class="h-11 px-4 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#9090b0">Test</button>
+          </div>
         </div>
         <div style="border-top:1px solid rgba(255,255,255,0.06)" class="pt-4 space-y-2">
           <!-- MAL -->
@@ -670,6 +673,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
             <input id="settings-mal-client-secret" class="flex-1 h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="MyAnimeList Client Secret" type="password"/>
             <button id="settings-mal-save" class="h-11 px-4 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Kaydet</button>
           </div>
+          <div id="settings-validate-result" class="hidden text-[11px] pt-1"></div>
           <div id="mal-sync-bar" class="flex items-center gap-2 flex-wrap pt-1">
             <span id="mal-status-label" class="text-[11px] text-[#9090b0]">MAL: Bağlı değil</span>
             <button id="mal-connect-btn" class="h-9 px-3 rounded-lg text-[11px] font-medium transition-colors" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#e1e0ff">MAL'a Bağlan</button>
