@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=38"/>
+<link rel="stylesheet" href="tailwind.css?v=39"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -626,222 +626,224 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 
 
 <!-- ════════════════════════════════════════════════════════════════ -->
-<!-- EKRAN: SETTINGS — Ayarlar                                       -->
+<!-- EKRAN: SETTINGS — Ayarlar v7                                    -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-settings" class="screen hidden w-full pb-safe-nav">
-  <div class="pt-20 lg:pt-8 pb-6 px-4 max-w-3xl mx-auto space-y-6">
-    <h1 class="text-[20px] font-bold text-[#e1e0ff]">Ayarlar</h1>
-
-    <!-- İstatistikler Kısayolu -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <button class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors" data-nav="screen-stats">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#00d4ff]">bar_chart</span><span class="text-[16px] font-medium text-[#e1e0ff]">İstatistiklerimi Gör</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
-      </button>
-      <div class="border-t border-white/5"></div>
-      <button class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors" data-nav="screen-archive">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]">archive</span><span class="text-[16px] font-medium text-[#e1e0ff]">Arşiv</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
-      </button>
+  <div class="pt-20 pb-8 px-4 space-y-6">
+    <div>
+      <h1 class="text-[20px] font-bold tracking-tight text-[#e1e0ff]">AYARLAR</h1>
     </div>
 
-    <!-- Dışa/İçe Aktar -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/5"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Veri</span></div>
-      <button id="settings-export-btn" class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#00d4ff]">upload</span><span class="text-[16px] font-medium text-[#e1e0ff]">Dışa Aktar (JSON)</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
+    <!-- Hızlı Gezinti -->
+    <section class="glass-card rounded-xl overflow-hidden divide-y divide-white/5">
+      <button class="w-full flex items-center justify-between px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]" data-nav="screen-stats">
+        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#00d4ff]" style="font-size:20px">bar_chart</span><span class="text-[14px] font-medium text-[#e1e0ff]">İstatistiklerimi Gör</span></div>
+        <span class="material-symbols-outlined text-[#9090b0]" style="font-size:18px">chevron_right</span>
       </button>
-      <div class="border-t border-white/5"></div>
-      <button class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors" data-modal-open="modal-conflict">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]">download</span><span class="text-[16px] font-medium text-[#e1e0ff]">İçe Aktar</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
+      <button class="w-full flex items-center justify-between px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]" data-nav="screen-archive">
+        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]" style="font-size:20px">archive</span><span class="text-[14px] font-medium text-[#e1e0ff]">Arşiv</span></div>
+        <span class="material-symbols-outlined text-[#9090b0]" style="font-size:18px">chevron_right</span>
       </button>
-      <div class="border-t border-white/5"></div>
-      <button id="settings-genres-patch-btn" class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#bbc5eb]">local_offer</span><span class="text-[16px] font-medium text-[#e1e0ff]">Türleri AniList'ten Güncelle</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
-      </button>
-      <div class="border-t border-white/5"></div>
-      <button id="settings-enrich-covers-btn" class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#ffd9a1]">image_search</span><span class="text-[16px] font-medium text-[#e1e0ff]">Cover'ları AniList'ten Zenginleştir</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
-      </button>
-      <div class="border-t border-white/5"></div>
-      <button id="settings-cover-debug-btn" class="w-full flex items-center justify-between px-4 min-h-[56px] hover:bg-white/5 transition-colors">
-        <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]">broken_image</span><span class="text-[16px] font-medium text-[#e1e0ff]">Cover Debugger</span></div>
-        <span class="material-symbols-outlined text-[#9090b0]">chevron_right</span>
-      </button>
-    </div>
+    </section>
 
-    <!-- API Kimlik Bilgileri -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/5"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">API</span></div>
-      <div class="px-4 py-4 flex flex-col gap-3">
-        <div>
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">IGDB Client ID</label>
-          <input id="settings-igdb-id" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client ID" type="text"/>
+    <!-- API & Bağlantılar -->
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">API & Bağlantılar</h2>
+      <div class="glass-card rounded-xl p-4 space-y-4">
+        <!-- IGDB -->
+        <div class="space-y-2">
+          <label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">IGDB Client ID</label>
+          <input id="settings-igdb-id" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none focus:border-[#00d4ff]/60 transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Twitch Client ID" type="text"/>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">IGDB Client Secret</label>
+          <input id="settings-igdb-secret" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none focus:border-[#00d4ff]/60 transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Twitch Client Secret" type="password"/>
+          <button id="settings-igdb-save" class="w-full h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Token Yenile</button>
         </div>
-        <div>
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">IGDB Client Secret</label>
-          <input id="settings-igdb-secret" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="Twitch Client Secret" type="password"/>
-        </div>
-        <button id="settings-igdb-save" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Token Yenile</button>
-        <div class="border-t border-white/5 pt-3 mt-1">
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">MAL Client ID</label>
-          <div class="flex gap-2 mb-2">
-            <input id="settings-mal-client-id" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client ID" type="text"/>
-          </div>
-          <div class="flex items-center gap-2 mb-1">
-            <label class="block text-[12px] text-[#9090b0] uppercase tracking-wider font-semibold">MAL Client Secret</label>
-            <span id="settings-mal-secret-badge" class="hidden text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 border border-green-500/30">✓ Kayıtlı</span>
+        <div style="border-top:1px solid rgba(255,255,255,0.06)" class="pt-4 space-y-2">
+          <!-- MAL -->
+          <label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">MAL Client ID</label>
+          <input id="settings-mal-client-id" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="MyAnimeList Client ID" type="text"/>
+          <div class="flex items-center gap-2">
+            <label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">MAL Client Secret</label>
+            <span id="settings-mal-secret-badge" class="hidden text-[9px] font-bold px-2 py-0.5 rounded-full" style="background:rgba(34,197,94,0.12);color:#22c55e;border:1px solid rgba(34,197,94,0.3)">✓ Kayıtlı</span>
           </div>
           <div class="flex gap-2">
-            <input id="settings-mal-client-secret" class="flex-1 h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 font-mono" placeholder="MyAnimeList Client Secret" type="password"/>
-            <button id="settings-mal-save" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97]">Kaydet</button>
+            <input id="settings-mal-client-secret" class="flex-1 h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="MyAnimeList Client Secret" type="password"/>
+            <button id="settings-mal-save" class="h-11 px-4 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Kaydet</button>
           </div>
-          <!-- MAL OAuth Sync -->
-          <div id="mal-sync-bar" class="mt-3 flex items-center gap-2 flex-wrap">
-            <span id="mal-status-label" class="text-[12px] text-[#9090b0]">MAL: Bağlı değil</span>
-            <button id="mal-connect-btn" class="h-[36px] px-3 bg-[#2d2f4e] border border-white/10 text-[#e1e0ff] rounded-lg text-[12px] font-medium hover:bg-[#3a3c60] transition-colors">MAL'a Bağlan</button>
-            <button id="mal-import-btn" class="hidden h-[36px] px-3 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[12px] font-medium hover:bg-[#00d4ff]/20 transition-colors">↓ Listemi İçe Aktar</button>
-            <button id="mal-disconnect-btn" class="hidden h-[36px] px-3 bg-[#ff4444]/10 border border-[#ff4444]/30 text-[#ff6666] rounded-lg text-[12px] font-medium hover:bg-[#ff4444]/20 transition-colors">Bağlantıyı Kes</button>
+          <div id="mal-sync-bar" class="flex items-center gap-2 flex-wrap pt-1">
+            <span id="mal-status-label" class="text-[11px] text-[#9090b0]">MAL: Bağlı değil</span>
+            <button id="mal-connect-btn" class="h-9 px-3 rounded-lg text-[11px] font-medium transition-colors" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#e1e0ff">MAL'a Bağlan</button>
+            <button id="mal-import-btn" class="hidden h-9 px-3 rounded-lg text-[11px] font-medium transition-colors" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">↓ Listemi İçe Aktar</button>
+            <button id="mal-disconnect-btn" class="hidden h-9 px-3 rounded-lg text-[11px] font-medium transition-colors" style="background:rgba(255,68,68,0.08);border:1px solid rgba(255,68,68,0.3);color:#ff6666">Bağlantıyı Kes</button>
           </div>
-          <div id="mal-import-result" class="hidden mt-1 text-[11px] text-[#22c55e]"></div>
+          <div id="mal-import-result" class="hidden text-[11px]" style="color:#22c55e"></div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- Veri Yönetimi -->
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Veri Yönetimi</h2>
+      <div class="glass-card rounded-xl overflow-hidden divide-y divide-white/5">
+        <button id="settings-export-btn" class="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]">
+          <span class="material-symbols-outlined text-[#00d4ff]" style="font-size:20px">upload</span>
+          <span class="text-[14px] font-medium text-[#e1e0ff]">Dışa Aktar (JSON)</span>
+        </button>
+        <button class="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]" data-modal-open="modal-conflict">
+          <span class="material-symbols-outlined text-[#9090b0]" style="font-size:20px">download</span>
+          <span class="text-[14px] font-medium text-[#e1e0ff]">İçe Aktar</span>
+        </button>
+        <button id="settings-genres-patch-btn" class="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]">
+          <span class="material-symbols-outlined text-[#bbc5eb]" style="font-size:20px">local_offer</span>
+          <span class="text-[14px] font-medium text-[#e1e0ff]">Türleri AniList'ten Güncelle</span>
+        </button>
+        <button id="settings-enrich-covers-btn" class="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]">
+          <span class="material-symbols-outlined text-[#ffd9a1]" style="font-size:20px">image_search</span>
+          <span class="text-[14px] font-medium text-[#e1e0ff]">Cover'ları AniList'ten Zenginleştir</span>
+        </button>
+        <button id="settings-cover-debug-btn" class="w-full flex items-center gap-3 px-4 min-h-[52px] hover:bg-white/5 transition-colors active:scale-[0.98]">
+          <span class="material-symbols-outlined text-[#9090b0]" style="font-size:20px">broken_image</span>
+          <span class="text-[14px] font-medium text-[#e1e0ff]">Cover Debugger</span>
+        </button>
+      </div>
+    </section>
 
     <!-- Etiketler -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-        <span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Etiketler</span>
-        <button id="tag-create-toggle" class="h-8 px-3 border border-[#00d4ff]/50 text-[#00d4ff] rounded-lg text-[12px] font-medium hover:bg-[#00d4ff]/10 transition-colors flex items-center gap-1">
-          <span class="material-symbols-outlined text-[14px]">add</span> Yeni
-        </button>
-      </div>
-      <div id="tag-create-form" class="hidden px-4 py-3 border-b border-white/5 flex-col gap-3">
-        <input id="tag-name-input" class="w-full h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none focus:border-[#00d4ff]/50 placeholder:text-[#9090b0]" placeholder="Etiket adı..." type="text"/>
-        <div class="flex items-center gap-3">
-          <span class="text-[12px] text-[#9090b0]">Renk:</span>
-          <div class="flex gap-2" id="tag-color-picker"></div>
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Etiketler</h2>
+      <div class="glass-card rounded-xl overflow-hidden">
+        <div class="px-4 py-3 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+          <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Etiketler</span>
+          <button id="tag-create-toggle" class="h-8 px-3 rounded-lg text-[11px] font-medium flex items-center gap-1 transition-colors" style="border:1px solid rgba(0,212,255,0.4);color:#00d4ff">
+            <span class="material-symbols-outlined" style="font-size:14px">add</span> Yeni
+          </button>
         </div>
-        <button id="tag-save-btn" class="h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 active:scale-[0.97] transition-colors">Oluştur</button>
+        <div id="tag-create-form" class="hidden px-4 py-3 flex-col gap-3" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+          <input id="tag-name-input" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none transition-colors placeholder:text-[#9090b0]" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Etiket adı..." type="text"/>
+          <div class="flex items-center gap-3">
+            <span class="text-[12px] text-[#9090b0]">Renk:</span>
+            <div class="flex gap-2" id="tag-color-picker"></div>
+          </div>
+          <button id="tag-save-btn" class="h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Oluştur</button>
+        </div>
+        <div id="tag-list-settings" class="flex flex-col divide-y divide-white/5">
+          <div class="px-4 py-4 text-[13px] text-[#9090b0]">Yükleniyor...</div>
+        </div>
       </div>
-      <div id="tag-list-settings" class="flex flex-col divide-y divide-white/5">
-        <div class="px-4 py-4 text-[13px] text-[#9090b0]">Yükleniyor...</div>
-      </div>
-    </div>
+    </section>
 
     <!-- İndirme Ayarları -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/5"><span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">İndirme (FAZ-3)</span></div>
-      <div class="px-4 py-4 flex flex-col gap-4">
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">İndirme Ayarları</h2>
+      <div class="glass-card rounded-xl p-4 space-y-4">
+        <!-- Auto-delete toggle -->
         <div id="settings-auto-delete-wrap" class="flex items-center justify-between min-h-[44px] cursor-pointer">
-          <div><div class="text-[16px] font-medium text-[#e1e0ff]">Otomatik Sil</div><div class="text-[12px] text-[#9090b0]">İzlenen bölüm N-1 silinir</div></div>
-          <div class="relative"><div id="settings-auto-delete-bg" class="block bg-[#31324d] w-10 h-6 rounded-full border border-white/10 transition-colors"></div><div id="settings-auto-delete-dot" class="dot absolute left-1 top-1 bg-[#9090b0] w-4 h-4 rounded-full transition transform"></div></div>
-        </div>
-        <div class="border-t border-white/5"></div>
-        <div>
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">Manuel İndirme Kalitesi</label>
-          <div class="text-[11px] text-[#9090b0] mb-2">İndir butonuna bastığınızda kullanılır</div>
-          <div class="flex bg-[#272842] rounded-lg p-1 border border-white/5">
-            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="480p">480p</button>
-            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="720p">720p</button>
-            <button class="settings-quality-manual-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
+          <div>
+            <div class="text-[14px] font-medium text-[#e1e0ff]">İzlenen Bölümü Sil</div>
+            <div class="text-[11px] text-[#9090b0] mt-0.5">İzlenen bölüm N-1 otomatik silinir</div>
+          </div>
+          <div class="relative flex-shrink-0">
+            <div id="settings-auto-delete-bg" class="block w-10 h-6 rounded-full border transition-colors" style="background:#31324d;border-color:rgba(255,255,255,0.1)"></div>
+            <div id="settings-auto-delete-dot" class="dot absolute left-1 top-1 w-4 h-4 rounded-full transition transform" style="background:#9090b0"></div>
           </div>
         </div>
+        <div style="border-top:1px solid rgba(255,255,255,0.06)"></div>
+        <!-- Manuel kalite -->
         <div>
-          <label class="block text-[12px] text-[#9090b0] mb-1 uppercase tracking-wider font-semibold">Otomatik İndirme Kalitesi</label>
-          <div class="text-[11px] text-[#9090b0] mb-2">Daisy-chain (otomatik sıradaki bölüm) için kullanılır</div>
-          <div class="flex bg-[#272842] rounded-lg p-1 border border-white/5">
-            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md bg-[#0d0d1a] text-[#00d4ff] font-medium text-[14px] shadow-sm border border-white/5" data-quality="480p">480p</button>
-            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="720p">720p</button>
-            <button class="settings-quality-auto-btn flex-1 py-2 rounded-md text-[#9090b0] hover:text-[#e1e0ff] font-medium text-[14px] transition-colors" data-quality="1080p">1080p</button>
+          <div class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0] mb-1">Manuel İndirme Kalitesi</div>
+          <div class="text-[10px] text-[#9090b0] mb-2">İndir butonuna bastığınızda kullanılır</div>
+          <div class="flex rounded-xl p-1" style="background:rgba(26,26,46,0.8);border:1px solid rgba(255,255,255,0.06)">
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#9090b0] transition-colors" data-quality="480p">480p</button>
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#00d4ff] transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.06)" data-quality="720p">720p</button>
+            <button class="settings-quality-manual-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#9090b0] transition-colors" data-quality="1080p">1080p</button>
+          </div>
+        </div>
+        <!-- Auto kalite -->
+        <div>
+          <div class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0] mb-1">Otomatik İndirme Kalitesi</div>
+          <div class="text-[10px] text-[#9090b0] mb-2">Daisy-chain için kullanılır</div>
+          <div class="flex rounded-xl p-1" style="background:rgba(26,26,46,0.8);border:1px solid rgba(255,255,255,0.06)">
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#00d4ff] transition-colors" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.06)" data-quality="480p">480p</button>
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#9090b0] transition-colors" data-quality="720p">720p</button>
+            <button class="settings-quality-auto-btn flex-1 py-2 rounded-lg text-[12px] font-bold text-[#9090b0] transition-colors" data-quality="1080p">1080p</button>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- PWA Yükle -->
-    <div id="pwa-install-section" class="hidden bg-[#1a1a2e] rounded-xl inner-glow border border-[#00d4ff]/20 px-4 py-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <div class="text-[16px] font-bold text-[#e1e0ff]">Uygulamayı Yükle</div>
-          <div class="text-[12px] text-[#9090b0] mt-1">KuroWatch'ı ana ekrana ekle</div>
-        </div>
-        <button id="pwa-install-btn" class="h-[44px] px-4 bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[14px] font-medium hover:bg-[#00d4ff]/20 transition-colors active:scale-[0.97] flex items-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">install_mobile</span> Yükle
-        </button>
-      </div>
-    </div>
-
-    <!-- Push Bildirimleri -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4 space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <div class="text-[14px] font-semibold text-[#e1e0ff]">Push Bildirimleri</div>
-          <div class="text-[12px] text-[#9090b0] mt-0.5">Yeni bölüm geldiğinde bildirim al</div>
-        </div>
-        <button id="push-toggle-btn"
-          class="relative w-[52px] h-[28px] rounded-full border transition-all duration-300 bg-[#1c1d37] border-white/10"
-          aria-label="Push toggle">
-          <span id="push-toggle-dot" class="absolute top-[3px] left-[3px] w-5 h-5 rounded-full bg-[#9090b0] transition-all duration-300"></span>
-        </button>
-      </div>
-      <div id="push-status" class="text-[11px] text-[#9090b0] hidden">Durum yükleniyor…</div>
-      <button id="push-test-btn"
-        class="hidden w-full h-[40px] rounded-lg bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] text-[13px] font-medium hover:bg-[#00d4ff]/20 transition-colors">
-        🔔 Test Bildirimi Gönder
-      </button>
-    </div>
-
-    <!-- Cookies (İndirme bypass) -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/5 flex items-center justify-between">
-        <span class="text-[12px] uppercase text-[#9090b0] tracking-wider font-semibold">Site Cookies (İndirme)</span>
-        <span class="text-[10px] text-[#9090b0]">tranimeizle.co vb. için</span>
-      </div>
-      <div class="px-4 py-4 flex flex-col gap-3">
-        <p class="text-[12px] text-[#9090b0]">Cloudflare korumalı sitelerden indirmek için browser cookie'si gerekir. Chrome'da <strong class="text-[#e1e0ff]">Get cookies.txt LOCALLY</strong> extension kur → siteye git → Export → dosyayı buraya yükle.</p>
-        <div id="settings-cookies-list" class="text-[12px] text-[#9090b0]">Yükleniyor...</div>
+    <!-- Site Cookies -->
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Site Cookies (İndirme)</h2>
+      <div class="glass-card rounded-xl p-4 space-y-3">
+        <p class="text-[11px] text-[#9090b0]">Cloudflare korumalı sitelerden indirmek için browser cookie'si gerekir. Chrome'da <strong class="text-[#e1e0ff]">Get cookies.txt LOCALLY</strong> kur → siteye git → Export → yükle.</p>
+        <div id="settings-cookies-list" class="text-[11px] text-[#9090b0]">Yükleniyor...</div>
         <div class="flex gap-2 items-center">
-          <select id="settings-cookies-site" class="h-[44px] px-3 bg-[#0d0d1a] border border-white/5 rounded-lg text-[14px] text-[#e1e0ff] focus:outline-none flex-shrink-0" style="min-width:160px">
+          <select id="settings-cookies-site" class="h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none flex-shrink-0" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08);min-width:150px">
             <option value="tranimeizle">tranimeizle.co</option>
             <option value="turkanime">turkanime.co</option>
             <option value="diziwatch">diziwatch.com</option>
             <option value="cookies">Genel (tüm siteler)</option>
           </select>
-          <label class="flex-1 flex items-center justify-center gap-2 h-[44px] bg-[#00d4ff]/10 border border-[#00d4ff]/30 text-[#00d4ff] rounded-lg text-[13px] font-medium cursor-pointer hover:bg-[#00d4ff]/20 transition-colors">
+          <label class="flex-1 flex items-center justify-center gap-2 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider cursor-pointer active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">
             <span class="material-symbols-outlined" style="font-size:18px">upload_file</span>
-            cookies.txt Yükle
+            cookies.txt
             <input id="settings-cookies-input" type="file" accept=".txt" class="hidden"/>
           </label>
         </div>
-        <!-- CAPTCHA Human-in-the-Loop -->
-        <button id="captcha-browser-btn"
-          class="w-full flex items-center justify-center gap-2 h-[44px] rounded-lg text-[13px] font-medium transition-colors"
-          style="background:rgba(255,160,0,0.12);border:1px solid rgba(255,160,0,0.35);color:#ffb300">
+        <button id="captcha-browser-btn" class="w-full flex items-center justify-center gap-2 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(255,160,0,0.1);border:1px solid rgba(255,160,0,0.3);color:#ffb300">
           <span class="material-symbols-outlined" style="font-size:18px">open_in_browser</span>
-          CAPTCHA ile Cookie Al (Otomatik)
+          CAPTCHA ile Cookie Al
         </button>
-        <div id="captcha-status-box" class="hidden rounded-lg px-3 py-2 text-[12px]"
-          style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9090b0"></div>
+        <div id="captcha-status-box" class="hidden rounded-lg px-3 py-2 text-[11px]" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9090b0"></div>
       </div>
-    </div>
+    </section>
+
+    <!-- Bildirimler & PWA -->
+    <section class="space-y-2">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Bildirimler</h2>
+      <div class="glass-card rounded-xl overflow-hidden">
+        <!-- Push -->
+        <div class="p-4 flex items-center justify-between">
+          <div>
+            <div class="text-[14px] font-medium text-[#e1e0ff]">Push Bildirimleri</div>
+            <div class="text-[11px] text-[#9090b0] mt-0.5">Yeni bölüm geldiğinde bildirim al</div>
+          </div>
+          <button id="push-toggle-btn" class="relative w-[52px] h-[28px] rounded-full border transition-all duration-300 flex-shrink-0" style="background:#1c1d37;border-color:rgba(255,255,255,0.1)" aria-label="Push toggle">
+            <span id="push-toggle-dot" class="absolute top-[3px] left-[3px] w-5 h-5 rounded-full transition-all duration-300" style="background:#9090b0"></span>
+          </button>
+        </div>
+        <div id="push-status" class="hidden px-4 pb-2 text-[11px] text-[#9090b0]">Durum yükleniyor…</div>
+        <button id="push-test-btn" class="hidden mx-4 mb-3 w-[calc(100%-32px)] h-10 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">
+          🔔 Test Bildirimi Gönder
+        </button>
+        <!-- PWA -->
+        <div id="pwa-install-section" class="hidden p-4 flex items-center justify-between" style="border-top:1px solid rgba(255,255,255,0.06)">
+          <div>
+            <div class="text-[14px] font-medium text-[#e1e0ff]">Uygulamayı Yükle</div>
+            <div class="text-[11px] text-[#9090b0] mt-0.5">KuroWatch'ı ana ekrana ekle</div>
+          </div>
+          <button id="pwa-install-btn" class="h-10 px-4 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all flex items-center gap-2 flex-shrink-0" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">
+            <span class="material-symbols-outlined" style="font-size:18px">install_mobile</span> Yükle
+          </button>
+        </div>
+      </div>
+    </section>
 
     <!-- Hakkında -->
-    <div class="bg-[#1a1a2e] rounded-xl inner-glow border border-white/5 px-4 py-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <div class="text-[16px] font-bold text-[#e1e0ff]">KuroWatch</div>
-          <div id="settings-version" class="text-[12px] text-[#9090b0] mt-1">v0.3.0 — Medya Takip Uygulaması</div>
+    <section class="space-y-2 pb-4">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Uygulama</h2>
+      <div class="glass-card rounded-xl overflow-hidden divide-y divide-white/5">
+        <div class="px-4 py-4 flex items-center justify-between">
+          <div>
+            <div class="text-[14px] font-bold text-[#e1e0ff]">KuroWatch</div>
+            <div id="settings-version" class="text-[11px] text-[#9090b0] mt-0.5">v0.3.0 — Medya Takip</div>
+          </div>
+          <button id="settings-update-btn" class="h-9 px-4 rounded-lg text-[11px] font-medium transition-colors flex items-center gap-1" style="border:1px solid rgba(255,255,255,0.1);color:#9090b0">
+            <span class="material-symbols-outlined" style="font-size:16px">system_update</span> Güncelle
+          </button>
         </div>
-        <button id="settings-update-btn" class="h-[36px] px-4 rounded-lg border border-white/10 text-[#9090b0] text-[12px] hover:border-[#00d4ff] hover:text-[#00d4ff] transition-colors flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">system_update</span> Güncelle
-        </button>
       </div>
-    </div>
+    </section>
   </div>
 </section>
 
