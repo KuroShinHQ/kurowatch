@@ -165,53 +165,72 @@
   }
 
   function _jobCard(job) {
-    const ep = job.media_type === 'anime' ? `Bölüm ${job.episode_number}` : `Bölüm ${job.episode_number}`;
+    const ep   = 'Bölüm ' + job.episode_number;
     const size = job.file_size_bytes ? _fmtSize(job.file_size_bytes) : '';
+    const TYPE_TC = { anime: '#00d4ff', manga: '#ffd9a1', manhwa: '#bbc5eb', game: '#ffb4ab' };
+    const tc   = TYPE_TC[job.media_type] || '#00d4ff';
+    const initials = (job.content_title || '').split(' ').slice(0, 2).map(function (w) { return w[0] || ''; }).join('').toUpperCase() || '?';
+    const typeLbl  = (job.media_type || 'anime').toUpperCase();
 
-    let progressBar = '';
+    const coverBox =
+      '<div class="w-[56px] h-[80px] rounded-lg flex-shrink-0 flex items-center justify-center relative overflow-hidden"' +
+      ' style="background:#16213e;border:1px solid rgba(255,255,255,0.05)">' +
+      '<span class="font-bold text-xl" style="color:' + tc + '">' + escHtml(initials) + '</span>' +
+      '<div class="absolute top-1 left-1 text-[7px] font-bold px-1 rounded" style="background:' + tc + ';color:#003642">' + typeLbl + '</div></div>';
+
+    const pct = job.progress_pct || 0;
+    let progressHtml = '';
     if (job.status === 'downloading' || job.status === 'queued') {
-      progressBar = `
-        <div class="w-full bg-white/10 rounded-full h-1.5 mt-2 overflow-hidden">
-          <div class="h-full rounded-full transition-all duration-500 ${job.status === 'downloading' ? 'bg-[#00d4ff]' : 'bg-[#3b4665]'}"
-               style="width:${job.progress_pct || 0}%"></div>
-        </div>
-        <div class="text-xs text-[#9090b0] mt-1">${job.progress_pct || 0}%</div>`;
+      const barBg = job.status === 'downloading' ? '#00d4ff' : '#3b4665';
+      progressHtml =
+        '<div class="w-full rounded-full overflow-hidden" style="height:3px;background:rgba(255,255,255,0.1)">' +
+        '<div class="h-full rounded-full transition-all duration-500" style="width:' + pct + '%;background:' + barBg + '"></div></div>' +
+        '<div class="flex justify-between">' +
+        '<span class="text-[10px] font-bold" style="color:' + tc + '">' + pct + '%</span>' +
+        '<span class="text-[10px]" style="color:#9090b0">' + (job.status === 'downloading' ? 'İndiriliyor…' : 'Kuyrukta') + '</span></div>';
     }
 
     let actions = '';
     if (job.status === 'done') {
       if (job.media_type === 'anime') {
-        actions = `<button onclick="window.kuroPlayer.openVideo(${job.id},'${escHtml(job.content_title)} — ${ep}')"
-                     class="text-xs px-3 py-1.5 rounded-lg bg-[#00d4ff]/20 text-[#00d4ff] hover:bg-[#00d4ff]/30 transition-colors min-h-[36px]">
-                     ▶ Oynat</button>`;
+        actions = '<button onclick="window.kuroPlayer.openVideo(' + job.id + ',\'' + escHtml(job.content_title) + ' — ' + ep + '\')"' +
+          ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+          ' style="background:#00d4ff;color:#003642;box-shadow:0 0 10px rgba(0,212,255,0.3)">▶ OYNAT</button>';
       } else {
-        actions = `<button onclick="window.kuroReader.open(${job.id},'${escHtml(job.content_title)} — ${ep}',${job.content_id},${job.episode_number})"
-                     class="text-xs px-3 py-1.5 rounded-lg bg-[#ffd9a1]/20 text-[#ffd9a1] hover:bg-[#ffd9a1]/30 transition-colors min-h-[36px]">
-                     📖 Oku</button>`;
+        actions = '<button onclick="window.kuroReader.open(' + job.id + ',\'' + escHtml(job.content_title) + ' — ' + ep + '\',' + job.content_id + ',' + job.episode_number + ')"' +
+          ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+          ' style="background:#ffd9a1;color:#1a0a00;box-shadow:0 0 10px rgba(255,217,161,0.2)">📖 OKU</button>';
       }
-      actions += `<button onclick="window.kuroDownload.cancel(${job.id})"
-                   class="text-xs px-3 py-1.5 rounded-lg bg-[#ffb4ab]/10 text-[#ffb4ab] hover:bg-[#ffb4ab]/20 transition-colors min-h-[36px] ml-2">
-                   🗑 Sil</button>`;
+      actions += '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
+        ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all ml-1" style="color:#9090b0" title="Sil">' +
+        '<span class="material-symbols-outlined" style="font-size:18px">delete</span></button>';
     } else if (job.status === 'queued') {
-      actions = `<button onclick="window.kuroDownload.cancel(${job.id})"
-                   class="text-xs px-3 py-1.5 rounded-lg bg-[#3b4665] text-[#9090b0] hover:bg-white/10 transition-colors min-h-[36px]">
-                   ✕ İptal</button>`;
+      actions = '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
+        ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+        ' style="background:rgba(255,255,255,0.05);color:#9090b0">✕ İPTAL</button>';
+    } else if (job.status === 'downloading') {
+      actions = '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
+        ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all" style="color:#9090b0" title="İptal">' +
+        '<span class="material-symbols-outlined" style="font-size:18px">close</span></button>';
     } else if (job.status === 'failed') {
-      actions = `<span class="text-xs text-[#ffb4ab] truncate max-w-[200px]" title="${escHtml(job.error_msg || '')}">${escHtml((job.error_msg || 'Bilinmeyen hata').substring(0, 60))}</span>`;
+      actions = '<span class="text-[11px] truncate flex-1" style="color:#ffb4ab" title="' + escHtml(job.error_msg || '') + '">' +
+        escHtml((job.error_msg || 'Bilinmeyen hata').substring(0, 50)) + '</span>' +
+        '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
+        ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all flex-shrink-0" style="color:#9090b0" title="Sil">' +
+        '<span class="material-symbols-outlined" style="font-size:18px">delete</span></button>';
     }
 
-    return `
-      <div class="glass-card rounded-xl p-4 flex flex-col gap-2">
-        <div class="flex items-start justify-between gap-3">
-          <div class="flex flex-col gap-1 min-w-0">
-            <div class="font-medium text-sm truncate text-[#e1e0ff]">${escHtml(job.content_title)}</div>
-            <div class="text-xs text-[#9090b0]">${ep} · ${escHtml(job.media_type)} ${size ? '· ' + size : ''}</div>
-          </div>
-          ${_statusBadge(job)}
-        </div>
-        ${progressBar}
-        ${actions ? `<div class="flex items-center mt-1">${actions}</div>` : ''}
-      </div>`;
+    return '<div class="glass-card rounded-xl p-4 flex flex-col gap-3">' +
+      '<div class="flex gap-3">' + coverBox +
+      '<div class="flex-1 flex flex-col justify-between min-w-0 py-0.5">' +
+      '<div>' +
+      '<h3 class="text-[14px] font-semibold truncate" style="color:#e1e0ff">' + escHtml(job.content_title) + '</h3>' +
+      '<p class="text-[11px] mt-0.5" style="color:#9090b0">' + ep + (size ? ' · ' + size : '') + '</p>' +
+      '</div>' +
+      (actions ? '<div class="flex items-center gap-2 flex-wrap">' + actions + '</div>' : '') +
+      '</div></div>' +
+      (progressHtml ? '<div class="space-y-1">' + progressHtml + '</div>' : '') +
+      '</div>';
   }
 
   async function _renderDownloadScreen() {
@@ -228,7 +247,24 @@
       return;
     }
 
-    el.innerHTML = jobs.map(_jobCard).join('');
+    // Duruma göre grupla
+    const active    = jobs.filter(function (j) { return j.status === 'downloading' || j.status === 'queued'; });
+    const done      = jobs.filter(function (j) { return j.status === 'done'; });
+    const failed    = jobs.filter(function (j) { return j.status === 'failed' || j.status === 'cancelled' || j.status === 'deleted'; });
+
+    function _section(icon, color, label, items) {
+      return '<div class="space-y-3">' +
+        '<div class="flex items-center justify-between">' +
+        '<h2 class="text-[13px] font-semibold flex items-center gap-2" style="color:#dde3e7">' +
+        '<span class="material-symbols-outlined text-[18px]" style="color:' + color + '">' + icon + '</span>' + label + '</h2></div>' +
+        items.map(_jobCard).join('') + '</div>';
+    }
+
+    const sections = [];
+    if (active.length) sections.push(_section('downloading', '#00d4ff', 'İndiriliyor', active));
+    if (done.length)   sections.push(_section('check_circle', '#4caf50', 'Tamamlandı', done));
+    if (failed.length) sections.push(_section('error', '#ffb4ab', 'Hata / İptal', failed));
+    el.innerHTML = sections.join('');
 
     // Depolama güncelle
     const storage = await _fetchStorage();
