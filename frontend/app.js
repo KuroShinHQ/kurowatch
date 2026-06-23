@@ -286,31 +286,6 @@
   // ── Render: Home (Kütüphane Grid) ────────────────────────────────
   let homeFilter = { type: 'all', status: 'all', genre: 'all', query: '' };
 
-  function _buildGenreChips(items) {
-    const row = document.getElementById('home-genre-row');
-    if (!row) return;
-    const genreSet = new Set();
-    items.forEach(function(it) { (it.genres || []).forEach(function(g) { genreSet.add(g); }); });
-    const genres = Array.from(genreSet).sort();
-    if (genres.length === 0) { row.classList.add('hidden'); return; }
-    row.classList.remove('hidden');
-    const chipClass = 'filter-genre shrink-0 font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow border';
-    const activeClass = 'bg-[#00d4ff]/15 border-[#00d4ff] text-[#00d4ff]';
-    const inactiveClass = 'bg-[#1c1d37] border-white/5 text-[#9090b0]';
-    const allActive = homeFilter.genre === 'all';
-    row.innerHTML = '<button class="' + chipClass + ' shrink-0 ' + (allActive ? 'bg-[#3b4665] border-[#3b4665] text-[#e1e0ff]' : inactiveClass) + '" data-genre="all">TÜM TÜRLER</button>' +
-      genres.map(function(g) {
-        const on = homeFilter.genre === g;
-        return '<button class="' + chipClass + ' ' + (on ? activeClass : inactiveClass) + '" data-genre="' + escapeHtml(g) + '">' + escapeHtml(genreTR(g)).toUpperCase() + '</button>';
-      }).join('');
-    row.querySelectorAll('.filter-genre').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        homeFilter.genre = this.dataset.genre;
-        renderHome();
-      });
-    });
-  }
-
   // ── v7 Hero + Satır render ────────────────────────────────────────
   async function renderHomeV7(items) {
     if (!items || items.length === 0) return;
@@ -778,7 +753,6 @@
 
     // Quick-edit pop-up (mobil ilerleme düzenleme)
     const tapBtn  = document.getElementById('detail-progress-tap');
-    const qePanel = document.getElementById('progress-quick-edit');
     const qeInput = document.getElementById('pqe-input');
     if (tapBtn && qePanel && qeInput) {
       tapBtn.onclick = function(e) {
@@ -1026,7 +1000,31 @@
     if (editBtn) {
       editBtn.onclick = function() { openEditModal(item); };
     }
+
+    // HATA-14: Her renderDetail'de tab'ı episodes'a sıfırla
+    detailSwitchTab('episodes');
   }
+
+  // ── Detail Tab Geçişi (global scope — inline onclick'ten de çağrılıyor) ──
+  function detailSwitchTab(tabId) {
+    const tabs = ['episodes','characters','sites','notes'];
+    const matchMap = { episodes:'böl', characters:'karak', sites:'site', notes:'not' };
+    const buttons = document.querySelectorAll('#screen-detail .sticky.top-0 button');
+    buttons.forEach(function(btn) {
+      const isActive = btn.textContent.toLowerCase().includes(matchMap[tabId] || tabId);
+      btn.classList.toggle('text-[#00d4ff]', isActive);
+      btn.classList.toggle('border-[#00d4ff]', isActive);
+      btn.classList.toggle('text-[#9090b0]', !isActive);
+      btn.classList.toggle('border-transparent', !isActive);
+    });
+    tabs.forEach(function(t) {
+      const el = document.getElementById('detail-tab-' + t);
+      if (!el) return;
+      if (t === tabId) { el.classList.remove('hidden'); el.classList.add('flex'); }
+      else { el.classList.add('hidden'); el.classList.remove('flex'); }
+    });
+  }
+  window.detailSwitchTab = detailSwitchTab;
 
   // ── Edit Modal ───────────────────────────────────────────────────
   function openEditModal(item) {
