@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=32"/>
+<link rel="stylesheet" href="tailwind.css?v=33"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -267,161 +267,178 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- EKRAN: DETAIL — İçerik Detay                                   -->
 <!-- ════════════════════════════════════════════════════════════════ -->
+<!-- EKRAN: DETAIL v7                                                 -->
+<!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-detail" class="screen hidden w-full min-h-screen flex flex-col antialiased overscroll-none pb-safe font-sans">
-<!-- Top Section: Cover Image & Actions -->
-<div class="relative w-full h-[353px] flex-shrink-0">
-<div class="absolute inset-0 bg-cover bg-center bg-[#16213e]" id="detail-cover-bg"></div>
-<div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/60 to-transparent"></div>
-<div class="absolute inset-0 bg-gradient-to-b from-[#0d0d1a]/40 to-transparent"></div>
-<div class="absolute top-0 left-0 w-full p-gutter flex justify-between items-center z-10 pt-16 lg:pt-4">
-  <button class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]" data-nav="screen-home">
-    <span class="material-symbols-outlined">arrow_back</span>
-  </button>
-  <div class="flex items-center gap-2">
-    <label for="cover-file-input" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97] cursor-pointer" title="Cover yükle">
-      <span class="material-symbols-outlined text-[20px]">upload</span>
-    </label>
-    <button id="detail-edit-btn" class="w-10 h-10 rounded-full bg-[#16213e]/80 backdrop-blur-md flex items-center justify-center border border-white/10 text-[#e1e0ff] hover:text-[#00d4ff] transition-colors active:scale-[0.97]">
-      <span class="material-symbols-outlined">edit</span>
+<!-- Hero v7: Cover + Cinema Gradient + Actions -->
+<div class="relative flex-shrink-0" style="height:480px">
+  <div class="absolute inset-0 bg-cover bg-center" id="detail-cover-bg" style="background-color:#16213e"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(0deg,#0d0d1a 0%,rgba(13,13,26,0.78) 40%,rgba(13,13,26,0) 100%)"></div>
+  <div class="absolute inset-0" style="background:linear-gradient(180deg,rgba(13,13,26,0.45) 0%,transparent 28%)"></div>
+  <!-- Floating header -->
+  <div class="absolute top-0 left-0 w-full px-4 flex justify-between items-center z-10 pt-12">
+    <button class="w-10 h-10 rounded-full flex items-center justify-center active:scale-[0.95] transition-transform" style="background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.1)" data-nav="screen-home">
+      <span class="material-symbols-outlined text-[#e1e0ff]">arrow_back_ios_new</span>
     </button>
+    <div class="flex items-center gap-2">
+      <label for="cover-file-input" class="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer active:scale-[0.95] transition-transform" style="background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.1)" title="Cover yükle">
+        <span class="material-symbols-outlined text-[#e1e0ff]" style="font-size:20px">upload</span>
+      </label>
+      <button id="detail-edit-btn" class="w-10 h-10 rounded-full flex items-center justify-center active:scale-[0.95] transition-transform" style="background:rgba(0,0,0,0.38);border:1px solid rgba(255,255,255,0.1)">
+        <span class="material-symbols-outlined text-[#e1e0ff]">edit</span>
+      </button>
+    </div>
   </div>
-</div>
-<div class="absolute bottom-0 left-0 w-full p-gutter z-10 flex flex-col gap-2">
-  <div class="flex items-center gap-2">
-    <span id="detail-type-badge" class="px-2 py-1 bg-[#3b4665]/20 border border-[#3b4665] text-[#bbc5eb] font-label-caps text-label-caps rounded uppercase">TV</span>
-    <span id="detail-status-badge" class="px-2 py-1 font-label-caps text-label-caps rounded flex items-center gap-1 uppercase" style="background:#feb52822;border:1px solid #feb528;color:#feb528">
-      <span class="material-symbols-outlined text-[14px]">play_circle</span> İzliyor
-    </span>
+  <!-- Content overlay: badges + title + CTA -->
+  <div class="absolute bottom-0 left-0 w-full px-4 pb-5 flex flex-col gap-3 z-10">
+    <div class="flex flex-wrap gap-2 items-center">
+      <span id="detail-type-badge" class="px-2 py-0.5 rounded font-label-caps text-label-caps uppercase" style="background:rgba(187,197,235,0.18);border:1px solid #bbc5eb;color:#bbc5eb">TV</span>
+      <span id="detail-status-badge" class="px-2 py-0.5 rounded font-label-caps text-label-caps flex items-center gap-1 uppercase" style="background:rgba(254,181,40,0.15);border:1px solid #feb528;color:#feb528">
+        <span class="material-symbols-outlined" style="font-size:12px">play_circle</span> İzliyor
+      </span>
+    </div>
+    <h1 id="detail-title" class="font-bold text-white uppercase leading-tight drop-shadow-lg" style="font-size:26px;letter-spacing:-0.02em">—</h1>
+    <!-- DEVAM ET butonu (app.js gösterir, ilerleme varsa) -->
+    <button id="detail-continue-btn" class="hidden w-full h-12 rounded-lg font-bold flex items-center justify-center gap-2 active:scale-[0.97] transition-transform" style="background:#00d4ff;color:#003642;box-shadow:0 0 20px rgba(0,212,255,0.3);font-size:14px">
+      <span class="material-symbols-outlined fill-1">play_arrow</span>
+      <span id="detail-continue-label">DEVAM ET</span>
+    </button>
+    <!-- Secondary actions -->
+    <div class="flex gap-2">
+      <button class="flex-1 h-11 rounded-lg font-label-caps text-label-caps flex flex-col items-center justify-center gap-0.5 active:scale-[0.95] transition-transform" style="background:rgba(47,54,57,0.55);border:1px solid rgba(255,255,255,0.1);color:#e1e0ff" onclick="detailSwitchTab('episodes')">
+        <span class="material-symbols-outlined" style="font-size:18px">format_list_numbered</span>Bölümler
+      </button>
+      <button class="flex-1 h-11 rounded-lg font-label-caps text-label-caps flex flex-col items-center justify-center gap-0.5 active:scale-[0.95] transition-transform" style="background:rgba(47,54,57,0.55);border:1px solid rgba(255,255,255,0.1);color:#e1e0ff" onclick="detailSwitchTab('characters')">
+        <span class="material-symbols-outlined" style="font-size:18px">group</span>Karakterler
+      </button>
+      <button class="flex-1 h-11 rounded-lg font-label-caps text-label-caps flex flex-col items-center justify-center gap-0.5 active:scale-[0.95] transition-transform" style="background:rgba(47,54,57,0.55);border:1px solid rgba(255,255,255,0.1);color:#e1e0ff" onclick="detailSwitchTab('notes')">
+        <span class="material-symbols-outlined" style="font-size:18px">edit_note</span>Notlar
+      </button>
+    </div>
   </div>
-  <h1 id="detail-title" class="font-display-lg text-display-lg text-[#e1e0ff] drop-shadow-md">—</h1>
-</div>
-<input id="cover-file-input" type="file" accept="image/*" class="hidden"/>
+  <input id="cover-file-input" type="file" accept="image/*" class="hidden"/>
 </div>
 <!-- Main Content Container -->
 <div class="flex-1 flex flex-col -mt-4 bg-[#0d0d1a] z-20 rounded-t-[24px] inner-glow">
-<!-- Sezon Tabları (birden fazla sezon varsa gösterilir) -->
-<div id="detail-season-bar" style="display:none" class="px-4 pt-3 pb-1">
-  <div id="detail-season-tabs" class="flex gap-2 overflow-x-auto hide-scrollbar"></div>
-</div>
-<div class="p-gutter flex flex-col gap-4">
-  <!-- Rating -->
-  <div class="flex flex-col items-center gap-1 py-2">
-    <div class="flex items-center gap-1" id="detail-rating-container">
-      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-      <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
-    </div>
-    <span id="detail-score-text" class="text-[13px] font-bold text-[#9090b0]">— / 10</span>
+  <!-- Sezon Tabları -->
+  <div id="detail-season-bar" style="display:none" class="px-4 pt-3 pb-1">
+    <div id="detail-season-tabs" class="flex gap-2 overflow-x-auto hide-scrollbar"></div>
   </div>
-  <!-- Progress -->
-  <div class="bg-[#16213e] rounded-xl p-4 inner-glow border border-white/5 flex flex-col gap-3">
-    <div class="flex justify-between items-end">
-      <div class="flex flex-col relative">
-        <span class="font-label-caps text-label-caps text-[#9090b0] uppercase">İLERLEME</span>
-        <button id="detail-progress-tap" class="flex items-baseline gap-1 active:opacity-70 transition-opacity" style="background:none;border:none;padding:0;cursor:pointer">
-          <span id="detail-progress-current" class="font-headline-md text-headline-md text-[#00d4ff]">0</span>
-          <span id="detail-progress-total" class="font-body-md text-body-md text-[#9090b0]">/ 0</span>
-          <span class="material-symbols-outlined" style="font-size:14px;color:#9090b0;margin-left:2px">edit</span>
-        </button>
-        <!-- Quick-edit pop-up -->
-        <div id="progress-quick-edit" style="display:none;position:absolute;top:100%;left:0;z-index:50;background:#1a1b2e;border:1px solid #00d4ff4d;border-radius:12px;padding:10px 12px;margin-top:6px;box-shadow:0 8px 32px #00000088;min-width:200px">
-          <div class="flex items-center gap-2">
-            <button id="pqe-minus" style="width:36px;height:36px;border-radius:8px;background:#31324d;border:1px solid #ffffff1a;color:#e1e0ff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">−</button>
-            <input id="pqe-input" type="number" min="0" style="width:72px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:16px;font-weight:700;text-align:center;padding:0 8px">
-            <button id="pqe-plus"  style="width:36px;height:36px;border-radius:8px;background:#31324d;border:1px solid #ffffff1a;color:#e1e0ff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">+</button>
-            <button id="pqe-save"  style="flex:1;height:36px;border-radius:8px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;font-weight:700;cursor:pointer">Kaydet</button>
+  <div class="p-gutter flex flex-col gap-4">
+    <!-- Rating -->
+    <div class="flex flex-col items-center gap-1 py-2">
+      <div class="flex items-center gap-1" id="detail-rating-container">
+        <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+        <span class="material-symbols-outlined text-[#31324d] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
+      </div>
+      <span id="detail-score-text" class="text-[13px] font-bold text-[#9090b0]">— / 10</span>
+    </div>
+    <!-- Progress Card -->
+    <div class="bg-[#16213e] rounded-xl p-4 inner-glow border border-white/5 flex flex-col gap-3">
+      <div class="flex justify-between items-end">
+        <div class="flex flex-col relative">
+          <span class="font-label-caps text-label-caps text-[#9090b0] uppercase">İLERLEME</span>
+          <button id="detail-progress-tap" class="flex items-baseline gap-1 active:opacity-70 transition-opacity" style="background:none;border:none;padding:0;cursor:pointer">
+            <span id="detail-progress-current" class="font-headline-md text-headline-md text-[#00d4ff]">0</span>
+            <span id="detail-progress-total" class="font-body-md text-body-md text-[#9090b0]">/ 0</span>
+            <span class="material-symbols-outlined" style="font-size:14px;color:#9090b0;margin-left:2px">edit</span>
+          </button>
+          <div id="progress-quick-edit" style="display:none;position:absolute;top:100%;left:0;z-index:50;background:#1a1b2e;border:1px solid #00d4ff4d;border-radius:12px;padding:10px 12px;margin-top:6px;box-shadow:0 8px 32px #00000088;min-width:200px">
+            <div class="flex items-center gap-2">
+              <button id="pqe-minus" style="width:36px;height:36px;border-radius:8px;background:#31324d;border:1px solid #ffffff1a;color:#e1e0ff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">−</button>
+              <input id="pqe-input" type="number" min="0" style="width:72px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:16px;font-weight:700;text-align:center;padding:0 8px">
+              <button id="pqe-plus"  style="width:36px;height:36px;border-radius:8px;background:#31324d;border:1px solid #ffffff1a;color:#e1e0ff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">+</button>
+              <button id="pqe-save"  style="flex:1;height:36px;border-radius:8px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;font-weight:700;cursor:pointer">Kaydet</button>
+            </div>
           </div>
         </div>
+        <span id="detail-progress-pct" class="font-body-md text-body-md text-[#00d4ff] bg-[#00d4ff]/10 px-2 py-1 rounded">0%</span>
       </div>
-      <span id="detail-progress-pct" class="font-body-md text-body-md text-[#00d4ff] bg-[#00d4ff]/10 px-2 py-1 rounded">0%</span>
-    </div>
-    <div class="w-full h-2 bg-[#31324d] rounded-full overflow-hidden">
-      <div id="detail-progress-bar" class="h-full bg-[#00d4ff] active-rim rounded-full" style="width:0%"></div>
-    </div>
-    <div class="flex items-center gap-2 pt-2">
-      <span class="font-label-caps text-label-caps text-[#9090b0]">0</span>
-      <input class="w-full" id="detail-progress-slider" max="100" min="0" type="range" value="0"/>
-      <span id="detail-slider-max" class="font-label-caps text-label-caps text-[#9090b0]">100</span>
-    </div>
-  </div>
-  <!-- Action Button -->
-  <button id="detail-mark-btn" class="w-full bg-[#00d4ff] text-[#0d0d1a] font-headline-sm text-headline-sm h-[44px] rounded-xl flex items-center justify-center gap-2 active-rim active:scale-[0.97] transition-transform">
-    <span class="font-bold">Sonraki Bölümü İşaretle</span>
-    <span class="material-symbols-outlined font-bold">check</span>
-  </button>
-</div>
-<!-- Synopsis + Next Airing -->
-<div id="detail-synopsis-section" style="display:none" class="px-4 pb-3 flex flex-col gap-2">
-  <div id="detail-next-airing" style="display:none" class="px-3 py-2 bg-[#00d4ff]/10 border border-[#00d4ff]/30 rounded-xl text-[#00d4ff] text-[13px] font-semibold flex items-center gap-2">
-    <span class="material-symbols-outlined text-[16px]">schedule</span>
-    <span id="detail-next-airing-text"></span>
-  </div>
-  <div id="detail-synopsis-wrap" style="display:none" class="flex flex-col gap-1">
-    <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Özet</span>
-    <p id="detail-synopsis-text" class="text-[13px] text-[#9090b0] leading-relaxed" style="overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;"></p>
-    <button id="detail-synopsis-toggle" style="display:none" class="text-left text-[12px] text-[#00d4ff] font-semibold mt-1">Devamını Gör</button>
-  </div>
-</div>
-<!-- Genres (AniList) -->
-<div id="detail-genres-row" class="hidden flex-wrap gap-2 px-4 pb-3 pt-1"></div>
-<!-- Etiketler -->
-<div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
-<!-- Tabs -->
-<div class="flex border-b border-white/5 px-gutter gap-6 sticky top-16 lg:top-0 bg-[#0d0d1a] z-30 pt-2">
-  <button class="text-[12px] uppercase font-bold text-[#00d4ff] pb-2 border-b-2 border-[#00d4ff] active:scale-[0.97] transition-all" onclick="detailSwitchTab('episodes')">Bölümler</button>
-  <button class="text-[12px] uppercase font-bold text-[#9090b0] pb-2 border-b-2 border-transparent hover:text-[#e1e0ff] transition-all active:scale-[0.97]" onclick="detailSwitchTab('sites')">Siteler</button>
-  <button class="text-[12px] uppercase font-bold text-[#9090b0] pb-2 border-b-2 border-transparent hover:text-[#e1e0ff] transition-all active:scale-[0.97]" onclick="detailSwitchTab('notes')">Notlar</button>
-</div>
-<!-- Tab Content -->
-<div class="flex-1 overflow-y-auto overscroll-contain p-gutter pb-[80px] relative">
-  <!-- Bölümler Tab -->
-  <div class="flex flex-col gap-2" id="detail-tab-episodes">
-    <div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">
-      <div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm 86</span><span class="font-body-md text-body-md text-[#9090b0]">The Awakening</span></div>
-      <div class="min-w-[44px] min-h-[44px] flex items-center justify-end"><div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50"><span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div>
-    </div>
-    <div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e] border border-[#00d4ff]/30 active-rim">
-      <div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-[#00d4ff]">Bölüm 87</span><span class="font-body-md text-body-md text-[#9090b0]">Shadows Fall</span></div>
-      <div class="flex items-center gap-2">
-        <span class="px-2 py-1 bg-[#00d4ff]/10 text-[#00d4ff] font-label-caps text-label-caps rounded uppercase">SIRA</span>
-        <div class="min-w-[44px] min-h-[44px] flex items-center justify-end cursor-pointer"><div class="w-6 h-6 rounded bg-[#31324d] flex items-center justify-center border border-white/10 hover:border-[#00d4ff] transition-colors"></div></div>
+      <div class="w-full h-2 bg-[#31324d] rounded-full overflow-hidden">
+        <div id="detail-progress-bar" class="h-full bg-[#00d4ff] active-rim rounded-full" style="width:0%"></div>
+      </div>
+      <div class="flex items-center gap-2 pt-2">
+        <span class="font-label-caps text-label-caps text-[#9090b0]">0</span>
+        <input class="w-full" id="detail-progress-slider" max="100" min="0" type="range" value="0"/>
+        <span id="detail-slider-max" class="font-label-caps text-label-caps text-[#9090b0]">100</span>
       </div>
     </div>
+    <!-- Mark Button -->
+    <button id="detail-mark-btn" class="w-full bg-[#00d4ff] text-[#0d0d1a] font-headline-sm text-headline-sm h-[44px] rounded-xl flex items-center justify-center gap-2 active-rim active:scale-[0.97] transition-transform">
+      <span class="font-bold">Sonraki Bölümü İşaretle</span>
+      <span class="material-symbols-outlined font-bold">check</span>
+    </button>
   </div>
-  <!-- Siteler Tab -->
-  <div class="hidden flex-col gap-2" id="detail-tab-sites">
-    <div class="p-4 rounded-xl bg-[#16213e] border border-[#00d4ff]/30 inner-glow flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold">CR</div>
-        <div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-[#e1e0ff]">Crunchyroll</span><span class="font-body-md text-body-md text-[#00d4ff]">Yeni Bölüm Var</span></div>
+  <!-- Synopsis + Next Airing -->
+  <div id="detail-synopsis-section" style="display:none" class="px-4 pb-3 flex flex-col gap-2">
+    <div id="detail-next-airing" style="display:none" class="px-3 py-2 bg-[#00d4ff]/10 border border-[#00d4ff]/30 rounded-xl text-[#00d4ff] text-[13px] font-semibold flex items-center gap-2">
+      <span class="material-symbols-outlined text-[16px]">schedule</span>
+      <span id="detail-next-airing-text"></span>
+    </div>
+    <div id="detail-synopsis-wrap" style="display:none" class="flex flex-col gap-1">
+      <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Özet</span>
+      <p id="detail-synopsis-text" class="text-[13px] text-[#9090b0] leading-relaxed" style="overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;"></p>
+      <button id="detail-synopsis-toggle" style="display:none" class="text-left text-[12px] text-[#00d4ff] font-semibold mt-1">Devamını Gör</button>
+    </div>
+  </div>
+  <!-- Genres -->
+  <div id="detail-genres-row" class="hidden flex-wrap gap-2 px-4 pb-3 pt-1"></div>
+  <!-- Tags -->
+  <div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
+  <!-- Tabs v7 -->
+  <div class="flex border-b border-white/5 px-gutter gap-6 sticky top-0 bg-[#0d0d1a] z-30 pt-2 overflow-x-auto hide-scrollbar">
+    <button class="text-[12px] uppercase font-bold text-[#00d4ff] pb-2 border-b-2 border-[#00d4ff] active:scale-[0.97] transition-all whitespace-nowrap" onclick="detailSwitchTab('episodes')">Bölümler</button>
+    <button class="text-[12px] uppercase font-bold text-[#9090b0] pb-2 border-b-2 border-transparent hover:text-[#e1e0ff] transition-all active:scale-[0.97] whitespace-nowrap" onclick="detailSwitchTab('characters')">Karakterler</button>
+    <button class="text-[12px] uppercase font-bold text-[#9090b0] pb-2 border-b-2 border-transparent hover:text-[#e1e0ff] transition-all active:scale-[0.97] whitespace-nowrap" onclick="detailSwitchTab('sites')">Siteler</button>
+    <button class="text-[12px] uppercase font-bold text-[#9090b0] pb-2 border-b-2 border-transparent hover:text-[#e1e0ff] transition-all active:scale-[0.97] whitespace-nowrap" onclick="detailSwitchTab('notes')">Notlar</button>
+  </div>
+  <!-- Tab Content -->
+  <div class="flex-1 overflow-y-auto overscroll-contain p-gutter pb-[80px] relative">
+    <!-- Bölümler Tab -->
+    <div class="flex flex-col gap-2" id="detail-tab-episodes">
+      <div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">
+        <div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm 86</span><span class="font-body-md text-body-md text-[#9090b0]">The Awakening</span></div>
+        <div class="min-w-[44px] min-h-[44px] flex items-center justify-end"><div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50"><span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div>
       </div>
-      <button class="px-4 py-2 bg-[#31324d] border border-white/10 rounded-lg text-[#e1e0ff] font-body-md hover:text-[#00d4ff] transition-colors flex items-center gap-2 active:scale-[0.97]">Aç <span class="material-symbols-outlined text-[18px]">open_in_new</span></button>
     </div>
-  </div>
-  <!-- Notlar Tab -->
-  <div class="hidden flex-col gap-4 h-full" id="detail-tab-notes">
-    <div class="flex justify-between items-center">
-      <span class="font-body-lg text-body-lg text-[#e1e0ff]">Kişisel Notlar</span>
-      <label class="flex items-center gap-2 cursor-pointer">
-        <span class="font-body-md text-body-md text-[#9090b0]">Spoiler Gizle</span>
-        <div class="relative"><input checked="" class="sr-only" id="detail-spoiler-toggle" type="checkbox"/><div class="block bg-[#31324d] w-10 h-6 rounded-full border border-white/10"></div><div class="dot absolute left-1 top-1 bg-[#00d4ff]/80 w-4 h-4 rounded-full transition transform translate-x-4"></div></div>
-      </label>
+    <!-- Karakterler Tab (v7) -->
+    <div class="hidden flex-col gap-4" id="detail-tab-characters">
+      <p class="text-center text-[#9090b0] py-8 text-[13px]">Karakter bilgisi yükleniyor...</p>
     </div>
-    <div class="relative flex-1 min-h-[200px]">
-      <textarea class="w-full h-full bg-[#16213e] border border-white/5 rounded-xl p-4 text-[#e1e0ff] font-body-md text-body-md resize-none focus:outline-none focus:border-[#00d4ff]/50 inner-glow transition-colors blur-sm" id="detail-notes-area" placeholder="Düşüncelerini yaz..."></textarea>
-      <div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="detail-spoiler-overlay">
-        <span class="px-4 py-2 bg-[#0d0d1a]/80 backdrop-blur border border-white/10 rounded-lg font-label-caps text-label-caps text-[#9090b0] flex items-center gap-2 uppercase"><span class="material-symbols-outlined text-[16px]">visibility_off</span> SPOILER GİZLİ</span>
+    <!-- Siteler Tab -->
+    <div class="hidden flex-col gap-2" id="detail-tab-sites">
+      <div class="p-4 rounded-xl bg-[#16213e] border border-[#00d4ff]/30 inner-glow flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded bg-[#00d4ff]/20 flex items-center justify-center text-[#00d4ff] font-bold">•</div>
+          <div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-[#e1e0ff]">Yükleniyor</span><span class="font-body-md text-body-md text-[#9090b0]">—</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Notlar Tab -->
+    <div class="hidden flex-col gap-4 h-full" id="detail-tab-notes">
+      <div class="flex justify-between items-center">
+        <span class="font-body-lg text-body-lg text-[#e1e0ff]">Kişisel Notlar</span>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <span class="font-body-md text-body-md text-[#9090b0]">Spoiler Gizle</span>
+          <div class="relative"><input checked="" class="sr-only" id="detail-spoiler-toggle" type="checkbox"/><div class="block bg-[#31324d] w-10 h-6 rounded-full border border-white/10"></div><div class="dot absolute left-1 top-1 bg-[#00d4ff]/80 w-4 h-4 rounded-full transition transform translate-x-4"></div></div>
+        </label>
+      </div>
+      <div class="relative flex-1 min-h-[200px]">
+        <textarea class="w-full h-full bg-[#16213e] border border-white/5 rounded-xl p-4 text-[#e1e0ff] font-body-md text-body-md resize-none focus:outline-none focus:border-[#00d4ff]/50 inner-glow transition-colors blur-sm" id="detail-notes-area" placeholder="Düşüncelerini yaz..."></textarea>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none" id="detail-spoiler-overlay">
+          <span class="px-4 py-2 bg-[#0d0d1a]/80 backdrop-blur border border-white/10 rounded-lg font-label-caps text-label-caps text-[#9090b0] flex items-center gap-2 uppercase"><span class="material-symbols-outlined text-[16px]">visibility_off</span> SPOILER GİZLİ</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 </section>
 
@@ -1228,12 +1245,11 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <script>
 // ── Detail Ekranı: Tab Geçişi ───────────────────────────────────
 function detailSwitchTab(tabId) {
-  const tabs = ['episodes','sites','notes'];
+  const tabs = ['episodes','characters','sites','notes'];
+  const matchMap = {episodes:'böl', characters:'karak', sites:'site', notes:'not'};
   const buttons = document.querySelectorAll('#screen-detail .sticky.top-0 button');
   buttons.forEach(btn => {
-    const isActive = btn.textContent.toLowerCase().includes(
-      tabId === 'episodes' ? 'böl' : tabId === 'sites' ? 'site' : 'not'
-    );
+    const isActive = btn.textContent.toLowerCase().includes(matchMap[tabId] || tabId);
     btn.classList.toggle('text-[#00d4ff]', isActive);
     btn.classList.toggle('border-[#00d4ff]', isActive);
     btn.classList.toggle('text-[#9090b0]', !isActive);
@@ -1241,6 +1257,7 @@ function detailSwitchTab(tabId) {
   });
   tabs.forEach(t => {
     const el = document.getElementById('detail-tab-' + t);
+    if (!el) return;
     if (t === tabId) { el.classList.remove('hidden'); el.classList.add('flex'); }
     else { el.classList.add('hidden'); el.classList.remove('flex'); }
   });

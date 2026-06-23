@@ -629,6 +629,22 @@
       }
     }
 
+    // DEVAM ET butonu (hero'da): progress 1-99% ise göster
+    const contBtn = document.getElementById('detail-continue-btn');
+    const contLabel = document.getElementById('detail-continue-label');
+    if (contBtn) {
+      const showCont = !isGame && pct > 0 && pct < 100;
+      contBtn.classList.toggle('hidden', !showCont);
+      if (showCont && contLabel) {
+        const nextEp = cur + 1;
+        const unitWord = isAnime ? 'Bölüm' : 'Chapter';
+        contLabel.textContent = 'DEVAM ET — ' + unitWord + ' ' + nextEp;
+      }
+      if (showCont && markBtn) {
+        contBtn.onclick = function() { markBtn.click(); };
+      }
+    }
+
     // Rating yıldızları (interaktif — tıklanınca PATCH ile kaydet)
     let currentScore = item.my_score || 0;
     const ratingEl = document.getElementById('detail-rating-container');
@@ -940,6 +956,28 @@
         }
 
         if (showSection && synSec) synSec.style.display = 'flex';
+
+        // Karakterler tab: al.characters varsa render et
+        var charTab = document.getElementById('detail-tab-characters');
+        if (charTab && al.characters && al.characters.length > 0) {
+          charTab.innerHTML = '<div class="flex overflow-x-auto gap-4 pb-2 hide-scrollbar">' +
+            al.characters.map(function(ch) {
+              var imgHtml = ch.image
+                ? '<img src="' + escapeHtml(ch.image) + '" class="w-full h-full object-cover rounded-full" loading="lazy"/>'
+                : '<span class="text-[#00d4ff] font-bold text-lg">' + escapeHtml((ch.name||'?').slice(0,2)) + '</span>';
+              var roleLabel = ch.role === 'MAIN' ? '★ Baş Rol' : ch.role === 'SUPPORTING' ? 'Yan Rol' : (ch.role || '');
+              var vaHtml = ch.voice_actor ? '<p class="text-[#9090b0] text-[9px] truncate">' + escapeHtml(ch.voice_actor) + '</p>' : '';
+              return '<div class="flex flex-col items-center gap-2 flex-shrink-0" style="width:76px">' +
+                '<div class="w-16 h-16 rounded-full border-2 flex items-center justify-center overflow-hidden" style="border-color:' + (ch.role==='MAIN'?'#00d4ff':'#3c494e') + ';background:#16213e">' +
+                imgHtml + '</div>' +
+                '<div class="text-center w-full">' +
+                '<p class="text-[11px] font-bold text-[#e1e0ff] truncate leading-tight">' + escapeHtml(ch.name||'') + '</p>' +
+                '<p class="text-[9px] text-[#00d4ff] font-bold uppercase tracking-wider">' + escapeHtml(roleLabel) + '</p>' +
+                vaHtml + '</div></div>';
+            }).join('') + '</div>';
+        } else if (charTab) {
+          charTab.innerHTML = '<p class="text-center text-[#9090b0] py-8 text-[13px]">Karakter bilgisi bulunamadı.</p>';
+        }
       }).catch(function() {});
     } else if (_synShown && synSec) {
       synSec.style.display = 'flex';
