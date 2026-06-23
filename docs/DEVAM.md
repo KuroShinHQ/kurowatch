@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-81) · **Aktif sürüm:** v1.2.0 → FAZ-V7 HTML ✅ / JS entegrasyon ⚠️ · **Son commit:** `c40b669`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-82) · **Aktif sürüm:** v1.2.0 → FAZ-V7 + Bug Fix ✅ · **Son commit:** `112ed4d`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -215,6 +215,47 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 
 ### 🎉 FAZ-V7 TAMAMEN TAMAMLANDI (V7-0..11 = 12/12)
 
+**FAZ-V7 Bug Fix** ✅ TAMAMLANDI (commit 112ed4d)
+```
+Kapsamlı 30-hata analizi → 15 kritik/yüksek/orta bug fix:
+
+RUNTIME CRASH FIX (app.js):
+[x] openReadOverlay/closeReadOverlay IIFE scope'a taşındı
+    (DOMContentLoaded closure'ındaydı → bölüm linkine tıklanınca ReferenceError)
+[x] window.openDetail exposed (hero DEVAM ET / DETAYLAR CTA → tanımsız fonksiyondu)
+
+NAV FIX (app.js):
+[x] _NAV_ORDER bottom-nav sırasıyla hizalandı: home→search→updates→downloads→settings→stats→archive
+    (eskisi: stats settings'in önündeydi, downloads en sonda — animasyon yönü yanlıştı)
+[x] valid[] array'e screen-downloads eklendi (#screen-downloads hash açılmıyordu)
+
+LISTENER FIX (app.js):
+[x] _initSearchTabs: discover-type-btn + filterBtn birikmeli addEventListener önlendi
+    (her search ekranına geçişte listener birikiyordu)
+[x] _addActiveType değişkeni: submitAddContent CSS class escape query kaldırıldı
+
+UX FIX (app.js):
+[x] renderDetail başında progress-quick-edit paneli sıfırlanıyor
+
+PLAYER FIX (player.js):
+[x] player-volume-btn mute toggle listener eklendi (tamamen bağlantısızdı)
+[x] panel-quality: list item tıklanabilir buton oldu, _selected state takibi,
+    apply butonu video.dataset.quality'i gerçekten güncelliyor
+[x] Reader: nextChapter() + prevChapter() metotları eklendi
+    - reader-prev/reader-next artık BÖLÜM geçişi (eskiden sayfa geçişiydi)
+    - reader-prev-page/reader-next-page sayfa geçişi olarak kaldı
+    - webtoon modunda prev/next otomatik chapter geçişi yapıyor
+    - _triggerAutoNextChapter() jobs listesinden sonraki bölümü buluyor ve açıyor
+
+KALAN (düşük öncelik — sonraki sohbet kararı):
+- HATA-5: detailSwitchTab inline script bağımlılığı
+- HATA-14: detail tab render sonrası tab button aktif göstergesi sıfırlanmıyor
+- HATA-21: panel-translate pointer-events double definition
+- HATA-25: active + hidden class çakışması (pratikte sorun çıkarmıyor)
+- HATA-2: home-genre-row HTML'de yok (dead code — _buildGenreChips hiç çağrılmıyor)
+- HATA-29: settings version hardcoded
+```
+
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
@@ -222,41 +263,21 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (24 Haz sohbet-81):
+MEVCUT DURUM (24 Haz sohbet-82):
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
-  - Son commit: c40b669 (bottom nav 5 tab, Stitch stil)
+  - Son commit: 112ed4d (15 bug fix — runtime crash + nav + reader chapter nav)
 
-⚠️ KRİTİK SORUN — 2 FRONTEND ÇAKIŞMASI:
-  FAZ-V7 HTML katmanı ✅ tamamlandı (index.html v7 Stitch yapısı)
-  AMA app.js'deki render fonksiyonları KARIŞIK — bazıları hâlâ eski HTML yazar
+⚠️ KALAN BUG'LAR (düşük öncelik):
+  - HATA-5: detailSwitchTab inline script bağımlılığı (strict mode risk)
+  - HATA-14: detail tab renderDetail sonrası aktif göstergesi sıfırlanmıyor
+  - HATA-2: home-genre-row HTML'de yok (_buildGenreChips dead code)
+  - HATA-21: panel-translate pointer-events double definition
+  - HATA-25: active+hidden class çakışması (şu an pratikte sorun yok)
 
-GERÇEK EKRAN DURUMU (24 Haz canlı test):
-  ✅ Home Hero + satırlar (renderHomeV7çalışıyor)
-  ⚠️ Home "Tüm Kütüphane" → renderHome() ESKİ kart stili render ediyor
-  ❌ Search → eski kod, v7 entegrasyonu yok
-  ✅ Updates → düzgün (v7)
-  ✅ Downloads → düzgün (v7)
-  ❌ Settings → eski kod, v7 entegrasyonu yok
-  ❌ Detail → TAMAMEN eski kod, v7 hero/tab/karakter yok
-  ❌ Stats/İstatistikler → görünmüyor (bağlantı eksik)
-  ⚠️ Video Player → global bağlı ama subtitle/quality/bölüm panelleri entegre değil
-  ❌ Manga Reader → manhwa sekmeleri entegre edilmemiş
-
-SOHBET-81 TAMAMLANDI:
-  - Bottom nav 6→5 tab (Ekle kaldırıldı) ✅
-  - Etiketler: ANA SAYFA/ARA/GÜNCELLEMELER/İNDİRMELER/AYARLAR ✅
-  - active-nav: border-top 3px cyan + glow + filled ikon ✅
-  - tailwind.css v41 rebuild ✅
-
-SONRAKİ GÖREV — FAZ-V7 JS Entegrasyon Tamamlama:
-  1. app.js renderHome(): home-library-grid kartlarını v7 stile çevir
-  2. app.js renderSearch() + renderLibrarySearch(): v7 HTML ID'lerine bağla
-  3. app.js renderDetail(): v7 hero/tab/karakter ID'lerine bağla
-  4. app.js renderStats(): screen-stats bağlantısını doğrula
-  5. player.js panel-quality/subtitle/episodes: v7 panel wiring kontrol et
-  6. Settings: renderSettings() v7 ID kontrol et
-  YAKLAŞIM: Her ekran için Stitch HTML'i ile app.js renderXxx() karşılaştır
-  → farklı ID/class varsa app.js'i güncelle (HTML değil)
+SONRAKİ GÖREV — Lord karar verir:
+  A) Kalan 5 düşük öncelikli bug fix
+  B) Canlı test (backend başlatıp tarayıcıda açmak) — crash fix doğrulama
+  C) Başka modül
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
