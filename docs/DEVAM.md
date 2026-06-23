@@ -136,28 +136,23 @@ SETTINGS key test  → POST /api/proxy/validate-key             ❌ YENİ (1 end
 [x] tailwind.css v34 rebuild
 ```
 
-**FAZ-V7-5: Manga Reader v7 Hybrid** ⚠️ YARIM (sohbet-78c, devam gerek)
+**FAZ-V7-5: Manga Reader v7 Hybrid** ✅ TAMAMLANDI (commit d5e8f02)
 ```
-[x] index.html #modal-reader → Stitch v7 ile replace (commit c193dab kısmı)
+[x] index.html #modal-reader → Stitch v7 ile replace (commit c193dab)
     - reader-header: glass sticky, WEB/SAYFA toggle, JP/TR, fullscreen, kuro-translate-btn
     - reader-pages: padding-top:64px, padding-bottom:128px
     - reader-nav: ALWAYS visible (v7), progress bar + cur/total + prev/next chapter + ±page
     - reader-ui-toggle: FAB orta-alt (visibility toggle)
     - panel-translate: Kuro Translate bottom sheet — Smart Clean toggle, font/opacity slider
-[x] player.js: _readerUI + _panelTranslate nesneleri eklendi (sohbet-78c)
-
-[ ] player.js DEVAM GEREKİYOR (sohbet-78c'de yarım kaldı):
-    - _reader._render() → progress bar + IntersectionObserver + webtoon/sayfa toggle update
-    - _reader._updateProgress() yeni metod
-    - _reader.open() → reader-chapter-label set, _readerUI.reset()
-    - _reader.close() → _panelTranslate.close(), _readerUI.reset(), observer.disconnect()
-    - _reader.toggleMode() → webtoon-btn/page-btn style güncelle
-    - DOMContentLoaded yeni butonlar:
-        reader-webtoon-btn, reader-page-btn, reader-kuro-translate-btn
-        reader-prev-page, reader-next-page, reader-ui-toggle
-        panel-translate-close, panel-translate-start (→ _translate.startTranslate())
-        range-font/opacity slider (→ CSS değişkeni)
-        reader-pages merkez-tap (toggle UI), modal-reader scroll (auto-hide)
+[x] player.js _readerUI + _panelTranslate nesneleri (sohbet-78c)
+[x] player.js tüm wiring tamamlandı (sohbet-79):
+    - _render(): data-page-idx eklendi, nav hide kaldırıldı, _updateProgress çağrısı
+    - _updateProgress(): progress bar + page-num + pct-label + cur-page + of-pages
+    - _initScrollObserver(): IntersectionObserver webtoon scroll progress takibi
+    - open(): reader-chapter-label + _readerUI.reset()
+    - close(): _panelTranslate.close() + observer.disconnect()
+    - toggleMode(forceWebtoon): webtoon-btn/page-btn stil senkronizasyonu
+    - DOMContentLoaded: tüm yeni butonlar + sliders + merkez-tap + scroll auto-hide
     - tailwind.css v35 rebuild
 ```
 
