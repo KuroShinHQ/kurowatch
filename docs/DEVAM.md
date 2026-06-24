@@ -291,12 +291,22 @@ MEVCUT DURUM (24 Haz sohbet-85):
 
   tailwind v45 + SW cache v7
 
-KALAN STITCH GOREVLER:
-  [✅] DETAIL — 96×54 thumbnail + karakter galeri ZATEN MEVCUT (FAZ-V7-3)
-  [✅] PLAYER — controls-overlay tam implement (FAZ-V7-4)
-  [✅] READER — panel-translate + header tam implement (FAZ-V7-5)
+LORD GERİ BİLDİRİMİ (sohbet-85 sonu):
+  ✅ Settings — güzel, tamamlanmış
+  ✅ Downloads — tamamlanmış
+  ✅ Updates — tamamlanmış
+  ❌ SEARCH: FİLTRELE butonu Stitch AI gibi görünmüyor, çalışmıyor da
+  ❌ HOME: Stitch AI gibi durmuyor, revizyon gerekiyor
+  ❌ DETAIL: Olmamış — baştan revizyon. Stitch AI prompt + Lord revize combo daha efektif
+  ❌ İndirme butonu (Downloads ekranındaki): Video/Manga Oku butonları bozulmuş/test edilmemiş
 
-Stitch TAM Entegrasyon tamamlandı. Sıradaki: UI bug-fix turu veya yeni özellik.
+SOHBET-86 ODAĞI — Revizyon + Keşif:
+  ÖNCELİK 1: SEARCH FİLTRELE butonu → Stitch AI birebir port (görsel + çalışır)
+  ÖNCELİK 2: HOME revizyon → Stitch AI ile karşılaştır, farkları kapat
+  ÖNCELİK 3: DETAIL revizyon → Stitch AI prompt + mevcut hybrid kombinasyonu
+  ÖNCELİK 4: Downloads → Video Oynat / Manga Oku buton fix (test et)
+
+  NOT: Lord ziplediği detay HTML'yi gönderecek veya Stitch AI prompt ile revize edecek
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
