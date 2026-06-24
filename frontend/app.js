@@ -1959,25 +1959,85 @@
     }
 
     // ── Tema seçimi ─────────────────────────────────────────────────
+    var _THEMES = {
+      kuro: {
+        '--kw-bg':               '#0d0d1a',
+        '--kw-surface':          '#16213e',
+        '--kw-surface-low':      '#181933',
+        '--kw-surface-high':     '#272842',
+        '--kw-card':             '#1a1a2e',
+        '--kw-accent':           '#00d4ff',
+        '--kw-accent-dim':       '#3cd7ff',
+        '--kw-secondary':        '#bbc5eb',
+        '--kw-tertiary':         '#ffd9a1',
+        '--kw-text':             '#e1e0ff',
+        '--kw-text-dim':         '#9090b0',
+        '--kw-text-variant':     '#bbc9cf',
+        '--kw-outline':          '#859398',
+        '--kw-outline-variant':  '#3c494e',
+      },
+      cinema: {
+        '--kw-bg':               '#0a0a0a',
+        '--kw-surface':          '#141414',
+        '--kw-surface-low':      '#111111',
+        '--kw-surface-high':     '#222222',
+        '--kw-card':             '#181818',
+        '--kw-accent':           '#e5b800',
+        '--kw-accent-dim':       '#ffd433',
+        '--kw-secondary':        '#c8c8c8',
+        '--kw-tertiary':         '#ff8c42',
+        '--kw-text':             '#f0f0f0',
+        '--kw-text-dim':         '#888888',
+        '--kw-text-variant':     '#aaaaaa',
+        '--kw-outline':          '#555555',
+        '--kw-outline-variant':  '#333333',
+      },
+      kawaii: {
+        '--kw-bg':               '#12001f',
+        '--kw-surface':          '#1e0a30',
+        '--kw-surface-low':      '#180826',
+        '--kw-surface-high':     '#2e1245',
+        '--kw-card':             '#1a0a2e',
+        '--kw-accent':           '#ff6b9d',
+        '--kw-accent-dim':       '#ff9bbe',
+        '--kw-secondary':        '#d4b0ff',
+        '--kw-tertiary':         '#ffb3d1',
+        '--kw-text':             '#ffe6f4',
+        '--kw-text-dim':         '#a070b0',
+        '--kw-text-variant':     '#c090d0',
+        '--kw-outline':          '#8855aa',
+        '--kw-outline-variant':  '#4a2260',
+      },
+    };
+
+    function _applyTheme(theme) {
+      var palette = _THEMES[theme] || _THEMES.kuro;
+      var root = document.documentElement;
+      Object.keys(palette).forEach(function(prop) {
+        root.style.setProperty(prop, palette[prop]);
+      });
+    }
+
     function _applyThemeUI(activeTheme) {
+      _applyTheme(activeTheme);
       document.querySelectorAll('.settings-theme-btn').forEach(function(b) {
-        const isCur = b.dataset.theme === activeTheme;
-        b.style.background    = isCur ? 'rgba(0,212,255,0.1)' : '';
-        b.style.borderColor   = isCur ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
-        const icon   = b.querySelector('.material-symbols-outlined');
-        const circle = b.querySelector('.theme-indicator-circle');
+        var isCur = b.dataset.theme === activeTheme;
+        b.style.background  = isCur ? 'rgba(0,212,255,0.1)' : '';
+        b.style.borderColor = isCur ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
+        var icon   = b.querySelector('.material-symbols-outlined');
+        var circle = b.querySelector('.theme-indicator-circle');
         if (icon)   icon.style.display   = isCur ? '' : 'none';
         if (circle) circle.style.display = isCur ? 'none' : '';
       });
     }
-    const savedTheme = localStorage.getItem('kurowatch-theme') || 'kuro';
+    var savedTheme = localStorage.getItem('kurowatch-theme') || 'kuro';
     _applyThemeUI(savedTheme);
     document.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
       btn.onclick = function() {
-        const theme = this.dataset.theme;
+        var theme = this.dataset.theme;
         localStorage.setItem('kurowatch-theme', theme);
         _applyThemeUI(theme);
-        showToast('Tema seçildi: ' + theme, 'info');
+        showToast('Tema uygulandı: ' + theme, 'info');
       };
     });
 
@@ -3374,6 +3434,19 @@
   }
 
   // ── Init ─────────────────────────────────────────────────────────
+  // Sayfa yüklenirken kaydedilen temayı uygula (renderSettings beklenmez)
+  (function() {
+    var _STARTUP_THEMES = {
+      kuro:   { '--kw-bg':'#0d0d1a','--kw-surface':'#16213e','--kw-surface-low':'#181933','--kw-surface-high':'#272842','--kw-card':'#1a1a2e','--kw-accent':'#00d4ff','--kw-accent-dim':'#3cd7ff','--kw-secondary':'#bbc5eb','--kw-tertiary':'#ffd9a1','--kw-text':'#e1e0ff','--kw-text-dim':'#9090b0','--kw-text-variant':'#bbc9cf','--kw-outline':'#859398','--kw-outline-variant':'#3c494e' },
+      cinema: { '--kw-bg':'#0a0a0a','--kw-surface':'#141414','--kw-surface-low':'#111111','--kw-surface-high':'#222222','--kw-card':'#181818','--kw-accent':'#e5b800','--kw-accent-dim':'#ffd433','--kw-secondary':'#c8c8c8','--kw-tertiary':'#ff8c42','--kw-text':'#f0f0f0','--kw-text-dim':'#888888','--kw-text-variant':'#aaaaaa','--kw-outline':'#555555','--kw-outline-variant':'#333333' },
+      kawaii: { '--kw-bg':'#12001f','--kw-surface':'#1e0a30','--kw-surface-low':'#180826','--kw-surface-high':'#2e1245','--kw-card':'#1a0a2e','--kw-accent':'#ff6b9d','--kw-accent-dim':'#ff9bbe','--kw-secondary':'#d4b0ff','--kw-tertiary':'#ffb3d1','--kw-text':'#ffe6f4','--kw-text-dim':'#a070b0','--kw-text-variant':'#c090d0','--kw-outline':'#8855aa','--kw-outline-variant':'#4a2260' },
+    };
+    var t = localStorage.getItem('kurowatch-theme') || 'kuro';
+    var p = _STARTUP_THEMES[t] || _STARTUP_THEMES.kuro;
+    var root = document.documentElement;
+    Object.keys(p).forEach(function(k) { root.style.setProperty(k, p[k]); });
+  })();
+
   document.addEventListener('DOMContentLoaded', function() {
     // Arama kutularını autocomplete önlemek için temizle
     ['home-search-input','search-discover-input'].forEach(function(id) {
