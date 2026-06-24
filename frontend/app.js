@@ -1506,9 +1506,9 @@
 
   // ── Render: Settings ────────────────────────────────────────────────
   async function renderSettings() {
-    let cfg;
+    let cfg = {};
     try { cfg = await apiGet('/api/settings'); }
-    catch (e) { console.error('settings load', e); return; }
+    catch (e) { console.warn('settings load failed (backend kapali?), devam ediliyor', e); }
 
     // IGDB inputs
     const igdbId = document.getElementById('settings-igdb-id');
@@ -1566,11 +1566,11 @@
       }
       setActive(initialVal || '720p');
       btns.forEach(btn => {
-        btn.addEventListener('click', async function() {
+        btn.onclick = async function() {
           cfg[settingKey] = this.dataset.quality;
           setActive(cfg[settingKey]);
-          await apiPost('/api/settings', { [settingKey]: cfg[settingKey] });
-        });
+          try { await apiPost('/api/settings', { [settingKey]: cfg[settingKey] }); } catch(e) {}
+        };
       });
     }
     _makeQualityGroup('.settings-quality-manual-btn', 'download_quality_manual', cfg.download_quality_manual || cfg.default_quality || '720p');
@@ -1736,7 +1736,7 @@
     refreshCookiesList();
     const cookiesInput = document.getElementById('settings-cookies-input');
     if (cookiesInput) {
-      cookiesInput.addEventListener('change', async function() {
+      cookiesInput.onchange = async function() {
         const file = this.files[0];
         if (!file) return;
         const site = (document.getElementById('settings-cookies-site') || {}).value || 'tranimeizle';
@@ -1749,14 +1749,14 @@
           refreshCookiesList();
         } catch(e) { showToast('Cookie yükleme hatası: ' + e.message, 'error'); }
         this.value = '';
-      });
+      };
     }
 
     // CAPTCHA Human-in-the-Loop
     const captchaBtn = document.getElementById('captcha-browser-btn');
     const captchaBox = document.getElementById('captcha-status-box');
     if (captchaBtn && captchaBox) {
-      captchaBtn.addEventListener('click', function() {
+      captchaBtn.onclick = function() {
         const site = (document.getElementById('settings-cookies-site') || {}).value || 'tranimeizle';
         captchaBtn.disabled = true;
         captchaBtn.style.opacity = '0.5';
@@ -1800,7 +1800,7 @@
           captchaBox.style.color = '#ff5252';
           captchaBox.textContent = 'Bağlantı hatası. Backend çalışıyor mu?';
         };
-      });
+      };
     }
 
     renderTagSettings();
@@ -1862,36 +1862,36 @@
     if (fontSlider) {
       fontSlider.value = cfg.translate_font_size || 16;
       if (fontVal) fontVal.textContent = fontSlider.value + 'px';
-      fontSlider.addEventListener('input', async function() {
+      fontSlider.oninput = async function() {
         if (fontVal) fontVal.textContent = this.value + 'px';
-        await apiPost('/api/settings', { translate_font_size: parseInt(this.value) });
-      });
+        try { await apiPost('/api/settings', { translate_font_size: parseInt(this.value) }); } catch(e) {}
+      };
     }
     if (opacSlider) {
       opacSlider.value = cfg.translate_opacity != null ? cfg.translate_opacity : 85;
       if (opacVal) opacVal.textContent = opacSlider.value + '%';
-      opacSlider.addEventListener('input', async function() {
+      opacSlider.oninput = async function() {
         if (opacVal) opacVal.textContent = this.value + '%';
-        await apiPost('/api/settings', { translate_opacity: parseInt(this.value) });
-      });
+        try { await apiPost('/api/settings', { translate_opacity: parseInt(this.value) }); } catch(e) {}
+      };
     }
 
     // ── Kuro Translate smart toggle ─────────────────────────────────
     const translateSmartEl = document.getElementById('settings-translate-smart');
     if (translateSmartEl) {
       translateSmartEl.checked = cfg.translate_smart !== false;
-      translateSmartEl.addEventListener('change', async function() {
-        await apiPost('/api/settings', { translate_smart: this.checked });
-      });
+      translateSmartEl.onchange = async function() {
+        try { await apiPost('/api/settings', { translate_smart: this.checked }); } catch(e) {}
+      };
     }
 
     // ── Akıllı Ön-İndirme ──────────────────────────────────────────
     const predownEl = document.getElementById('settings-predownload-toggle');
     if (predownEl) {
       predownEl.checked = cfg.smart_predownload !== false;
-      predownEl.addEventListener('change', async function() {
-        await apiPost('/api/settings', { smart_predownload: this.checked });
-      });
+      predownEl.onchange = async function() {
+        try { await apiPost('/api/settings', { smart_predownload: this.checked }); } catch(e) {}
+      };
     }
 
     // ── Threshold counters ──────────────────────────────────────────
@@ -1901,20 +1901,20 @@
       if (valEl) valEl.textContent = val;
       const minusBtn = document.getElementById(minusId);
       const plusBtn  = document.getElementById(plusId);
-      if (minusBtn) minusBtn.addEventListener('click', async function() {
+      if (minusBtn) minusBtn.onclick = async function() {
         if (val <= min) return;
         val--;
         if (valEl) valEl.textContent = val;
         cfg[cfgKey] = val;
-        await apiPost('/api/settings', { [cfgKey]: val });
-      });
-      if (plusBtn) plusBtn.addEventListener('click', async function() {
+        try { await apiPost('/api/settings', { [cfgKey]: val }); } catch(e) {}
+      };
+      if (plusBtn) plusBtn.onclick = async function() {
         if (val >= max) return;
         val++;
         if (valEl) valEl.textContent = val;
         cfg[cfgKey] = val;
-        await apiPost('/api/settings', { [cfgKey]: val });
-      });
+        try { await apiPost('/api/settings', { [cfgKey]: val }); } catch(e) {}
+      };
     }
     _makeCounter('settings-anime-thresh-minus', 'settings-anime-thresh-plus', 'settings-anime-thresh-val', 'predownload_anime_threshold', 10, 1, 60);
     _makeCounter('settings-manga-thresh-minus', 'settings-manga-thresh-plus', 'settings-manga-thresh-val', 'predownload_manga_threshold', 5, 1, 30);
@@ -1928,60 +1928,57 @@
     const qualSelect = document.getElementById('settings-quality-select');
     if (qualSelect) {
       qualSelect.value = cfg.download_quality_manual || cfg.default_quality || '720p';
-      qualSelect.addEventListener('change', async function() {
-        await apiPost('/api/settings', { download_quality_manual: this.value, download_quality_auto: this.value });
-      });
+      qualSelect.onchange = async function() {
+        try { await apiPost('/api/settings', { download_quality_manual: this.value, download_quality_auto: this.value }); } catch(e) {}
+      };
     }
 
     // ── Wi-Fi only ──────────────────────────────────────────────────
     const wifiEl = document.getElementById('settings-wifi-only');
     if (wifiEl) {
       wifiEl.checked = cfg.wifi_only_download === true;
-      wifiEl.addEventListener('change', async function() {
-        await apiPost('/api/settings', { wifi_only_download: this.checked });
-      });
+      wifiEl.onchange = async function() {
+        try { await apiPost('/api/settings', { wifi_only_download: this.checked }); } catch(e) {}
+      };
     }
 
     // ── Opening / Ending toggles ────────────────────────────────────
     const openingToggleEl = document.getElementById('settings-opening-toggle');
     if (openingToggleEl) {
       openingToggleEl.checked = cfg.opening_skip_enabled !== false;
-      openingToggleEl.addEventListener('change', async function() {
-        await apiPost('/api/settings', { opening_skip_enabled: this.checked });
-      });
+      openingToggleEl.onchange = async function() {
+        try { await apiPost('/api/settings', { opening_skip_enabled: this.checked }); } catch(e) {}
+      };
     }
     const endingToggleEl = document.getElementById('settings-ending-toggle');
     if (endingToggleEl) {
       endingToggleEl.checked = cfg.ending_skip_enabled !== false;
-      endingToggleEl.addEventListener('change', async function() {
-        await apiPost('/api/settings', { ending_skip_enabled: this.checked });
-      });
+      endingToggleEl.onchange = async function() {
+        try { await apiPost('/api/settings', { ending_skip_enabled: this.checked }); } catch(e) {}
+      };
     }
 
     // ── Tema seçimi ─────────────────────────────────────────────────
-    const themeButtons = document.querySelectorAll('.settings-theme-btn');
+    function _applyThemeUI(activeTheme) {
+      document.querySelectorAll('.settings-theme-btn').forEach(function(b) {
+        const isCur = b.dataset.theme === activeTheme;
+        b.style.background    = isCur ? 'rgba(0,212,255,0.1)' : '';
+        b.style.borderColor   = isCur ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
+        const icon   = b.querySelector('.material-symbols-outlined');
+        const circle = b.querySelector('.theme-indicator-circle');
+        if (icon)   icon.style.display   = isCur ? '' : 'none';
+        if (circle) circle.style.display = isCur ? 'none' : '';
+      });
+    }
     const savedTheme = localStorage.getItem('kurowatch-theme') || 'kuro';
-    themeButtons.forEach(btn => {
-      const isActive = btn.dataset.theme === savedTheme;
-      btn.style.background = isActive ? 'rgba(0,212,255,0.1)' : '';
-      btn.style.borderColor = isActive ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
-      const icon = btn.querySelector('.material-symbols-outlined');
-      const circle = btn.querySelector('div.w-6.h-6');
-      if (icon) icon.style.display = isActive ? '' : 'none';
-      if (circle) circle.style.display = isActive ? 'none' : '';
-      btn.addEventListener('click', function() {
+    _applyThemeUI(savedTheme);
+    document.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
+      btn.onclick = function() {
         const theme = this.dataset.theme;
         localStorage.setItem('kurowatch-theme', theme);
-        themeButtons.forEach(b => {
-          const isCur = b.dataset.theme === theme;
-          b.style.background = isCur ? 'rgba(0,212,255,0.1)' : '';
-          b.style.borderColor = isCur ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
-          const bi = b.querySelector('.material-symbols-outlined');
-          const bc = b.querySelector('div.w-6.h-6');
-          if (bi) bi.style.display = isCur ? '' : 'none';
-          if (bc) bc.style.display = isCur ? 'none' : '';
-        });
-      });
+        _applyThemeUI(theme);
+        showToast('Tema seçildi: ' + theme, 'info');
+      };
     });
 
     // ── Önbelleği Temizle ───────────────────────────────────────────
