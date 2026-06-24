@@ -2271,54 +2271,56 @@
       if (goSitesBtn) goSitesBtn.addEventListener('click', function() { detailSwitchTab('sites'); });
     }
 
-    // ── Episode row HTML (Stitch v7 — thumbnail + progress) ──────────
+    // ── Episode row HTML (Stitch v7 birebir — 128×72 thumbnail) ──────
     function _epHtml(e) {
       const epUrl = e.url || null;
       const fbSite = (typeof primarySite !== 'undefined') ? primarySite : null;
       const fallbackUrl = !epUrl && fbSite ? fbSite.site_url : null;
       const openUrl = epUrl || fallbackUrl;
       const numTxt = 'Bölüm ' + e.number;
+      const isActive = e.number === (myProgress + 1); // sıradaki bölüm
 
-      // Thumbnail block (96×54px, 16:9)
-      function _thumb(watched) {
-        const numColor = watched ? '#4a4b72' : (e.is_new ? '#00d4ff' : '#9090b0');
-        return '<div style="position:relative;width:96px;height:54px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#0d1526">' +
+      // Stitch birebir thumbnail — 128px wide, aspect-video (16:9 = 72px)
+      function _thumb(watched, active) {
+        var inner = watched
+          ? '<div style="position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center;z-index:2">' +
+            '<span class="material-symbols-outlined" style="font-size:13px;color:#fff;font-variation-settings:\'FILL\' 1">check</span></div>'
+          : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.38)">' +
+            '<span class="material-symbols-outlined" style="font-size:28px;color:' + (active ? '#00d4ff' : '#9090b0') + ';font-variation-settings:\'FILL\' 1">play_circle</span></div>' +
+            (active ? '<div style="position:absolute;bottom:0;left:0;height:3px;width:' + (myProgress > 0 ? '65' : '0') + '%;background:#00d4ff;border-radius:0 2px 2px 0"></div>' : '');
+
+        return '<div style="position:relative;width:128px;height:72px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#0d1526' + (watched ? ';opacity:0.6' : '') + '">' +
           '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
-          '<span style="font-size:20px;font-weight:800;color:' + numColor + '">' + e.number + '</span></div>' +
-          (watched
-            ? '<div style="position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center">' +
-              '<span class="material-symbols-outlined" style="font-size:11px;color:#fff;font-variation-settings:\'FILL\' 1">check</span></div>'
-            : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
-              '<span class="material-symbols-outlined" style="font-size:26px;color:' + numColor + '55;font-variation-settings:\'FILL\' 1">play_circle</span></div>') +
-          '</div>';
+          '<span style="font-size:22px;font-weight:800;color:' + (watched ? '#4a4b72' : active ? '#00d4ff' : '#6070a0') + '">' + e.number + '</span></div>' +
+          inner + '</div>';
       }
 
       if (e.is_watched) {
-        return '<div class="ep-row" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:#16213e4d;border:1px solid rgba(255,255,255,0.04);box-shadow:0 2px 8px rgba(0,0,0,0.25);opacity:0.55">' +
-          _thumb(true) +
+        return '<div class="ep-row" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:rgba(26,33,35,0.5);border:1px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.2)">' +
+          _thumb(true, false) +
           '<div style="flex:1;min-width:0">' +
-          '<div style="color:#e1e0ff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + numTxt + '</div>' +
-          (e.title ? '<div style="color:#9090b0;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px">' + escapeHtml(e.title) + '</div>' : '') +
+          '<div style="color:rgba(225,224,255,0.7);font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + numTxt + '</div>' +
+          (e.title ? '<div style="color:rgba(144,144,176,0.7);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px">' + escapeHtml(e.title) + '</div>' : '') +
           '</div>' +
           '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" style="min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer">' +
-          '<div style="width:22px;height:22px;border-radius:4px;background:#00d4ff22;border:1px solid #00d4ff55;display:flex;align-items:center;justify-content:center">' +
-          '<span class="material-symbols-outlined" style="font-size:14px;color:#00d4ff;font-variation-settings:\'FILL\' 1">check</span></div></button>' +
+          '<div style="width:22px;height:22px;border-radius:50%;background:#22c55e22;border:1px solid #22c55e66;display:flex;align-items:center;justify-content:center">' +
+          '<span class="material-symbols-outlined" style="font-size:13px;color:#22c55e;font-variation-settings:\'FILL\' 1">check</span></div></button>' +
           '</div>';
       }
 
-      const isNew = e.is_new;
-      const numColor2 = isNew ? '#00d4ff' : '#e1e0ff';
-      const rowBg = isNew ? 'rgba(0,212,255,0.06)' : '#16213e';
-      const rowBorder = isNew ? '1px solid rgba(0,212,255,0.25)' : '1px solid rgba(255,255,255,0.05)';
+      var rowBg     = isActive ? 'rgba(0,212,255,0.1)'     : 'rgba(26,33,35,0.5)';
+      var rowBorder = isActive ? '1px solid rgba(0,212,255,0.3)' : '1px solid transparent';
+      var rowShadow = isActive ? '0 4px 12px rgba(0,0,0,0.25)' : '0 2px 8px rgba(0,0,0,0.15)';
 
-      return '<div class="ep-row" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:' + rowBg + ';border:' + rowBorder + ';box-shadow:0 2px 8px rgba(0,0,0,0.25)">' +
-        _thumb(false) +
+      return '<div class="ep-row" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:' + rowBg + ';border:' + rowBorder + ';box-shadow:' + rowShadow + '">' +
+        _thumb(false, isActive) +
         '<div style="flex:1;min-width:0">' +
-        '<div style="display:flex;align-items:center;gap:6px">' +
-        '<span style="color:' + numColor2 + ';font-size:13px;font-weight:700">' + numTxt + '</span>' +
-        (isNew ? '<span style="padding:1px 6px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
-        '</div>' +
-        (e.title ? '<div style="color:#9090b0;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px">' + escapeHtml(e.title) + '</div>' : '') +
+        '<div style="color:#e1e0ff;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + numTxt +
+        (e.title ? '<span style="color:#9090b0;font-size:12px;font-weight:400"> — ' + escapeHtml(e.title) + '</span>' : '') + '</div>' +
+        (isActive
+          ? '<span style="display:inline-flex;align-items:center;gap:4px;margin-top:4px;font-size:9px;font-weight:700;color:#00d4ff;text-transform:uppercase;letter-spacing:.06em">' +
+            '<span class="material-symbols-outlined" style="font-size:10px">timer</span>İZLENİYOR</span>'
+          : (e.is_new ? '<span style="display:inline-block;margin-top:3px;padding:1px 6px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '')) +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:2px">' +
         (openUrl
