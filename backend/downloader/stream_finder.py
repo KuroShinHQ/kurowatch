@@ -104,7 +104,12 @@ _FORCE_PLAYWRIGHT = {
     "dizibox.so",
     "hdfilmcehennemi.nl",
     "turkanime.tv",
-    "tranimaci.com",  # JS PoW challenge (SHA-256 difficulty=4) → Playwright çözüyor
+}
+
+# Bu domainler Cloudflare Managed Challenge kullanır → nodriver (gerçek Chrome) gerekiyor
+# Playwright kolayca algılanıyor; nodriver CF'yi aşıp JS-render edilmiş HTML alıyor
+_NODRIVER_HTML_SITES = {
+    "tranimaci.com",
 }
 
 # Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
@@ -188,13 +193,73 @@ def _extract_embed_from_html(html: str) -> Optional[str]:
     return None
 
 
+def _extract_mp4_from_html(html: str) -> Optional[str]:
+    """HTML/JS içinden direkt MP4 URL'si çıkar (CDN token'lı URL'ler dahil)."""
+    patterns = [
+        r'"(https?://[^\s"\'<>\\]+\.mp4\?[^\s"\'<>\\]{20,})"',
+        r"'(https?://[^\s\"'<>\\]+\.mp4\?[^\s\"'<>\\]{20,})'",
+        r'(https?://cdn\d*\.[a-z0-9.-]+/[^\s"\'<>\\]+\.mp4\?[^\s"\'<>\\]{10,})',
+    ]
+    for pat in patterns:
+        m = re.search(pat, html, re.IGNORECASE)
+        if m:
+            url = m.group(1)
+            logger.info("Direkt MP4 URL bulundu (HTML/JS): %s", url[:80])
+            return url
+    return None
+
+
+async def _nodriver_get_html(url: str, wait_secs: int = 20) -> Optional[str]:
+    """nodriver (undetected Chrome) ile CF Managed Challenge aşılır, JS-render HTML alınır."""
+    import nodriver as uc
+    browser = None
+    try:
+        logger.info("nodriver başlıyor: %s", url[:80])
+        browser = await uc.start(
+            headless=True,
+            browser_executable_path=_CHROMIUM_BIN,
+            no_sandbox=True,
+        )
+        tab = await browser.get(url)
+        await asyncio.sleep(wait_secs)
+        html = await tab.get_content()
+        title = await tab.evaluate("document.title")
+        logger.info("nodriver title: %s (html len=%d)", title, len(html))
+        if "security verification" in (title or "").lower() or len(html) < 1000:
+            logger.warning("nodriver: CF challenge geçilemedi (%s)", title)
+            return None
+        return html
+    except Exception as exc:
+        logger.error("nodriver_get_html hatası: %s", exc)
+        return None
+    finally:
+        if browser:
+            try:
+                browser.stop()
+            except Exception:
+                pass
+
+
 async def find_stream_url(episode_url: str) -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
-    Sıra: CF bypass (nodriver+curl-cffi) → cookies fetch → Playwright → orijinal URL.
+    Sıra: nodriver HTML → CF bypass (nodriver+curl-cffi) → cookies fetch → Playwright → orijinal URL.
     """
     _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
+
+    # 0. Cloudflare Managed Challenge siteleri: nodriver ile JS-render HTML al
+    if any(domain.endswith(d) for d in _NODRIVER_HTML_SITES):
+        logger.info("nodriver HTML site: %s", domain)
+        html = await _nodriver_get_html(episode_url, wait_secs=20)
+        if html:
+            embed = _extract_mp4_from_html(html) or _extract_embed_from_html(html)
+            if embed:
+                logger.info("nodriver HTML embed buldu: %s", embed[:80])
+                return embed
+            logger.warning("nodriver HTML alındı ama embed bulunamadı (len=%d)", len(html))
+        else:
+            logger.warning("nodriver HTML alınamadı, Playwright fallback deneniyor")
 
     # 1. CF korumalı site: nodriver cf_clearance + curl-cffi fetch
     if any(domain.endswith(d) for d in _CF_SITES):
