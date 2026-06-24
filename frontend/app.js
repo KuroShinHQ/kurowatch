@@ -1984,40 +1984,69 @@
       if (goSitesBtn) goSitesBtn.addEventListener('click', function() { detailSwitchTab('sites'); });
     }
 
-    // ── Episode row HTML ───────────────────────────────────────────
+    // ── Episode row HTML (Stitch v7 — thumbnail + progress) ──────────
     function _epHtml(e) {
-      if (e.is_watched) {
-        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e80;border:1px solid #ffffff0d;opacity:0.5">' +
-          '<div style="display:flex;flex-direction:column"><span style="color:#e1e0ff;text-decoration:line-through;font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
-          (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
-          '</div><div style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:flex-end">' +
-          '<div style="width:24px;height:24px;border-radius:4px;background:#00d4ff33;display:flex;align-items:center;justify-content:center;border:1px solid #00d4ff80">' +
-          '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">check</span></div></div></div>';
-      }
       const epUrl = e.url || null;
-      const fallbackUrl = !epUrl && primarySite ? primarySite.site_url : null;
+      const fbSite = (typeof primarySite !== 'undefined') ? primarySite : null;
+      const fallbackUrl = !epUrl && fbSite ? fbSite.site_url : null;
       const openUrl = epUrl || fallbackUrl;
-      const rowBorder = e.is_new ? '1px solid #00d4ff4d' : '1px solid #ffffff0d';
-      const numColor  = e.is_new ? '#00d4ff' : '#e1e0ff';
-      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:0 12px;height:56px;border-radius:8px;background:#16213e;border:' + rowBorder + '">' +
-        '<div style="display:flex;flex-direction:column"><span style="color:' + numColor + ';font-size:14px;font-weight:600">Bölüm ' + e.number + '</span>' +
-        (e.title ? '<span style="color:#9090b0;font-size:12px">' + escapeHtml(e.title) + '</span>' : '') +
-        '</div><div style="display:flex;align-items:center;gap:4px">' +
-        (e.is_new ? '<span style="padding:2px 8px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
+      const numTxt = 'Bölüm ' + e.number;
+
+      // Thumbnail block (96×54px, 16:9)
+      function _thumb(watched) {
+        const numColor = watched ? '#4a4b72' : (e.is_new ? '#00d4ff' : '#9090b0');
+        return '<div style="position:relative;width:96px;height:54px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#0d1526">' +
+          '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+          '<span style="font-size:20px;font-weight:800;color:' + numColor + '">' + e.number + '</span></div>' +
+          (watched
+            ? '<div style="position:absolute;top:4px;right:4px;width:18px;height:18px;border-radius:50%;background:#22c55e;display:flex;align-items:center;justify-content:center">' +
+              '<span class="material-symbols-outlined" style="font-size:11px;color:#fff;font-variation-settings:\'FILL\' 1">check</span></div>'
+            : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
+              '<span class="material-symbols-outlined" style="font-size:26px;color:' + numColor + '55;font-variation-settings:\'FILL\' 1">play_circle</span></div>') +
+          '</div>';
+      }
+
+      if (e.is_watched) {
+        return '<div class="ep-row" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:#16213e4d;border:1px solid rgba(255,255,255,0.04);box-shadow:0 2px 8px rgba(0,0,0,0.25);opacity:0.55">' +
+          _thumb(true) +
+          '<div style="flex:1;min-width:0">' +
+          '<div style="color:#e1e0ff;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + numTxt + '</div>' +
+          (e.title ? '<div style="color:#9090b0;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px">' + escapeHtml(e.title) + '</div>' : '') +
+          '</div>' +
+          '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" style="min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer">' +
+          '<div style="width:22px;height:22px;border-radius:4px;background:#00d4ff22;border:1px solid #00d4ff55;display:flex;align-items:center;justify-content:center">' +
+          '<span class="material-symbols-outlined" style="font-size:14px;color:#00d4ff;font-variation-settings:\'FILL\' 1">check</span></div></button>' +
+          '</div>';
+      }
+
+      const isNew = e.is_new;
+      const numColor2 = isNew ? '#00d4ff' : '#e1e0ff';
+      const rowBg = isNew ? 'rgba(0,212,255,0.06)' : '#16213e';
+      const rowBorder = isNew ? '1px solid rgba(0,212,255,0.25)' : '1px solid rgba(255,255,255,0.05)';
+
+      return '<div class="ep-row" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:' + rowBg + ';border:' + rowBorder + ';box-shadow:0 2px 8px rgba(0,0,0,0.25)">' +
+        _thumb(false) +
+        '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;gap:6px">' +
+        '<span style="color:' + numColor2 + ';font-size:13px;font-weight:700">' + numTxt + '</span>' +
+        (isNew ? '<span style="padding:1px 6px;background:#00d4ff1a;color:#00d4ff;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase">YENİ</span>' : '') +
+        '</div>' +
+        (e.title ? '<div style="color:#9090b0;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px">' + escapeHtml(e.title) + '</div>' : '') +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:2px">' +
         (openUrl
-          ? '<button class="ep-overlay-btn" data-url="' + escapeHtml(openUrl) + '" data-label="Bölüm ' + e.number + '"' +
+          ? '<button class="ep-overlay-btn" data-url="' + escapeHtml(openUrl) + '" data-label="' + numTxt + '"' +
             (epUrl ? ' data-ep-id="' + e.id + '" data-content-id="' + contentId + '"' : '') +
-            ' style="display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;' +
-            (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d80;border:1px solid #ffffff0d;color:#9090b0">' ) +
-            '<span class="material-symbols-outlined" style="font-size:14px">web</span> ' + readLabel + '</button>'
+            ' style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;' +
+            (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d;border:1px solid rgba(255,255,255,0.08);color:#9090b0">' ) +
+            '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span></button>'
           : '') +
-        (openUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;min-height:44px;display:flex;align-items:center;justify-content:center" ' +
+        (openUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
           'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
           '<span class="material-symbols-outlined" style="font-size:18px">download</span></button>' : '') +
-        '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" ' +
-        'style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:flex-end;background:none;border:none;cursor:pointer">' +
-        '<div style="width:24px;height:24px;border-radius:4px;background:#31324d;border:1px solid #ffffff1a"></div></button>' +
+        '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" style="min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer">' +
+        '<div style="width:22px;height:22px;border-radius:4px;background:#31324d;border:1px solid rgba(255,255,255,0.1)"></div></button>' +
         '</div></div>';
     }
 
@@ -2048,14 +2077,15 @@
       if (watchBtn) {
         const epId = parseInt(watchBtn.dataset.epId, 10);
         const cid  = parseInt(watchBtn.dataset.contentId, 10);
-        const row = watchBtn.closest('[style*="height:56px"]');
+        const row = watchBtn.closest('.ep-row');
         if (row) {
-          row.style.opacity = '0.5';
+          row.style.opacity = '0.55';
+          row.style.background = '#16213e4d';
           const checkDiv = watchBtn.querySelector('div');
           if (checkDiv) {
-            checkDiv.style.background = '#00d4ff33';
-            checkDiv.style.border = '1px solid #00d4ff80';
-            checkDiv.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">check</span>';
+            checkDiv.style.background = '#00d4ff22';
+            checkDiv.style.border = '1px solid #00d4ff55';
+            checkDiv.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px;color:#00d4ff;font-variation-settings:\'FILL\' 1">check</span>';
           }
         }
         try {
@@ -2547,12 +2577,15 @@
         const score = it.my_score != null
           ? '<div class="flex items-center gap-1"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:10px">star</span><span class="text-[9px] text-[#9090b0]">' + it.my_score.toFixed(1) + '</span></div>'
           : '';
-        return '<div class="group relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/50 cursor-pointer active:scale-[0.95] transition-all" data-content-id="' + it.id + '">' +
+        return '<div class="group relative aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1a2e] cursor-pointer active:scale-[0.95] transition-all duration-300 inner-glow shadow-[0_4px_12px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_32px_rgba(0,0,0,0.7)] hover:scale-[1.02]" data-content-id="' + it.id + '">' +
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
-          '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
+          '<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/40 to-transparent z-10"></div>' +
           cover +
-          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="color:' + stripe + ';background:' + stripe + '29;border:1px solid ' + stripe + '55">' + label + '</div>' +
-          '<div class="absolute bottom-2 left-2 right-2 z-20"><p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title_tr||it.title||'') + '</p>' + score + '</div>' +
+          '<div class="absolute inset-0 z-20 flex flex-col justify-end p-3">' +
+          '<span class="inline-block px-2 py-0.5 rounded mb-1 w-max text-[9px] font-bold uppercase" style="background:rgba(26,27,45,0.85);backdrop-filter:blur(4px);color:' + stripe + ';border:1px solid ' + stripe + '33">' + label + '</span>' +
+          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title_tr||it.title||'') + '</p>' +
+          score +
+          '</div>' +
           '</div>';
       }).join('');
       box.querySelectorAll('[data-content-id]').forEach(function(card) {
@@ -2627,14 +2660,14 @@
           external_id: String(it.external_id || ''),
           genres: it.genres || []
         });
-        return '<div class="group relative aspect-[2/3] rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 hover:border-[#00d4ff]/50 cursor-pointer active:scale-[0.95] transition-all">' +
+        return '<div class="group relative aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1a2e] cursor-pointer active:scale-[0.95] transition-all duration-300 inner-glow shadow-[0_4px_12px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_32px_rgba(0,0,0,0.7)] hover:scale-[1.02]">' +
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
-          '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
+          '<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/40 to-transparent z-10"></div>' +
           cover +
-          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="color:' + stripe + ';background:' + stripe + '29;border:1px solid ' + stripe + '55">' + typeLabel + '</div>' +
-          '<div class="absolute bottom-0 left-0 right-0 z-20 p-2">' +
-          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1.5">' + escapeHtml(it.title) + '</p>' +
-          '<button class="w-full h-7 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 active:scale-[0.97] transition-all" style="background:rgba(0,212,255,0.9);color:#003642" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
+          '<div class="absolute inset-0 z-20 flex flex-col justify-end p-3">' +
+          '<span class="inline-block px-2 py-0.5 rounded mb-1 w-max text-[9px] font-bold uppercase" style="background:rgba(26,27,45,0.85);backdrop-filter:blur(4px);color:' + stripe + ';border:1px solid ' + stripe + '33">' + typeLabel + '</span>' +
+          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-2">' + escapeHtml(it.title) + '</p>' +
+          '<button class="w-full h-8 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 active:scale-[0.97] transition-all" style="background:rgba(0,212,255,0.9);color:#003642" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
           '<span class="material-symbols-outlined" style="font-size:14px">add</span>Ekle</button>' +
           '</div></div>';
       }).join('');
