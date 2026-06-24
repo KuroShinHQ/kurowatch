@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-83) · **Aktif sürüm:** v1.2.1 → Stitch Görsel Fix ✅ · **Son commit:** `d42e297`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-83b) · **Aktif sürüm:** v1.3.0 → Stitch Tam Görsel Sync ✅ · **Son commit:** `034d08b`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -263,35 +263,30 @@ MEVCUT DURUM (24 Haz sohbet-83):
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
   - Son commit: d42e297 (Stitch görsel fix — tip rozeti + kart boyutları)
 
-✅ SOHBET-83 TAMAMLANDI — Stitch vs app.js görsel karşılaştırma + fix:
-  Karşılaştırılan dosyalar:
-  - kurowatch_home_solo_leveling_sim/code.html vs renderHomeV7() → FARKLAR BULUNDU + DÜZELTİLDİ
-  - kurowatch_search_filter_v7_master/code.html vs renderSearch() → badge rengi DÜZELTİLDİ
-  - kurowatch_detail_solo_leveling_sim/code.html vs detail HTML → UYUMLU (değişiklik gerekmedi)
+✅ SOHBET-83 TAMAMLANDI — Stitch TAM görsel sync (Home + Search + Detail + Stats + Settings):
 
-  DÜZELTİLEN FARKLAR (commit d42e297):
-  [x] Home tip satırı kartları: sağ üst köşeye tip rozeti eklendi (her kart için ANİME/MANGA/MANHWA/OYUN)
-  [x] Home devam kartları: tip rozeti eklendi, genişlik 260→280/320px (Stitch'e uygun)
-  [x] Home hero yüksekliği: 480→530px / 600→663px (Stitch ile tam eşleşme)
-  [x] Search sonuç kartları: sabit cyan badge → her tipe özel renk
-  [x] Tailwind v42 rebuild
+  ROUND-1 (commit d42e297):
+  [x] Home tip satırı kartları: tip rozeti eklendi, genişlik 130→140/160→180px
+  [x] Home devam kartları: tip rozeti + 260→280/320px
+  [x] Home hero yüksekliği: 480→530px / 600→663px
+  [x] Search kartları: sabit cyan badge → tipe özel renk
 
-⚠️ KALAN AÇIK SORU — Backend açıkken gerçek görünüm teyidi:
-  Backend çalıştırılıp tarayıcıda açılmadı. Gözlemlenmesi gereken:
-  1. Home hero, devam et satırı, anime/manga satırları gerçek içerikle doğru görünüyor mu?
-  2. Kütüphane grid'i (Tüm Kütüphane bölümü) v7 kartlarıyla dolu mu, eski kart mı?
-  3. Search/Discover kartları tip renkleriyle doğru görünüyor mu?
+  ROUND-2 (commit 034d08b) — Stitch tam analizi sonrası kritik değişiklikler:
+  [x] Episode satırları (Bölümler tab): Stitch thumbnail layout →
+        96×54px thumbnail bloğu (bölüm numarası + play/check icon)
+        ep-row class, hover shadow, rounded-12px
+        Watched: yeşil check badge + opacity-55
+  [x] Search Library kartları: grid-cols-2 gap-[4px], hover shadow lift, inner-glow
+  [x] Search Discover kartları: aynı kart stili + backdrop-blur badge
+  [x] Stats: gap-4, label text-[11px], donut w-28→w-32, active scale
+  [x] Settings: space-y-6→space-y-4 (Stitch space-y-3 yakını)
 
 SONRAKİ GÖREV — Backend açıp görsel doğrulama:
   1. bat→10→1 ile backend başlat
   2. Tarayıcıda http://localhost:8099 aç
-  3. Herhangi bir ekran "eski görünüm" devam ediyorsa buraya bildir
-  4. Veya yeni bir feature/fix görev seç
-
-  ÖNERİLEN SIRADAKI GÖREV:
-  - Stitch referansı tüm ekranlar için tamamlandı (Home/Search/Detail)
-  - Settings ve Stats Stitch vs impl karşılaştırması henüz yapılmadı (düşük öncelik)
-  - Veya yeni özellik: Deep Dive ekranlar / FAZ-B Reddit / MODEL geçişi
+  3. Detail → Bölümler tab: thumbnail satırlar görünüyor mu?
+  4. Search Library: 2 kolonlu dar grid, hover lift var mı?
+  5. Hâlâ "eski" görünen varsa ekran adı + ne görünüyor bildir
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
