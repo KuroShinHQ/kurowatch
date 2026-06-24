@@ -328,8 +328,9 @@
         const total = it.type==='game' ? 100 : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
         const pct = it.type==='game' ? (it.my_progress_pct||0) : Math.min(100,Math.round((it.my_progress||0)/total*100));
         const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
-        return `<div class="flex-none w-[260px] aspect-video relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-transform cursor-pointer snap-start group" data-content-id="${it.id}">
+        return `<div class="flex-none w-[280px] md:w-[320px] aspect-video relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-transform cursor-pointer snap-start group" data-content-id="${it.id}">
           <div class="absolute inset-0 bg-cover bg-center" ${bg}></div>
+          <div class="absolute top-2 right-2 z-20"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span></div>
           <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/95 via-black/40 to-transparent">
             <h4 class="text-[13px] font-bold text-[#e1e0ff] mb-1 line-clamp-1">${escapeHtml(it.title_tr||it.title)}</h4>
             <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden shimmer-bar">
@@ -364,8 +365,9 @@
       row.innerHTML = rowItems.slice(0,20).map(it => {
         const col = (tc[it.type]||tc.anime);
         const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
-        return `<div class="flex-none w-[130px] md:w-[160px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
+        return `<div class="flex-none w-[140px] md:w-[180px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
           <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
+          <div class="absolute top-2 right-2 z-20"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span></div>
           <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
             <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
           </div>
@@ -2549,7 +2551,7 @@
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
           '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
           cover +
-          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="background:rgba(0,212,255,0.8);color:#003642">' + label + '</div>' +
+          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="color:' + stripe + ';background:' + stripe + '29;border:1px solid ' + stripe + '55">' + label + '</div>' +
           '<div class="absolute bottom-2 left-2 right-2 z-20"><p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title_tr||it.title||'') + '</p>' + score + '</div>' +
           '</div>';
       }).join('');
@@ -2629,7 +2631,7 @@
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
           '<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10"></div>' +
           cover +
-          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="background:rgba(0,212,255,0.8);color:#003642">' + typeLabel + '</div>' +
+          '<div class="absolute top-2 right-2 z-20 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase backdrop-blur-sm" style="color:' + stripe + ';background:' + stripe + '29;border:1px solid ' + stripe + '55">' + typeLabel + '</div>' +
           '<div class="absolute bottom-0 left-0 right-0 z-20 p-2">' +
           '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1.5">' + escapeHtml(it.title) + '</p>' +
           '<button class="w-full h-7 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 active:scale-[0.97] transition-all" style="background:rgba(0,212,255,0.9);color:#003642" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
