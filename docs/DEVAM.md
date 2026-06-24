@@ -321,11 +321,18 @@ SOHBET-90 TAMAMLANDI — HOME scroll + tema + notlar:
   ❌ HOME yatay scroll: Hâlâ bozuk — overflow-x-hidden kaldırmak yetmedi
      → iOS -webkit-overflow-scrolling:touch eklendi, yetmezse Playwright gerekebilir
 
-SOHBET-91 ODAĞI:
-  1. HOME yatay scroll: JS drag-to-scroll (mousedown/touchstart + move) + touch-action:pan-x garantile
-  2. ANİME İNDİRME: tranimaci.com için stream_finder.py'ye özel selector ekle
-     → Playwright ile tranimaci.com bölüm sayfasını incele: iframe/video src + play butonu selector
-  3. Tema test: Cinema → #0a0a0a bg + #e5b800 accent; Kawaii → #12001f + #ff6b9d
+SOHBET-91 TAMAMLANDI — HOME scroll + tranimaci.com ANİME İNDİRME FİX (cdd28a4 + DB migration):
+  [x] HOME scroll: touch-action:pan-x + _addDragScroll() (mouse drag) — SW v14, app.js v36
+  [x] tranimaci.com: _FORCE_PLAYWRIGHT eklendi, networkidle 25sn, wait_secs 30sn (cdd28a4)
+  [x] DB migration: 8654 ep URL'si www.tranimaci.com → tranimaci.com (www. redirect sorunuydu!)
+  [x] KANIT: stream_finder KONOSUBA Ep1 → cdn10.videostraeam10.can.re/...1080p.mp4?token=... ✅
+  ⚠️ Token süresi: CDN token dinamik (yt-dlp hemen başlarsa sorun yok)
+  ⚠️ HOME scroll: Backend açık olduğunda test edilmeli — touch-action fix teorik
+
+SOHBET-92 ODAĞI:
+  1. ANİME İNDİRME gerçek test: backend başlat → app'te KONOSUBA Ep1 indir → indirildi mi?
+  2. HOME scroll: telefonda test — touch-action pan-x yeterli mi?
+  3. Tema test: Cinema/Kawaii geçişi doğru renk uyguluyor mu?
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
