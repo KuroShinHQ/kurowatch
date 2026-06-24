@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-82b) · **Aktif sürüm:** v1.2.0 → FAZ-V7 + Tüm Bug Fix ✅ · **Son commit:** `8089f20`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-82c) · **Aktif sürüm:** v1.2.0 → Bug Fix ✅ / Görsel Render Sorunları ⚠️ · **Son commit:** `40dfc9b`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -263,18 +263,38 @@ MEVCUT DURUM (24 Haz sohbet-82):
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
   - Son commit: 112ed4d (15 bug fix — runtime crash + nav + reader chapter nav)
 
-✅ TÜM BUGLAR KAPATILDI (30 tespittten 28 fix):
+✅ SOHBET-82 TAMAMLANDI — 28 logic/runtime bug fix:
   - HATA-1,24: Runtime crash → düzeltildi
   - HATA-3,4,27: NAV order → düzeltildi
   - HATA-7,8,17,13,15,23: Player/Search/Detail UX → düzeltildi
   - HATA-5,14,21,2: detailSwitchTab+tab reset+dead code+pointer-events → düzeltildi
-  - HATA-25: Gerçek bug değil (CSS specificity OK)
-  - HATA-29: Hardcoded version (kasıtlı kabul)
   - node --check: app.js + player.js SYNTAX TEMİZ ✅
 
-SONRAKİ GÖREV — Lord karar verir:
-  A) Canlı test (backend başlatıp tarayıcıda açmak)
-  B) Başka modül
+⚠️ ASIL AÇIK GÖREV — Stitch → Implementation Görsel Fark Analizi:
+  Bu sohbette araştırıldı ama tamamlanamadı (context doldu):
+
+  ARAŞTIRMA BULGULARI (sohbet-82c):
+  - CSS class'ları TAMAM: style.css'te shimmer-bar/spring-bounce/glass-btn/animate-pulse-cyan VAR
+  - index.html v7 HTML yapısı TAMAM (screen-search/detail/stats/settings hepsi v7)
+  - app.js renderXxx() fonksiyonları doğru container ID'lerini kullanıyor
+  - Stitch HTML referansları ile implementation farkı YET KARŞILAŞTIRILMADI
+
+  SONUÇ: Görsel sorunların kaynağı net değil. Olası sebepler:
+  1. Stitch HTML'deki bazı kart/bileşen template'leri app.js'de farklı yazılmış olabilir
+  2. Backend çalışmadan sayfayı açınca API hataları nedeniyle ekranlar boş/placeholder görünüyor
+  3. renderHome() kütüphane grid kartları Stitch'ten farklı yapıda olabilir
+
+  SONRAKI SOHBET YAPILACAK:
+  1. Backend başlat (bat→10→1), tarayıcıda aç — hangisi gerçekten bozuk gözlemle
+  2. Stitch HTML karşılaştırması: kurowatch_home_solo_leveling_sim/code.html vs renderHome()
+     kurowatch_detail_solo_leveling_sim/code.html vs renderDetail()
+     kurowatch_settings_v7_final_master/code.html vs renderSettings()
+  3. Farklı ID/class/template varsa app.js'i güncelle (HTML dokunma)
+
+SONRAKİ GÖREV — Stitch vs app.js görsel karşılaştırma:
+  Stitch klasörü: C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_netflix_tasar_m_rehberi\
+  Ana dosyalar: kurowatch_home_solo_leveling_sim, kurowatch_detail_solo_leveling_sim,
+               kurowatch_settings_v7_final_master, kurowatch_stats_v7_master
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
