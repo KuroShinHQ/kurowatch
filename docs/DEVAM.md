@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-85) · **Aktif sürüm:** v1.3.1 → Stitch TAM Entegrasyon (HOME/SEARCH/UPDATES/DOWNLOADS/STATS) · **Son commit:** `73bebbd`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-86b) · **Aktif sürüm:** v1.3.2 → Settings fix + SEARCH Stitch port · **Son commit:** `4e38caf`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -285,10 +285,18 @@ MEVCUT DURUM (24 Haz sohbet-86):
   ❌ Downloads Video Oynat / Manga Oku buton testi (backend kapalıydı)
   ❌ HOME daha derin revizyon (Lord görüp karar verecek)
 
-SOHBET-87 ODAĞI:
-  1. Backend başlat → Downloads Video Oynat / Manga Oku test
-  2. HOME: Lord test edip geribildirim verir → revizyon
-  3. DETAIL: Lord Stitch AI prompt ile revizyon
+SOHBET-87 TESPITLER (24 Haz 2026):
+  SEARCH filtreler → Lord onayladı ✅
+  Settings Cinema tema → ❓ SORU: tema seçilince hiçbir şey değişmiyor (fix gerekiyor)
+  Downloads MANGA (Murim Login) → gallery-dl exit 64 ❌
+    majorscans.com OFFLINE (HTTP 000) — URL değişmeli
+  Downloads ANİME (KONOSUBA S2) → 0% → error ❌ (backend durumu?)
+
+SOHBET-87/88 ODAĞI:
+  1. Murim Login URL fix → çalışan site bul, manga indir test
+  2. KONOSUBA anime hata → stream_finder log incele
+  3. Settings Cinema tema fix
+  4. HOME + DETAIL revizyon (Stitch AI prompt gerekiyor)
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
