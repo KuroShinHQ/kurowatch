@@ -285,18 +285,18 @@ MEVCUT DURUM (24 Haz sohbet-86):
   ❌ Downloads Video Oynat / Manga Oku buton testi (backend kapalıydı)
   ❌ HOME daha derin revizyon (Lord görüp karar verecek)
 
-SOHBET-87 TESPITLER (24 Haz 2026):
-  SEARCH filtreler → Lord onayladı ✅
-  Settings Cinema tema → ❓ SORU: tema seçilince hiçbir şey değişmiyor (fix gerekiyor)
-  Downloads MANGA (Murim Login) → gallery-dl exit 64 ❌
-    majorscans.com OFFLINE (HTTP 000) — URL değişmeli
-  Downloads ANİME (KONOSUBA S2) → 0% → error ❌ (backend durumu?)
+SOHBET-87 TAMAMLANDI — URL Sağlık Taraması + Toplu Fix:
+  [x] 513 içerik otomatik test → 509 OK / 4 FAIL
+  [x] Murim Login 171 ep → manhwahentai.me ✅
+  [x] Gintama → gintama-2015 slug ✅
+  [x] Howl duplikat silindi
+  [x] manga.py OFFLINE listesi (majorscans vb.) — commit 3544b16
+  KALAN: 3 Ghibli (URL yok), AoT 500 (geçici)
+  Settings Cinema → tema seçilince değişmiyor ❓
 
-SOHBET-87/88 ODAĞI:
-  1. Murim Login URL fix → çalışan site bul, manga indir test
-  2. KONOSUBA anime hata → stream_finder log incele
-  3. Settings Cinema tema fix
-  4. HOME + DETAIL revizyon (Stitch AI prompt gerekiyor)
+SOHBET-88 ODAĞI:
+  1. Settings Cinema tema fix
+  2. HOME + DETAIL revizyon (Stitch AI prompt)
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
