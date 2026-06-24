@@ -356,12 +356,18 @@ SOHBET-92b EK — tranimaci.com CF Managed Challenge fix (commit 2731493):
   KANIT: cdn10.videostraeam10.can.re/.../1080p.mp4?token=... ✅ (20sn'de)
   NOT: Blood Blockade tranimaci.com'da YOK (404) — farklı kaynak gerekiyor
 
-SOHBET-93 ODAĞI (backend restart + cihazda test):
-  1. bat→5→1 (backend MUTLAKA restart — stream_finder + manager.py değişti)
-  2. KONOSUBA S2 Bölüm 1 indir → CDN MP4 bulunuyor mu (20sn'de)
-  3. Progress bar artık %0→%100 atlamıyor mu?
-  4. bat restart → OYNAT butonunun görüldüğünü doğrula (jobs.json)
-  5. Blood Blockade için farklı kaynak bul (tranimaci'de yok)
+SOHBET-93 TAMAMLANDI — OYNAT fix + Detail İzle local player (commit 263ae63):
+  [x] Downloads OYNAT: _jobCard onclick apostrophe bug → data-* + event delegation
+  [x] player.js: getDownloadedJob(contentId, epNum) metodu + DOMContentLoaded delegation
+  [x] Detail episode İzle: indirilmiş bölüm varsa dış site yerine player açılıyor
+  [x] Detail siteShortcut: sıradaki bölüm indirildiyse sarı OYNAT butonu göster
+  [x] SW v16, app.js v37, player.js v7
+
+SOHBET-94 ODAĞI:
+  1. bat→5→1 (backend restart — stream_finder değişmişti sohbet-92b'de)
+  2. OYNAT butonu test: Downloads ekranında tamamlanmış bölüm → ▶ OYNAT → player açılıyor?
+  3. Detail İzle test: indirilmiş bölüm → İzle butonuna bas → local player açılıyor?
+  4. Mobile USB aktarım hazırlık (doğrulama sonrası)
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
