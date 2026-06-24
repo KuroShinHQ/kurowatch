@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=42"/>
+<link rel="stylesheet" href="tailwind.css?v=43"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -489,13 +489,13 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
     </div>
     <!-- Kütüphanem Paneli -->
     <div id="search-panel-library" class="flex flex-col gap-3">
-      <div id="library-search-results" class="grid grid-cols-3 gap-3">
+      <div id="library-search-results" class="grid grid-cols-2 sm:grid-cols-3 gap-[4px]">
         <div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">Kütüphanende aramak için yaz...</div>
       </div>
     </div>
     <!-- Keşfet Paneli -->
     <div id="search-panel-discover" class="hidden flex-col gap-4">
-      <div class="grid grid-cols-3 gap-3" id="search-results">
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-[4px]" id="search-results">
         <div class="col-span-3 text-center py-8 text-[14px] text-[#859398]">Bir tür seç veya ara...</div>
       </div>
     </div>
@@ -526,28 +526,28 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- EKRAN: STATS — İstatistikler v7                                 -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-stats" class="screen hidden w-full pb-safe-nav">
-  <div class="pt-20 pb-6 px-4 space-y-5">
+  <div class="pt-20 pb-6 px-4 space-y-4">
     <div>
       <h1 class="text-[20px] font-bold tracking-tight text-[#e1e0ff]">İSTATİSTİKLER</h1>
       <p class="text-[12px] text-[#9090b0] mt-1">Medya tüketiminin özeti</p>
     </div>
 
     <!-- Bento 2×2 -->
-    <section class="grid grid-cols-2 gap-3">
-      <div class="glass-card p-4 rounded-xl">
-        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Toplam Saat</p>
+    <section class="grid grid-cols-2 gap-4">
+      <div class="glass-card p-4 rounded-xl active:scale-[0.97] transition-transform">
+        <p class="text-[11px] uppercase tracking-widest font-bold text-[#9090b0]">Toplam Saat</p>
         <div class="text-[24px] font-bold mt-1" style="color:#00d4ff" id="stats-hours">—</div>
       </div>
-      <div class="glass-card p-4 rounded-xl">
-        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Kütüphane</p>
+      <div class="glass-card p-4 rounded-xl active:scale-[0.97] transition-transform">
+        <p class="text-[11px] uppercase tracking-widest font-bold text-[#9090b0]">Kütüphane</p>
         <div class="text-[24px] font-bold text-[#e1e0ff] mt-1" id="stats-library-count">—</div>
       </div>
-      <div class="glass-card p-4 rounded-xl">
-        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Tamamlandı</p>
+      <div class="glass-card p-4 rounded-xl active:scale-[0.97] transition-transform">
+        <p class="text-[11px] uppercase tracking-widest font-bold text-[#9090b0]">Tamamlandı</p>
         <div class="text-[24px] font-bold mt-1" style="color:#4caf50" id="stats-completed">—</div>
       </div>
-      <div class="glass-card p-4 rounded-xl">
-        <p class="text-[9px] uppercase tracking-widest font-bold text-[#9090b0]">Ort. Puan</p>
+      <div class="glass-card p-4 rounded-xl active:scale-[0.97] transition-transform">
+        <p class="text-[11px] uppercase tracking-widest font-bold text-[#9090b0]">Ort. Puan</p>
         <div class="text-[24px] font-bold mt-1" style="color:#00d4ff" id="stats-avg-score">—</div>
       </div>
     </section>
@@ -556,7 +556,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
     <section class="glass-card p-4 rounded-xl">
       <h3 class="text-[13px] font-semibold text-[#dde3e7] mb-4">Medya Dağılımı</h3>
       <div class="flex items-center gap-6">
-        <div class="relative w-28 h-28 flex-shrink-0">
+        <div class="relative w-32 h-32 flex-shrink-0">
           <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <circle cx="50" cy="50" fill="transparent" r="40" stroke="#16213e" stroke-width="12"></circle>
             <circle id="stat-donut-anime"  cx="50" cy="50" fill="transparent" r="40" stroke="#00d4ff" stroke-dasharray="88 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="0"></circle>
@@ -622,7 +622,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- EKRAN: SETTINGS — Ayarlar v7                                    -->
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-settings" class="screen hidden w-full pb-safe-nav">
-  <div class="pt-20 pb-8 px-4 space-y-6">
+  <div class="pt-20 pb-8 px-4 space-y-4">
     <div>
       <h1 class="text-[20px] font-bold tracking-tight text-[#e1e0ff]">AYARLAR</h1>
     </div>
