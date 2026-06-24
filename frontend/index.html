@@ -84,7 +84,33 @@ a:active, button:active, .interactive:active, .interactive-card:active {
 .pt-safe { padding-top: env(safe-area-inset-top, 0px); }
 .pb-safe-nav { padding-bottom: calc(env(safe-area-inset-bottom) + 64px); }
 
-body { min-height: 100dvh; overscroll-behavior: contain; }
+body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(--kw-bg, #0d0d1a) !important; color: var(--kw-text, #e1e0ff); }
+
+/* ── Tema CSS değişkenleri — _applyTheme() tarafından setlenir ── */
+:root {
+  --kw-bg: #0d0d1a; --kw-surface: #16213e; --kw-surface-low: #181933;
+  --kw-surface-high: #272842; --kw-card: #1a1a2e;
+  --kw-accent: #00d4ff; --kw-accent-dim: #3cd7ff;
+  --kw-secondary: #bbc5eb; --kw-tertiary: #ffd9a1;
+  --kw-text: #e1e0ff; --kw-text-dim: #9090b0; --kw-text-variant: #bbc9cf;
+  --kw-outline: #859398; --kw-outline-variant: #3c494e;
+}
+/* Ekran arka planları */
+.screen, #bottom-nav, #sidebar-nav {
+  background-color: var(--kw-bg, #0d0d1a) !important;
+}
+/* Kart/panel arka planları */
+.bg-\[\#1a1a2e\], .bg-bg-card { background-color: var(--kw-card, #1a1a2e) !important; }
+.bg-\[\#1c1d37\], .bg-\[\#16213e\] { background-color: var(--kw-surface, #16213e) !important; }
+.bg-\[\#12132a\] { background-color: var(--kw-surface-low, #181933) !important; }
+.bg-\[\#272842\] { background-color: var(--kw-surface-high, #272842) !important; }
+/* Accent rengi */
+.text-\[\#00d4ff\], .text-primary-container { color: var(--kw-accent, #00d4ff) !important; }
+.bg-\[\#00d4ff\] { background-color: var(--kw-accent, #00d4ff) !important; }
+.border-\[\#00d4ff\], .border-primary-container { border-color: var(--kw-accent, #00d4ff) !important; }
+/* Text */
+.text-\[\#e1e0ff\], .text-text-primary { color: var(--kw-text, #e1e0ff) !important; }
+.text-\[\#9090b0\], .text-text-muted { color: var(--kw-text-dim, #9090b0) !important; }
 
 /* ── Ekran geçiş animasyonu ── */
 .screen {
@@ -166,7 +192,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <!-- EKRAN: HOME — v7 Netflix Stili + Kütüphane Grid                 -->
 <!-- ════════════════════════════════════════════════════════════════ -->
-<section id="screen-home" class="screen active w-full pb-safe-nav overflow-x-hidden">
+<section id="screen-home" class="screen active w-full pb-safe-nav">
 
   <!-- ── v7 Hero Banner ───────────────────────────────────────────── -->
   <div id="home-hero" class="relative w-full h-[530px] md:h-[663px] overflow-hidden shadow-[0_0_50px_rgba(0,212,255,0.12)]">
@@ -1590,7 +1616,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
 <!-- ════════════════════════════════════════════════════════════════ -->
 <script src="debug-logger.js"></script>
 <script src="i18n.js"></script>
-<script src="app.js?v=34"></script>
+<script src="app.js?v=35"></script>
 
 <!-- Ekrana Özel İnline JS -->
 <script>
