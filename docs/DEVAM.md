@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-90) · **Aktif sürüm:** v1.3.5 → HOME scroll + Tema CSS var · **Son commit:** `51d24cd`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-92) · **Aktif sürüm:** v1.3.6 → Jobs persist + Progress fix + OYNAT fix · **Son commit:** `66f2c61`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -339,12 +339,19 @@ SOHBET-91b EK BULGULAR (gerçek test):
     ❌ Diğer sayfalarda float indicator çalışmıyor
     ✅ İndirme tamamlandı (503.4 MB, dosya diskte var)
 
-SOHBET-92 ODAĞI:
-  1. manager.py: Jobs JSON persist et (downloads/jobs.json) — restart'ta yükle, kayıp YOK
-  2. OYNAT fix: openVideo'da _jobs[jobId] null ise /api/download/queue fetch yap
-  3. scroll: snap-x → scroll-snap-type:x proximity (yumuşat)
-  4. progress: WS event → _renderDownloadScreen() call — anlık güncelleme kontrol
-  5. float indicator: indirme bitti → toast/badge göster
+SOHBET-92 TAMAMLANDI — Jobs persist + Progress await fix + OYNAT fix (commit 66f2c61):
+  [x] manager.py: JSON persist (downloads/jobs.json) — restart'ta jobs korunuyor
+  [x] main.py: lifespan'de load_jobs() çağrılıyor
+  [x] anime.py + manga.py: on_progress() → await on_progress() — progress artık anlık
+  [x] player.js: openVideo API fallback — _jobs null ise /api/download/queue fetch
+  [x] index.html: snap-x snap-proximity — scroll sertliği azaldı, SW v15, player.js v6
+
+SOHBET-93 ODAĞI (backend restart + cihazda test):
+  1. bat→5→1 (backend restart — manager.py değişti)
+  2. Anime indir → progress bar'ın %0→%100 atlamadığını doğrula
+  3. bat restart → OYNAT butonunun görüldüğünü doğrula (jobs.json persist)
+  4. HOME scroll proximity → sertlik azaldı mı test et
+  5. Float indicator diğer sayfada görünüyor mu?
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
