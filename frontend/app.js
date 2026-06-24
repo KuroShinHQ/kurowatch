@@ -1164,10 +1164,10 @@
     });
 
     const TYPE_BADGE = {
-      anime:  { bg: 'rgba(0,212,255,0.1)',     color: '#00d4ff', label: 'Anime'  },
-      manga:  { bg: 'rgba(255,217,161,0.1)',    color: '#ffd9a1', label: 'Manga'  },
-      manhwa: { bg: 'rgba(187,197,235,0.12)',   color: '#bbc5eb', label: 'Manhwa' },
-      game:   { bg: 'rgba(255,180,171,0.12)',   color: '#ffb4ab', label: 'Oyun'   },
+      anime:  { bg: 'rgba(0,212,255,0.1)', color: '#00d4ff', label: 'Anime'  },
+      manga:  { bg: 'rgba(0,212,255,0.1)', color: '#00d4ff', label: 'Manga'  },
+      manhwa: { bg: 'rgba(0,212,255,0.1)', color: '#00d4ff', label: 'Manhwa' },
+      game:   { bg: 'rgba(0,212,255,0.1)', color: '#00d4ff', label: 'Oyun'   },
     };
 
     function _card(u) {
@@ -1205,7 +1205,7 @@
         '<div class="flex-1 space-y-1 min-w-0">' +
         '<div class="flex justify-between items-center">' +
         '<span class="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded" style="background:' + badge.bg + ';color:' + badge.color + '">' + badge.label + '</span>' +
-        '<span class="text-[10px] font-medium" style="color:' + badge.color + '">' + time + '</span></div>' +
+        '<span class="text-[10px] font-medium" style="color:#9090b0">' + time + '</span></div>' +
         '<h3 class="text-[15px] font-semibold text-white truncate">' + escapeHtml(u.content_title) + '</h3>' +
         '<p class="text-[12px]" style="color:#9090b0">' + epText + '</p>' +
         '<div class="flex gap-2 pt-1">' +
@@ -1383,6 +1383,62 @@
             ' style="background:' + c + '18;color:' + c + ';border:1px solid ' + c + '30">' +
             escapeHtml(genreTR(entry[0])) + ' <span style="opacity:0.6">(' + entry[1] + ')</span></span>';
         }).join('');
+      }
+    }
+
+    // ── Haftalık Aktivite (haftalık toplam tahmini) ───────────────
+    const weeklyEl = document.getElementById('stats-weekly-total');
+    if (weeklyEl) {
+      let wMins = 0;
+      items.forEach(function(it) {
+        if (it.type === 'anime') wMins += Math.min(it.my_progress || 0, 7) * 24;
+        else if (it.type === 'manga') wMins += Math.min(it.my_progress || 0, 7) * 5;
+      });
+      weeklyEl.textContent = wMins > 0 ? Math.round(wMins) + 'd' : '—';
+    }
+
+    // ── Son İzlenenler (anime, ilerleme > 0) ──────────────────────
+    const recentAnimeEl = document.getElementById('stats-recent-anime');
+    if (recentAnimeEl) {
+      const animeItems = items.filter(function(i) { return i.type === 'anime' && (i.my_progress || 0) > 0; })
+        .sort(function(a, b) { return (b.my_progress || 0) - (a.my_progress || 0); }).slice(0, 6);
+      if (animeItems.length === 0) {
+        recentAnimeEl.innerHTML = '<div class="text-[12px] text-[#9090b0]">Anime aktivitesi yok</div>';
+      } else {
+        recentAnimeEl.innerHTML = animeItems.map(function(it) {
+          const bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
+          return '<div class="flex-none w-32 glass-card rounded-xl p-3 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform" data-content-id="' + it.id + '">' +
+            '<div class="w-full h-20 rounded-lg overflow-hidden" style="' + bg + ';background-size:cover;background-position:center"></div>' +
+            '<div>' +
+            '<h4 class="text-[11px] font-bold line-clamp-1" style="color:#e1e0ff">' + escapeHtml(it.title_tr || it.title) + '</h4>' +
+            '<p class="text-[10px] font-bold mt-0.5" style="color:#00d4ff">' + (it.my_progress || 0) + ' Bölüm</p>' +
+            '</div></div>';
+        }).join('');
+        recentAnimeEl.querySelectorAll('[data-content-id]').forEach(function(c) { _attachCardEvents(c); });
+      }
+    }
+
+    // ── Son Okunanlar (manga/manhwa, ilerleme > 0) ────────────────
+    const recentMangaEl = document.getElementById('stats-recent-manga');
+    if (recentMangaEl) {
+      const mangaItems = items.filter(function(i) { return (i.type === 'manga' || i.type === 'manhwa') && (i.my_progress || 0) > 0; })
+        .sort(function(a, b) { return (b.my_progress || 0) - (a.my_progress || 0); }).slice(0, 4);
+      if (mangaItems.length === 0) {
+        recentMangaEl.innerHTML = '<div class="text-[12px] text-[#9090b0]">Manga aktivitesi yok</div>';
+      } else {
+        recentMangaEl.innerHTML = mangaItems.map(function(it) {
+          const bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
+          return '<div class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer active:scale-95 transition-transform" data-content-id="' + it.id + '">' +
+            '<div class="flex items-center gap-3">' +
+            '<div class="w-12 h-16 rounded-lg flex-shrink-0" style="' + bg + ';background-size:cover;background-position:center"></div>' +
+            '<div>' +
+            '<h4 class="text-[13px] font-semibold" style="color:#dde3e7">' + escapeHtml(it.title_tr || it.title) + '</h4>' +
+            '<p class="text-[10px] uppercase font-bold mt-1" style="color:#9090b0">' + (it.my_progress || 0) + ' SAYFA OKUNDU</p>' +
+            '</div></div>' +
+            '<span class="material-symbols-outlined" style="color:#00d4ff;font-size:18px">arrow_forward_ios</span>' +
+            '</div>';
+        }).join('');
+        recentMangaEl.querySelectorAll('[data-content-id]').forEach(function(c) { _attachCardEvents(c); });
       }
     }
   }
