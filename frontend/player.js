@@ -193,12 +193,13 @@
     let actions = '';
     if (job.status === 'done') {
       if (job.media_type === 'anime') {
-        actions = '<button onclick="window.kuroPlayer.openVideo(' + job.id + ',\'' + escHtml(job.content_title) + ' — ' + ep + '\')"' +
-          ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+        actions = '<button class="dl-play-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+          ' data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
           ' style="background:#00d4ff;color:#003642;box-shadow:0 0 10px rgba(0,212,255,0.3)">▶ OYNAT</button>';
       } else {
-        actions = '<button onclick="window.kuroReader.open(' + job.id + ',\'' + escHtml(job.content_title) + ' — ' + ep + '\',' + job.content_id + ',' + job.episode_number + ')"' +
-          ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+        actions = '<button class="dl-read-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
+          ' data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
+          ' data-content-id="' + job.content_id + '" data-ep-num="' + job.episode_number + '"' +
           ' style="background:#ffd9a1;color:#1a0a00;box-shadow:0 0 10px rgba(255,217,161,0.2)">📖 OKU</button>';
       }
       actions += '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
@@ -1506,11 +1507,37 @@
         alert('Analiz başlatılamadı: ' + err.message);
       }
     },
+    getDownloadedJob: function(contentId, epNum) {
+      return Object.values(_jobs).find(function(j) {
+        return j.content_id === contentId && j.episode_number === epNum && j.status === 'done';
+      }) || null;
+    },
   };
 
   // ── Başlat ───────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function () {
     connectDownloadWS();
+
+    // ── Downloads listesi — OYNAT / OKU buton delegation ─────────
+    const _dlList = document.getElementById('downloads-list');
+    if (_dlList) {
+      _dlList.addEventListener('click', function(evt) {
+        const playBtn = evt.target.closest('.dl-play-btn');
+        if (playBtn) {
+          _player.openVideo(parseInt(playBtn.dataset.jobId, 10), playBtn.dataset.title);
+          return;
+        }
+        const readBtn = evt.target.closest('.dl-read-btn');
+        if (readBtn) {
+          _reader.open(
+            parseInt(readBtn.dataset.jobId, 10),
+            readBtn.dataset.title,
+            parseInt(readBtn.dataset.contentId, 10),
+            parseInt(readBtn.dataset.epNum, 10)
+          );
+        }
+      });
+    }
 
     // ── Player Butonları (v7) ─────────────────────────────────────
     const _pb = function (id, fn) { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); };

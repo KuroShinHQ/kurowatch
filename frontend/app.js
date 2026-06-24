@@ -2182,16 +2182,26 @@
       const targetLabel = (nextEp && nextEp.url)
         ? readLabel + ' — Bölüm ' + nextEpNum
         : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
-      const siteShortcut = targetUrl
-        ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
-          'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
-          'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
-          '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-          targetLabel + '</a>'
-        : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
-          'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
-          '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
-          readLabel + ' için site ekle → Siteler sekmesi</button>';
+      // Sıradaki bölüm indirilmişse oynat butonu göster
+      const _nextDoneJob = (nextEp && window.kuroDownload) ? window.kuroDownload.getDownloadedJob(contentId, nextEpNum) : null;
+      const siteShortcut = _nextDoneJob
+        ? '<button class="site-play-done-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2"' +
+          ' data-job-id="' + _nextDoneJob.id + '" data-ep-num="' + nextEpNum + '"' +
+          (nextEp ? ' data-ep-id="' + nextEp.id + '"' : '') +
+          ' data-content-id="' + contentId + '" data-label="' + escapeHtml(targetLabel) + '"' +
+          ' style="height:44px;background:#00d4ff;border:1px solid #00d4ff;color:#003642;font-size:13px;cursor:pointer">' +
+          '<span class="material-symbols-outlined" style="font-size:18px">play_circle</span>' +
+          targetLabel + ' ▶</button>'
+        : (targetUrl
+          ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
+            'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+            'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
+            '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
+            targetLabel + '</a>'
+          : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+            'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
+            '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
+            readLabel + ' için site ekle → Siteler sekmesi</button>');
 
       // ── Sezon seçici ──
       const seasonPickerHtml = allSeasons.length > 1
@@ -2344,7 +2354,7 @@
         '</div>' +
         '<div style="display:flex;align-items:center;gap:2px">' +
         (openUrl
-          ? '<button class="ep-overlay-btn" data-url="' + escapeHtml(openUrl) + '" data-label="' + numTxt + '"' +
+          ? '<button class="ep-overlay-btn" data-url="' + escapeHtml(openUrl) + '" data-label="' + numTxt + '" data-ep-num="' + e.number + '"' +
             (epUrl ? ' data-ep-id="' + e.id + '" data-content-id="' + contentId + '"' : '') +
             ' style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;' +
             (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d;border:1px solid rgba(255,255,255,0.08);color:#9090b0">' ) +
@@ -2361,17 +2371,50 @@
 
     _buildEpisodeView();
 
-    // ── Event delegation — overlayBtn / watchBtn / dlBtn (tek listener) ─
+    // ── Event delegation — overlayBtn / watchBtn / dlBtn / site-play-done (tek listener) ─
     el.addEventListener('click', async function(evt) {
-      const overlayBtn = evt.target.closest('.ep-overlay-btn');
-      const watchBtn = evt.target.closest('.ep-watch-btn');
-      const dlBtn    = evt.target.closest('.ep-dl-btn');
+      const overlayBtn     = evt.target.closest('.ep-overlay-btn');
+      const watchBtn       = evt.target.closest('.ep-watch-btn');
+      const dlBtn          = evt.target.closest('.ep-dl-btn');
+      const playDoneBtn    = evt.target.closest('.site-play-done-btn');
+
+      if (playDoneBtn) {
+        const jobId = parseInt(playDoneBtn.dataset.jobId, 10);
+        const epId  = playDoneBtn.dataset.epId ? parseInt(playDoneBtn.dataset.epId, 10) : null;
+        const cid   = parseInt(playDoneBtn.dataset.contentId, 10);
+        const label = playDoneBtn.dataset.label || '';
+        if (window.kuroPlayer) await window.kuroPlayer.openVideo(jobId, label);
+        if (epId) {
+          try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
+          const scr = document.getElementById('screen-detail');
+          const savedY = scr ? scr.scrollTop : 0;
+          await renderDetail(cid);
+          if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+        }
+        return;
+      }
 
       if (overlayBtn) {
         const url   = overlayBtn.dataset.url;
         const label = overlayBtn.dataset.label || '';
         const epId  = overlayBtn.dataset.epId ? parseInt(overlayBtn.dataset.epId, 10) : null;
         const cid   = overlayBtn.dataset.contentId ? parseInt(overlayBtn.dataset.contentId, 10) : null;
+        const epNum = overlayBtn.dataset.epNum ? parseInt(overlayBtn.dataset.epNum, 10) : null;
+        // İndirildiyse local media player aç
+        if (cid && epNum && window.kuroDownload && window.kuroPlayer) {
+          const doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+          if (doneJob) {
+            await window.kuroPlayer.openVideo(doneJob.id, label);
+            if (epId) {
+              try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
+              const scr = document.getElementById('screen-detail');
+              const savedY = scr ? scr.scrollTop : 0;
+              await renderDetail(cid);
+              if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+            }
+            return;
+          }
+        }
         openReadOverlay(url, label);
         if (epId && cid) {
           try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
