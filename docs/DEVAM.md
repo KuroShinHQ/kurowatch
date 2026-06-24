@@ -329,10 +329,22 @@ SOHBET-91 TAMAMLANDI — HOME scroll + tranimaci.com ANİME İNDİRME FİX (cdd2
   ⚠️ Token süresi: CDN token dinamik (yt-dlp hemen başlarsa sorun yok)
   ⚠️ HOME scroll: Backend açık olduğunda test edilmeli — touch-action fix teorik
 
+SOHBET-91b EK BULGULAR (gerçek test):
+  HOME scroll: çalışıyor AMA snap-x mandatory sert → snap-proximity yapılacak
+  Tema: ✅
+  ANİME sorunlar:
+    ❌ OYNAT → player AÇILMIYOR (donuyor) — openVideo(_jobs[jobId]) null (WS gelmeden önce)
+    ❌ bat restart → TÜM JOBS SİLİNİYOR — manager.py in-memory storage
+    ❌ %0→%100 atlama → WS progress anlık render etmiyor
+    ❌ Diğer sayfalarda float indicator çalışmıyor
+    ✅ İndirme tamamlandı (503.4 MB, dosya diskte var)
+
 SOHBET-92 ODAĞI:
-  1. ANİME İNDİRME gerçek test: backend başlat → app'te KONOSUBA Ep1 indir → indirildi mi?
-  2. HOME scroll: telefonda test — touch-action pan-x yeterli mi?
-  3. Tema test: Cinema/Kawaii geçişi doğru renk uyguluyor mu?
+  1. manager.py: Jobs JSON persist et (downloads/jobs.json) — restart'ta yükle, kayıp YOK
+  2. OYNAT fix: openVideo'da _jobs[jobId] null ise /api/download/queue fetch yap
+  3. scroll: snap-x → scroll-snap-type:x proximity (yumuşat)
+  4. progress: WS event → _renderDownloadScreen() call — anlık güncelleme kontrol
+  5. float indicator: indirme bitti → toast/badge göster
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
