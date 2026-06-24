@@ -1,8 +1,9 @@
 """
-İndirme kuyruğu — bellek içi, max 2 eşzamanlı, WebSocket ilerleme push.
+İndirme kuyruğu — max 2 eşzamanlı, WebSocket ilerleme push, JSON persist.
 Daisy-chain: oynatma başladığında N+1 otomatik kuyruğa alınır (player.js tetikler).
 """
 import asyncio
+import json
 import os
 from datetime import datetime, timezone
 from typing import Optional
@@ -13,6 +14,7 @@ _MAX_CONCURRENT = 2
 _DOWNLOADS_ROOT = os.path.normpath(
     os.path.join(os.path.dirname(__file__), "..", "..", "downloads")
 )
+_JOBS_FILE = os.path.join(_DOWNLOADS_ROOT, "jobs.json")
 
 _queue:  list[dict] = []
 _active: dict[int, dict] = {}
@@ -26,6 +28,31 @@ _lock = asyncio.Lock()
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def load_jobs():
+    """Startup: daha önce kaydedilmiş job'ları yükle (restart'ta kayıp önleme)."""
+    global _done, _counter
+    if not os.path.isfile(_JOBS_FILE):
+        return
+    try:
+        with open(_JOBS_FILE, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        _done.extend(data)
+        if _done:
+            _counter = max(j["id"] for j in _done)
+    except Exception as exc:
+        print(f"[manager] jobs.json yüklenemedi: {exc}")
+
+
+def _save_jobs():
+    """Tamamlanan/başarısız job'ları diske kaydet."""
+    try:
+        os.makedirs(_DOWNLOADS_ROOT, exist_ok=True)
+        with open(_JOBS_FILE, "w", encoding="utf-8") as f:
+            json.dump(_done[-200:], f, ensure_ascii=False)
+    except Exception as exc:
+        print(f"[manager] jobs.json kaydedilemedi: {exc}")
 
 
 def _job_dir(job: dict) -> str:
@@ -212,5 +239,6 @@ async def _run_job(job: dict):
     finally:
         _active.pop(job["id"], None)
         _done.append(job)
+        _save_jobs()
         await _broadcast({"event": "done", "job": job})
         _start_next()

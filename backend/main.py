@@ -66,6 +66,8 @@ async def _startup_check_bg():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    from backend.downloader.manager import load_jobs
+    load_jobs()
     await init_db()
     asyncio.create_task(_startup_check_bg())
     yield

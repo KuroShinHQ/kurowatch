@@ -46,7 +46,7 @@ def _is_madara(url: str) -> bool:
 async def download_manga_chapter(
     url: str,
     output_dir: str,
-    on_progress: Optional[Callable[[int, int], None]] = None,
+    on_progress: Optional[Callable] = None,
 ) -> list[str]:
     """Manga bölümü indir. Sayfa dosyalarının yol listesini döner."""
     os.makedirs(output_dir, exist_ok=True)
@@ -106,7 +106,7 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
 
             files.append(dest)
             if on_progress:
-                on_progress(i + 1, total)
+                await on_progress(i + 1, total)
 
         return files
 
@@ -182,7 +182,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
                 fh.write(img_r.content)
             files.append(dest)
             if on_progress:
-                on_progress(i + 1, total)
+                await on_progress(i + 1, total)
 
     if not files:
         raise RuntimeError(f"Madara: hiç sayfa indirilemedi — {url}")
@@ -236,7 +236,7 @@ async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str
                 fh.write(img_r.content)
             files.append(dest)
             if on_progress:
-                on_progress(i + 1, total)
+                await on_progress(i + 1, total)
 
     if not files:
         raise RuntimeError(f"uzaymanga.com: hiç sayfa indirilemedi — {fetch_url}")
@@ -263,7 +263,7 @@ async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str
         if line.startswith("#") or "Downloading" in line:
             count += 1
             if on_progress:
-                on_progress(count, 0)
+                await on_progress(count, 0)
 
     await proc.wait()
     if proc.returncode != 0:

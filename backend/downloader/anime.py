@@ -1,7 +1,7 @@
 import asyncio
 import os
 import re
-from typing import Callable, Optional
+from typing import Callable, Coroutine, Optional
 from urllib.parse import urlparse
 
 from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg, get_session_header_args
@@ -11,7 +11,7 @@ async def download_anime(
     url: str,
     output_path: str,
     quality: str = "720p",
-    on_progress: Optional[Callable[[int], None]] = None,
+    on_progress: Optional[Callable] = None,
 ) -> str:
     """yt-dlp ile anime/video indir. stream_finder ile gerçek URL tespit edilir."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -77,7 +77,7 @@ async def download_anime(
                 pct = min(99, int(float(m.group(1))))
                 if pct != last_pct:
                     last_pct = pct
-                    on_progress(pct)
+                    await on_progress(pct)
     # Kalan buffer'ı işle
     if _buf:
         line = _buf.decode("utf-8", errors="ignore").strip()
@@ -107,7 +107,7 @@ async def download_anime(
         p = f"{output_path}.{ext}"
         if os.path.exists(p):
             if on_progress:
-                on_progress(100)
+                await on_progress(100)
             return p
 
     raise RuntimeError(f"Çıktı dosyası bulunamadı: {output_path}.*")

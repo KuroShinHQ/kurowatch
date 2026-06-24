@@ -916,8 +916,18 @@
       if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
     },
 
-    openVideo: function (jobId, title) {
-      const job = _jobs[jobId];
+    openVideo: async function (jobId, title) {
+      let job = _jobs[jobId];
+      if (!job) {
+        try {
+          const r = await fetch(API + '/api/download/queue');
+          if (r.ok) {
+            const data = await r.json();
+            (data.jobs || []).forEach(function(j) { _jobs[j.id] = j; });
+            job = _jobs[jobId];
+          }
+        } catch (e) {}
+      }
       const contentId = job ? job.content_id : null;
       const epNum     = job ? job.episode_number : null;
       this.open(jobId, title, contentId, epNum);
