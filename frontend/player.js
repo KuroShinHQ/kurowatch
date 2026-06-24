@@ -215,6 +215,9 @@
     } else if (job.status === 'failed') {
       actions = '<span class="text-[11px] truncate flex-1" style="color:#ffb4ab" title="' + escHtml(job.error_msg || '') + '">' +
         escHtml((job.error_msg || 'Bilinmeyen hata').substring(0, 50)) + '</span>' +
+        '<button onclick="window.kuroDownload.retry(' + job.id + ')"' +
+        ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px] flex-shrink-0"' +
+        ' style="background:#ffb4ab;color:#1a0000">TEKRAR DENE</button>' +
         '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
         ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all flex-shrink-0" style="color:#9090b0" title="Sil">' +
         '<span class="material-symbols-outlined" style="font-size:18px">delete</span></button>';
@@ -253,10 +256,14 @@
     const failed    = jobs.filter(function (j) { return j.status === 'failed' || j.status === 'cancelled' || j.status === 'deleted'; });
 
     function _section(icon, color, label, items) {
+      const extraBtn = (label === 'Tamamlandı')
+        ? '<button onclick="window.kuroDownload.clearDone()" class="text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform" style="color:#00d4ff">TÜMÜNÜ TEMİZLE</button>'
+        : '';
       return '<div class="space-y-3">' +
         '<div class="flex items-center justify-between">' +
         '<h2 class="text-[13px] font-semibold flex items-center gap-2" style="color:#dde3e7">' +
-        '<span class="material-symbols-outlined text-[18px]" style="color:' + color + '">' + icon + '</span>' + label + '</h2></div>' +
+        '<span class="material-symbols-outlined text-[18px]" style="color:' + color + '">' + icon + '</span>' + label + '</h2>' +
+        extraBtn + '</div>' +
         items.map(_jobCard).join('') + '</div>';
     }
 
@@ -269,8 +276,11 @@
     // Depolama güncelle
     const storage = await _fetchStorage();
     const storageEl = document.getElementById('downloads-storage');
+    const storageBar = document.getElementById('downloads-storage-bar');
     if (storageEl && storage) {
-      storageEl.textContent = _fmtSize(storage.bytes) + ' kullanılıyor';
+      storageEl.textContent = _fmtSize(storage.bytes) + ' BOŞ';
+      const pctUsed = storage.total_bytes ? Math.min(100, Math.round(storage.bytes / storage.total_bytes * 100)) : 0;
+      if (storageBar) storageBar.style.width = pctUsed + '%';
     }
   }
 
@@ -1467,6 +1477,16 @@
     start:  startDownload,
     cancel: cancelJob,
     render: _renderDownloadScreen,
+    clearDone: async function() {
+      const done = Object.values(_jobs).filter(function(j) { return j.status === 'done'; });
+      await Promise.all(done.map(function(j) { return cancelJob(j.id); }));
+    },
+    retry: async function(jobId) {
+      const job = _jobs[jobId];
+      if (!job) return;
+      await cancelJob(jobId);
+      await startDownload(job.content_id, job.content_title, job.media_type, job.episode_number, job.url, job.quality);
+    },
     analyzeIntro: async function (contentId) {
       try {
         const r = await fetch(`${API}/api/analyze/intro/${contentId}`, { method: 'POST' });
