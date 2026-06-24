@@ -1783,6 +1783,180 @@
         _validateKey('igdb', key, igdbTestBtn);
       };
     }
+
+    // ── DeepL key ──────────────────────────────────────────────────
+    const deeplKey  = document.getElementById('settings-deepl-key');
+    const deeplSave = document.getElementById('settings-deepl-save');
+    if (deeplKey) deeplKey.value = cfg.deepl_api_key || '';
+    if (deeplSave) {
+      deeplSave.onclick = async function() {
+        try {
+          await apiPost('/api/settings', { deepl_api_key: deeplKey ? deeplKey.value.trim() : '' });
+          this.textContent = 'Kaydedildi ✓';
+          setTimeout(() => { this.textContent = 'Kaydet'; }, 2000);
+        } catch(e) { alert('Kayıt hatası: ' + e.message); }
+      };
+    }
+
+    // ── Kuro Translate sliders ──────────────────────────────────────
+    const fontSlider    = document.getElementById('settings-translate-font');
+    const fontVal       = document.getElementById('settings-translate-font-val');
+    const opacSlider    = document.getElementById('settings-translate-opacity');
+    const opacVal       = document.getElementById('settings-translate-opacity-val');
+    if (fontSlider) {
+      fontSlider.value = cfg.translate_font_size || 16;
+      if (fontVal) fontVal.textContent = fontSlider.value + 'px';
+      fontSlider.addEventListener('input', async function() {
+        if (fontVal) fontVal.textContent = this.value + 'px';
+        await apiPost('/api/settings', { translate_font_size: parseInt(this.value) });
+      });
+    }
+    if (opacSlider) {
+      opacSlider.value = cfg.translate_opacity != null ? cfg.translate_opacity : 85;
+      if (opacVal) opacVal.textContent = opacSlider.value + '%';
+      opacSlider.addEventListener('input', async function() {
+        if (opacVal) opacVal.textContent = this.value + '%';
+        await apiPost('/api/settings', { translate_opacity: parseInt(this.value) });
+      });
+    }
+
+    // ── Kuro Translate smart toggle ─────────────────────────────────
+    const translateSmartEl = document.getElementById('settings-translate-smart');
+    if (translateSmartEl) {
+      translateSmartEl.checked = cfg.translate_smart !== false;
+      translateSmartEl.addEventListener('change', async function() {
+        await apiPost('/api/settings', { translate_smart: this.checked });
+      });
+    }
+
+    // ── Akıllı Ön-İndirme ──────────────────────────────────────────
+    const predownEl = document.getElementById('settings-predownload-toggle');
+    if (predownEl) {
+      predownEl.checked = cfg.smart_predownload !== false;
+      predownEl.addEventListener('change', async function() {
+        await apiPost('/api/settings', { smart_predownload: this.checked });
+      });
+    }
+
+    // ── Threshold counters ──────────────────────────────────────────
+    function _makeCounter(minusId, plusId, valId, cfgKey, defaultVal, min, max) {
+      let val = cfg[cfgKey] != null ? cfg[cfgKey] : defaultVal;
+      const valEl = document.getElementById(valId);
+      if (valEl) valEl.textContent = val;
+      const minusBtn = document.getElementById(minusId);
+      const plusBtn  = document.getElementById(plusId);
+      if (minusBtn) minusBtn.addEventListener('click', async function() {
+        if (val <= min) return;
+        val--;
+        if (valEl) valEl.textContent = val;
+        cfg[cfgKey] = val;
+        await apiPost('/api/settings', { [cfgKey]: val });
+      });
+      if (plusBtn) plusBtn.addEventListener('click', async function() {
+        if (val >= max) return;
+        val++;
+        if (valEl) valEl.textContent = val;
+        cfg[cfgKey] = val;
+        await apiPost('/api/settings', { [cfgKey]: val });
+      });
+    }
+    _makeCounter('settings-anime-thresh-minus', 'settings-anime-thresh-plus', 'settings-anime-thresh-val', 'predownload_anime_threshold', 10, 1, 60);
+    _makeCounter('settings-manga-thresh-minus', 'settings-manga-thresh-plus', 'settings-manga-thresh-val', 'predownload_manga_threshold', 5, 1, 30);
+    _makeCounter('settings-parallel-minus', 'settings-parallel-plus', 'settings-parallel-val', 'parallel_downloads', 3, 1, 10);
+    _makeCounter('settings-opening-show-minus', 'settings-opening-show-plus', 'settings-opening-show-val', 'opening_show_time', 85, 0, 300);
+    _makeCounter('settings-opening-skip-minus', 'settings-opening-skip-plus', 'settings-opening-skip-val', 'opening_skip_duration', 85, 0, 180);
+    _makeCounter('settings-ending-show-minus', 'settings-ending-show-plus', 'settings-ending-show-val', 'ending_show_time', 90, 0, 300);
+    _makeCounter('settings-ending-skip-minus', 'settings-ending-skip-plus', 'settings-ending-skip-val', 'ending_skip_duration', 90, 0, 180);
+
+    // ── İndirme Kalitesi dropdown ───────────────────────────────────
+    const qualSelect = document.getElementById('settings-quality-select');
+    if (qualSelect) {
+      qualSelect.value = cfg.download_quality_manual || cfg.default_quality || '720p';
+      qualSelect.addEventListener('change', async function() {
+        await apiPost('/api/settings', { download_quality_manual: this.value, download_quality_auto: this.value });
+      });
+    }
+
+    // ── Wi-Fi only ──────────────────────────────────────────────────
+    const wifiEl = document.getElementById('settings-wifi-only');
+    if (wifiEl) {
+      wifiEl.checked = cfg.wifi_only_download === true;
+      wifiEl.addEventListener('change', async function() {
+        await apiPost('/api/settings', { wifi_only_download: this.checked });
+      });
+    }
+
+    // ── Opening / Ending toggles ────────────────────────────────────
+    const openingToggleEl = document.getElementById('settings-opening-toggle');
+    if (openingToggleEl) {
+      openingToggleEl.checked = cfg.opening_skip_enabled !== false;
+      openingToggleEl.addEventListener('change', async function() {
+        await apiPost('/api/settings', { opening_skip_enabled: this.checked });
+      });
+    }
+    const endingToggleEl = document.getElementById('settings-ending-toggle');
+    if (endingToggleEl) {
+      endingToggleEl.checked = cfg.ending_skip_enabled !== false;
+      endingToggleEl.addEventListener('change', async function() {
+        await apiPost('/api/settings', { ending_skip_enabled: this.checked });
+      });
+    }
+
+    // ── Tema seçimi ─────────────────────────────────────────────────
+    const themeButtons = document.querySelectorAll('.settings-theme-btn');
+    const savedTheme = localStorage.getItem('kurowatch-theme') || 'kuro';
+    themeButtons.forEach(btn => {
+      const isActive = btn.dataset.theme === savedTheme;
+      btn.style.background = isActive ? 'rgba(0,212,255,0.1)' : '';
+      btn.style.borderColor = isActive ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
+      const icon = btn.querySelector('.material-symbols-outlined');
+      const circle = btn.querySelector('div.w-6.h-6');
+      if (icon) icon.style.display = isActive ? '' : 'none';
+      if (circle) circle.style.display = isActive ? 'none' : '';
+      btn.addEventListener('click', function() {
+        const theme = this.dataset.theme;
+        localStorage.setItem('kurowatch-theme', theme);
+        themeButtons.forEach(b => {
+          const isCur = b.dataset.theme === theme;
+          b.style.background = isCur ? 'rgba(0,212,255,0.1)' : '';
+          b.style.borderColor = isCur ? 'rgba(0,212,255,0.4)' : 'rgba(255,255,255,0.08)';
+          const bi = b.querySelector('.material-symbols-outlined');
+          const bc = b.querySelector('div.w-6.h-6');
+          if (bi) bi.style.display = isCur ? '' : 'none';
+          if (bc) bc.style.display = isCur ? 'none' : '';
+        });
+      });
+    });
+
+    // ── Önbelleği Temizle ───────────────────────────────────────────
+    const cacheClearBtn  = document.getElementById('settings-cache-clear-btn');
+    const cacheSizeEl    = document.getElementById('settings-cache-size');
+    if (navigator.storage && navigator.storage.estimate) {
+      navigator.storage.estimate().then(est => {
+        if (cacheSizeEl) {
+          const mb = ((est.usage || 0) / 1048576).toFixed(1);
+          cacheSizeEl.textContent = mb + ' MB kullanılıyor';
+        }
+      });
+    } else if (cacheSizeEl) { cacheSizeEl.textContent = ''; }
+    if (cacheClearBtn) {
+      cacheClearBtn.addEventListener('click', async function() {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+        if (cacheSizeEl) cacheSizeEl.textContent = '0 MB kullanılıyor';
+      });
+    }
+
+    // ── Sezon indirme ───────────────────────────────────────────────
+    const seasonDlBtn = document.getElementById('settings-season-download-btn');
+    if (seasonDlBtn) {
+      seasonDlBtn.addEventListener('click', function() {
+        const modal = document.getElementById('modal-add');
+        if (modal) modal.classList.remove('hidden');
+      });
+    }
   }
 
   // ── MAL OAuth2 Sync ──────────────────────────────────────────────
