@@ -294,9 +294,28 @@ SOHBET-87 TAMAMLANDI — URL Sağlık Taraması + Toplu Fix:
   KALAN: 3 Ghibli (URL yok), AoT 500 (geçici)
   Settings Cinema → tema seçilince değişmiyor ❓
 
-SOHBET-88 ODAĞI:
-  1. Settings Cinema tema fix
-  2. HOME + DETAIL revizyon (Stitch AI prompt)
+SOHBET-88 TAMAMLANDI — DETAIL Stitch port + Tema fix (commit ebb73d3):
+  [x] Settings Cinema/Kawaii/Kuro tema → CSS değişkenler gerçekten uygulanıyor
+  [x] DETAIL hero 530px, KUROWATCH header ortada
+  [x] Episode thumbnail 128×72px + aktif/tamamlanan stiller
+  SW cache v11
+
+SOHBET-89 TAMAMLANDI — Download fix + HOME kütüphane kaldır + turkanime.tv migration:
+  [x] DB migration: 4942 episode turkanime.tv → tranimaci.com (tam olarak yapılmamıştı!)
+  [x] 717 site URL turkanime.tv/tranimeizle → tranimaci.com
+  [x] manga.py: protocol-relative URL fix (//cdn.manhwahentai.me → https://...)
+  [x] anime.py: [generic] hata mesajı düzeltildi (actual_url==url koşulu kaldırıldı)
+  [x] stream_finder.py: Playwright context'e cookies.txt yükle (force_playwright siteleri için)
+  [x] HOME: "Tüm Kütüphane" grid gizlendi (Stitch AI'da yok, karmaşıklık yaratıyordu)
+  [x] SW v12, app.js v34 (cache bust)
+  Commit: ec3ac33 (download), ceeebdb (HOME fix)
+
+SOHBET-90 ODAĞI:
+  1. Backend restart → Downloads gerçek test:
+     - Murim Login Bölüm 1 (manhwahentai.me → protocol-relative URL fix test)
+     - KONOSUBA Bölüm 1 (tranimaci.com → yeni URL test)
+  2. DETAIL inceleme — Lord test edip geribildirim ver
+  3. HOME artık Stitch gibi: Hero → Devam Et → Popüler Anime → Trend Manga → Oyunlar
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
