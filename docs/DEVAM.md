@@ -346,12 +346,22 @@ SOHBET-92 TAMAMLANDI — Jobs persist + Progress await fix + OYNAT fix (commit 6
   [x] player.js: openVideo API fallback — _jobs null ise /api/download/queue fetch
   [x] index.html: snap-x snap-proximity — scroll sertliği azaldı, SW v15, player.js v6
 
+SOHBET-92b EK — tranimaci.com CF Managed Challenge fix (commit 2731493):
+  ROOT CAUSE: tranimaci.com Playwright'ı algılıyor ("Security Verification" sayfası)
+  [x] _NODRIVER_HTML_SITES = {tranimaci.com}: nodriver (gerçek Chrome) ile CF bypass
+  [x] _nodriver_get_html(): 20sn bekle → JS-render HTML
+  [x] _extract_mp4_from_html(): CDN MP4 URL regex (token dahil)
+  [x] tranimaci.com _FORCE_PLAYWRIGHT'tan çıkarıldı
+  [x] KONOSUBA S2 (id=714) 10 ep www. migration (DB)
+  KANIT: cdn10.videostraeam10.can.re/.../1080p.mp4?token=... ✅ (20sn'de)
+  NOT: Blood Blockade tranimaci.com'da YOK (404) — farklı kaynak gerekiyor
+
 SOHBET-93 ODAĞI (backend restart + cihazda test):
-  1. bat→5→1 (backend restart — manager.py değişti)
-  2. Anime indir → progress bar'ın %0→%100 atlamadığını doğrula
-  3. bat restart → OYNAT butonunun görüldüğünü doğrula (jobs.json persist)
-  4. HOME scroll proximity → sertlik azaldı mı test et
-  5. Float indicator diğer sayfada görünüyor mu?
+  1. bat→5→1 (backend MUTLAKA restart — stream_finder + manager.py değişti)
+  2. KONOSUBA S2 Bölüm 1 indir → CDN MP4 bulunuyor mu (20sn'de)
+  3. Progress bar artık %0→%100 atlamıyor mu?
+  4. bat restart → OYNAT butonunun görüldüğünü doğrula (jobs.json)
+  5. Blood Blockade için farklı kaynak bul (tranimaci'de yok)
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
