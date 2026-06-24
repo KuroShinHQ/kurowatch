@@ -259,34 +259,82 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (24 Haz sohbet-83):
+MEVCUT DURUM (24 Haz sohbet-84):
   - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
-  - Son commit: d42e297 (Stitch görsel fix — tip rozeti + kart boyutları)
+  - Son commit: b9bbf34 (Stats bento Stitch)
 
-✅ SOHBET-83 TAMAMLANDI — Stitch TAM görsel sync (Home + Search + Detail + Stats + Settings):
+✅ SOHBET-84 TAMAMLANDI — Settings v7 TAM Stitch entegrasyonu:
+  commit ce32b7f — Settings komple yeniden yazıldı:
+  [x] Profil kartı (KuroUser + ikon)
+  [x] DeepL Pro Key alanı eklendi
+  [x] Kuro Translate (AI): toggle + dil çifti + font slider + opacity slider
+  [x] Dil Seçimi: TR/EN
+  [x] İndirme: Akıllı Ön-İndirme toggle + Anime/Manga eşik sayaçları
+  [x] İndirme: kalite dropdown + Eşzamanlı counter + Wi-Fi toggle
+  [x] İndirme: TÜM SEZONU İNDİR butonu
+  [x] Video Ayarları: Opening + Ending (toggle + show/skip saniye sayaçları)
+  [x] Uygulama Tercihleri: Tema seçimi (Kuro/Cinema/Kawaii)
+  [x] Önbelleği Temizle + Storage API kullanım göstergesi
+  [x] VERSİYON: v7.0.4-GoldMaster (Build 4402) — artık v0.3.0 yok
+  [x] app.js: tüm yeni kontroller için load/save handler eklendi
+  [x] tailwind v44 + SW cache v6
 
-  ROUND-1 (commit d42e297):
-  [x] Home tip satırı kartları: tip rozeti eklendi, genişlik 130→140/160→180px
-  [x] Home devam kartları: tip rozeti + 260→280/320px
-  [x] Home hero yüksekliği: 480→530px / 600→663px
-  [x] Search kartları: sabit cyan badge → tipe özel renk
+  commit b9bbf34 — Stats bento Stitch etiketleri:
+  [x] subtitle: "Kullanıcı verilerinizin derinlemesine analizi."
+  [x] bento: Toplam İzleme / Seri Tamamlandı / Manga Okuma / Global Sıralama
 
-  ROUND-2 (commit 034d08b) — Stitch tam analizi sonrası kritik değişiklikler:
-  [x] Episode satırları (Bölümler tab): Stitch thumbnail layout →
-        96×54px thumbnail bloğu (bölüm numarası + play/check icon)
-        ep-row class, hover shadow, rounded-12px
-        Watched: yeşil check badge + opacity-55
-  [x] Search Library kartları: grid-cols-2 gap-[4px], hover shadow lift, inner-glow
-  [x] Search Discover kartları: aynı kart stili + backdrop-blur badge
-  [x] Stats: gap-4, label text-[11px], donut w-28→w-32, active scale
-  [x] Settings: space-y-6→space-y-4 (Stitch space-y-3 yakını)
+🔥 AKTİF GÖREV — Stitch TAM Entegrasyon (Tüm Ekranlar)
+KAYNAK: C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_netflix_tasar_m_rehberi\
+Her klasörde screen.png (referans) + code.html (kaynak HTML) var.
 
-SONRAKİ GÖREV — Backend açıp görsel doğrulama:
-  1. bat→10→1 ile backend başlat
-  2. Tarayıcıda http://localhost:8099 aç
-  3. Detail → Bölümler tab: thumbnail satırlar görünüyor mu?
-  4. Search Library: 2 kolonlu dar grid, hover lift var mı?
-  5. Hâlâ "eski" görünen varsa ekran adı + ne görünüyor bildir
+TAMAMLANAN:
+  [x] Settings → kurowatch_settings_v7_final_master (commit ce32b7f)
+  [x] Stats bento → kurowatch_stats_v7_master (commit b9bbf34, kısmi)
+
+YAPILACAKLAR (her biri: screen.png okuyup code.html ile karşılaştır → index.html güncelle):
+
+  [ ] HOME — kurowatch_home_solo_leveling_sim/
+      PNG'de: Popüler Anime / Trend Manga / Popüler Oyunlar satır başlıkları
+      Kontrol: app.js renderHomeV7() satır başlıkları Stitch ile aynı mı?
+
+  [ ] SEARCH — kurowatch_search_filter_v7_master/ + kurowatch_arama_filtreleme_v7_master_hybrid/
+      PNG'de: Kütüphanem/Keşfet tab + FİLTRELE panel + 3-sütun grid + "DAHA FAZLA YÜKLE"
+      Kontrol: tab/filtre/grid Stitch birebir mi?
+
+  [ ] DETAIL — kurowatch_detail_solo_leveling_sim/
+      PNG'de: hero + progress bar + DEVAM ET + Bölümler tab thumbnail satırları + Karakterler
+      Kontrol: thumbnail 96×54 satırlar, karakter galeri
+
+  [ ] UPDATES — kurowatch_updates_v7_master_rafine/
+      PNG'de: ANİME/MANGA/MANHW badge + cover + IZLE/OKU + GÖRDÜM butonları + zaman grupları
+      Kontrol: buton metinleri + badge renkleri Stitch ile aynı mı?
+
+  [ ] DOWNLOADS — kurowatch_downloads_v7_master_rafine/
+      PNG'de: İNDİRİLİYOR (SIRADA:2 chip) + BAĞLANTI HATASI (TEKRAR DENE) + TAMAMLANDI (TÜMÜNÜ TEMİZLE) + CİHAZ:12.4GB
+      Eksik: CİHAZ depolama satırı + TÜMÜNÜ TEMİZLE butonu + TEKRAR DENE butonu
+
+  [ ] PLAYER — kurowatch_video_oynat_c_v7_gold_master_hybrid/ (3 overlay klasörü)
+      PNG: modal player Stitch birebir mi?
+
+  [ ] READER — kurowatch_manga_okuyucu_v7_master/
+      PNG: reader panel Stitch birebir mi?
+
+  [ ] STATS (tamamlama) — kurowatch_stats_v7_master/
+      Eksik: İZLEME SÜRESİ haftalık bar chart (Pz-Pa)
+      Eksik: "HEPSİNİ GÖR" Son İzlenen + Son Okunan listesi bölümleri
+
+YÖNTEMİ:
+  1. Stitch klasöründeki screen.png'i oku (referans görsel)
+  2. code.html'i oku (kaynak HTML yapısı)  
+  3. Mevcut index.html section'ını oku
+  4. Farkları tespit et → birebir port et
+  5. Tailwind rebuild (C:\Kuroshin\tools\tailwindcss.exe -c tailwind.config.js -i tailwind-input.css -o frontend/tailwind.css --minify)
+  6. CSS version++ güncelle, commit
+
+ÖNEMLI:
+  - Tüm mevcut ID'ler korunacak (app.js kırılmaz)
+  - Stitch'teki CDN/fake data → gerçek ID'lerle replace
+  - Stitch token class isimleri (bg-bg-card, font-label-caps vb.) → inline hex veya glass-card ile map et
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
