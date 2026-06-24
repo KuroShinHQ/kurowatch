@@ -411,6 +411,24 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             ),
             locale="tr-TR",
         )
+
+        # Cookies.txt varsa Playwright context'e yükle (turkanime.tv gibi force_playwright siteleri için)
+        _pw_cookies_file = _cookies_path(episode_url)
+        if _pw_cookies_file:
+            _pw_domain = _domain(episode_url)
+            _pw_cookies_dict = _parse_netscape_cookies(_pw_cookies_file, _pw_domain)
+            if _pw_cookies_dict:
+                _pw_scheme = urlparse(episode_url).scheme
+                _pw_cookie_list = [
+                    {"name": k, "value": v, "domain": f".{_pw_domain}", "path": "/", "secure": _pw_scheme == "https"}
+                    for k, v in _pw_cookies_dict.items()
+                ]
+                try:
+                    await ctx.add_cookies(_pw_cookie_list)
+                    logger.info("Playwright cookies yüklendi: %s (%d adet)", _pw_domain, len(_pw_cookie_list))
+                except Exception as _ce:
+                    logger.warning("Playwright cookie yükleme hatası: %s", _ce)
+
         page = await ctx.new_page()
 
         # Bot tespiti atla (playwright-stealth) — context'e uygula, navigation'dan önce

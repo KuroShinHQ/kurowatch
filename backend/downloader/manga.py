@@ -134,7 +134,9 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             am = re.search(rf'{attr}=["\']([^"\']*)["\']', tag, re.IGNORECASE)
             if am:
                 src = am.group(1).strip()
-                if src and src not in seen:
+                if src.startswith("//"):
+                    src = "https:" + src
+                if src and src.startswith("http") and src not in seen:
                     seen.add(src)
                     chapter_imgs.append(src)
                 break
@@ -145,7 +147,9 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
                  "elementor", "gravatar", "placeholder", "spinner", "loading")
         for m in re.finditer(r'(?:data-src|data-lazy-src|src)=["\']([^"\']*\.(?:jpg|jpeg|png|webp)[^"\']*)["\']', html, re.IGNORECASE):
             src = m.group(1).strip()
-            if not src or any(s in src.lower() for s in _SKIP):
+            if src.startswith("//"):
+                src = "https:" + src
+            if not src or not src.startswith("http") or any(s in src.lower() for s in _SKIP):
                 continue
             if src not in seen:
                 seen.add(src)
