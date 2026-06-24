@@ -23,6 +23,9 @@ _MADARA_DOMAINS = [
 # CF turnstile veya kalıcı blok olan siteler — gallery-dl da geçemez
 _CF_BLOCKED = {"mangasehri.net", "mangasehri.com"}
 
+# DNS fail / offline siteler — anında hata döndür
+_OFFLINE = {"majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com"}
+
 # uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
 _UZAY_OLD_RE = re.compile(r"/manga/\d+/([^/]+)/\d+/(\d+)-bolum")
 # uzaymanga.com yeni format chapter URL ve CDN pattern
@@ -55,6 +58,13 @@ async def download_manga_chapter(
         raise RuntimeError(
             f"Bu site Cloudflare koruması altında, indirme yapılamıyor: {host}\n"
             "Çözüm: Bölüm URL'sini çalışan bir kaynakla güncelle (mangawow.org vb.)"
+        )
+
+    # Offline / DNS fail siteler
+    if any(host.endswith(d) for d in _OFFLINE):
+        raise RuntimeError(
+            f"Bu site erişilemez durumda (offline/DNS fail): {host}\n"
+            "Çözüm: Bölüm URL'sini çalışan bir kaynakla güncelle."
         )
 
     if "mangadex.org" in url:
