@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="style.css"/>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
-<link rel="stylesheet" href="tailwind.css?v=45"/>
+<link rel="stylesheet" href="tailwind.css?v=46"/>
 <style>
 /* ── SPA Screen/Modal Kontrol ── */
 .screen { display: none; }
@@ -450,40 +450,85 @@ body { min-height: 100dvh; overscroll-behavior: contain; }
         <span class="material-symbols-outlined text-[16px] align-middle mr-1">travel_explore</span>Keşfet
       </button>
     </div>
-    <!-- Arama + FİLTRELE v7 -->
-    <div class="relative">
+    <!-- Arama + FİLTRELE v7 Stitch -->
+    <div class="relative group">
       <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-        <span class="material-symbols-outlined text-[#859398]">search</span>
+        <span class="material-symbols-outlined text-[#859398] group-focus-within:text-[#00d4ff] transition-colors">search</span>
       </div>
-      <input id="search-discover-input" class="w-full h-[48px] pl-12 pr-[112px] bg-[#1c1d37] border border-white/5 rounded-xl text-[#e1e0ff] transition-all outline-none placeholder:text-[#859398] focus:border-[#00d4ff]/50" placeholder="Kütüphanende ara..." type="text" style="font-size:16px!important" autocomplete="new-password" name="kw_search_v7"/>
-      <button id="search-filter-toggle" class="absolute inset-y-2 right-2 px-3 bg-[#00d4ff] text-[#003642] rounded-lg text-[11px] font-bold tracking-wider uppercase flex items-center gap-1 active:scale-[0.97] transition-transform">
-        <span class="material-symbols-outlined" style="font-size:16px">tune</span>Filtrele
+      <input id="search-discover-input" class="w-full h-[48px] pl-12 pr-[132px] bg-[#1c1d37] border border-white/5 rounded-xl text-[#e1e0ff] transition-all outline-none placeholder:text-[#859398] focus:border-[#00d4ff]/30" placeholder="Anime, Manga veya Manhwa ara..." type="text" style="font-size:16px!important" autocomplete="new-password" name="kw_search_v7"/>
+      <button id="search-filter-toggle" class="absolute inset-y-2 right-2 px-4 bg-[#00d4ff] text-[#003642] rounded-lg text-[11px] font-bold tracking-[0.05em] uppercase flex items-center gap-2 active:scale-[0.97] transition-all hover:brightness-110">
+        <span class="material-symbols-outlined" style="font-size:18px">tune</span>FİLTRELE
       </button>
     </div>
-    <!-- Gelişmiş Filtre Paneli (toggle) -->
-    <div id="search-filter-panel" class="hidden bg-[#1a2123]/80 rounded-xl p-4 border border-white/5 space-y-4">
-      <!-- Tip seçici (Keşfet'e özel) -->
-      <div id="filter-type-section">
-        <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398] mb-3">Tip</h3>
-        <div class="flex gap-2 overflow-x-auto pb-1" id="discover-type-row">
+    <!-- Gelişmiş Filtre Paneli (toggle) — Stitch birebir -->
+    <div id="search-filter-panel" class="hidden bg-[#1a2123]/50 rounded-xl p-4 border border-white/5 space-y-4">
+      <!-- Tür chip'leri — Keşfet'e özel, önce göster -->
+      <div id="discover-genre-section" class="space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Tür</h3>
+          <span class="text-[9px] font-bold uppercase tracking-widest text-[#00d4ff]">Tümünü Gör</span>
+        </div>
+        <div class="flex gap-2 overflow-x-auto pb-2 hide-scrollbar" id="discover-genre-row"></div>
+      </div>
+      <!-- Tip seçici — Keşfet'e özel -->
+      <div id="filter-type-section" class="space-y-3">
+        <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Tip</h3>
+        <div class="flex gap-2 overflow-x-auto pb-1 hide-scrollbar" id="discover-type-row">
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#00d4ff]/10 text-[#00d4ff] rounded-full text-[11px] font-bold tracking-wider border border-[#00d4ff]/50 active:scale-[0.95]" data-discover-type="anime">Anime</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="manga">Manga</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="manhwa">Manhwa</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="game">Oyun</button>
         </div>
       </div>
-      <!-- Tür chip'leri (Keşfet'e özel) -->
-      <div id="discover-genre-section">
-        <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398] mb-3">Tür</h3>
-        <div class="flex gap-2 overflow-x-auto pb-2" id="discover-genre-row"></div>
+      <!-- Yıl + Puan grid -->
+      <div class="grid grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Yıl</h3>
+          <div class="flex flex-wrap gap-2" id="filter-year-row">
+            <button class="filter-year-btn px-3 py-1.5 rounded-lg text-[11px] font-bold active:scale-[0.95] bg-[#00d4ff] text-[#003642]" data-year="">Hepsi</button>
+            <button class="filter-year-btn px-3 py-1.5 rounded-lg text-[11px] font-bold active:scale-[0.95] bg-[#2f3639] text-[#859398]" data-year="2025">2025</button>
+            <button class="filter-year-btn px-3 py-1.5 rounded-lg text-[11px] font-bold active:scale-[0.95] bg-[#2f3639] text-[#859398]" data-year="2024">2024</button>
+            <button class="filter-year-btn px-3 py-1.5 rounded-lg text-[11px] font-bold active:scale-[0.95] bg-[#2f3639] text-[#859398]" data-year="2023">2023</button>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center">
+            <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Puan</h3>
+            <span id="filter-score-label" class="text-[11px] font-bold text-[#00d4ff]">Hepsi</span>
+          </div>
+          <input id="filter-score-range" type="range" min="0" max="10" step="0.5" value="0" class="w-full cursor-pointer"/>
+        </div>
       </div>
-      <!-- Sıralama (her iki tab) -->
+      <!-- Durum — 4 buton grid -->
+      <div class="space-y-3">
+        <h3 class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Durum</h3>
+        <div class="grid grid-cols-4 gap-2">
+          <button class="filter-status-btn flex flex-col items-center justify-center p-2 rounded-xl gap-1 active:scale-[0.95] transition-all bg-[#2f3639] text-[#859398] border border-transparent" data-status="watching">
+            <span class="material-symbols-outlined" style="font-size:20px">play_circle</span>
+            <span class="text-[9px] font-bold uppercase">İzliyorum</span>
+          </button>
+          <button class="filter-status-btn flex flex-col items-center justify-center p-2 rounded-xl gap-1 active:scale-[0.95] transition-all bg-[#2f3639] text-[#859398] border border-transparent" data-status="completed">
+            <span class="material-symbols-outlined" style="font-size:20px">check_circle</span>
+            <span class="text-[9px] font-bold uppercase">Bitti</span>
+          </button>
+          <button class="filter-status-btn flex flex-col items-center justify-center p-2 rounded-xl gap-1 active:scale-[0.95] transition-all bg-[#2f3639] text-[#859398] border border-transparent" data-status="planned">
+            <span class="material-symbols-outlined" style="font-size:20px">calendar_today</span>
+            <span class="text-[9px] font-bold uppercase">Planlı</span>
+          </button>
+          <button class="filter-status-btn flex flex-col items-center justify-center p-2 rounded-xl gap-1 active:scale-[0.95] transition-all bg-[#00d4ff] text-[#003642] border border-transparent" data-status="">
+            <span class="material-symbols-outlined" style="font-size:20px">grid_view</span>
+            <span class="text-[9px] font-bold uppercase">Hepsi</span>
+          </button>
+        </div>
+      </div>
+      <!-- Sıralama -->
       <div class="flex items-center justify-between pt-2 border-t border-white/5">
         <span class="text-[11px] font-bold tracking-widest uppercase text-[#859398]">Sıralama:</span>
         <select id="search-sort-select" class="bg-transparent border-none text-[#00d4ff] text-[11px] font-bold focus:ring-0 cursor-pointer">
+          <option value="popular">Popülerlik</option>
           <option value="score">Puan (Yüksek)</option>
-          <option value="title">İsim (A-Z)</option>
           <option value="year">En Yeni</option>
+          <option value="title">İsim (A-Z)</option>
         </select>
       </div>
     </div>
