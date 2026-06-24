@@ -343,6 +343,7 @@
         </div>`;
       }).join('');
       contRow.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
+      _addDragScroll(contRow);
     }
 
     // Tip satırları
@@ -374,6 +375,25 @@
         </div>`;
       }).join('');
       row.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
+      _addDragScroll(row);
+    });
+  }
+
+  function _addDragScroll(el) {
+    let isDown = false, startX = 0, scrollLeft = 0;
+    el.addEventListener('mousedown', function(e) {
+      isDown = true;
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+      el.style.cursor = 'grabbing';
+    });
+    el.addEventListener('mouseleave', function() { isDown = false; el.style.cursor = 'grab'; });
+    el.addEventListener('mouseup', function() { isDown = false; el.style.cursor = 'grab'; });
+    el.addEventListener('mousemove', function(e) {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      el.scrollLeft = scrollLeft - (x - startX) * 1.5;
     });
   }
 

@@ -104,6 +104,7 @@ _FORCE_PLAYWRIGHT = {
     "dizibox.so",
     "hdfilmcehennemi.nl",
     "turkanime.tv",
+    "tranimaci.com",  # JS PoW challenge (SHA-256 difficulty=4) → Playwright çözüyor
 }
 
 # Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
@@ -126,6 +127,15 @@ _PLAY_BUTTON_SELECTORS = {
         "#playerSezon .btn:first-child",
         ".player-options a:first-child",
         "[data-video]:first-child",
+    ],
+    # tranimaci.com: JS PoW challenge çözüldükten sonra player yüklenir
+    "tranimaci.com": [
+        ".source-btn:first-child",
+        ".server-btn:first-child",
+        ".btn-server:first-child",
+        "ul.server-list li:first-child a",
+        "[data-source]:first-child",
+        ".player-source:first-child",
     ],
 }
 
@@ -220,7 +230,12 @@ async def find_stream_url(episode_url: str) -> str:
         logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
     # 3. Playwright: JS-render + ağ isteği izleme (fallback)
-    pw_timeout = 60000 if "turkanime.tv" in domain else 15000
+    if "turkanime.tv" in domain:
+        pw_timeout = 60000
+    elif "tranimaci.com" in domain:
+        pw_timeout = 45000  # JS PoW challenge (~5sn) + player yüklenmesi (~20sn)
+    else:
+        pw_timeout = 15000
     try:
         embed = await _playwright_find_embed(episode_url, timeout_ms=pw_timeout)
         if embed:
@@ -459,9 +474,12 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         try:
             await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
 
-            # Network idle bekle — lazy-load player'ların başlaması için
+            # tranimaci.com: JS PoW challenge (SHA-256 difficulty=4) → /__waf_challenge POST
+            # → 800ms sonra window.location.reload() → gerçek sayfa yükleniyor
+            # Bu yüzden networkidle'ı uzun bekliyoruz (PoW ~3sn + reload + player ~10sn)
+            nidle_timeout = 25000 if "tranimaci.com" in domain else 8000
             try:
-                await page.wait_for_load_state("networkidle", timeout=8000)
+                await page.wait_for_load_state("networkidle", timeout=nidle_timeout)
             except Exception:
                 pass  # timeout OK, devam
 
@@ -502,6 +520,8 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             # Player yüklensin
             if "turkanime.tv" in domain:
                 wait_secs = 32
+            elif "tranimaci.com" in domain:
+                wait_secs = 30  # JS PoW challenge (~5sn) + player load (~15sn) + embed fetch
             elif "hdfilmcehennemi.nl" in domain:
                 wait_secs = 20  # rplayer iframe lazy-load + CF geçişi
             elif "tranimeizle" in domain:

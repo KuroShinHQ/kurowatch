@@ -3,7 +3,7 @@
 // Cache-first: app shell · Network-first: /api/* · Offline shell
 // ═══════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'kurowatch-v13';
+const CACHE_NAME = 'kurowatch-v14';
 const SHELL_FILES = [
   'style.css',
   'player.js',
