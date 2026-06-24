@@ -2691,6 +2691,9 @@
   let _discoverGenre = null;
   let _discoverType = 'anime';
   let _activeSearchTab = 'library';
+  let _filterYear = '';
+  let _filterScore = 0;
+  let _filterStatus = '';
 
   function _initSearchTabs() {
     const tabLib = document.getElementById('search-tab-library');
@@ -2708,12 +2711,60 @@
     if (filterBtn && filterPanel && !filterBtn._filterListenerAdded) {
       filterBtn._filterListenerAdded = true;
       filterBtn.addEventListener('click', function() {
-        filterPanel.classList.toggle('hidden');
+        const open = filterPanel.classList.toggle('hidden');
+        this.style.background = filterPanel.classList.contains('hidden') ? '#00d4ff' : 'rgba(0,212,255,0.2)';
+        this.style.color = filterPanel.classList.contains('hidden') ? '#003642' : '#00d4ff';
         if (!filterPanel.classList.contains('hidden') && _activeSearchTab === 'discover') {
           _buildDiscoverGenreChips();
         }
       });
     }
+
+    // Yıl filtresi (bir kez bağla)
+    document.querySelectorAll('.filter-year-btn').forEach(function(btn) {
+      if (btn._yearListenerAdded) return;
+      btn._yearListenerAdded = true;
+      btn.addEventListener('click', function() {
+        _filterYear = this.dataset.year;
+        document.querySelectorAll('.filter-year-btn').forEach(function(b) {
+          const active = b.dataset.year === _filterYear;
+          b.style.background = active ? '#00d4ff' : '#2f3639';
+          b.style.color = active ? '#003642' : '#859398';
+        });
+        const inp = document.getElementById('search-discover-input');
+        if (_activeSearchTab === 'library') renderLibrarySearch(inp ? inp.value : '');
+        else renderSearch(inp ? inp.value : '');
+      });
+    });
+
+    // Puan slider (bir kez bağla)
+    var scoreRange = document.getElementById('filter-score-range');
+    var scoreLabel = document.getElementById('filter-score-label');
+    if (scoreRange && !scoreRange._scoreListenerAdded) {
+      scoreRange._scoreListenerAdded = true;
+      scoreRange.addEventListener('input', function() {
+        _filterScore = parseFloat(this.value);
+        if (scoreLabel) scoreLabel.textContent = _filterScore > 0 ? _filterScore.toFixed(1) + '+' : 'Hepsi';
+        const inp = document.getElementById('search-discover-input');
+        if (_activeSearchTab === 'library') renderLibrarySearch(inp ? inp.value : '');
+      });
+    }
+
+    // Durum filtresi (bir kez bağla)
+    document.querySelectorAll('.filter-status-btn').forEach(function(btn) {
+      if (btn._statusListenerAdded) return;
+      btn._statusListenerAdded = true;
+      btn.addEventListener('click', function() {
+        _filterStatus = this.dataset.status;
+        document.querySelectorAll('.filter-status-btn').forEach(function(b) {
+          const active = b.dataset.status === _filterStatus;
+          b.style.background = active ? '#00d4ff' : '#2f3639';
+          b.style.color = active ? '#003642' : '#859398';
+        });
+        const inp = document.getElementById('search-discover-input');
+        if (_activeSearchTab === 'library') renderLibrarySearch(inp ? inp.value : '');
+      });
+    });
 
     function switchTab(tab) {
       _activeSearchTab = tab;
@@ -2791,9 +2842,25 @@
     }
     box.innerHTML = '<div class="col-span-3 text-center py-8 flex items-center justify-center gap-2 text-[14px] text-[#859398]"><span class="material-symbols-outlined animate-spin" style="font-size:20px">progress_activity</span>Aranıyor...</div>';
     try {
-      const items = await apiGet('/api/content?q=' + encodeURIComponent(q.trim()));
+      let items = await apiGet('/api/content?q=' + encodeURIComponent(q.trim()));
       if (!items || !items.length) {
         box.innerHTML = '<div class="col-span-3 text-center py-12 flex flex-col items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]" style="font-size:48px;opacity:0.4">search_off</span><p class="text-[14px] font-medium text-[#9090b0]">Sonuç bulunamadı</p></div>';
+        return;
+      }
+      // Filtre uygula
+      if (_filterYear) items = items.filter(function(it) { return it.year && String(it.year) === _filterYear; });
+      if (_filterScore > 0) items = items.filter(function(it) { return (it.my_score || 0) >= _filterScore; });
+      if (_filterStatus) items = items.filter(function(it) { return it.my_status === _filterStatus; });
+      // Sıralama uygula
+      var sortVal = (document.getElementById('search-sort-select') || {}).value || 'popular';
+      items = items.slice().sort(function(a, b) {
+        if (sortVal === 'score') return (b.my_score || 0) - (a.my_score || 0);
+        if (sortVal === 'title') return (a.title || '').localeCompare(b.title || '');
+        if (sortVal === 'year') return (b.year || 0) - (a.year || 0);
+        return 0;
+      });
+      if (!items.length) {
+        box.innerHTML = '<div class="col-span-3 text-center py-12 flex flex-col items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]" style="font-size:48px;opacity:0.4">filter_list_off</span><p class="text-[14px] font-medium text-[#9090b0]">Filtrelerle eşleşen sonuç yok</p></div>';
         return;
       }
       const _TYPE_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#ffb4ab'};
