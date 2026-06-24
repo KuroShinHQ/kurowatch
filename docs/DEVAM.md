@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-86b) · **Aktif sürüm:** v1.3.2 → Settings fix + SEARCH Stitch port · **Son commit:** `4e38caf`
+**Son güncelleme:** 24 Haziran 2026 (sohbet-90) · **Aktif sürüm:** v1.3.5 → HOME scroll + Tema CSS var · **Son commit:** `51d24cd`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -310,12 +310,22 @@ SOHBET-89 TAMAMLANDI — Download fix + HOME kütüphane kaldır + turkanime.tv 
   [x] SW v12, app.js v34 (cache bust)
   Commit: ec3ac33 (download), ceeebdb (HOME fix)
 
-SOHBET-90 ODAĞI:
-  1. Backend restart → Downloads gerçek test:
-     - Murim Login Bölüm 1 (manhwahentai.me → protocol-relative URL fix test)
-     - KONOSUBA Bölüm 1 (tranimaci.com → yeni URL test)
-  2. DETAIL inceleme — Lord test edip geribildirim ver
-  3. HOME artık Stitch gibi: Hero → Devam Et → Popüler Anime → Trend Manga → Oyunlar
+SOHBET-90 TAMAMLANDI — HOME scroll + tema + notlar:
+  [x] Manga indirme: manhwahentai.me Bölüm 1 → 9.3 MB ✅ ÇALIŞIYOR
+  [x] HOME: "Tüm Kütüphane" grid kaldırıldı (ceeebdb)
+  [x] HOME yatay scroll: overflow-x-hidden kaldırıldı, touch-action + -webkit-overflow-scrolling:touch eklendi (51d24cd)
+  [x] Tema: CSS var(--kw-*) override sistemi (SW v13, app.js v35)
+  ❌ ANİME İNDİRME: tranimaci.com "video embed bulunamadı" hatası — stream_finder.py tranimaci.com için embed çıkaramıyor
+     → tranimaci.com Playwright veya direkt yt-dlp test gerekiyor
+     → Sorun: tranimaci.com için Playwright'ta hangi selector'ların çalıştığı bilinmiyor
+  ❌ HOME yatay scroll: Hâlâ bozuk — overflow-x-hidden kaldırmak yetmedi
+     → iOS -webkit-overflow-scrolling:touch eklendi, yetmezse Playwright gerekebilir
+
+SOHBET-91 ODAĞI:
+  1. HOME yatay scroll: JS drag-to-scroll (mousedown/touchstart + move) + touch-action:pan-x garantile
+  2. ANİME İNDİRME: tranimaci.com için stream_finder.py'ye özel selector ekle
+     → Playwright ile tranimaci.com bölüm sayfasını incele: iframe/video src + play butonu selector
+  3. Tema test: Cinema → #0a0a0a bg + #e5b800 accent; Kawaii → #12001f + #ff6b9d
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
