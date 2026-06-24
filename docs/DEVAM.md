@@ -259,54 +259,36 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (24 Haz sohbet-85):
-  - Backend ✅ ÇALIŞIYOR (localhost:8099, bat→10→1 ile başlat)
-  - Son commit: 73bebbd (Stitch TAM entegrasyon)
+MEVCUT DURUM (24 Haz sohbet-86):
+  - Backend ⚠️ KAPALI (bat→10→1 ile başlat)
+  - Son commit: 3e7af9e (HOME spacing + SEARCH filtre port)
 
-✅ SOHBET-85 TAMAMLANDI — Stitch TAM Entegrasyon (5 ekran):
-  commit 73bebbd:
+✅ SOHBET-86 TAMAMLANDI — SEARCH FİLTRELE + HOME spacing:
+  commit 0cfbad1 (SEARCH) + 3e7af9e (HOME):
 
-  HOME:
-  [x] Satır başlıkları: Animeler→Popüler Anime, Manga&Manhwa→Trend Manga, Oyunlar→Popüler Oyunlar
-  [x] Tipografi: text-[20px] tracking-tight, mb-12, gap-4/pb-6
+  SEARCH FİLTRELE (Stitch birebir port):
+  [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
+  [x] Filtre paneli tam Stitch layout: Tür → Tip → Yıl+Puan → Durum → Sıralama
+  [x] Yıl butonları (Hepsi/2025/2024/2023) → _filterYear state
+  [x] Puan range slider (0-10) → _filterScore state, "Hepsi/X.X+" label
+  [x] Durum grid 4 buton (İzliyorum/Bitti/Planlı/Hepsi) → _filterStatus state
+  [x] renderLibrarySearch: yıl+puan+durum JS filter + sıralama uygulama
+  [x] tailwind v46 + SW cache v8
 
-  SEARCH:
-  [x] Keşfet paneline "Daha Fazla Yükle" butonu eklendi
+  HOME spacing (Stitch'e yaklaştırma):
+  [x] Devam Et section: mb-8 mt-4 → mb-12, text-18px → text-20px tracking-tight
+  [x] Row divler: px-4 → pl-4 pr-4 (sol-açık Netflix efektine hazır)
+  [x] Devam Et row: pb-3 → pb-4
 
-  UPDATES:
-  [x] Tüm tip badge'leri uniform cyan (Stitch: bg-primary/10 text-primary)
-  [x] Zaman metni rengi badge.color → gray (#9090b0)
+  NOT YAPILMAYANLAR (sohbet-87'ye):
+  ❌ DETAIL revizyon (Lord Stitch AI prompt gerekiyor)
+  ❌ Downloads Video Oynat / Manga Oku buton testi (backend kapalıydı)
+  ❌ HOME daha derin revizyon (Lord görüp karar verecek)
 
-  DOWNLOADS:
-  [x] "Tamamlandı" section → TÜMÜNÜ TEMİZLE butonu
-  [x] Failed kart → TEKRAR DENE butonu (kırmızı)
-  [x] clearDone() + retry() → window.kuroDownload API'a eklendi
-  [x] CİHAZ DEPOLAMA kartı — progress bar + GB göstergesi
-
-  STATS:
-  [x] Haftalık Aktivite bar chart (Pzt/Sal/Çar/Per/Cum/Cmt/Paz)
-  [x] Son İzlenenler (anime, HEPSİNİ GÖR) — yatay scroll kartlar
-  [x] Son Okunanlar (manga/manhwa, HEPSİNİ GÖR) — liste satırları
-  [x] renderStats() genişletildi: weekly + recentAnime + recentManga
-
-  tailwind v45 + SW cache v7
-
-LORD GERİ BİLDİRİMİ (sohbet-85 sonu):
-  ✅ Settings — güzel, tamamlanmış
-  ✅ Downloads — tamamlanmış
-  ✅ Updates — tamamlanmış
-  ❌ SEARCH: FİLTRELE butonu Stitch AI gibi görünmüyor, çalışmıyor da
-  ❌ HOME: Stitch AI gibi durmuyor, revizyon gerekiyor
-  ❌ DETAIL: Olmamış — baştan revizyon. Stitch AI prompt + Lord revize combo daha efektif
-  ❌ İndirme butonu (Downloads ekranındaki): Video/Manga Oku butonları bozulmuş/test edilmemiş
-
-SOHBET-86 ODAĞI — Revizyon + Keşif:
-  ÖNCELİK 1: SEARCH FİLTRELE butonu → Stitch AI birebir port (görsel + çalışır)
-  ÖNCELİK 2: HOME revizyon → Stitch AI ile karşılaştır, farkları kapat
-  ÖNCELİK 3: DETAIL revizyon → Stitch AI prompt + mevcut hybrid kombinasyonu
-  ÖNCELİK 4: Downloads → Video Oynat / Manga Oku buton fix (test et)
-
-  NOT: Lord ziplediği detay HTML'yi gönderecek veya Stitch AI prompt ile revize edecek
+SOHBET-87 ODAĞI:
+  1. Backend başlat → Downloads Video Oynat / Manga Oku test
+  2. HOME: Lord test edip geribildirim verir → revizyon
+  3. DETAIL: Lord Stitch AI prompt ile revizyon
 ```
   MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
