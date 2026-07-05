@@ -33,16 +33,32 @@
 
 | # | Özellik | Durum | Not |
 |---|---------|-------|-----|
-| T-07 | Detail: hero kapak + başlık + tip badge + durum badge | ⏳ | |
-| T-08 | Detail: ★ yıldız puan tıklayınca değişir + kaydedilir | ⏳ | |
-| T-09 | Detail: "Sonraki Bölümü İşaretle ✓" — progress +1 | ⏳ | |
-| T-10 | Detail: Bölümler sekmesi — liste gelir | ⏳ | |
-| T-11 | Detail: Bölümler — checkbox tıklayınca ✓ olur | ⏳ | |
-| T-12 | Detail: Siteler sekmesi — site listesi + "Aç →" çalışır | ⏳ | |
-| T-13 | Detail: Notlar sekmesi — not yazılır + kaydedilir | ⏳ | |
-| T-14 | Detail: ✏️ Düzenle butonu — edit modal açılır | ⏳ | |
-| T-15 | Detail: Edit modal — başlık/durum/puan değiştirince kaydedilir | ⏳ | |
-| T-16 | Detail: Geri ← butonu — home'a döner | ⏳ | |
+| T-07 | Detail: hero kapak + başlık + tip badge + durum badge | ✅ | test_detail_hero_visible + test_detail_cover_upload_button_exists |
+| T-08 | Detail: ★ yıldız puan tıklayınca değişir + kaydedilir | ✅ | test_detail_star_rating + test_detail_star_rating_interactive |
+| T-09 | Detail: type-specific labels (BÖLÜM/CHAPTER, mark btn text, icon) | ✅ | test_detail_type_specific_labels ×3 (anime/manga/manhwa) |
+| T-09b | Detail: "Sonraki Bölümü İşaretle ✓" — progress +1 (quick-edit) | ✅ | test_detail_quick_edit_popup + test_detail_progress_slider_updates_display |
+| T-09c | Detail: Game type hides mark/continue buttons, shows TAMAMLANMA | ✅ | test_detail_game_hides_mark_button |
+| T-10 | Detail: Bölümler sekmesi — liste gelir | ✅ | test_detail_episodes_tab + test_detail_episodes_season_picker |
+| T-11 | Detail: Bölümler — checkbox tıklayınca ✓ olur | ⏳ | PW test yazılacak |
+| T-12 | Detail: Siteler sekmesi — site listesi + "Aç →" çalışır | ✅ | test_detail_switch_to_sites_tab + test_detail_sites_add_and_delete |
+| T-13 | Detail: Notlar sekmesi — not yazılır + spoiler toggle | ✅ | test_detail_switch_to_notes_tab + test_detail_notes_spoiler_toggle |
+| T-14 | Detail: ✏️ Düzenle butonu — edit modal açılır (pre-filled) | ✅ | test_detail_edit_modal_opens |
+| T-15 | Detail: Edit modal — başlık/durum/puan değiştirince kaydedilir | ⏳ | PW test yazılacak |
+| T-16 | Detail: Geri ← butonu — home'a döner | ⏳ | PW test yazılacak |
+
+### Animasyon & Transition Testleri
+
+| # | Özellik | Durum | Not |
+|---|---------|-------|-----|
+| T-A01 | Detail: slide-up animasyonu ile açılır | ✅ | test_animation_detail_slide_up |
+| T-A02 | Nav: forward (home→search) slide-in-right | ✅ | test_animation_nav_slide_in_right |
+| T-A03 | Nav: backward (search→home) slide-in-left | ✅ | test_animation_nav_slide_in_left |
+| T-A04 | Nav: home→updates slide-in-right | ✅ | test_animation_nav_updates_slide_up |
+| T-A05 | Detail: tab switch episodes→characters→sites→notes→back | ✅ | test_detail_tab_all_four_toggle |
+| T-A06 | Detail: tab active/inactive state (cyan/gray border) | ✅ | test_detail_tab_buttons_active_state |
+| T-A07 | CSS keyframe animations defined | ✅ | test_animation_transition_css_defined |
+| T-A08 | Tab roundtrip no JS errors | ✅ | test_detail_tab_all_roundtrip_no_error |
+| T-A09 | Buttons have transition + active:scale classes | ✅ | test_detail_mark_button_has_transition + test_detail_buttons_have_active_scale |
 
 ---
 
@@ -123,13 +139,12 @@
 ## 📊 İlerleme
 
 ```
-Toplam test: 38
-Tamamlanan: 19 / 38
-PASS:  14  (T-01..T-05, T-06, T-07, T-08, T-10, T-12, T-13, nav, hybrid)
+Toplam test: 38 + ek animasyon: 9 = 47
+Tamamlanan: 33 / 47
 API:   33/33 PASS (test_api_endpoints.py)
-PW:    14/14 PASS (playwright hybrid test suite)
+PW:    40/40 PASS (toplam 5 test dosyası)
 ```
 
 > ✅ test_api_endpoints.py düzeltildi — 33 endpoint test edildi, 33 PASS
-> ✅ Playwright hybrid test suite kuruldu — tests/ altında 14 test, 14 PASS
-> ⏳ Kalan 19 test otomasyon bekliyor
+> ✅ Playwright hybrid test suite: 40 test, 40 PASS (5 dosya)
+> ⏳ Kalan 14 test: T-11, T-15, T-16, Grup 3-8 (T-17..T-38) otomasyon bekliyor
