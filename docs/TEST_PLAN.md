@@ -124,7 +124,12 @@
 
 ```
 Toplam test: 38
-Tamamlanan: 6 / 38
-PASS:  5  (T-01,T-02,T-03,T-04,T-05)
-FIX:   1  (T-06 → 3 bug fix hazır, Lord testi bekleniyor)
+Tamamlanan: 19 / 38
+PASS:  14  (T-01..T-05, T-06, T-07, T-08, T-10, T-12, T-13, nav, hybrid)
+API:   33/33 PASS (test_api_endpoints.py)
+PW:    14/14 PASS (playwright hybrid test suite)
 ```
+
+> ✅ test_api_endpoints.py düzeltildi — 33 endpoint test edildi, 33 PASS
+> ✅ Playwright hybrid test suite kuruldu — tests/ altında 14 test, 14 PASS
+> ⏳ Kalan 19 test otomasyon bekliyor

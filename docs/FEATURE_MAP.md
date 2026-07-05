@@ -238,7 +238,7 @@
 │ STATS SCREEN                                        │
 │ Dosya: frontend/index.html #stats-screen            │
 │        frontend/app.js → renderStats()              │
-│        backend/routers/tracking.py GET /api/stats   │
+│        frontend/app.js → renderStats() GET /api/content (JS hesaplama) │
 ├─────────────────────────────────────────────────────┤
 │ ÖZELLİKLER:                                         │
 │                                                     │
@@ -563,7 +563,7 @@ backend/
     episodes.py       → /api/episodes + /api/check-updates + /api/updates
     sites.py          → /api/sites
     tags.py           → /api/tags
-    tracking.py       → /api/stats + süre hesabı
+    content.py       → renderStats() JS hesaplama (GET /api/content)
     sync.py           → /api/export + /api/import + /api/import/resolve
     settings.py       → /api/settings (config.json read/write)
   scraper/
