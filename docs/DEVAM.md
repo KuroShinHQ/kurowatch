@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-98) · **Aktif sürüm:** v1.3.8 → 3 bug fix (getDownloadedJob API fallback, manga reader content-type, siteShortcut content-type) · **Son commit:** `pending`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-98) · **Aktif sürüm:** v1.3.8 → 3 bug fix (getDownloadedJob API fallback, manga reader content-type, siteShortcut content-type) · **Son commit:** `dfb11f4`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -368,7 +368,7 @@ SOHBET-94/95/96/97: Model testleri (kok DEVAM.md'de)
   - Qwen3-Coder 30B UD-Q4_K_XL aktif (16.5GB, ~13 tok/s, 18/21 %85.7)
   - IQ4_XS, Huihui, DeepSeek 32B, Q4_K_M silindi
 
-SOHBET-98 TAMAMLANDI — 3 bug fix (frontend): (commit pending)
+SOHBET-98 TAMAMLANDI — 3 bug fix (frontend): (commit dfb11f4)
   [x] player.js: kuroDownload._fetchJobs() — getDownloadedJob API fallback
       (WS bağlanmadıysa server'dan job listesi çeker)
   [x] app.js: overlay buton (ep-overlay-btn) — indirilen manga/manhwa için
