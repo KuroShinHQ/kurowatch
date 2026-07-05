@@ -18,7 +18,7 @@ query ($search: String, $type: MediaType, $countryOfOrigin: CountryCode, $genre:
       seasonYear
       genres
       countryOfOrigin
-      coverImage { large }
+      coverImage { extraLarge }
     }
   }
 }
@@ -73,7 +73,7 @@ query ($id: Int) {
           format
           episodes
           status
-          coverImage { large }
+          coverImage { extraLarge }
           seasonYear
         }
       }

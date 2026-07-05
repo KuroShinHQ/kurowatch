@@ -196,9 +196,9 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
 
   <!-- ── v7 Hero Banner ───────────────────────────────────────────── -->
   <div id="home-hero" class="relative w-full h-[530px] md:h-[663px] overflow-hidden shadow-[0_0_50px_rgba(0,212,255,0.12)]">
-    <div id="home-hero-bg" class="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105" style="background-image:none;background-color:#16213e"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/50 to-transparent"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-[#0d0d1a]/70 via-transparent to-transparent hidden md:block"></div>
+    <div id="home-hero-blur" class="absolute inset-0 bg-cover bg-center scale-110" style="background-image:none;background-color:#0d0d1a;filter:blur(50px);opacity:0.7;image-rendering:auto"></div>
+    <div id="home-hero-bg" class="absolute inset-0 bg-contain bg-center bg-no-repeat" style="background-image:none;background-color:#0d0d1a"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] via-[#0d0d1a]/70 to-[#0d0d1a]/5"></div>
     <div class="absolute bottom-0 left-0 w-full px-4 md:px-5 pb-8 md:pb-12 flex flex-col max-w-2xl gap-3">
       <div class="flex items-center gap-2 mb-1">
         <span id="home-hero-status-badge" class="px-2 py-0.5 rounded text-[10px] font-label-caps uppercase bg-status-watching text-[#432c00] tracking-wider shadow-[0_0_8px_rgba(254,181,40,0.4)]">● İZLİYORUM</span>
