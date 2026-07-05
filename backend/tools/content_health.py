@@ -6,11 +6,11 @@ Anime: CF'ye takılanları tranimaci.com'da kurtarır.
 Manga/Manhwa: akıllı isim eşleştirme ile alternatif URL dener.
 
 Kullanım:
-  python -m backend.tools.content_health
-  python -m backend.tools.content_health --type anime
-  python -m backend.tools.content_health --id 18
-  python -m backend.tools.content_health --dead-only
-  python -m backend.tools.content_health --fix        # URL'leri DB'de güncelle
+  python -m backend.tools.content_health             # tüm içerikler
+  python -m backend.tools.content_health --type anime # sadece anime
+  python -m backend.tools.content_health --id 18      # tek içerik
+  python -m backend.tools.content_health --dead-only  # sadece kırık URL'ler
+  python -m backend.tools.content_health --fix        # kurtarılan URL'leri DB'de güncelle
 """
 
 import argparse
