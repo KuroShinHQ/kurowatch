@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-99) · **Aktif sürüm:** v1.3.8 · **Son commit:** `e1722a4`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-99) · **Aktif sürüm:** v1.3.8 · **Son commit:** `43d7b71`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -269,45 +269,15 @@ SOHBET-99 — PROFESYONEL TEST ARAŞTIRMASI + HAZIRLIK:
   [x] Web'de profesyonel full-stack test yaklaşımları araştırıldı
   [x] Tüm dosyalar tarandı: FEATURE_MAP.md, TEST_PLAN.md, app.js, main.py, routers/*
   [x] API endpoint eşlemesi yapıldı — frontend'deki 13 API çağrısının 13'ünün backend karşılığı var ✅
-  [x] FEATURE_MAP.md'deki `/api/stats` → tracking.py mevcut DEĞİL (ama frontend renderStats `/api/content` kullanıyor)
-  [x] 3 yanlış negatif tespit edildi (test yolları hatalıydı)
-  [ ] KOD DEĞİŞİKLİĞİ YOK — Lord izni bekleniyor
-
-PROFESYONEL TEST STRATEJİSİ (araştırma sonucu):
-  == TEST PYRAMID (FastAPI + SPA) ==
-  1. UNIT (70%): Pydantic validators, utility functions — hızlı, cheap
-  2. INTEGRATION (20%): FastAPI TestClient + gerçek DB — en yüksek değer/test
-  3. CONTRACT (5%): OpenAPI şema validasyonu — backend değişikliklerini yakala
-  4. E2E (5%): Playwright hybrid (API+UI aynı test) — kritik akışlar
-
-  == PLAYWRIGHT HYBRID PATTERN (2026 standardı) ==
-  - APIRequestContext: tarayıcısız HTTP testi (setup + assert)
-  - browserContext.request: API+UI aynı oturum (cookie/shared state)
-  - page.route(): 3rd party mock (AniList, IGDB), KENDİ API ASLA MOCK'LANMAZ
-  - page.getByRole/getByLabel: CSS selector DEĞİL, erişilebilirlik tabanlı
-  - Fixture-based setup: her test kendi verisini API ile oluşturur
-
-  == KUROWATCH ÖZEL STRATEJİ ==
-  - Gerçek backend (localhost:8099) — kendi API'mizi asla mock'lamayız
-  - AniList/IGDB → page.route() ile mock (WSL'den dış API kararsız)
-  - Önce API testi (httpx/curl) → sonra frontend UI testi (Playwright)
-  - Her buton çalışmalı, her fonksiyon problemsiz
-
-BULUNAN SORUNLAR (beklemede):
-  - FEATURE_MAP.md satır 241: `/api/stats` → tracking.py diyor ama main.py'de tracking.py import'u YOK
-    (renderStats aslında `/api/content` kullanıyor, çalışıyor — sadece dokümantasyon hatası)
-  - FEATURE_MAP.md satır 562: routers/tracking.py referansı — import edilmemiş
-  - test_api_endpoints.py: 3 hatalı URL (vapid-public-key → push/vapid-public-key,
-    check-updates GET → POST, stats endpoint yok)
-  - AniList endpoint (WSL): 503 — dış API zaman aşımı (sandbox kısıtlaması)
-
-BEKLENEN İŞ:
-  1. TEST_PLAN.md'deki 38 test (5 PASS, 1 FIX, 32 ⏳)
-  2. FEATURE_MAP.md düzeltmesi (tracking.py referansı)
-  3. test_api_endpoints.py düzeltmesi (hatalı yollar)
-  4. Playwright hybrid test suite kurulumu
-  5. Detail ekranı görsel+işlevsel revizyon
-  6. Buglar: cover blur, star hover, episode sekmesi yenileme
+  [x] FEATURE_MAP.md'deki tracking.py referansları düzeltildi
+  [x] iron_inquisitor.py KuroWatch için uygun değil — MCP/agent altyapısı testi için (web app değil)
+  [x] test_api_endpoints.py düzeltildi: 7 hatalı yol fix → 33/33 PASS ✅
+  [x] Playwright hybrid test suite kuruldu: tests/ altında 14 test → 14/14 PASS ✅
+    - test_home.py (5): hero, devam-et, anime row, card→detail
+    - test_detail.py (5): hero, star, episodes tab, sites/notes switch
+    - test_hybrid.py (2): API create→UI verify, settings API→UI→API
+    - test_navigation.py (2): screen transitions
+  [ ] KALAN: TEST_PLAN.md'deki 38 testin kalan 19'u otomasyon bekliyor
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
