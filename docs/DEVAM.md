@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 24 Haziran 2026 (sohbet-92) · **Aktif sürüm:** v1.3.6 → Jobs persist + Progress fix + OYNAT fix · **Son commit:** `66f2c61`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-93) · **Aktif sürüm:** v1.3.7 → OYNAT fix + Detail İzle local player · **Son commit:** `ccf0514`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -259,9 +259,10 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (24 Haz sohbet-86):
+MEVCUT DURUM (6 Temmuz sohbet-93):
   - Backend ⚠️ KAPALI (bat→10→1 ile başlat)
-  - Son commit: 3e7af9e (HOME spacing + SEARCH filtre port)
+  - Son commit: ccf0514 (OYNAT fix + Detail İzle local player)
+  - AKTIF: Job persist (manager.py JSON), CF bypass (nodriver), snap-proximity scroll
 
 ✅ SOHBET-86 TAMAMLANDI — SEARCH FİLTRELE + HOME spacing:
   commit 0cfbad1 (SEARCH) + 3e7af9e (HOME):
@@ -363,13 +364,11 @@ SOHBET-93 TAMAMLANDI — OYNAT fix + Detail İzle local player (commit 263ae63):
   [x] Detail siteShortcut: sıradaki bölüm indirildiyse sarı OYNAT butonu göster
   [x] SW v16, app.js v37, player.js v7
 
-SOHBET-94 ODAĞI:
-  1. bat→5→1 (backend restart — stream_finder değişmişti sohbet-92b'de)
-  2. OYNAT butonu test: Downloads ekranında tamamlanmış bölüm → ▶ OYNAT → player açılıyor?
-  3. Detail İzle test: indirilmiş bölüm → İzle butonuna bas → local player açılıyor?
-  4. Mobile USB aktarım hazırlık (doğrulama sonrası)
+SOHBET-94/95/96/97: Model testleri (kok DEVAM.md'de)
+  - Qwen3-Coder 30B UD-Q4_K_XL aktif (16.5GB, ~13 tok/s, 18/21 %85.7)
+  - IQ4_XS, Huihui, DeepSeek 32B, Q4_K_M silindi
 ```
-  MANGA/MANHWA URL FIX:
+MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
     - Büyü İmparatoru (465 ep): ragnarscans.com/manga/buyu-imparatoru/bolum-N/
     - A Returner's Magic (268 ep): manhwahentai.me/manhwa/.../chapter-N/ (29e205c)
