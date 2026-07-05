@@ -130,6 +130,7 @@
   async function cancelJob(jobId) {
     await fetch(API + '/api/download/' + jobId, { method: 'DELETE' });
     delete _jobs[jobId];
+    await _fetchJobs();
     _renderDownloadScreen();
     _updateBadge();
   }
@@ -1491,7 +1492,7 @@
     _fetchJobs: async function() {
       try {
         var r = await fetch(API + '/api/download/queue');
-        if (r.ok) { var data = await r.json(); (data.jobs || []).forEach(function(j) { _jobs[j.id] = j; }); }
+        if (r.ok) { var data = await r.json(); var fresh = {}; (data.jobs || []).forEach(function(j) { fresh[j.id] = j; }); _jobs = fresh; }
       } catch (e) {}
     },
     clearDone: async function() {

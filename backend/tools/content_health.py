@@ -10,6 +10,7 @@ Kullanım:
   python -m backend.tools.content_health --type anime
   python -m backend.tools.content_health --id 18
   python -m backend.tools.content_health --dead-only
+  python -m backend.tools.content_health --fix        # URL'leri DB'de güncelle
 """
 
 import argparse
@@ -87,12 +88,15 @@ class ContentHealth:
 # ── Ana Sağlık Kontrol Sınıfı ────────────────────────────────────────
 
 class HealthChecker:
-    def __init__(self, dead_only: bool = False, verbose: bool = False):
+    def __init__(self, dead_only: bool = False, verbose: bool = False,
+                 fix: bool = False):
         self.dead_only = dead_only
         self.verbose = verbose
+        self.fix = fix
         self.results: list[ContentHealth] = []
         self.stats: dict[str, int] = {}
         self._start_time = 0.0
+        self._fixed_count = 0
 
     async def run(self, content_type: Optional[str] = None,
                   content_id: Optional[int] = None):
@@ -194,6 +198,23 @@ class HealthChecker:
     def _classify_result(self, r: PingResult) -> str:
         return r.status
 
+    async def _update_ep_url(self, content_id: int, new_url: str):
+        """Episode 1 URL'sini DB'de güncelle."""
+        if not self.fix:
+            return
+        from sqlalchemy import update as sql_update
+        async with AsyncSessionLocal() as db:
+            stmt = select(Episode).where(
+                Episode.content_id == content_id,
+                Episode.number == 1,
+            ).limit(1)
+            result = await db.execute(stmt)
+            ep = result.scalar_one_or_none()
+            if ep:
+                ep.url = new_url
+                await db.commit()
+                self._fixed_count += 1
+
     async def _anime_fallback(self, ch: ContentHealth, c: Content):
         """Anime: CF/takılma durumunda tranimaci.com'da dene."""
         titles = [c.title]
@@ -211,6 +232,8 @@ class HealthChecker:
                 ch.ping = result
                 ch.tested_url = url
                 ch.detail = f"Kurtarıldı: tranimaci.com (eski: {ch.ep_url})"
+                if self.fix:
+                    await self._update_ep_url(c.id, url)
                 return
 
             if result.is_dead():
@@ -252,6 +275,8 @@ class HealthChecker:
                     ch.ping = result
                     ch.tested_url = url
                     ch.detail = f"Kurtarıldı: {site} (eski: {ch.ep_url})"
+                    if self.fix:
+                        await self._update_ep_url(c.id, url)
                     return
 
                 if result.is_blocked():
@@ -299,6 +324,8 @@ class HealthChecker:
         print(f"  ✅ Geçen: {passed} (%{passed*100//total if total else 0})")
         print(f"  ❌ Kalan: {failed}")
         print(f"  ⏭️  Ep yok: {no_ep}")
+        if self.fix:
+            print(f"  🔧 Düzeltilen: {self._fixed_count}")
         print()
 
         for t in ("anime", "manga", "manhwa", "game"):
@@ -353,6 +380,7 @@ class HealthChecker:
             "passed": passed,
             "failed": failed,
             "no_ep": no_ep,
+            "fixed": self._fixed_count,
             "by_type": {t: {"pass": sum(v for k, v in tc.items()
                                        if HealthStatus.is_pass(k)),
                             "fail": sum(v for k, v in tc.items()
@@ -388,9 +416,12 @@ async def main():
                         help="Sadece ölü/hatalı URL'leri göster")
     parser.add_argument("--verbose", "-v", action="store_true",
                         help="Detaylı çıktı")
+    parser.add_argument("--fix", action="store_true",
+                        help="Kurtarılan URL'leri DB'de güncelle")
     args = parser.parse_args()
 
-    checker = HealthChecker(dead_only=args.dead_only, verbose=args.verbose)
+    checker = HealthChecker(dead_only=args.dead_only, verbose=args.verbose,
+                            fix=args.fix)
     await checker.run(content_type=args.type, content_id=args.content_id)
 
 

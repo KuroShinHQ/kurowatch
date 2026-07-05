@@ -302,7 +302,21 @@
     const heroDetail= document.getElementById('home-hero-detail-btn');
 
     if (hero) {
-      if (heroBg && hero.cover_url) heroBg.style.backgroundImage = 'url(' + escapeHtml(hero.cover_url) + ')';
+      const heroBlur = document.getElementById('home-hero-blur');
+      let coverUrl = hero.cover_url || '';
+      if (coverUrl) {
+        const xlUrl = coverUrl.replace('/large/', '/extraLarge/').replace('/medium/', '/extraLarge/');
+        const img = new Image();
+        img.onload = function() {
+          if (heroBg) heroBg.style.backgroundImage = 'url(' + escapeHtml(xlUrl) + ')';
+          if (heroBlur) heroBlur.style.backgroundImage = 'url(' + escapeHtml(xlUrl) + ')';
+        };
+        img.onerror = function() {
+          if (heroBg) heroBg.style.backgroundImage = 'url(' + escapeHtml(coverUrl) + ')';
+          if (heroBlur) heroBlur.style.backgroundImage = 'url(' + escapeHtml(coverUrl) + ')';
+        };
+        img.src = xlUrl;
+      }
       if (heroTit) heroTit.textContent = hero.title_tr || hero.title;
       const col = (tc[hero.type]||tc.anime).color;
       if (heroMet) heroMet.textContent = (hero.type||'').toUpperCase() + (hero.my_score ? ' · ★' + hero.my_score.toFixed(1) : '');
