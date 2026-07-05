@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-98) · **Aktif sürüm:** v1.3.8 → 3 bug fix (getDownloadedJob API fallback, manga reader content-type, siteShortcut content-type) · **Son commit:** `dfb11f4`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-98) · **Aktif sürüm:** v1.3.8 → 3 bug fix (getDownloadedJob API fallback, manga reader content-type, siteShortcut content-type) · **Son commit:** `e1722a4`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
