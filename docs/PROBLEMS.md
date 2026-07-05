@@ -1,4 +1,4 @@
-# KuroWatch Tespit Edilen Sorunlar (5 Temmuz 2026)
+# KuroWatch Tespit Edilen Sorunlar (6 Temmuz 2026)
 
 > ⛔ **KRİTİK**: Bu dosyadaki sorunlar düzeltilmeden yeni özellik eklenmez.
 
@@ -133,13 +133,59 @@ ragnarscans.com manga.py'de `_MADARA_DOMAINS` listesinde ama `_CF_BLOCKED` setin
 
 ---
 
+## P7 — Kuroshin.bat "10" Tuşu: Kör Nokta Analizi (Çözüldü)
+
+### Durum
+Lord'un ilk promptu bir kör nokta (blind spot) analiziydi — bat'ın 10 tuşunda gizlice ölen bir görev olup olmadığı sorgulanıyordu. Kod incelemesi sonucu:
+
+- `:KUROWATCH` alt menüsü (satır 512-554) düzgün çalışıyor
+- `goto KUROWATCH_FULL_START` (satır 660-686) backend başlatma + browser açma çalışıyor
+- `:KUROWATCH_BACKEND_ONLY` (satır 652-658) backend başlatma çalışıyor
+- `:KUROWATCH_ADB` (satır 556-650) ADB reverse proxy çalışıyor
+- `:KUROWATCH_FIREWALL_CHECK` (satır 688-710) firewall + portproxy çalışıyor
+
+**Sonuç:** Gizlice ölen bir görev yok. Bu sadece bir önlem/kör nokta analiziydi. ✅ KAPANDI
+
+---
+
+## P8 — Eksik: %1'lik Ping Test Mekanizması (Tüm İçerikler için)
+
+### Durum
+Lord'un net isteği: *"tümünü indirmeme gerek yok başlatabilse indirmeyi yeterli... yüzde 1 ilerlese veri çekse kafi"*
+
+Yani **700+ içeriğin her birinin 1. bölümüne sadece %1'lik bir download isteği yaparak URL'in çalışıp çalışmadığını test eden** bir mekanizma. Coder bunun yerine `test_player_buttons.py` yazdı (butonların DOM'da var olup olmadığını test ediyor), asıl istenen hiç yapılmadı.
+
+### Ne test edilmeli (her içerik için)
+1. Content DB'den episode URL'ini al
+2. 1. bölüme sadece bağlan (HTTP HEAD veya Range: bytes=0-4096)
+3. HTTP 200/206 dönüyorsa → ✅ URL çalışıyor
+4. HTTP 403/404/503 dönüyorsa → ❌ URL kırık
+5. Cloudflare/redirect dönüyorsa → ⚠️ bot koruması
+6. Sonuçları raporla: kaç URL çalışıyor, kaçı kırık
+
+### Bunun için gerekenler
+- `backend/tools/url_ping.py` — yeni modül: Range request + timeout + sonuç sınıflandırma
+- `backend/tools/content_health.py` — tüm content'lerde gezer, episode URL'lerini ping'ler
+- Rapor formatı: JSON (makine) + özet tablo (insan)
+- `Ping Result: OK | DEAD | CF_BLOCKED` per content
+- Test çalıştırma: `python -m backend.tools.content_health`
+
+### Kapsam dışı
+- Gerçek download (stream, dosya yazma, disk kullanımı)
+- Manga chapter PDF/IMG indirme (sadece URL doğrulama)
+- Video transcode / thumbnail
+
+---
+
 ## Özet: Düzeltme Sırası
 
-| Öncelik | Sorun | Çözüm |
-|---------|-------|-------|
-| **P1** | Quality butonu kozmetik | Butonu gizle veya "Otomatik" yap |
-| **P2** | Episode URL ≠ Site URL | Sync mekanizmasını düzelt |
-| **P3** | tranimaci.com embed yok | stream_finder'ı güncelle veya URL'i doğrula |
-| **P4** | Player buton testi yaz | PW testi düzeltip çalıştır |
-| **P5** | URL derivation sayısal çakışma | Regex'i iyileştir |
-| **P6** | ragnarscans.com 403 | Site durumunu kontrol et, offline/CF olarak işaretle |
+| Öncelik | Sorun | Çözüm | Durum |
+|---------|-------|-------|-------|
+| **P1** | Quality butonu kozmetik | Butonu gizle veya "Otomatik" yap | ✅ |
+| **P2** | Episode URL ≠ Site URL | Sync mekanizmasını düzelt | ✅ |
+| **P3** | tranimaci.com embed yok | stream_finder'ı güncelle veya URL'i doğrula | ⏳ |
+| **P4** | Player buton testi yaz | PW testi düzeltip çalıştır | ⏳ |
+| **P5** | URL derivation sayısal çakışma | Regex'i iyileştir | ⏳ |
+| **P6** | ragnarscans.com 403 | Site durumunu kontrol et, offline/CF olarak işaretle | ✅ |
+| **P7** | Bat 10 tuşu kör nokta analizi | İnceleme tamam, sorun yok | ✅ KAPANDI |
+| **P8** | %1 ping mekanizması | `content_health.py` + `url_ping.py` yazıldı | ✅ KODLANDI |
