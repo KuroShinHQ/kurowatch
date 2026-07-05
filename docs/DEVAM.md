@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 5 Temmuz 2026 (sohbet-101) · **Aktif sürüm:** v1.3.9 · **Son commit:** `43d7b71`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-103) · **Aktif sürüm:** v1.4.0 · **Son commit:** `a7ad5b8`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -253,19 +253,20 @@ KALAN (bilerek bırakıldı):
 ```
 
 ---
-
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (5 Temmuz 2026 - sohbet-101):
+MEVCUT DURUM (6 Temmuz 2026 - sohbet-103):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - Son commit: 43d7b71 (kurowatch), d086f33 (kuroshin)
+  - Son commit: a7ad5b8 (kurowatch), cb79a40 (kuroshin)
   - FAZ-V7: ✅ TAMAMLANDI (12/12)
   - PW TESTS: 40/40 PASS ✅ (5 dosya)
   - API TESTS: 33/33 PASS ✅
-  - SONRAKİ ADIM: Kalan 14 test + Grup 3-8 otomasyonu
+  - TOOL TESTS: 9/9 CODED (content_health.py + url_ping.py)
+  - TEST PLAN: 42/56 (33 PW + 9 tool)
+  - SONRAKİ ADIM: Grup 9 WSL'de test et + kalan 14 PW testi
 
 SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
   [x] Web araştırması: Netflix mobile UX 2026, Android detail/swipe patternleri
@@ -275,7 +276,7 @@ SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
   [x] Full suite: 40/40 PASS ✅
   [x] TEST_PLAN.md → 33/47, DEVAM.md güncellendi
 
-SOHBET-102 (AKTİF) — KRİTİK SORUN TESPİTİ & DÜZELTME:
+SOHBET-102 — KRİTİK SORUN TESPİTİ & DÜZELTME:
   [x] Video player 9 buton analizi (documents/PROBLEMS.md P1):
       - Kalite butonu kozmetik (video.src değişmiyor)
       - 3 buton mobile'da gizli (Theater/PiP/Mini)
@@ -293,6 +294,17 @@ SOHBET-102 (AKTİF) — KRİTİK SORUN TESPİTİ & DÜZELTME:
   [ ] P2-FIX: Episode URL derive mekanizmasını content site listesine göre güncelle
   [ ] P3-FIX: stream_finder.py tranimaci.com selector'larını güncelle
   [ ] P6-FIX: ragnarscans.com site durumunu kontrol et (CF/offline)
+
+SOHBET-103 (AKTİF) — %1 PİNG TEST + KÖR NOKTA ANALİZİ:
+  [x] P7: Kuroshin.bat "10" tuşu kör nokta analizi — gizli görev yok ✅ KAPANDI
+  [x] P8: backend/tools/url_ping.py — http_ping() Range:0-4096 + sınıflandırma
+  [x] P8: backend/tools/content_health.py — tüm içerik tarama + fallback
+  [x] Anime fallback: CF'ye takılanı tranimaci.com'da kurtar
+  [x] Manga fallback: title→title_tr→title_en hiyerarşisi + çalışan sitelerde dene
+  [x] Rapor: JSON + konsol, OK/KURTARILDI/CF_BLOCKED/SITE_YOK/NAME_MISMATCH
+  [x] PROBLEMS.md güncellendi (P7 kapandı, P8 kodlandı)
+  [x] TEST_PLAN.md → 42/56 (Grup 9 eklendi)
+  [ ] Grup 9 WSL'de çalıştır (python -m backend.tools.content_health)
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf

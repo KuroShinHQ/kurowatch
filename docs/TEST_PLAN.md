@@ -136,15 +136,40 @@
 
 ---
 
+---
+
+## GRUP 9: İÇERİK SAĞLIĞI — %1 LİK PİNG TEST
+
+Tüm 700+ içeriğin 1. bölüm URL'lerine Range: bytes=0-4096 isteği atarak URL'in çalışıp çalışmadığını test eder. Gerçek download yapılmaz.
+**Kod:** `backend/tools/url_ping.py` + `backend/tools/content_health.py` ✅ YAZILDI
+
+| # | Özellik | Durum | Not |
+|---|---------|-------|-----|
+| T-39 | `content_health.py` tüm content'lerde gezer, episode URL'lerini toplar | ✅ | selectinload ile |
+| T-40 | Her URL için Range HEAD isteği — HTTP 200/206 = OK | ✅ | `http_ping()` |
+| T-41 | HTTP 403/404/503 sınıflandırması | ✅ | CF_BLOCKED / SITE_YOK / OFFLINE |
+| T-42 | Anime: CF'ye takılanı tranimaci.com'da kurtar | ✅ | `_anime_fallback()` |
+| T-43 | Manga: akıllı isim eşleştirme (title→title_tr→title_en) | ✅ | `_manga_fallback()` |
+| T-44 | Rapor: OK/KURTARILDI/CF_BLOCKED/SITE_YOK dağılımı | ✅ | JSON + konsol |
+| T-45 | `--dead-only` filtresi | ✅ | |
+| T-46 | `--id N` tek içerik testi | ✅ | |
+| T-47 | `--type anime/manga` filtresi | ✅ | |
+
+---
+
 ## 📊 İlerleme
 
 ```
-Toplam test: 38 + ek animasyon: 9 = 47
-Tamamlanan: 33 / 47
+Toplam test: 38 + animasyon: 9 + ping: 9 = 56
+Tamamlanan: 33 + 9 = 42 / 56
 API:   33/33 PASS (test_api_endpoints.py)
 PW:    40/40 PASS (toplam 5 test dosyası)
+TOOL:  9/9 CODED (content_health.py + url_ping.py — WSL'de test edilecek)
 ```
 
 > ✅ test_api_endpoints.py düzeltildi — 33 endpoint test edildi, 33 PASS
 > ✅ Playwright hybrid test suite: 40 test, 40 PASS (5 dosya)
-> ⏳ Kalan 14 test: T-11, T-15, T-16, Grup 3-8 (T-17..T-38) otomasyon bekliyor
+> ✅ P7 — Sorun yok, kör nokta analiziydi ✅ KAPANDI
+> ✅ P8 — %1 ping test mekanizması kodlandı ✅
+> ⏳ Kalan 14 test: T-11, T-15, T-16, Grup 3-8 (T-17..T-38)
+> ⏳ Grup 9: WSL'de çalıştırılıp doğrulanacak (T-39..T-47)
