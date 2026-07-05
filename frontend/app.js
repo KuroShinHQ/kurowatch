@@ -2382,8 +2382,13 @@
         const jobId = parseInt(playDoneBtn.dataset.jobId, 10);
         const epId  = playDoneBtn.dataset.epId ? parseInt(playDoneBtn.dataset.epId, 10) : null;
         const cid   = parseInt(playDoneBtn.dataset.contentId, 10);
+        const epNum = parseInt(playDoneBtn.dataset.epNum, 10);
         const label = playDoneBtn.dataset.label || '';
-        if (window.kuroPlayer) await window.kuroPlayer.openVideo(jobId, label);
+        if (contentType === 'anime' && window.kuroPlayer) {
+          await window.kuroPlayer.openVideo(jobId, label);
+        } else if (contentType !== 'anime' && window.kuroReader) {
+          await window.kuroReader.open(jobId, label, cid, epNum);
+        }
         if (epId) {
           try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
           const scr = document.getElementById('screen-detail');
@@ -2400,11 +2405,19 @@
         const epId  = overlayBtn.dataset.epId ? parseInt(overlayBtn.dataset.epId, 10) : null;
         const cid   = overlayBtn.dataset.contentId ? parseInt(overlayBtn.dataset.contentId, 10) : null;
         const epNum = overlayBtn.dataset.epNum ? parseInt(overlayBtn.dataset.epNum, 10) : null;
-        // İndirildiyse local media player aç
-        if (cid && epNum && window.kuroDownload && window.kuroPlayer) {
-          const doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+        // İndirildiyse local media player/reader aç
+        if (cid && epNum && window.kuroDownload) {
+          let doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+          if (!doneJob) {
+            if (window.kuroDownload._fetchJobs) await window.kuroDownload._fetchJobs();
+            doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+          }
           if (doneJob) {
-            await window.kuroPlayer.openVideo(doneJob.id, label);
+            if (doneJob.media_type === 'anime' && window.kuroPlayer) {
+              await window.kuroPlayer.openVideo(doneJob.id, label);
+            } else if (doneJob.media_type !== 'anime' && window.kuroReader) {
+              await window.kuroReader.open(doneJob.id, label, cid, epNum);
+            }
             if (epId) {
               try { await apiPatch('/api/episodes/' + epId + '/watch', {}); } catch(e2) {}
               const scr = document.getElementById('screen-detail');
