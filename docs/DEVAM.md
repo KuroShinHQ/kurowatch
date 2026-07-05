@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-93) · **Aktif sürüm:** v1.3.7 → OYNAT fix + Detail İzle local player · **Son commit:** `ccf0514`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-98) · **Aktif sürüm:** v1.3.8 → 3 bug fix (getDownloadedJob API fallback, manga reader content-type, siteShortcut content-type) · **Son commit:** `pending`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -367,6 +367,14 @@ SOHBET-93 TAMAMLANDI — OYNAT fix + Detail İzle local player (commit 263ae63):
 SOHBET-94/95/96/97: Model testleri (kok DEVAM.md'de)
   - Qwen3-Coder 30B UD-Q4_K_XL aktif (16.5GB, ~13 tok/s, 18/21 %85.7)
   - IQ4_XS, Huihui, DeepSeek 32B, Q4_K_M silindi
+
+SOHBET-98 TAMAMLANDI — 3 bug fix (frontend): (commit pending)
+  [x] player.js: kuroDownload._fetchJobs() — getDownloadedJob API fallback
+      (WS bağlanmadıysa server'dan job listesi çeker)
+  [x] app.js: overlay buton (ep-overlay-btn) — indirilen manga/manhwa için
+      video player değil reader açar (doneJob.media_type kontrolü)
+  [x] app.js: siteShortcut buton (site-play-done-btn) — anime değilse
+      kuroReader.open() çağırır (contentType parametresi ile)
 ```
 MANGA/MANHWA URL FIX:
     - Nano Machine (178 ep): ragnarscans.com/manga/nano-makine/bolum-N/
