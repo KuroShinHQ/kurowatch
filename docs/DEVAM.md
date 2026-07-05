@@ -270,18 +270,29 @@ MEVCUT DURUM (5 Temmuz 2026 - sohbet-101):
 SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
   [x] Web araştırması: Netflix mobile UX 2026, Android detail/swipe patternleri
   [x] Kod analizi: renderDetail, detailSwitchTab, renderDetailEpisodes, renderDetailSites
-  [x] test_detail_type_aware.py (13 test) — type-specific labels ×3 (anime/manga/manhwa),
-      game hides mark/continue, star rating interactive, progress slider, quick-edit popup,
-      episodes season picker, sites add/delete, notes spoiler toggle, season tabs,
-      edit modal opens, cover upload button → 13/13 PASS ✅
-  [x] test_animations.py (13 test) — detail slide-up animasyonu, nav slide-in-right/left,
-      tab switch ×3 (all four roundtrip), tab active state (cyan/gray border),
-      CSS keyframes, JS error check, button transition → 13/13 PASS ✅
-  [x] test_detail.py + test_home.py + test_hybrid.py + test_navigation.py: 14/14 PASS ✅
-  [x] Full suite: 40/40 PASS (100.93s)
-  [x] TEST_PLAN.md güncellendi: 33/47 test tamamlandı
-  [ ] KALAN: T-11 (ep checkbox), T-15 (edit modal save), T-16 (geri butonu),
-      Grup 3-8 (T-17..T-38): add modal, search, updates, settings, stats, download sites
+  [x] test_detail_type_aware.py (13 test) — type-specific labels, game, star, slider, etc.
+  [x] test_animations.py (13 test) — detail slide-up, nav slide-in-right/left, tab switch
+  [x] Full suite: 40/40 PASS ✅
+  [x] TEST_PLAN.md → 33/47, DEVAM.md güncellendi
+
+SOHBET-102 (AKTİF) — KRİTİK SORUN TESPİTİ & DÜZELTME:
+  [x] Video player 9 buton analizi (documents/PROBLEMS.md P1):
+      - Kalite butonu kozmetik (video.src değişmiyor)
+      - 3 buton mobile'da gizli (Theater/PiP/Mini)
+      - Diğerleri JS'de bağlı ama görünmez/kullanılamaz olabilir
+  [x] Nano Machine 403 Forbidden (P2):
+      - Episode URL: ragnarscans.com → 403
+      - Content site listesi: mangagezgini.com + mangasehri.net
+      - **KÖK NEDEN:** Episode URL'leri content'in site listesinden farklı domain'e işaret ediyor
+      - Sync mekanizması (content→site→episode→URL) kopuk
+  [x] Black Butler "video embed bulunamadı" (P3):
+      - tranimaci.com'da stream_finder embed çıkaramıyor
+      - yt-dlp [generic] hatası
+  [x] PROBLEMS.md oluşturuldu (6 kritik sorun, öncelik sıralı)
+  [ ] P1-FIX: Quality butonunu "Otomatik" sabitle veya gizle
+  [ ] P2-FIX: Episode URL derive mekanizmasını content site listesine göre güncelle
+  [ ] P3-FIX: stream_finder.py tranimaci.com selector'larını güncelle
+  [ ] P6-FIX: ragnarscans.com site durumunu kontrol et (CF/offline)
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
