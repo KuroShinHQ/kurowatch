@@ -1587,7 +1587,12 @@
     _pb('player-quality-btn',  function () {
       const video = document.getElementById('player-video');
       const q = (video && video.dataset.quality) || '720p';
-      _panelQuality.open(q);
+      if (window.showToast) {
+        window.showToast('Kalite: ' + q + ' (otomatik)', 'info', 2000);
+        _panelQuality.close();
+      } else {
+        _panelQuality.open(q);
+      }
     });
     _pb('player-episodes-btn', function () {
       const video = document.getElementById('player-video');
@@ -1619,10 +1624,8 @@
     _pb('panel-quality-close',   function () { _panelQuality.close(); });
     _pb('panel-quality-backdrop', function () { _panelQuality.close(); });
     _pb('panel-quality-apply',   function () {
-      const video = document.getElementById('player-video');
-      if (video && _panelQuality._selected) {
-        video.dataset.quality = _panelQuality._selected;
-        _panelQuality._current = _panelQuality._selected;
+      if (window.showToast) {
+        window.showToast('Kalite değişimi şu an için otomatik', 'info', 2000);
       }
       _panelQuality.close();
     });

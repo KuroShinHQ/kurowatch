@@ -213,8 +213,8 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
                     url=derived_url,
                     is_watched=False, is_new=False,
                 ))
-            elif derived_url and not existing_eps[i].url:
-                # Mevcut URL-siz episodu güncelle
+            elif derived_url:
+                # Mevcut episodu güncelle — site URL'i değişmiş olabilir
                 existing_eps[i].url = derived_url
 
     if new_episodes:
