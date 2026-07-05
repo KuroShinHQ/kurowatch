@@ -7,13 +7,13 @@ from urllib.parse import urlparse
 import httpx
 
 _MADARA_DOMAINS = [
-    # 22 Haz 2026 — gerçek chapter testi ile onaylanan siteler
+    # 5 Tem 2026 — gerçek chapter testi ile onaylanan siteler
     "mangawow.com", "mangawow.org",
     "hayalistic.com.tr",
     "ragnarscans.com", "ragnarscans.net",
     "merlintoon.com",
     "mangadenizi.com",
-    "manhwahentai.me",   # A Returner's Magic — chapter-N formatı, ?style=list destekli
+    "manhwahentai.me",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
     "manga-sehri.net", "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
@@ -21,10 +21,22 @@ _MADARA_DOMAINS = [
 ]
 
 # CF turnstile veya kalıcı blok olan siteler — gallery-dl da geçemez
-_CF_BLOCKED = {"mangasehri.net", "mangasehri.com"}
+# 5 Tem 2026: ragnarscans + manhwahentai chapter pages HTTP 403 CF
+#            hayalistic.com.tr HTTP 403 on all pages
+_CF_BLOCKED = {
+    "mangasehri.net", "mangasehri.com",
+    "ragnarscans.com", "ragnarscans.net",
+    "manhwahentai.me",
+    "hayalistic.com.tr",
+}
 
 # DNS fail / offline siteler — anında hata döndür
-_OFFLINE = {"majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com"}
+# 5 Tem 2026: mangagezgini.com HTTP 525 SSL handshake failed
+_OFFLINE = {
+    "majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com",
+    "mangagezgini.com",
+    "mangagezgini.com",  # HTTP 525 SSL handshake failed (5 Tem 2026)
+}
 
 # uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
 _UZAY_OLD_RE = re.compile(r"/manga/\d+/([^/]+)/\d+/(\d+)-bolum")
