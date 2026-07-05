@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-99) · **Aktif sürüm:** v1.3.8 · **Son commit:** `43d7b71`
+**Son güncelleme:** 5 Temmuz 2026 (sohbet-101) · **Aktif sürüm:** v1.3.9 · **Son commit:** `43d7b71`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -259,25 +259,29 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (7 Temmuz sohbet-99):
-  - Backend ✅ AYAKTA (localhost:8099)
-  - Son commit: e1722a4
+MEVCUT DURUM (5 Temmuz 2026 - sohbet-101):
+  - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
+  - Son commit: 43d7b71 (kurowatch), d086f33 (kuroshin)
   - FAZ-V7: ✅ TAMAMLANDI (12/12)
-  - SONRAKİ ADIM: Sistematik test + bugfix (frontend+backend)
+  - PW TESTS: 40/40 PASS ✅ (5 dosya)
+  - API TESTS: 33/33 PASS ✅
+  - SONRAKİ ADIM: Kalan 14 test + Grup 3-8 otomasyonu
 
-SOHBET-99 — PROFESYONEL TEST ARAŞTIRMASI + HAZIRLIK:
-  [x] Web'de profesyonel full-stack test yaklaşımları araştırıldı
-  [x] Tüm dosyalar tarandı: FEATURE_MAP.md, TEST_PLAN.md, app.js, main.py, routers/*
-  [x] API endpoint eşlemesi yapıldı — frontend'deki 13 API çağrısının 13'ünün backend karşılığı var ✅
-  [x] FEATURE_MAP.md'deki tracking.py referansları düzeltildi
-  [x] iron_inquisitor.py KuroWatch için uygun değil — MCP/agent altyapısı testi için (web app değil)
-  [x] test_api_endpoints.py düzeltildi: 7 hatalı yol fix → 33/33 PASS ✅
-  [x] Playwright hybrid test suite kuruldu: tests/ altında 14 test → 14/14 PASS ✅
-    - test_home.py (5): hero, devam-et, anime row, card→detail
-    - test_detail.py (5): hero, star, episodes tab, sites/notes switch
-    - test_hybrid.py (2): API create→UI verify, settings API→UI→API
-    - test_navigation.py (2): screen transitions
-  [ ] KALAN: TEST_PLAN.md'deki 38 testin kalan 19'u otomasyon bekliyor
+SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
+  [x] Web araştırması: Netflix mobile UX 2026, Android detail/swipe patternleri
+  [x] Kod analizi: renderDetail, detailSwitchTab, renderDetailEpisodes, renderDetailSites
+  [x] test_detail_type_aware.py (13 test) — type-specific labels ×3 (anime/manga/manhwa),
+      game hides mark/continue, star rating interactive, progress slider, quick-edit popup,
+      episodes season picker, sites add/delete, notes spoiler toggle, season tabs,
+      edit modal opens, cover upload button → 13/13 PASS ✅
+  [x] test_animations.py (13 test) — detail slide-up animasyonu, nav slide-in-right/left,
+      tab switch ×3 (all four roundtrip), tab active state (cyan/gray border),
+      CSS keyframes, JS error check, button transition → 13/13 PASS ✅
+  [x] test_detail.py + test_home.py + test_hybrid.py + test_navigation.py: 14/14 PASS ✅
+  [x] Full suite: 40/40 PASS (100.93s)
+  [x] TEST_PLAN.md güncellendi: 33/47 test tamamlandı
+  [ ] KALAN: T-11 (ep checkbox), T-15 (edit modal save), T-16 (geri butonu),
+      Grup 3-8 (T-17..T-38): add modal, search, updates, settings, stats, download sites
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
