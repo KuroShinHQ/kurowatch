@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-103) · **Aktif sürüm:** v1.4.0 · **Son commit:** `a7ad5b8`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-104) · **Aktif sürüm:** v1.4.0 · **Son commit:** `66fe80d`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -258,15 +258,15 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (6 Temmuz 2026 - sohbet-103):
+MEVCUT DURUM (6 Temmuz 2026 - sohbet-104):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - Son commit: a7ad5b8 (kurowatch), cb79a40 (kuroshin)
+  - Son commit: 66fe80d (kurowatch)
   - FAZ-V7: ✅ TAMAMLANDI (12/12)
-  - PW TESTS: 40/40 PASS ✅ (5 dosya)
+  - PW TESTS: 43/43 PASS ✅ (8 dosya)
   - API TESTS: 33/33 PASS ✅
   - TOOL TESTS: 9/9 CODED (content_health.py + url_ping.py)
   - TEST PLAN: 42/56 (33 PW + 9 tool)
-  - SONRAKİ ADIM: Grup 9 WSL'de test et + kalan 14 PW testi
+  - SONRAKİ ADIM: WSL'de content_health --fix çalıştır + kalan 14 PW testi
 
 SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
   [x] Web araştırması: Netflix mobile UX 2026, Android detail/swipe patternleri
@@ -295,16 +295,21 @@ SOHBET-102 — KRİTİK SORUN TESPİTİ & DÜZELTME:
   [ ] P3-FIX: stream_finder.py tranimaci.com selector'larını güncelle
   [ ] P6-FIX: ragnarscans.com site durumunu kontrol et (CF/offline)
 
-SOHBET-103 (AKTİF) — %1 PİNG TEST + KÖR NOKTA ANALİZİ:
-  [x] P7: Kuroshin.bat "10" tuşu kör nokta analizi — gizli görev yok ✅ KAPANDI
-  [x] P8: backend/tools/url_ping.py — http_ping() Range:0-4096 + sınıflandırma
-  [x] P8: backend/tools/content_health.py — tüm içerik tarama + fallback
-  [x] Anime fallback: CF'ye takılanı tranimaci.com'da kurtar
-  [x] Manga fallback: title→title_tr→title_en hiyerarşisi + çalışan sitelerde dene
-  [x] Rapor: JSON + konsol, OK/KURTARILDI/CF_BLOCKED/SITE_YOK/NAME_MISMATCH
-  [x] PROBLEMS.md güncellendi (P7 kapandı, P8 kodlandı)
-  [x] TEST_PLAN.md → 42/56 (Grup 9 eklendi)
-  [ ] Grup 9 WSL'de çalıştır (python -m backend.tools.content_health)
+SOHBET-103 — %1 PİNG TEST + KÖR NOKTA ANALİZİ:
+  [x] P7: Kuroshin.bat "10" tuşu kör nokta analizi — kapandı
+  [x] P8: url_ping.py + content_health.py — %1 ping test mekanizması
+  [x] Banner cinematic hero (extraLarge URL + çift blur + bg-contain)
+  [x] Download refresh fix (_fetchJobs rebuild, cancelJob sync)
+  [x] Video player overflow fix (flex-wrap justify-end)
+  [x] Scroll crash fix (height:100dvh;overflow:hidden)
+
+SOHBET-104 — AKTİF DOWNLOAD İPTAL + DOWNLOAD INDICATOR + PLAYER FREEZE:
+  [x] Backend: asyncio task cancel (_active_tasks + CancelledError handler)
+  [x] Detail page download indicator (thumbnail badge + button color/icon)
+  [x] Duplicate download protection (getDownloadedJob check + toast)
+  [x] player-ep-next-btn toast fallback when next ep not downloaded
+  [x] Player freeze fix: video.play() canplay event'ine ertelendi
+  [x] Title attr: rewind, play/pause, forward, volume, dl buttons
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
@@ -541,3 +546,8 @@ C:\Kuroshin\kurowatch\
 | `4a8d40f` | stream_finder: networkidle + JS iframe + 15s + playwright-stealth |
 | `5c9d39c` | Anime indirme Playwright + Referer fix |
 | `1cacc29` | Madara manga lazy-load bug fix |
+| `12a0626` | P8: %1 ping test + P7 kapandı |
+| `7c02cb2` | Banner cinematic hero + download refresh + --fix modu |
+| `a2cd89d` | Video player overflow fix + translate check |
+| `90869b6` | Detail page scroll crash fix (overflow:hidden + 100dvh) |
+| `66fe80d` | Active download cancel + download indicator + player freeze fix |
