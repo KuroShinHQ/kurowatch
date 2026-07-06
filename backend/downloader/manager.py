@@ -148,6 +148,7 @@ def get_storage_bytes() -> int:
 
 def delete_job_file(job_id: int) -> bool:
     """İndirilmiş dosyayı/dizini sil (izle-sil için)."""
+    global _done
     import shutil
     job = get_job(job_id)
     if not job or job["status"] != "done":
@@ -160,8 +161,9 @@ def delete_job_file(job_id: int) -> bool:
             shutil.rmtree(path)
         else:
             os.remove(path)
-        job["status"] = "deleted"
-        job["file_path"] = None
+        # Job'u _done listesinden tamamen kaldır (kullanıcı silince kaybolsun)
+        _done[:] = [j for j in _done if j["id"] != job_id]
+        _save_jobs()
         return True
     except OSError:
         return False
@@ -254,6 +256,6 @@ async def _run_job(job: dict):
         _active_tasks.pop(job["id"], None)
         if job["status"] != "cancelled":
             _done.append(job)
-        _save_jobs()
-        await _broadcast({"event": "done", "job": job})
+            _save_jobs()
+            await _broadcast({"event": "done", "job": job})
         _start_next()
