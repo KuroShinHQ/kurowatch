@@ -464,6 +464,7 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
     found_embed: list[str] = []
     domain = _domain(episode_url)
     html = ""
+    http_status: Optional[int] = None
 
     _KNOWN_PLAYERS = (
         "filemoon", "vidmoly", "doodstream", "streamtape", "voe.sx",
@@ -542,7 +543,16 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         page.on("request", on_request)
 
         try:
-            await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
+            response = await page.goto(episode_url, timeout=timeout_ms, wait_until="domcontentloaded")
+            http_status = response.status if response else 0
+            if http_status != 200:
+                logger.warning(
+                    "PW: HTTP %d - %s (%s)",
+                    http_status, episode_url[:60],
+                    "PAGE NOT FOUND" if http_status == 404 else "BLOCKED/ERROR"
+                )
+            else:
+                logger.info("PW: HTTP 200 OK - %s", episode_url[:60])
 
             # tranimaci.com: JS PoW challenge (SHA-256 difficulty=4) → /__waf_challenge POST
             # → 800ms sonra window.location.reload() → gerçek sayfa yükleniyor
@@ -651,6 +661,7 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             await browser.close()
 
     if found_embed:
+        logger.info("PW: %d embed bulundu — ilki döndürülüyor", len(found_embed))
         # m3u8 varsa öncelik ver
         for u in found_embed:
             if ".m3u8" in u or "manifest.mpd" in u:
@@ -661,6 +672,11 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 return u
         return found_embed[0]
 
+    reason = f"HTTP {http_status}" if http_status else "no response"
+    if http_status and http_status != 200:
+        logger.warning("PW: embed bulunamadı — sayfa HTTP %d (site kapalı/içerik silinmiş)", http_status)
+    else:
+        logger.warning("PW: embed bulunamadı — sayfa HTTP %d fakat HTML'de player yok (len=%d)", http_status or 0, len(html))
     return _extract_embed_from_html(html)
 
 
