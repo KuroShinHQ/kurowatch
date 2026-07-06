@@ -35,8 +35,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.database import AsyncSessionLocal
 from backend.models import Content, Episode, Site
 from backend.tools.url_ping import (
-    http_ping, slugify, construct_tranimaci_url,
-    construct_madara_url, PING_RESULT, PingResult,
+    http_ping, verify_manga_chapter,
+    slugify, construct_tranimaci_url,
+    construct_madara_url, construct_monomanga_url, construct_uzaymanga_url,
+    PING_RESULT, PingResult,
 )
 
 # ── Rapor kategorileri ────────────────────────────────────────────────
@@ -169,8 +171,11 @@ class HealthChecker:
             ch.site_url = sites[0].site_url
             ch.site_name = sites[0].site_name
 
-        # 1. Doğrudan test
-        result = await http_ping(ch.ep_url)
+        # 1. Doğrudan test (manga/manhwa: içerik doğrulamalı)
+        if c.type in ("manga", "manhwa"):
+            result = await verify_manga_chapter(ch.ep_url)
+        else:
+            result = await http_ping(ch.ep_url)
         ch.ping = result
         ch.tested_url = ch.ep_url
 
@@ -178,13 +183,7 @@ class HealthChecker:
             ch.status = HealthStatus.CHALLENGE if result.status == "CHALLENGE" else HealthStatus.OK
             return ch
 
-        if result.is_blocked():
-            ch.detail = f"Doğrudan: {result.detail}"
-
-        elif result.is_dead():
-            ch.detail = f"Doğrudan: {result.detail}"
-        else:
-            ch.detail = f"Doğrudan: {result.detail}"
+        ch.detail = f"Doğrudan: {result.detail}"
 
         # 2. Fallback mekanizması
         if c.type == "anime":
@@ -248,48 +247,78 @@ class HealthChecker:
         ch.status = self._classify_result(ch.ping) if ch.ping else HealthStatus.HATA
 
     async def _manga_fallback(self, ch: ContentHealth, c: Content):
-        """Manga/Manhwa: çalışan sitelerde akıllı isim eşleştirme dene."""
-        from backend.downloader.manga import _MADARA_DOMAINS, _CF_BLOCKED, _OFFLINE
+        """Manga/Manhwa: isim hiyerarşisi ile tüm desteklenen sitelerde dene.
 
-        working_sites = [d for d in _MADARA_DOMAINS
-                         if d not in _CF_BLOCKED and d not in _OFFLINE]
+        İsim arama sırası:
+            1. title_tr (varsa)
+            2. title_en (varsa)
+            3. orijinal title
+            4. title'ın ek varyasyonları (nokta/virgül/ek temizliği)
+        """
+        from backend.downloader.manga import _CF_BLOCKED, _OFFLINE
 
-        titles = [c.title]
-        if c.title_tr:
-            titles.insert(0, c.title_tr)
+        # İsim hiyerarşisi: title_tr → title
+        titles: list[str] = []
+        seen_titles: set[str] = set()
+        for t in (c.title_tr, c.title):
+            if t and t not in seen_titles:
+                seen_titles.add(t)
+                titles.append(t)
 
-        # İngilizce title'ı da dene
-        if c.title != c.title and not c.title_tr:
-            titles.append(c.title)
+        # Ek varyasyonlar: nokta/virgül/parantez/sayı temizliği
+        for t in list(titles):
+            cleaned = re.sub(r'[\.\,\:\(\)\[\]\d]', '', t).strip()
+            cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+            if cleaned and cleaned not in seen_titles:
+                seen_titles.add(cleaned)
+                titles.append(cleaned)
+
+        # Sıralı platform denemeleri
+        # Her platformda tüm title varyasyonlarını dene,
+        # title_tr → title_en → title → cleaned
+        platforms = [
+            ("monomanga.com.tr", construct_monomanga_url, {}),
+            ("uzaymanga.com", construct_uzaymanga_url, {}),
+        ]
+
+        # Madara siteleri (CF bloklu/offline olmayanlar)
+        madara_hosts = [
+            "mangawow.com", "mangawow.org",
+            "merlintoon.com", "mangadenizi.com",
+        ]
+        for host in madara_hosts:
+            if host not in _CF_BLOCKED and host not in _OFFLINE:
+                platforms.append((host, construct_madara_url, {"base": f"https://{host}"}))
 
         tried: list[str] = []
-        for title in titles:
-            for site in working_sites:
-                url = construct_madara_url(f"https://{site}", title, ep=1)
+        for platform_name, url_builder, kwargs in platforms:
+            for title in titles:
+                if "base" in kwargs:
+                    url = url_builder(kwargs["base"], title, ep=1)
+                else:
+                    url = url_builder(title, ep=1)
                 tried.append(url)
-                ch.detail += f" | Denenen: {url[:60]}..."
-                result = await http_ping(url)
+                ch.detail += f" | {platform_name}: {url[:60]}..."
+                result = await verify_manga_chapter(url, timeout=8)
 
                 if result.is_ok():
                     ch.status = HealthStatus.KURTARILDI
                     ch.used_fallback = url
                     ch.ping = result
                     ch.tested_url = url
-                    ch.detail = f"Kurtarıldı: {site} (eski: {ch.ep_url})"
+                    ch.detail = f"Kurtarıldı: {platform_name} (eski: {ch.ep_url})"
                     if self.fix:
                         await self._update_ep_url(c.id, url)
                     return
 
-                if result.is_blocked():
-                    continue
-
-                if result.is_dead():
-                    continue
-
-                # SITE_YOK → isim eşleşmedi, başka title dene
                 if result.status == "SITE_YOK":
                     ch.detail += " isim eşleşmedi"
-                    continue
+                elif result.is_blocked():
+                    ch.detail += " CF bloklu"
+                elif result.is_dead():
+                    ch.detail += f" {result.status}"
+                else:
+                    ch.detail += f" {result.status}"
 
         # Tüm denemeler başarısız
         if ch.ping and ch.ping.status == "CF_BLOCKED":
@@ -298,7 +327,7 @@ class HealthChecker:
             ch.status = HealthStatus.SITE_YOK if ch.ping.status == "SITE_YOK" else HealthStatus.OFFLINE
         elif ch.ping and ch.ping.status == "SITE_YOK":
             ch.status = HealthStatus.NAME_MISMATCH
-            ch.detail = f"Ne DB'deki ne de alternatif isimler {len(tried)} sitede bulundu"
+            ch.detail = f"Ne DB'deki ne de alternatif isimler {len(tried)} sitede bulunamadı"
         else:
             ch.status = self._classify_result(ch.ping) if ch.ping else HealthStatus.HATA
 

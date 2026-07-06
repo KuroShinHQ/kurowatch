@@ -47,10 +47,12 @@ class PingResult:
         return self.status in ("TIMEOUT", "PARSE_HATASI", "HATA")
 
 
+_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+       "AppleWebKit/537.36 (KHTML, like Gecko) "
+       "Chrome/131.0.0.0 Safari/537.36")
+
 _HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                  "AppleWebKit/537.36 (KHTML, like Gecko) "
-                  "Chrome/131.0.0.0 Safari/537.36",
+    "User-Agent": _UA,
     "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
     "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5",
     "Range": "bytes=0-4096",
@@ -157,3 +159,128 @@ def construct_madara_url(base_site: str, title: str, ep: int = 1) -> str:
     slug = slugify(title)
     base = base_site.rstrip("/")
     return f"{base}/manga/{slug}/bolum-{ep}/"
+
+
+def construct_monomanga_url(title: str, ep: int = 1) -> str:
+    slug = slugify(title)
+    return f"https://monomanga.com.tr/manga/{slug}/bolum-{ep}"
+
+
+def construct_uzaymanga_url(title: str, ep: int = 1) -> str:
+    slug = slugify(title)
+    return f"https://uzaymanga.com/manga/{slug}/{ep}-bolum-oku"
+
+
+# ── Manga içerik doğrulama (resim indirmeden) ────────────────────────────
+
+
+async def verify_manga_chapter(url: str, timeout: float = 10.0) -> PingResult:
+    """Manga/Manhwa sayfasını kontrol et: sayfada görsel referansı var mı?
+
+    Hiçbir resim dosyasını indirmez. Sadece HTML/JSON yanıtını parse ederek
+    içerik varlığını onaylar.
+    """
+    host = urlparse(url).netloc.lstrip("www.")
+    t0 = asyncio.get_event_loop().time()
+
+    try:
+        async with httpx.AsyncClient(timeout=timeout, follow_redirects=True,
+                                     headers={"User-Agent": _UA,
+                                              "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5"}) as client:
+            r = await client.get(url)
+            elapsed = int((asyncio.get_event_loop().time() - t0) * 1000)
+            code = r.status_code
+            headers = dict(list(r.headers.items())[:10])
+            server = r.headers.get("server", "").lower()
+
+            if code != 200:
+                return _ping_from_http_code(code, server, headers, host, elapsed, r.text[:200])
+
+            body = r.text
+
+            # Platform bazlı içerik kontrolü
+            found = False
+            method = ""
+
+            if host.endswith("monomanga.com.tr"):
+                method = "nextjs-rsc"
+                # RSC payload'ında CDN görsel URL'i var mı?
+                rsc = re.findall(r"self\.__next_f\.push\(\[(.*?)\]\)", body, re.DOTALL)
+                payload_text = " ".join(rsc) if rsc else body
+                if re.search(r"https://cdn\.monomanga\.com\.tr/chapters/[^\"'\\\s,}\]]+\.(?:webp|jpg|png)", payload_text):
+                    found = True
+
+            elif host.endswith("uzaymanga.com"):
+                method = "uzaymanga"
+                if re.search(r"cdn-u\.efsaneler\d+\.can\.re/_manga/\d+/\d+/[^\s\"'<>]+", body):
+                    found = True
+
+            elif host.endswith("mangadex.org"):
+                method = "mangadex-api"
+                try:
+                    data = r.json()
+                    if "baseUrl" in data and "chapter" in data and "data" in data.get("chapter", {}):
+                        pages = data["chapter"]["data"]
+                        if isinstance(pages, list) and len(pages) > 0:
+                            found = True
+                except Exception:
+                    pass
+
+            else:
+                # Madara / varsayılan HTML — wp-manga-chapter-img veya sayısal dosya URL'i
+                method = "madara-html"
+                if re.search(r'class=["\'][^"\']*wp-manga-chapter-img[^"\']*["\']', body, re.IGNORECASE):
+                    found = True
+                elif re.search(r'https?://[^"\']+/\d{1,4}\.(?:jpg|jpeg|png|webp)', body, re.IGNORECASE):
+                    # Sayfa numarası pattern'li görsel URL'i
+                    found = True
+                elif re.search(r'(?:data-src|data-lazy-src)=["\'](?:https?:)?//[^"\']+\.(?:jpg|jpeg|png|webp)', body, re.IGNORECASE):
+                    found = True
+
+            if found:
+                return PingResult("OK", code, f"İçerik onaylandı ({method})", headers,
+                                  body[:200], host, elapsed)
+            else:
+                return PingResult("SITE_YOK", code,
+                                  f"Sayfa yüklendi ama görsel referansı bulunamadı ({method})",
+                                  headers, body[:200], host, elapsed)
+
+    except httpx.ConnectError as exc:
+        elapsed = int((asyncio.get_event_loop().time() - t0) * 1000)
+        msg = str(exc).lower()
+        if "connection refused" in msg:
+            return PingResult("CONN_REFUSED", 0, f"Bağlantı reddedildi: {exc}", {}, "", host, elapsed)
+        if "dns" in msg or "resolve" in msg:
+            return PingResult("DNS_FAIL", 0, f"DNS çözümlemesi başarısız: {exc}", {}, "", host, elapsed)
+        return PingResult("HATA", 0, str(exc)[:120], {}, "", host, elapsed)
+
+    except httpx.TimeoutException:
+        elapsed = int((asyncio.get_event_loop().time() - t0) * 1000)
+        return PingResult("TIMEOUT", 0, f"{timeout}sn içinde yanıt yok", {}, "", host, elapsed)
+
+    except Exception as exc:
+        elapsed = int((asyncio.get_event_loop().time() - t0) * 1000)
+        return PingResult("HATA", 0, str(exc)[:120], {}, "", host, elapsed)
+
+
+def _ping_from_http_code(code: int, server: str, headers: dict, host: str,
+                         elapsed: int, preview: str) -> PingResult:
+    """HTTP statü koduna göre PingResult oluştur."""
+    if code in (200, 206):
+        return PingResult("OK", code, f"HTTP {code}", headers, preview, host, elapsed)
+    if code == 202:
+        return PingResult("CHALLENGE", code, "HTTP 202 — JS PoW/CF challenge", headers, preview, host, elapsed)
+    if code == 403:
+        if "cloudflare" in server or "cf" in server:
+            return PingResult("CF_BLOCKED", code, "HTTP 403 Cloudflare", headers, preview, host, elapsed)
+        bl = preview.lower()
+        if "cloudflare" in bl or "cf-ray" in bl:
+            return PingResult("CF_BLOCKED", code, "HTTP 403 CF (body)", headers, preview, host, elapsed)
+        return PingResult("CF_BLOCKED", code, f"HTTP 403 ({server})", headers, preview, host, elapsed)
+    if code == 404:
+        return PingResult("SITE_YOK", code, "HTTP 404 sayfa mevcut değil", headers, preview, host, elapsed)
+    if code in (502, 503):
+        return PingResult("OFFLINE", code, f"HTTP {code} sunucu hatası", headers, preview, host, elapsed)
+    if code == 525:
+        return PingResult("SSL_HATASI", code, "HTTP 525 SSL handshake failed", headers, preview, host, elapsed)
+    return PingResult("HATA", code, f"HTTP {code} ({server})", headers, preview, host, elapsed)
