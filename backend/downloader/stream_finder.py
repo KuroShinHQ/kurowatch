@@ -37,13 +37,16 @@ _SESSION_HEADERS: dict[str, str] = {}
 _cf_cache: dict[str, tuple[dict, str, float]] = {}
 _CF_CACHE_TTL = 23 * 3600  # 23 saat (CF cookie ömrü ~24 saat)
 
-# Bu domainler nodriver + curl-cffi CF bypass gerektirir
+# Bu domainler nodriver cf_clearance + curl-cffi CF bypass gerektirir
+# nodriver ilk seferde CF challenge'ı çözer, cookie 23 saat cache'lenir
+# curl-cffi cookie ile direkt sayfayı çeker (hızlı, browsersız)
 _CF_SITES = {
     "dizibox.live",
     "dizibox.so",
     "hdfilmcehennemi.nl",
     "tranimeizle.co",
     "tranimeizle.io",
+    "tranimaci.com",
 }
 
 # nodriver Chromium binary yolu
@@ -109,7 +112,6 @@ _FORCE_PLAYWRIGHT = {
 # Bu domainler Cloudflare Managed Challenge kullanır → nodriver (gerçek Chrome) gerekiyor
 # Playwright kolayca algılanıyor; nodriver CF'yi aşıp JS-render edilmiş HTML alıyor
 _NODRIVER_HTML_SITES = {
-    "tranimaci.com",
 }
 
 # Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
@@ -267,11 +269,14 @@ async def find_stream_url(episode_url: str) -> str:
         try:
             html = await _fetch_with_cf_bypass(episode_url)
             if html:
-                embed = _extract_embed_from_html(html)
-                if embed:
-                    logger.info("CF bypass embed buldu: %s", embed[:80])
-                    return embed
-                logger.warning("CF bypass HTML alındı ama embed bulunamadı (len=%d)", len(html))
+                # tranimaci: direkt MP4 linki ara (player sayfası)
+                url = _extract_mp4_from_html(html)
+                if not url:
+                    url = _extract_embed_from_html(html)
+                if url:
+                    logger.info("CF bypass URL buldu: %s", url[:80])
+                    return url
+                logger.warning("CF bypass HTML alındı ama URL bulunamadı (len=%d)", len(html))
         except Exception as exc:
             logger.error("CF bypass hatası: %s", exc)
 
