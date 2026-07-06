@@ -28,7 +28,8 @@
       if (icon) { icon.textContent = 'downloading'; icon.style.color = '#00d4ff'; }
       if (lbl)  lbl.textContent = (job.content_title || '') + ' Bölüm ' + job.episode_number;
       const pct = job.progress_pct || 0;
-      if (pctEl) pctEl.textContent = pct + '%';
+      const statusMsg = job._statusMsg || '';
+      if (pctEl) pctEl.textContent = statusMsg || (pct + '%');
       if (bar)  { bar.style.width = pct + '%'; bar.style.background = '#00d4ff'; }
     }
   }
@@ -75,7 +76,10 @@
       } else if (msg.event === 'done') {
         if (msg.job) { _jobs[msg.job.id] = msg.job; _onDownloadDone(msg.job); }
       } else if (msg.event === 'progress') {
-        if (_jobs[msg.job_id]) _jobs[msg.job_id].progress_pct = msg.pct;
+        if (_jobs[msg.job_id]) {
+          _jobs[msg.job_id].progress_pct = msg.pct;
+          if (msg.msg) _jobs[msg.job_id]._statusMsg = msg.msg;
+        }
         _updateFloatIndicator();
       }
       _renderDownloadScreen();
@@ -196,12 +200,13 @@
     let progressHtml = '';
     if (job.status === 'downloading' || job.status === 'queued') {
       const barBg = job.status === 'downloading' ? '#00d4ff' : '#3b4665';
+      const statusMsg = job._statusMsg || (job.status === 'downloading' ? 'İndiriliyor…' : 'Kuyrukta');
       progressHtml =
         '<div class="w-full rounded-full overflow-hidden" style="height:3px;background:rgba(255,255,255,0.1)">' +
         '<div class="h-full rounded-full transition-all duration-500" style="width:' + pct + '%;background:' + barBg + '"></div></div>' +
         '<div class="flex justify-between">' +
         '<span class="text-[10px] font-bold" style="color:' + tc + '">' + pct + '%</span>' +
-        '<span class="text-[10px]" style="color:#9090b0">' + (job.status === 'downloading' ? 'İndiriliyor…' : 'Kuyrukta') + '</span></div>';
+        '<span class="text-[10px]" style="color:#9090b0">' + statusMsg + '</span></div>';
     }
 
     let actions = '';
@@ -459,13 +464,19 @@
   async function _togglePiP() {
     const video = document.getElementById('player-video');
     if (!video) return;
+    if (!document.pictureInPictureEnabled) {
+      if (window.showToast) window.showToast('Bu tarayıcıda Picture-in-Picture desteklenmiyor', 'info', 3000);
+      return;
+    }
     try {
       if (document.pictureInPictureElement) {
         await document.exitPictureInPicture();
       } else {
         await video.requestPictureInPicture();
       }
-    } catch {}
+    } catch {
+      if (window.showToast) window.showToast('PiP açılamadı', 'error');
+    }
   }
 
   // ── Mini Player ──────────────────────────────────────────────────

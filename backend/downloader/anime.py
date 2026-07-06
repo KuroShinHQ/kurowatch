@@ -18,7 +18,11 @@ async def download_anime(
     height = quality.replace("p", "")
 
     # Gerçek stream URL'sini bul (embed player URL veya orijinal)
+    if on_progress:
+        await on_progress(0)  # stream_finder basladi
     actual_url = await find_stream_url(url)
+    if on_progress:
+        await on_progress(1)  # stream URL bulundu
 
     cookies_args = get_yt_dlp_cookies_arg(url)
 

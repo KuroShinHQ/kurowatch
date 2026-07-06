@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-104) · **Aktif sürüm:** v1.4.0 · **Son commit:** `66fe80d`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-104) · **Aktif sürüm:** v1.4.0 · **Son commit:** `0a44eb2`
 
 > Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
 
@@ -549,14 +549,15 @@ C:\Kuroshin\kurowatch\
 
 | Commit | Ne |
 |--------|----|
-| `1dd682a` | turkanime.tv: Playwright header capture + CF bypass (885MB test OK) |
-| `acc5467` | title_tr: DB migration + Edit modal + kart/detay gösterimi |
-| `4a8d40f` | stream_finder: networkidle + JS iframe + 15s + playwright-stealth |
-| `5c9d39c` | Anime indirme Playwright + Referer fix |
-| `1cacc29` | Madara manga lazy-load bug fix |
-| `12a0626` | P8: %1 ping test + P7 kapandı |
-| `7c02cb2` | Banner cinematic hero + download refresh + --fix modu |
-| `a2cd89d` | Video player overflow fix + translate check |
-| `90869b6` | Detail page scroll crash fix (overflow:hidden + 100dvh) |
-| `66fe80d` | Active download cancel + download indicator + player freeze fix |
+| `0a44eb2` | Sohbet-104 son fixler: silme/iptal/dene + buton mobil + video bulunamadi + fetchJobs ref hatası |
 | `6426998` | Detail scroll clip + player race condition + delete job/cancel WS fix |
+| `66fe80d` | Active download cancel + download indicator + player freeze fix |
+| `90869b6` | Detail page scroll crash fix (overflow:hidden + 100dvh) |
+| `a2cd89d` | Video player overflow fix + translate check |
+| `7c02cb2` | Banner cinematic hero + download refresh + --fix modu |
+| `12a0626` | P8: %1 ping test + P7 kapandı |
+| `1cacc29` | Madara manga lazy-load bug fix |
+| `5c9d39c` | Anime indirme Playwright + Referer fix |
+| `4a8d40f` | stream_finder: networkidle + JS iframe + 15s + playwright-stealth |
+| `acc5467` | title_tr: DB migration + Edit modal + kart/detay gösterimi |
+| `1dd682a` | turkanime.tv: Playwright header capture + CF bypass (885MB test OK) |
