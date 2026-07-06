@@ -17,5 +17,6 @@ build/
 
 health_report.json
 start_kw.sh
+start_kw_backend.sh
 backend/tools/check_queue.py
 backend/tools/list_sites.py
