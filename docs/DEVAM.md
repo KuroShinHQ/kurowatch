@@ -303,12 +303,16 @@ SOHBET-103 — %1 PİNG TEST + KÖR NOKTA ANALİZİ:
   [x] Video player overflow fix (flex-wrap justify-end)
   [x] Scroll crash fix (height:100dvh;overflow:hidden)
 
-SOHBET-104 — AKTİF DOWNLOAD İPTAL + DOWNLOAD INDICATOR + PLAYER FREEZE:
+SOHBET-104 — DOWNLOAD İPTAL + INDICATOR + PLAYER RACE + SCROLL CLIP:
   [x] Backend: asyncio task cancel (_active_tasks + CancelledError handler)
   [x] Detail page download indicator (thumbnail badge + button color/icon)
   [x] Duplicate download protection (getDownloadedJob check + toast)
-  [x] player-ep-next-btn toast fallback when next ep not downloaded
-  [x] Player freeze fix: video.play() canplay event'ine ertelendi
+  [x] player-ep-next-btn toast fallback
+  [x] Player freeze: oncanplay/onerror handler'ı load() öncesi (race condition fix)
+  [x] Panel ep click: _jobs null ise backend'den fetch
+  [x] Scroll: overflow:hidden → overflow:clip (mouse wheel çalışsın)
+  [x] Delete job: _done'dan tamamen kaldır, WS broadcast etme
+  [x] clearDone: tek render, noRender parametresi
   [x] Title attr: rewind, play/pause, forward, volume, dl buttons
 
   SEARCH FİLTRELE (Stitch birebir port):
@@ -551,3 +555,4 @@ C:\Kuroshin\kurowatch\
 | `a2cd89d` | Video player overflow fix + translate check |
 | `90869b6` | Detail page scroll crash fix (overflow:hidden + 100dvh) |
 | `66fe80d` | Active download cancel + download indicator + player freeze fix |
+| `6426998` | Detail scroll clip + player race condition + delete job/cancel WS fix |
