@@ -128,7 +128,18 @@
   }
 
   async function cancelJob(jobId, noRender) {
-    await fetch(API + '/api/download/' + jobId, { method: 'DELETE' });
+    try {
+      const r = await fetch(API + '/api/download/' + jobId, { method: 'DELETE' });
+      if (!r.ok) {
+        if (window.showToast) window.showToast('Silme başarısız: ' + r.status, 'error');
+        if (!noRender) { await _fetchJobs(); _renderDownloadScreen(); _updateBadge(); }
+        return;
+      }
+    } catch (e) {
+      if (window.showToast) window.showToast('Silme hatası: ' + e.message, 'error');
+      if (!noRender) { await _fetchJobs(); _renderDownloadScreen(); _updateBadge(); }
+      return;
+    }
     delete _jobs[jobId];
     if (!noRender) {
       await _fetchJobs();
@@ -500,7 +511,11 @@
   function _toggleCC() {
     const video = document.getElementById('player-video');
     const btn   = document.getElementById('player-cc-btn');
-    if (!video || !video.textTracks.length) return;
+    if (!video) return;
+    if (!video.textTracks || !video.textTracks.length) {
+      if (window.showToast) window.showToast('Bu bölümde altyazı dosyası bulunamadı', 'info', 3000);
+      return;
+    }
     _ccActive = !_ccActive;
     video.textTracks[0].mode = _ccActive ? 'showing' : 'hidden';
     if (btn) btn.classList.toggle('text-[#00d4ff]', _ccActive);
@@ -951,9 +966,11 @@
           }
         } catch (e) {}
       }
-      const contentId = job ? job.content_id : null;
-      const epNum     = job ? job.episode_number : null;
-      this.open(jobId, title, contentId, epNum);
+      if (!job) {
+        if (window.showToast) window.showToast('İndirilmiş bölüm bulunamadı', 'error');
+        return;
+      }
+      this.open(jobId, title, job.content_id, job.episode_number);
     },
   };
 
@@ -1506,16 +1523,18 @@
   window.kuroIntro     = _intro;
   window.kuroOutro     = _outro;
   window.kuroTranslate = _translate;
+  async function _fetchJobs() {
+    try {
+      var r = await fetch(API + '/api/download/queue');
+      if (r.ok) { var data = await r.json(); var fresh = {}; (data.jobs || []).forEach(function(j) { fresh[j.id] = j; }); _jobs = fresh; }
+    } catch (e) {}
+  }
+
   window.kuroDownload = {
     start:  startDownload,
     cancel: cancelJob,
     render: _renderDownloadScreen,
-    _fetchJobs: async function() {
-      try {
-        var r = await fetch(API + '/api/download/queue');
-        if (r.ok) { var data = await r.json(); var fresh = {}; (data.jobs || []).forEach(function(j) { fresh[j.id] = j; }); _jobs = fresh; }
-      } catch (e) {}
-    },
+    _fetchJobs: _fetchJobs,
     clearDone: async function() {
       const done = Object.values(_jobs).filter(function(j) { return j.status === 'done'; });
       await Promise.all(done.map(function(j) { return cancelJob(j.id, true); }));
@@ -1526,8 +1545,10 @@
     retry: async function(jobId) {
       const job = _jobs[jobId];
       if (!job) return;
-      await cancelJob(jobId);
-      await startDownload(job.content_id, job.content_title, job.media_type, job.episode_number, job.url, job.quality);
+      try { await cancelJob(jobId, true); } catch (e) {}
+      setTimeout(function() {
+        startDownload(job.content_id, job.content_title, job.media_type, job.episode_number, job.url, job.quality);
+      }, 100);
     },
     analyzeIntro: async function (contentId) {
       try {

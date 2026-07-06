@@ -49,6 +49,9 @@ async def cancel_or_delete(job_id: int):
     if job["status"] == "done":
         manager.delete_job_file(job_id)
         return {"ok": True, "action": "file_deleted"}
+    if job["status"] in ("failed", "cancelled", "deleted"):
+        manager.remove_done_job(job_id)
+        return {"ok": True, "action": "removed"}
     removed = manager.cancel_job(job_id)
     if not removed:
         raise HTTPException(400, "Aktif indirme iptal edilemez")
