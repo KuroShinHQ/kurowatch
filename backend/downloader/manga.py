@@ -20,14 +20,18 @@ _MADARA_DOMAINS = [
     "ruyamanga.com", "ruyamanga.net", "asurascans.com.tr",
 ]
 
-# CF turnstile veya kalıcı blok olan siteler — gallery-dl da geçemez
-# 5 Tem 2026: ragnarscans + manhwahentai chapter pages HTTP 403 CF
-#            hayalistic.com.tr HTTP 403 on all pages
+# CF turnstile siteler — curl_cffi impersonate ile aşılır
 _CF_BLOCKED = {
-    "mangasehri.net", "mangasehri.com",
     "ragnarscans.com", "ragnarscans.net",
     "manhwahentai.me",
     "hayalistic.com.tr",
+    "mangasehri.net", "mangasehri.com",
+}
+
+# Next.js App Router siteler — RSC payload'dan CDN görsel URL'leri çekilir
+# Tarayıcı gerekmez, tek httpx GET + regex yeterli
+_NEXTJS_DOMAINS = {
+    "monomanga.com.tr",
 }
 
 # DNS fail / offline siteler — anında hata döndür
@@ -65,13 +69,6 @@ async def download_manga_chapter(
 
     host = urlparse(url).netloc.lstrip("www.")
 
-    # CF turnstile ile kalıcı bloklu siteler
-    if any(host.endswith(d) for d in _CF_BLOCKED):
-        raise RuntimeError(
-            f"Bu site Cloudflare koruması altında, indirme yapılamıyor: {host}\n"
-            "Çözüm: Bölüm URL'sini çalışan bir kaynakla güncelle (mangawow.org vb.)"
-        )
-
     # Offline / DNS fail siteler
     if any(host.endswith(d) for d in _OFFLINE):
         raise RuntimeError(
@@ -81,6 +78,8 @@ async def download_manga_chapter(
 
     if "mangadex.org" in url:
         return await _mangadex_chapter(url, output_dir, on_progress)
+    elif any(host.endswith(d) for d in _NEXTJS_DOMAINS):
+        return await _nextjs_chapter(url, output_dir, on_progress)
     elif host.endswith("uzaymanga.com"):
         return await _uzaymanga_chapter(url, output_dir, on_progress)
     elif _is_madara(url):
@@ -123,14 +122,101 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
         return files
 
 
+async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
+    """Next.js App Router siteler (monomanga.com.tr) — RSC payload'dan CDN URL çıkar."""
+    import httpx
+
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
+        resp = await client.get(url)
+        if resp.status_code != 200:
+            raise RuntimeError(f"NextJS: HTTP {resp.status_code} — {url}")
+        html = resp.text
+
+    # RSC payload'larını çıkar: self.__next_f.push([...])
+    rsc_payloads = re.findall(
+        r"self\.__next_f\.push\(\[(.*?)\]\)",
+        html, re.DOTALL
+    )
+    if not rsc_payloads:
+        raise RuntimeError(f"NextJS: RSC payload bulunamadı — {url}")
+
+    all_payloads = " ".join(rsc_payloads)
+
+    # CDN image URL'lerini çıkar
+    cdn_urls = re.findall(
+        r"https://cdn\.monomanga\.com\.tr/chapters/[^\"'\\\s,}\]]+\.(?:webp|jpg|png)",
+        all_payloads
+    )
+
+    # Ayrıca HTML'deki doğrudan <img> tag'lerinden de topla
+    img_tags = re.findall(
+        r'<img[^>]+src="(https://cdn\.monomanga\.com\.tr/chapters/[^"]+)"',
+        html
+    )
+    cdn_urls.extend(img_tags)
+
+    # Benzersiz yap + sırala
+    seen: set[str] = set()
+    img_urls: list[str] = []
+    for u in cdn_urls:
+        if u not in seen:
+            seen.add(u)
+            img_urls.append(u)
+
+    if not img_urls:
+        raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url}")
+
+    # 00.webp varsa önce onu al (ilk sayfa genelde 00)
+    img_urls.sort(key=lambda u: (
+        int(re.search(r'/(\d+)\.(?:webp|jpg|png)', u).group(1))
+        if re.search(r'/(\d+)\.(?:webp|jpg|png)', u) else 999
+    ))
+
+    total = len(img_urls)
+    files: list[str] = []
+
+    async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
+        for i, img_url in enumerate(img_urls):
+            ext = os.path.splitext(img_url.split("?")[0])[1] or ".webp"
+            dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
+            img_r = await client.get(img_url)
+            img_r.raise_for_status()
+            with open(dest, "wb") as fh:
+                fh.write(img_r.content)
+            files.append(dest)
+            if on_progress:
+                await on_progress(i + 1, total)
+
+    if not files:
+        raise RuntimeError(f"NextJS: hiç sayfa indirilemedi — {url}")
+    return files
+
+
+async def _fetch_with_cf(url: str) -> tuple[str, str]:
+    """curl_cffi impersonate ile CF korumalı sayfa getir; httpx fallback."""
+    try:
+        from curl_cffi.requests import AsyncSession
+        async with AsyncSession(impersonate="chrome131") as s:
+            resp = await s.get(url, timeout=20)
+            if resp.status_code == 200 and "challenge" not in (resp.url or "").lower():
+                text = resp.text
+                if len(text) > 500 and "captcha" not in text[:300].lower():
+                    return text, resp.url
+    except Exception as exc:
+        import logging
+        logging.getLogger(__name__).warning("curl_cffi hatası, httpx fallback: %s", exc)
+
+    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
+        r = await client.get(url)
+        r.raise_for_status()
+        return r.text, str(r.url)
+
+
 async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     """Madara WordPress tema sitelerinden manga bölümü indir (?style=list ile)."""
     list_url = url.rstrip("/") + "/?style=list"
 
-    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
-        r = await client.get(list_url)
-        r.raise_for_status()
-        html = r.text
+    html, _ = await _fetch_with_cf(list_url)
 
     # Madara standart sınıf yok ama sayfa yüklenmiş olabilir — hemen hata atma
 
