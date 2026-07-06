@@ -101,8 +101,9 @@ async def download_anime(
         if "[generic]" in err_tail:
             domain = urlparse(url).netloc
             raise RuntimeError(
-                f"{domain} sitesinde video embed bulunamadı veya desteklenmiyor. "
-                "Bu site için cookies ekleyin (Ayarlar → Cookies) veya farklı bir site kullanın."
+                f"{domain} sitesinde video embed bulunamadı. "
+                "Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. "
+                "Detay için backend log'una bakın (stream_finder PW: HTTP ...)."
             )
         raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}" + (f": {err_tail}" if err_tail else ""))
 
