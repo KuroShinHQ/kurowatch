@@ -192,14 +192,14 @@
     }
 
     let actions = '';
-    if (job.status === 'done') {
+      if (job.status === 'done') {
       if (job.media_type === 'anime') {
         actions = '<button class="dl-play-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
-          ' data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
+          ' title="Oynat" data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
           ' style="background:#00d4ff;color:#003642;box-shadow:0 0 10px rgba(0,212,255,0.3)">▶ OYNAT</button>';
       } else {
         actions = '<button class="dl-read-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
-          ' data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
+          ' title="Oku" data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
           ' data-content-id="' + job.content_id + '" data-ep-num="' + job.episode_number + '"' +
           ' style="background:#ffd9a1;color:#1a0a00;box-shadow:0 0 10px rgba(255,217,161,0.2)">📖 OKU</button>';
       }
@@ -209,7 +209,7 @@
     } else if (job.status === 'queued') {
       actions = '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
         ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
-        ' style="background:rgba(255,255,255,0.05);color:#9090b0">✕ İPTAL</button>';
+        ' style="background:rgba(255,255,255,0.05);color:#9090b0" title="İptal">✕ İPTAL</button>';
     } else if (job.status === 'downloading') {
       actions = '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
         ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all" style="color:#9090b0" title="İptal">' +
@@ -219,7 +219,7 @@
         escHtml((job.error_msg || 'Bilinmeyen hata').substring(0, 50)) + '</span>' +
         '<button onclick="window.kuroDownload.retry(' + job.id + ')"' +
         ' class="px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px] flex-shrink-0"' +
-        ' style="background:#ffb4ab;color:#1a0000">TEKRAR DENE</button>' +
+        ' style="background:#ffb4ab;color:#1a0000" title="Tekrar Dene">TEKRAR DENE</button>' +
         '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
         ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all flex-shrink-0" style="color:#9090b0" title="Sil">' +
         '<span class="material-symbols-outlined" style="font-size:18px">delete</span></button>';
@@ -838,6 +838,10 @@
       const ttl   = document.getElementById('player-title');
       if (!modal || !video || !src) return;
 
+      // Önceki event listener'ları temizle
+      video.oncanplay = null;
+      video.onerror = null;
+
       src.src = API + '/api/download/serve/' + jobId;
       video.load();
       if (ttl) ttl.textContent = title || '';
@@ -881,8 +885,16 @@
       const timeEl = document.getElementById('player-time');
       if (timeEl) timeEl.innerHTML = '0:00 <span style="color:rgba(255,255,255,0.4);padding:0 4px">/</span> 0:00';
 
-      video.play().catch(function () {});
-      _controls.setPlaying(true);
+      // Video hazır olunca oynat (donma önleme)
+      video.oncanplay = function () {
+        video.play().catch(function () {});
+        _controls.setPlaying(true);
+        video.oncanplay = null;
+      };
+      video.onerror = function () {
+        if (window.showToast) window.showToast('Video yüklenemedi', 'error');
+        video.onerror = null;
+      };
 
       _intro.load(contentId, episodeNumber);
       _outro.load(contentId, episodeNumber);
@@ -896,7 +908,7 @@
     close: function () {
       const modal = document.getElementById('modal-player');
       const video = document.getElementById('player-video');
-      if (video) { video.pause(); video.src = ''; }
+      if (video) { video.pause(); video.src = ''; video.oncanplay = null; video.onerror = null; }
       if (modal) {
         modal.classList.add('hidden');
         modal.classList.remove('open', 'player-mini', 'player-theater');
@@ -1617,6 +1629,8 @@
       if (nextJob) {
         _player.close();
         setTimeout(function () { _player.open(nextJob.id, nextJob.content_title + ' — Bölüm ' + nextEp, nextJob.content_id, nextEp); }, 200);
+      } else if (window.showToast) {
+        window.showToast('Bölüm ' + nextEp + ' henüz indirilmedi. Önce indirin.', 'info', 3000);
       }
     });
     _pb('panel-cc-toggle',       function () { _toggleCC(); });
