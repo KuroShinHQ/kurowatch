@@ -66,15 +66,27 @@ async def get_storage():
 
 # ── Dosya Sunumu ─────────────────────────────────────────────────────
 
+def _resolve_path(p: str) -> str:
+    """Windows C:XXX -> /mnt/c/Xxx (WSL'de calisir)."""
+    p = p.replace("\\", "/")
+    import re as _re
+    m = _re.match(r"^([A-Za-z]):/(.*)", p)
+    if m:
+        return f"/mnt/{m.group(1).lower()}/{m.group(2)}"
+    return p
+
+
 @router.get("/download/serve/{job_id}")
 async def serve_video(job_id: int):
     """Tamamlanmış video dosyasını stream et (range request destekli)."""
     job = manager.get_job(job_id)
     if not job or job["status"] != "done":
         raise HTTPException(404, "Dosya hazır değil")
-    path = job.get("file_path")
+    path = _resolve_path(job.get("file_path", ""))
     if not path or not os.path.isfile(path):
-        raise HTTPException(404, "Dosya bulunamadı")
+        # Dosya yoksa job'u temizle (eski kayit)
+        manager.remove_done_job(job_id)
+        raise HTTPException(404, "Dosya bulunamadı (kayıt temizlendi)")
     return FileResponse(path, media_type="video/mp4", headers={"Accept-Ranges": "bytes"})
 
 

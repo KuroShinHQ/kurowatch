@@ -112,9 +112,10 @@
 
 /* ── Player v7: Mini Player ─────────────────────────────────────── */
 #modal-player.player-mini {
-  inset: auto !important;
-  bottom: 1rem;
-  right: 1rem;
+  top: auto !important;
+  left: auto !important;
+  bottom: 1rem !important;
+  right: 1rem !important;
   width: 320px;
   height: 200px;
   border-radius: 12px;
@@ -122,6 +123,7 @@
   border: 1px solid rgba(255,255,255,0.15);
   box-shadow: 0 8px 40px rgba(0,0,0,0.8);
   transition: all 0.25s ease;
+  z-index: 2147483647;
 }
 #modal-player.player-mini #controls-overlay {
   opacity: 0 !important;

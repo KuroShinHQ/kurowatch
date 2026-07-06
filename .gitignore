@@ -14,3 +14,8 @@ node_modules/
 *.log
 dist/
 build/
+
+health_report.json
+start_kw.sh
+backend/tools/check_queue.py
+backend/tools/list_sites.py

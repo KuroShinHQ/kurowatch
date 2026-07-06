@@ -5,6 +5,7 @@ Daisy-chain: oynatma başladığında N+1 otomatik kuyruğa alınır (player.js 
 import asyncio
 import json
 import os
+import re
 from datetime import datetime, timezone
 from typing import Optional
 from fastapi import WebSocket
@@ -44,6 +45,67 @@ def load_jobs():
             _counter = max(j["id"] for j in _done)
     except Exception as exc:
         print(f"[manager] jobs.json yüklenemedi: {exc}")
+
+
+def _normalize_path(p: str) -> str:
+    """Windows C:XXX -> /mnt/c/Xxx (WSL'de calisir)."""
+    p = p.replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):/(.*)", p)
+    if m:
+        return f"/mnt/{m.group(1).lower()}/{m.group(2)}"
+    return p
+
+
+def scan_downloaded_files():
+    """Diskteki .mp4/.mkv dosyalarini tara, jobs'a ekle (eksik olanlari tamamla)."""
+    global _done, _counter
+    anime_root = os.path.join(_DOWNLOADS_ROOT, "anime")
+    if not os.path.isdir(anime_root):
+        return
+    indexed = set()
+    for j in _done:
+        fp = j.get("file_path")
+        if fp:
+            indexed.add((j.get("content_id"), j.get("episode_number"),
+                         _normalize_path(fp)))
+    for cid_str in os.listdir(anime_root):
+        cid_path = os.path.join(anime_root, cid_str)
+        if not os.path.isdir(cid_path):
+            continue
+        try:
+            content_id = int(cid_str)
+        except ValueError:
+            continue
+        for fname in sorted(os.listdir(cid_path)):
+            if not fname.endswith((".mp4", ".mkv")):
+                continue
+            m = re.match(r"ep(\d+)", fname)
+            if not m:
+                continue
+            ep_num = int(m.group(1))
+            file_path = os.path.join(cid_path, fname)
+            if (content_id, ep_num, _normalize_path(file_path)) in indexed:
+                continue
+            _counter += 1
+            job = {
+                "id": _counter,
+                "content_id": content_id,
+                "content_title": f"Content #{content_id}",
+                "media_type": "anime",
+                "episode_number": ep_num,
+                "url": "",
+                "quality": "720p",
+                "status": "done",
+                "progress_pct": 100,
+                "file_path": file_path,
+                "error_msg": None,
+                "file_size_bytes": os.path.getsize(file_path) if os.path.isfile(file_path) else 0,
+                "created_at": _now_iso(),
+                "completed_at": _now_iso(),
+            }
+            _done.append(job)
+    if _done:
+        _save_jobs()
 
 
 def _save_jobs():
@@ -105,7 +167,7 @@ async def add_job(
 
 
 def get_all_jobs() -> list[dict]:
-    return list(_queue) + list(_active.values()) + _done[-50:]
+    return list(_queue) + list(_active.values()) + list(_done)
 
 
 def get_job(job_id: int) -> Optional[dict]:
@@ -223,6 +285,8 @@ async def _run_job(job: dict):
 
     try:
         if job["media_type"] == "anime":
+            await _broadcast({"event": "progress", "job_id": job["id"], "pct": 0,
+                              "msg": "Stream URL araştırılıyor..."})
             out_dir = _job_dir(job)
             os.makedirs(out_dir, exist_ok=True)
             out_base = os.path.join(out_dir, f"ep{job['episode_number']:03d}")
