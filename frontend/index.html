@@ -1751,14 +1751,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
       <!-- CENTER CONTROLS -->
       <section class="flex-1 flex items-center justify-center gap-8 md:gap-24 px-4" style="pointer-events:auto">
-        <button id="player-rewind-btn" class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full text-white hover:bg-white/20 active:scale-90 transition-all" style="background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1)">
+        <button id="player-rewind-btn" title="Geri Sar (10s)" class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full text-white hover:bg-white/20 active:scale-90 transition-all" style="background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1)">
           <span class="material-symbols-outlined text-2xl md:text-3xl">replay_10</span>
         </button>
-        <button id="master-play-pause" class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
+        <button id="master-play-pause" title="Oynat/Duraklat (Space)" class="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
           style="background:#00d4ff;color:#003642;box-shadow:0 0 50px rgba(0,212,255,0.45)">
           <span id="play-icon" class="material-symbols-outlined text-5xl md:text-6xl" style="font-variation-settings:'FILL' 1">play_arrow</span>
         </button>
-        <button id="player-forward-btn" class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full text-white hover:bg-white/20 active:scale-90 transition-all" style="background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1)">
+        <button id="player-forward-btn" title="İleri Sar (10s)" class="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full text-white hover:bg-white/20 active:scale-90 transition-all" style="background:rgba(0,0,0,0.45);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1)">
           <span class="material-symbols-outlined text-2xl md:text-3xl">forward_10</span>
         </button>
       </section>
@@ -1790,7 +1790,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- Status Bar -->
         <div class="flex items-center justify-between px-1">
           <div class="flex items-center gap-4">
-            <button id="player-volume-btn" class="text-white hover:text-[#00d4ff] transition-colors">
+            <button id="player-volume-btn" title="Ses (M)" class="text-white hover:text-[#00d4ff] transition-colors">
               <span class="material-symbols-outlined">volume_up</span>
             </button>
             <span id="player-time" class="font-mono text-[12px] md:text-[14px] text-white/90 tracking-widest">0:00 <span style="color:rgba(255,255,255,0.4);padding:0 4px">/</span> 0:00</span>

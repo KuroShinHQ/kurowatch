@@ -22,6 +22,7 @@ _done:   list[dict] = []
 _ws_clients: set[WebSocket] = set()
 _counter = 0
 _lock = asyncio.Lock()
+_active_tasks: dict[int, asyncio.Task] = {}
 
 
 # ── Genel Yardımcı ───────────────────────────────────────────────────
@@ -120,6 +121,15 @@ def cancel_job(job_id: int) -> bool:
         if j["id"] == job_id:
             _queue.pop(i)
             return True
+    # Aktif indirmeyi iptal et (asyncio task cancel)
+    if job_id in _active_tasks:
+        _active_tasks.pop(job_id).cancel()
+        if job_id in _active:
+            job = _active.pop(job_id)
+            job["status"] = "cancelled"
+            _done.append(job)
+            _save_jobs()
+        return True
     return False
 
 
@@ -187,7 +197,8 @@ def _start_next():
     while len(_active) < _MAX_CONCURRENT and _queue:
         job = _queue.pop(0)
         _active[job["id"]] = job
-        asyncio.create_task(_run_job(job))
+        task = asyncio.create_task(_run_job(job))
+        _active_tasks[job["id"]] = task
 
 
 async def _run_job(job: dict):
@@ -232,13 +243,17 @@ async def _run_job(job: dict):
         job["progress_pct"] = 100
         job["completed_at"] = _now_iso()
 
+    except asyncio.CancelledError:
+        job["status"] = "cancelled"
     except Exception as exc:
         job["status"] = "failed"
         job["error_msg"] = str(exc)[:500]
 
     finally:
         _active.pop(job["id"], None)
-        _done.append(job)
+        _active_tasks.pop(job["id"], None)
+        if job["status"] != "cancelled":
+            _done.append(job)
         _save_jobs()
         await _broadcast({"event": "done", "job": job})
         _start_next()

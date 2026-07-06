@@ -2323,6 +2323,7 @@
       const openUrl = epUrl || fallbackUrl;
       const numTxt = 'Bölüm ' + e.number;
       const isActive = e.number === (myProgress + 1); // sıradaki bölüm
+      const isDownloaded = window.kuroDownload ? window.kuroDownload.getDownloadedJob(contentId, e.number) : null;
 
       // Stitch birebir thumbnail — 128px wide, aspect-video (16:9 = 72px)
       function _thumb(watched, active) {
@@ -2331,7 +2332,9 @@
             '<span class="material-symbols-outlined" style="font-size:13px;color:#fff;font-variation-settings:\'FILL\' 1">check</span></div>'
           : '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.38)">' +
             '<span class="material-symbols-outlined" style="font-size:28px;color:' + (active ? '#00d4ff' : '#9090b0') + ';font-variation-settings:\'FILL\' 1">play_circle</span></div>' +
-            (active ? '<div style="position:absolute;bottom:0;left:0;height:3px;width:' + (myProgress > 0 ? '65' : '0') + '%;background:#00d4ff;border-radius:0 2px 2px 0"></div>' : '');
+            (active ? '<div style="position:absolute;bottom:0;left:0;height:3px;width:' + (myProgress > 0 ? '65' : '0') + '%;background:#00d4ff;border-radius:0 2px 2px 0"></div>' : '') +
+            (isDownloaded ? '<div style="position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:4px;background:#00d4ff;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 8px rgba(0,212,255,0.5)">' +
+              '<span class="material-symbols-outlined" style="font-size:12px;color:#003642;font-variation-settings:\'FILL\' 1">download</span></div>' : '');
 
         return '<div style="position:relative;width:128px;height:72px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#0d1526' + (watched ? ';opacity:0.6' : '') + '">' +
           '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">' +
@@ -2374,10 +2377,11 @@
             (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d;border:1px solid rgba(255,255,255,0.08);color:#9090b0">' ) +
             '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span></button>'
           : '') +
-        (openUrl ? '<button class="ep-dl-btn" title="İndir" style="color:#9090b0;background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
+        (openUrl ? '<button class="ep-dl-btn" title="' + (isDownloaded ? 'Yerel dosyadan aç' : 'İndir') + '" style="color:' + (isDownloaded ? '#4caf50' : '#9090b0') + ';background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
           'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
-          'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
-          '<span class="material-symbols-outlined" style="font-size:18px">download</span></button>' : '') +
+          'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '"' +
+          (isDownloaded ? ' data-downloaded="1"' : '') + '>' +
+          '<span class="material-symbols-outlined" style="font-size:18px">' + (isDownloaded ? 'file_download_done' : 'download') + '</span></button>' : '') +
         '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" style="min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer">' +
         '<div style="width:22px;height:22px;border-radius:4px;background:#31324d;border:1px solid rgba(255,255,255,0.1)"></div></button>' +
         '</div></div>';
@@ -2479,9 +2483,27 @@
 
       if (dlBtn) {
         if (!window.kuroDownload) { showToast('İndirme modülü yüklenmedi', 'error'); return; }
+        const cid = parseInt(dlBtn.dataset.contentId, 10);
+        const epNum = parseInt(dlBtn.dataset.epNum, 10);
+        if (dlBtn.dataset.downloaded) {
+          const doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+          if (doneJob) {
+            if (doneJob.media_type === 'anime' && window.kuroPlayer) {
+              window.kuroPlayer.openVideo(doneJob.id, 'Bölüm ' + epNum);
+            } else if (window.kuroReader) {
+              window.kuroReader.open(doneJob.id, dlBtn.dataset.contentTitle + ' — Bölüm ' + epNum, cid, epNum);
+            }
+          }
+          return;
+        }
+        const existing = window.kuroDownload.getDownloadedJob(cid, epNum);
+        if (existing) {
+          showToast('Bu bölüm zaten indirildi', 'info');
+          return;
+        }
         window.kuroDownload.start(
-          parseInt(dlBtn.dataset.contentId, 10), dlBtn.dataset.contentTitle,
-          dlBtn.dataset.contentType, parseInt(dlBtn.dataset.epNum, 10),
+          cid, dlBtn.dataset.contentTitle,
+          dlBtn.dataset.contentType, epNum,
           dlBtn.dataset.epUrl, '720p'
         );
       }
