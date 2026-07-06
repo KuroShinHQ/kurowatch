@@ -157,39 +157,64 @@ class HealthChecker:
             ep_url=None, site_url=None, site_name=None,
         )
 
-        eps = sorted(c.episodes or [], key=lambda e: e.number)
-        ep1 = next((e for e in eps if e.number == 1), eps[0] if eps else None)
-
-        if not ep1 or not ep1.url:
+        if not c.episodes:
             ch.status = HealthStatus.EP_YOK
             return ch
 
-        ch.ep_url = ep1.url
+        # Tüm ep1 URL'lerini topla (birden çok site aynı ep için farklı URL verebilir)
+        ep1_urls: list[str] = []
+        seen_urls: set[str] = set()
+        for ep in c.episodes:
+            if ep.url and ep.url not in seen_urls:
+                seen_urls.add(ep.url)
+                ep1_urls.append(ep.url)
+
+        if not ep1_urls:
+            ch.status = HealthStatus.EP_YOK
+            return ch
+
         sites = sorted(c.sites or [],
                        key=lambda s: (0 if s.is_primary else 1))
         if sites:
             ch.site_url = sites[0].site_url
             ch.site_name = sites[0].site_name
 
-        # 1. Doğrudan test (manga/manhwa: içerik doğrulamalı)
-        if c.type in ("manga", "manhwa"):
-            result = await verify_manga_chapter(ch.ep_url)
-        else:
-            result = await http_ping(ch.ep_url)
-        ch.ping = result
-        ch.tested_url = ch.ep_url
+        # 1. Tüm ep1 URL'lerini dene (öncelik sırası: monomanga > mangadex > diğer)
+        def _url_priority(u: str) -> int:
+            h = u.split('/')[2].lstrip('www.') if '//' in u else ''
+            if 'monomanga' in h: return 0
+            if 'mangadex' in h: return 1
+            return 2
 
-        if result.is_ok():
-            ch.status = HealthStatus.CHALLENGE if result.status == "CHALLENGE" else HealthStatus.OK
-            return ch
+        ep1_urls.sort(key=_url_priority)
 
-        ch.detail = f"Doğrudan: {result.detail}"
+        is_manga = c.type in ("manga", "manhwa")
+        for i, url in enumerate(ep1_urls):
+            if is_manga:
+                result = await verify_manga_chapter(url)
+            else:
+                result = await http_ping(url)
+            ch.ping = result
+            ch.tested_url = url
+
+            if result.is_ok():
+                ch.status = HealthStatus.CHALLENGE if result.status == "CHALLENGE" else HealthStatus.OK
+                ch.ep_url = url
+                ch.detail = f"ep{i} çalışıyor"
+                if i > 0 and self.fix:
+                    await self._update_ep_url(c.id, url)
+                return ch
+
+            ch.detail = f"ep{i}: {result.detail}"
+
+        # Hiçbiri çalışmadı — son denenen URL'i kaydet
+        ch.ep_url = ep1_urls[-1]
 
         # 2. Fallback mekanizması
-        if c.type == "anime":
-            await self._anime_fallback(ch, c)
-        elif c.type in ("manga", "manhwa"):
+        if is_manga:
             await self._manga_fallback(ch, c)
+        elif c.type == "anime":
+            await self._anime_fallback(ch, c)
         else:
             ch.status = self._classify_result(result)
 
@@ -247,17 +272,13 @@ class HealthChecker:
         ch.status = self._classify_result(ch.ping) if ch.ping else HealthStatus.HATA
 
     async def _manga_fallback(self, ch: ContentHealth, c: Content):
-        """Manga/Manhwa: isim hiyerarşisi ile tüm desteklenen sitelerde dene.
+        """Manga/Manhwa: isim hiyerarşisi ile monomanga'da dene (hızlı versiyon).
 
-        İsim arama sırası:
-            1. title_tr (varsa)
-            2. title_en (varsa)
-            3. orijinal title
-            4. title'ın ek varyasyonları (nokta/virgül/ek temizliği)
+        Sıra: title_tr → title → title_varyasyon
+        Hedef: monomanga.com.tr (NextJS, doğrulama hızlı)
         """
         from backend.downloader.manga import _CF_BLOCKED, _OFFLINE
 
-        # İsim hiyerarşisi: title_tr → title
         titles: list[str] = []
         seen_titles: set[str] = set()
         for t in (c.title_tr, c.title):
@@ -265,7 +286,6 @@ class HealthChecker:
                 seen_titles.add(t)
                 titles.append(t)
 
-        # Ek varyasyonlar: nokta/virgül/parantez/sayı temizliği
         for t in list(titles):
             cleaned = re.sub(r'[\.\,\:\(\)\[\]\d]', '', t).strip()
             cleaned = re.sub(r'\s+', ' ', cleaned).strip()
@@ -273,63 +293,26 @@ class HealthChecker:
                 seen_titles.add(cleaned)
                 titles.append(cleaned)
 
-        # Sıralı platform denemeleri
-        # Her platformda tüm title varyasyonlarını dene,
-        # title_tr → title_en → title → cleaned
-        platforms = [
-            ("monomanga.com.tr", construct_monomanga_url, {}),
-            ("uzaymanga.com", construct_uzaymanga_url, {}),
-        ]
-
-        # Madara siteleri (CF bloklu/offline olmayanlar)
-        madara_hosts = [
-            "mangawow.com", "mangawow.org",
-            "merlintoon.com", "mangadenizi.com",
-        ]
-        for host in madara_hosts:
-            if host not in _CF_BLOCKED and host not in _OFFLINE:
-                platforms.append((host, construct_madara_url, {"base": f"https://{host}"}))
-
         tried: list[str] = []
-        for platform_name, url_builder, kwargs in platforms:
-            for title in titles:
-                if "base" in kwargs:
-                    url = url_builder(kwargs["base"], title, ep=1)
-                else:
-                    url = url_builder(title, ep=1)
-                tried.append(url)
-                ch.detail += f" | {platform_name}: {url[:60]}..."
-                result = await verify_manga_chapter(url, timeout=8)
+        for title in titles:
+            url = construct_monomanga_url(title, ep=1)
+            tried.append(url)
+            result = await verify_manga_chapter(url, timeout=8)
 
-                if result.is_ok():
-                    ch.status = HealthStatus.KURTARILDI
-                    ch.used_fallback = url
-                    ch.ping = result
-                    ch.tested_url = url
-                    ch.detail = f"Kurtarıldı: {platform_name} (eski: {ch.ep_url})"
-                    if self.fix:
-                        await self._update_ep_url(c.id, url)
-                    return
+            if result.is_ok():
+                ch.status = HealthStatus.KURTARILDI
+                ch.used_fallback = url
+                ch.ping = result
+                ch.tested_url = url
+                ch.detail = f"Kurtarıldı: monomanga.com.tr (eski: {ch.ep_url})"
+                if self.fix:
+                    await self._update_ep_url(c.id, url)
+                return
 
-                if result.status == "SITE_YOK":
-                    ch.detail += " isim eşleşmedi"
-                elif result.is_blocked():
-                    ch.detail += " CF bloklu"
-                elif result.is_dead():
-                    ch.detail += f" {result.status}"
-                else:
-                    ch.detail += f" {result.status}"
+            ch.detail += f" | mono: {url[-30:]} {'içerik yok' if result.status=='SITE_YOK' else result.status}"
 
         # Tüm denemeler başarısız
-        if ch.ping and ch.ping.status == "CF_BLOCKED":
-            ch.status = HealthStatus.CF_BLOCKED
-        elif ch.ping and ch.ping.is_dead():
-            ch.status = HealthStatus.SITE_YOK if ch.ping.status == "SITE_YOK" else HealthStatus.OFFLINE
-        elif ch.ping and ch.ping.status == "SITE_YOK":
-            ch.status = HealthStatus.NAME_MISMATCH
-            ch.detail = f"Ne DB'deki ne de alternatif isimler {len(tried)} sitede bulunamadı"
-        else:
-            ch.status = self._classify_result(ch.ping) if ch.ping else HealthStatus.HATA
+        ch.status = self._classify_result(ch.ping) if ch.ping else HealthStatus.HATA
 
     def _print_report(self):
         elapsed = time.time() - self._start_time
