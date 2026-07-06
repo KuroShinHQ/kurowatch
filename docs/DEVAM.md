@@ -1,53 +1,54 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-104) · **Aktif sürüm:** v1.4.0 · **Son commit:** `0a44eb2`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-105) · **Aktif sürüm:** v1.4.0 · **Son commit:** `06d0851`
 
-> Yeni Claude'a tek-sayfa devamlılık. Bu dosyayı oku, sonra TEST_PLAN.md'e bak.
+> Yeni Claude'a tek-sayfa devamlılık.
 
 ---
 
-## 🔥 AKTİF GÖREV — FAZ-V7 Frontend Revizyon (sohbet-77 itibarıyla)
+## 🔥 AKTİF GÖREV — FAZ-3 Download/Player Fix & Health Check (sohbet-105)
 
-### Stitch v7 Dosya Envanteri
-```
-C:\Kuroshin\kuroshin-downloads\stitch_kurowatch_netflix_tasar_m_rehberi\
-  kurowatch_home_solo_leveling_sim\code.html         337 satır — HOME v7
-  kurowatch_detail_solo_leveling_sim\code.html       361 satır — DETAIL v7
-  kurowatch_search_filter_v7_master\code.html        383 satır — SEARCH v7
-  kurowatch_video_oynat_c_v7_gold_master_hybrid\code.html  250 satır — PLAYER v7
-  kurowatch_manga_okuyucu_v7_master\code.html        311 satır — READER v7
-  kurowatch_updates_v7_master_rafine\code.html       315 satır — UPDATES v7
-  kurowatch_downloads_v7_master_rafine\code.html     386 satır — DOWNLOADS v7
-  kurowatch_stats_v7_master\code.html                438 satır — STATS v7
-  kurowatch_settings_v7_final_master\code.html       583 satır — SETTINGS v7
-  kurowatch_video_oynat_c_altyaz_ve_ses_se_imi_v7\  — Player altyazı/ses overlay
-  kurowatch_video_oynat_c_b_l_m_se_imi_v7\          — Player bölüm seçimi overlay
-  kurowatch_video_oynat_c_kalite_se_imi_v7\          — Player kalite seçimi overlay
-  kurowatch_kuro_translate_v7_master\                — Kuro Translate v7
-  kurowatch_kuro_translate_v7_master_smart_clean_sim\ — Smart Clean sim
-  kurowatch_eviri_ayarlar_v7_final_simulation\       — Çeviri ayarları
-  kurowatch_arama_filtreleme_v7_master_hybrid\       — Search filtre hybrid
-  kurowatch_teknik_api_spesifikasyonu_coder_ready.md — Tüm API şemaları
-  kurowatch_backend_entegrasyon_rehberi_v7.md        — Backend entegrasyon
-  kurowatch_video_player_teknik_logic_spesifikasyonu_v7_master.md
-  kurowatch_manga_reader_teknik_api_logic_spesifikasyonu_v7_master_pro.md
-```
+### Sohbet-105'te Yapılanlar (Download/Player Fix + Health)
 
-### FAZ-V7 TODO Listesi
-
-### ⚠️ KRİTİK BULGU (plan revizyonu)
 ```
-Stitch HTML'lerdeki data-api-endpoint attribute'ları sadece tasarım notu —
-otomatik API çağrısı yapmıyor. Tüm data binding app.js'te yapılıyor.
-Yeni backend route SADECE 1 TANE gerekiyor (validate-key).
-Geri kalan TÜMÜ mevcut /api/ endpoint'lerine map ediyor.
+[1] Detail scroll: screen-detail overflow:hidden + content container overflow-y:auto
+    (hero sabit, icerik kayar)
+[2] Player: video.load() oncesi oncanplay/onerror handler fix
+[3] Silme: failed/cancelled job'lar _done'dan kaldir (remove_done_job)
+[4] cancelJob: HTTP hata kontrolu + toast
+[5] _fetchJobs ReferenceError: standalone function olarak tanimlandi
+[6] Retry: try/catch + setTimeout(100) ile gecikmeli
+[7] Theater/PiP butonlari: hidden sm:flex -> flex (mobilde gorunur)
+[8] PiP destek yoksa toast: document.pictureInPictureEnabled kontrolu
+[9] Mini player: top/left:auto + z-index + hover overlay
+[10] Altyazi yoksa toast: video.textTracks.length === 0 kontrolu
+[11] Devam Et: markBtn bagimliligi kirildi, direkt apiPost
+[12] Player header tooltip: pointer-events:auto
+[13] scan_downloaded_files: diskteki .mp4/.mkv taramasi
+[14] path normalize: Windows -> WSL /mnt/c/ donusumu
+[15] serve_video: stale job cleanup (dosya yoksa 404)
+[16] get_all_jobs: done[-50:] limiti kaldirildi
+[17] download progress: stream_finder oncesi/sonrasi msg gosterme
+[18] content_health.py: HTTP 202 CHALLENGE durumu eklendi
+    (tranimaci.com JS PoW challenge -> 202 -> HATA degil, CHALLENGE)
+[19] url_ping.py: 202 tanima, PING_RESULT enum'a CHALLENGE eklendi
 ```
 
-### Backend → Frontend Gerçek Eşleşmesi
+### Acik Konular
 ```
-HOME Hero          → GET /api/content → top-score item        (app.js filter)
-HOME Devam Et      → GET /api/content → progress 1–99%        (app.js filter)
-HOME Anime Row     → GET /api/content?type=anime              ✅ mevcut
-HOME Manga Row     → GET /api/content?type=manga              ✅ mevcut
+- content_health.py WSL'de python3.10 modul eksigi (sqlalchemy, exceptiongroup)
+  python3.11 ile calisiyor
+- 714 icerikten 505'i HATA idi -> simdi CHALLENGE olacak (tranimaci 202)
+- Kuyrukta 6 job (scanned .mp4 + jobs.json kopyalari)
+```
+
+### Son Commitler
+```
+06d0851 chore: start_kw_backend.sh gitignore'a eklendi
+34271f0 fix: HTTP 202 JS PoW challenge durumu health check'te taninsin
+8139ff8 fix: detail scroll yapisi duzeltildi
+2d8a684 fix: video serve file path dogrulama + disk tarama + progress + scroll + mini
+0a44eb2 fix: indirme silme/iptal/dene + buton mobil + video bulunamadi + fetchJobs ref
+```
 SEARCH             → GET /api/content?type=X&q=Y              ✅ mevcut
 DETAIL Bölüm       → GET /api/content/:id/episodes            ✅ mevcut
 DETAIL Karakter    → GET /api/content/:id/anilist → characters ✅ mevcut
