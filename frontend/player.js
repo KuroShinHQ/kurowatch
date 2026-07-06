@@ -48,16 +48,26 @@
       if (lbl)  lbl.textContent = 'İndirildi: ' + (job.content_title || '') + ' Bölüm ' + job.episode_number;
       if (pctEl) pctEl.textContent = '';
       if (bar)  { bar.style.width = '100%'; bar.style.background = '#4caf50'; }
-    } else if (job.status === 'failed') {
+    } else if (job.status === 'failed' || job.status === 'error') {
       if (icon) { icon.textContent = 'error'; icon.style.color = '#ef4444'; }
       if (lbl)  lbl.textContent = job.error_msg ? job.error_msg.slice(0, 80) : 'İndirme hatası';
       if (pctEl) pctEl.textContent = '';
       if (bar)  { bar.style.width = '100%'; bar.style.background = '#ef4444'; }
+      const closeBtn = document.getElementById('download-float-close');
+      if (closeBtn) closeBtn.style.display = 'inline-flex';
     }
     _floatHideTimer = setTimeout(function() {
       const active = Object.values(_jobs).filter(function(j) { return j.status === 'queued' || j.status === 'downloading'; });
-      if (!active.length && el) el.style.display = 'none';
+      if (!active.length && el) { el.style.display = 'none'; const cb = document.getElementById('download-float-close'); if (cb) cb.style.display = 'none'; }
     }, job.status === 'failed' ? 8000 : 4000);
+    const closeBtn = document.getElementById('download-float-close');
+    if (closeBtn) {
+      closeBtn.onclick = function() {
+        clearTimeout(_floatHideTimer);
+        if (el) el.style.display = 'none';
+        closeBtn.style.display = 'none';
+      };
+    }
   }
 
   function connectDownloadWS() {
@@ -175,6 +185,7 @@
       downloading: ['bg-[#00d4ff]/20 text-[#00d4ff]', 'İndiriliyor'],
       done:        ['bg-[#90e090]/20 text-[#90e090]', 'Hazır'],
       failed:      ['bg-[#ffb4ab]/20 text-[#ffb4ab]', 'Hata'],
+      error:       ['bg-[#ffb4ab]/20 text-[#ffb4ab]', 'Hata'],
       cancelled:   ['bg-[#3b4665] text-[#9090b0]', 'İptal'],
       deleted:     ['bg-[#3b4665] text-[#9090b0]', 'Silindi'],
     };
@@ -232,7 +243,7 @@
       actions = '<button onclick="window.kuroDownload.cancel(' + job.id + ')"' +
         ' class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/10 transition-all" style="color:#9090b0" title="İptal">' +
         '<span class="material-symbols-outlined" style="font-size:18px">close</span></button>';
-    } else if (job.status === 'failed') {
+    } else if (job.status === 'failed' || job.status === 'error') {
       actions = '<span class="text-[11px] truncate flex-1" style="color:#ffb4ab" title="' + escHtml(job.error_msg || '') + '">' +
         escHtml((job.error_msg || 'Bilinmeyen hata').substring(0, 50)) + '</span>' +
         '<button onclick="window.kuroDownload.retry(' + job.id + ')"' +
@@ -278,6 +289,8 @@
     function _section(icon, color, label, items) {
       const extraBtn = (label === 'Tamamlandı')
         ? '<button onclick="window.kuroDownload.clearDone()" class="text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform" style="color:#00d4ff">TÜMÜNÜ TEMİZLE</button>'
+        : (label === 'Hata / İptal')
+        ? '<button onclick="window.kuroDownload.clearFailed()" class="text-[10px] font-bold uppercase tracking-wider active:scale-95 transition-transform" style="color:#ffb4ab">TÜMÜNÜ TEMİZLE</button>'
         : '';
       return '<div class="space-y-3">' +
         '<div class="flex items-center justify-between">' +
@@ -1549,6 +1562,13 @@
     clearDone: async function() {
       const done = Object.values(_jobs).filter(function(j) { return j.status === 'done'; });
       await Promise.all(done.map(function(j) { return cancelJob(j.id, true); }));
+      await _fetchJobs();
+      _renderDownloadScreen();
+      _updateBadge();
+    },
+    clearFailed: async function() {
+      const failed = Object.values(_jobs).filter(function(j) { return j.status === 'failed' || j.status === 'error' || j.status === 'cancelled' || j.status === 'deleted'; });
+      await Promise.all(failed.map(function(j) { return cancelJob(j.id, true); }));
       await _fetchJobs();
       _renderDownloadScreen();
       _updateBadge();

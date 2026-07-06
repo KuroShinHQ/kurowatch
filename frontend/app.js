@@ -3576,6 +3576,29 @@
   })();
 
   document.addEventListener('DOMContentLoaded', function() {
+    // ── Sidebar toggle ──────────────────────────────────────────────
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarNav = document.getElementById('sidebar-nav');
+    if (sidebarToggle && sidebarNav) {
+      sidebarToggle.onclick = function() {
+        const isVisible = sidebarNav.style.display !== 'none' && sidebarNav.classList.contains('hidden') === false;
+        if (isVisible) {
+          sidebarNav.style.display = 'none';
+          sidebarNav.classList.add('hidden');
+        } else {
+          sidebarNav.style.display = 'flex';
+          sidebarNav.classList.remove('hidden');
+        }
+      };
+      // Tıklama dışı kapama
+      document.addEventListener('click', function(e) {
+        if (!sidebarNav.contains(e.target) && e.target !== sidebarToggle && !sidebarToggle.contains(e.target)) {
+          sidebarNav.style.display = 'none';
+          sidebarNav.classList.add('hidden');
+        }
+      });
+    }
+
     // Arama kutularını autocomplete önlemek için temizle
     ['home-search-input','search-discover-input'].forEach(function(id) {
       const el = document.getElementById(id);
