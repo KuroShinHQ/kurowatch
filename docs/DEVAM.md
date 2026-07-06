@@ -1,11 +1,33 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-106) · **Aktif sürüm:** v1.4.1 · **Son commit:** `(bekliyor)`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-107) · **Aktif sürüm:** v1.4.1 · **Son commit:** `2208e11`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
 
-## 🔥 AKTİF GÖREV — Content Health Fix & Site Migration (sohbet-105/106)
+## 🔥 AKTİF GÖREV — Content Health Fix & Site Migration (sohbet-105/106/107)
+
+### Sohbet-107'de Yapılanlar (Kaguya-sama Fix + Diagnostic Logging)
+
+```
+KAGUYA-SAMA ÇÖZÜMÜ:
+[1] Hata tespiti: Kaguya-sama URL'leri tranimaci.com'da 404 dönüyor
+    (içerik siteden kaldırılmış — sadece First Kiss OVA kalmış)
+[2] Alternatif site: turkanime.com.tr'de Kaguya-sama S1+S2 çalışıyor
+    - M3U8 tespit edildi (anizmplayer.com/cdn/hls/.../master.m3u8)
+    - yt-dlp ile "1080p" formatı doğrulandı
+[3] DB güncellendi: site 877/1159 dead, site 1247/1248 yeni (turkanime.com.tr)
+[4] Her 2 sezon için 12+12 episode URL'leri turkanime.com.tr'ye yönlendirildi
+
+DİAGNOSTİK İYİLEŞTİRME:
+[5] stream_finder.py: _playwright_find_embed artık HTTP status log'luyor
+    - HTTP 200: "PW: HTTP 200 OK"
+    - HTTP 404: "PW: HTTP 404 - PAGE NOT FOUND"
+    - embedsiz: "PW: embed bulunamadı — sayfa HTTP 200 fakat HTML'de player yok"
+    - embed varsa: "PW: N embed bulundu"
+[6] anime.py: hata mesajı artık "404 (içerik silinmiş)" uyarısı içeriyor
+    Detay için backend log'una bakın talimatı eklendi
+```
 
 ### Sohbet-105/106'da Yapılanlar (Content Health Fix + Site Migration)
 
@@ -44,6 +66,8 @@ ANİME SORUNU:
 
 ### Son Commitler
 ```
+2208e11 fix: Kaguya-sama 404 fix + diagnostic logging (turkanime.com.tr, PW HTTP status)
+149d1fc fix: tranimaci CF bypass stream_finder - _NODRIVER_HTML -> _CF_SITES
 06d0851 chore: start_kw_backend.sh gitignore'a eklendi
 34271f0 fix: HTTP 202 JS PoW challenge durumu health check'te taninsin
 8139ff8 fix: detail scroll yapisi duzeltildi
