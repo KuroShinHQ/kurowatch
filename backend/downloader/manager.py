@@ -146,6 +146,17 @@ def get_storage_bytes() -> int:
     return total
 
 
+def remove_done_job(job_id: int) -> bool:
+    """Job'u _done listesinden kaldir (status farketmez)."""
+    global _done
+    before = len(_done)
+    _done[:] = [j for j in _done if j["id"] != job_id]
+    if len(_done) < before:
+        _save_jobs()
+        return True
+    return False
+
+
 def delete_job_file(job_id: int) -> bool:
     """İndirilmiş dosyayı/dizini sil (izle-sil için)."""
     global _done
