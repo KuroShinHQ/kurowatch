@@ -43,6 +43,7 @@ from backend.tools.url_ping import (
 
 class HealthStatus:
     OK = "OK"              # Test geçti, URL çalışıyor
+    CHALLENGE = "CHALLENGE"  # HTTP 202 — JS PoW/CF challenge gerekli (URL geçerli)
     SITE_YOK = "SITE_YOK"  # 404 — sitede bu içerik mevcut değil
     CF_BLOCKED = "CF_BLOCKED"  # 403 Cloudflare
     OFFLINE = "OFFLINE"    # Site kapalı/erişilemez
@@ -58,7 +59,7 @@ class HealthStatus:
 
     @classmethod
     def is_pass(cls, s: str) -> bool:
-        return s in (cls.OK, cls.KURTARILDI, cls.TURKISH_PASS)
+        return s in (cls.OK, cls.CHALLENGE, cls.KURTARILDI, cls.TURKISH_PASS)
 
     @classmethod
     def is_fail(cls, s: str) -> bool:
@@ -125,6 +126,7 @@ class HealthChecker:
                 pass  # sadece ölüleri göster
             else:
                 icon = "✅" if ch.status == HealthStatus.OK else \
+                       "🔶" if ch.status == HealthStatus.CHALLENGE else \
                        "🔄" if ch.status == HealthStatus.KURTARILDI else \
                        "🇹🇷"
                 print(f"  {icon} [{i}/{total}] #{ch.id} {ch.title[:50]:<50} "
@@ -174,7 +176,7 @@ class HealthChecker:
         ch.tested_url = ch.ep_url
 
         if result.is_ok():
-            ch.status = HealthStatus.OK
+            ch.status = HealthStatus.CHALLENGE if result.status == "CHALLENGE" else HealthStatus.OK
             return ch
 
         if result.is_blocked():
