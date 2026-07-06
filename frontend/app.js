@@ -655,7 +655,21 @@
         contLabel.textContent = 'DEVAM ET — ' + unitWord + ' ' + nextEp;
       }
       if (showCont && markBtn) {
-        contBtn.onclick = function() { markBtn.click(); };
+        const nextEp = cur + 1;
+        contBtn.onclick = async function() {
+          if (total > 0 && nextEp > total) return;
+          try {
+            await apiPost('/api/content/' + id + '/progress', { progress: nextEp });
+            if (total > 0 && nextEp >= total) {
+              const updated = await apiGet('/api/content/' + id);
+              _showCompleteModal(id, item.title || '', updated.my_score);
+            } else {
+              renderDetail(id);
+            }
+          } catch(e) {
+            showToast('İşaretlenemedi: ' + e.message, 'error');
+          }
+        };
       }
     }
 
