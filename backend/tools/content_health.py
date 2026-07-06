@@ -125,9 +125,9 @@ class HealthChecker:
             elif self.dead_only:
                 pass  # sadece ölüleri göster
             else:
-            icon = "✅" if ch.status in (HealthStatus.OK, HealthStatus.CHALLENGE) else \
-                   "🔄" if ch.status == HealthStatus.KURTARILDI else \
-                   "🇹🇷"
+                icon = "✅" if ch.status in (HealthStatus.OK, HealthStatus.CHALLENGE) else \
+                       "🔄" if ch.status == HealthStatus.KURTARILDI else \
+                       "🇹🇷"
                 print(f"  {icon} [{i}/{total}] #{ch.id} {ch.title[:50]:<50} "
                       f"{ch.status}")
 
