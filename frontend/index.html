@@ -181,7 +181,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
 
 <!-- PAYLAŞILAN NAV — Mobil Top AppBar -->
 <header id="top-appbar" class="fixed top-0 w-full z-50 bg-[#0d0d1a]/90 backdrop-blur-xl border-b border-white/5 lg:hidden flex items-center justify-between px-4 h-16">
-  <button class="text-[#00d4ff] flex items-center justify-center w-11 h-11">
+  <button id="sidebar-toggle" class="text-[#00d4ff] flex items-center justify-center w-11 h-11">
     <span class="material-symbols-outlined">menu</span>
   </button>
   <h1 class="text-xl font-bold text-[#00d4ff] tracking-tighter">KuroWatch</h1>
@@ -2103,6 +2103,9 @@ document.addEventListener('DOMContentLoaded', function() {
     <span id="download-float-icon" class="material-symbols-outlined" style="font-size:18px;color:#00d4ff">downloading</span>
     <span id="download-float-label" style="font-size:12px;font-weight:700;color:#e1e0ff;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">İndiriliyor...</span>
     <span id="download-float-pct" style="font-size:11px;font-weight:700;color:#00d4ff;min-width:28px;text-align:right">0%</span>
+    <button id="download-float-close" style="display:none;background:none;border:none;cursor:pointer;color:#9090b0;padding:2px" title="Kapat">
+      <span class="material-symbols-outlined" style="font-size:16px">close</span>
+    </button>
   </div>
   <div style="height:3px;background:#31324d;border-radius:2px;overflow:hidden">
     <div id="download-float-bar" style="height:100%;background:#00d4ff;border-radius:2px;width:0%;transition:width .4s ease"></div>
