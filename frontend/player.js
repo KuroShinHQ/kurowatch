@@ -127,12 +127,14 @@
     }
   }
 
-  async function cancelJob(jobId) {
+  async function cancelJob(jobId, noRender) {
     await fetch(API + '/api/download/' + jobId, { method: 'DELETE' });
     delete _jobs[jobId];
-    await _fetchJobs();
-    _renderDownloadScreen();
-    _updateBadge();
+    if (!noRender) {
+      await _fetchJobs();
+      _renderDownloadScreen();
+      _updateBadge();
+    }
   }
 
   // ── Depolama Bilgisi ─────────────────────────────────────────────
@@ -710,10 +712,21 @@
       }).join('');
 
       listEl.querySelectorAll('.episode-panel-card').forEach(function (card) {
-        card.addEventListener('click', function () {
-          const jobId = parseInt(card.dataset.epJob, 10);
-          if (!jobId || !_jobs[jobId]) return;
-          const job = _jobs[jobId];
+        card.addEventListener('click', async function () {
+          let jobId = parseInt(card.dataset.epJob, 10);
+          if (!jobId) return;
+          let job = _jobs[jobId];
+          if (!job) {
+            try {
+              const r = await fetch(API + '/api/download/queue');
+              if (r.ok) {
+                const data = await r.json();
+                (data.jobs || []).forEach(function(j) { _jobs[j.id] = j; });
+                job = _jobs[jobId];
+              }
+            } catch (e) {}
+            if (!job) { if (window.showToast) window.showToast('İndirme bulunamadı', 'error'); return; }
+          }
           const epNum = parseInt(card.dataset.epNum, 10);
           _panelEpisodes.close();
           setTimeout(function () {
@@ -838,9 +851,16 @@
       const ttl   = document.getElementById('player-title');
       if (!modal || !video || !src) return;
 
-      // Önceki event listener'ları temizle
-      video.oncanplay = null;
-      video.onerror = null;
+      // Event handler'ları ÖNCE ayarla, sonra load() çağır (race condition önleme)
+      video.oncanplay = function () {
+        video.play().catch(function () {});
+        _controls.setPlaying(true);
+        video.oncanplay = null;
+      };
+      video.onerror = function () {
+        if (window.showToast) window.showToast('Video yüklenemedi', 'error');
+        video.onerror = null;
+      };
 
       src.src = API + '/api/download/serve/' + jobId;
       video.load();
@@ -884,17 +904,6 @@
       if (buffer) buffer.style.width = '0%';
       const timeEl = document.getElementById('player-time');
       if (timeEl) timeEl.innerHTML = '0:00 <span style="color:rgba(255,255,255,0.4);padding:0 4px">/</span> 0:00';
-
-      // Video hazır olunca oynat (donma önleme)
-      video.oncanplay = function () {
-        video.play().catch(function () {});
-        _controls.setPlaying(true);
-        video.oncanplay = null;
-      };
-      video.onerror = function () {
-        if (window.showToast) window.showToast('Video yüklenemedi', 'error');
-        video.onerror = null;
-      };
 
       _intro.load(contentId, episodeNumber);
       _outro.load(contentId, episodeNumber);
@@ -1509,7 +1518,10 @@
     },
     clearDone: async function() {
       const done = Object.values(_jobs).filter(function(j) { return j.status === 'done'; });
-      await Promise.all(done.map(function(j) { return cancelJob(j.id); }));
+      await Promise.all(done.map(function(j) { return cancelJob(j.id, true); }));
+      await _fetchJobs();
+      _renderDownloadScreen();
+      _updateBadge();
     },
     retry: async function(jobId) {
       const job = _jobs[jobId];
