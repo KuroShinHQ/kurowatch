@@ -57,7 +57,7 @@ _HEADERS = {
 }
 
 
-async def http_ping(url: str, timeout: float = 5.0) -> PingResult:
+async def http_ping(url: str, timeout: float = 15.0) -> PingResult:
     host = urlparse(url).netloc.lstrip("www.")
     t0 = asyncio.get_event_loop().time()
 
