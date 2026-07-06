@@ -1,36 +1,37 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-105) · **Aktif sürüm:** v1.4.0 · **Son commit:** `06d0851`
+**Son güncelleme:** 6 Temmuz 2026 (sohbet-106) · **Aktif sürüm:** v1.4.1 · **Son commit:** `(bekliyor)`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
 
-## 🔥 AKTİF GÖREV — FAZ-3 Download/Player Fix & Health Check (sohbet-105)
+## 🔥 AKTİF GÖREV — Content Health Fix & Site Migration (sohbet-105/106)
 
-### Sohbet-105'te Yapılanlar (Download/Player Fix + Health)
+### Sohbet-105/106'da Yapılanlar (Content Health Fix + Site Migration)
 
 ```
-[1] Detail scroll: screen-detail overflow:hidden + content container overflow-y:auto
-    (hero sabit, icerik kayar)
-[2] Player: video.load() oncesi oncanplay/onerror handler fix
-[3] Silme: failed/cancelled job'lar _done'dan kaldir (remove_done_job)
-[4] cancelJob: HTTP hata kontrolu + toast
-[5] _fetchJobs ReferenceError: standalone function olarak tanimlandi
-[6] Retry: try/catch + setTimeout(100) ile gecikmeli
-[7] Theater/PiP butonlari: hidden sm:flex -> flex (mobilde gorunur)
-[8] PiP destek yoksa toast: document.pictureInPictureEnabled kontrolu
-[9] Mini player: top/left:auto + z-index + hover overlay
-[10] Altyazi yoksa toast: video.textTracks.length === 0 kontrolu
-[11] Devam Et: markBtn bagimliligi kirildi, direkt apiPost
-[12] Player header tooltip: pointer-events:auto
-[13] scan_downloaded_files: diskteki .mp4/.mkv taramasi
-[14] path normalize: Windows -> WSL /mnt/c/ donusumu
-[15] serve_video: stale job cleanup (dosya yoksa 404)
-[16] get_all_jobs: done[-50:] limiti kaldirildi
-[17] download progress: stream_finder oncesi/sonrasi msg gosterme
-[18] content_health.py: HTTP 202 CHALLENGE durumu eklendi
-    (tranimaci.com JS PoW challenge -> 202 -> HATA degil, CHALLENGE)
-[19] url_ping.py: 202 tanima, PING_RESULT enum'a CHALLENGE eklendi
+EP_YOK ANALİZ & FIX:
+[1] 198 EP_YOK content analiz edildi: 24 anime, 19 game, 116 manga, 39 manhwa
+[2] fix_all_ep_yok.py: derive_ep_url + 28 site switch + 6759 episode INSERT
+[3] 173 item düzeldi (24 anime + 112 manga + 37 manhwa)
+[4] Mass ping test: 688 URL, %90 pass (619/688)
+[5] mangatr.net scam olduğu tespit edildi (Angie server, bulsis.net redirect)
+[6] Real content doğrulama: mangawow.org + merlintoon.com ✅
+
+V2/V3 RESCUE:
+[7] rescue_v2_real_sites.py: 8 item bulundu (4 mangawow + 4 merlintoon)
+[8] mangawow.org 403 blocked oldu (Cloudflare)
+[9] Yeni siteler keşfi: monomanga.com.tr (Next.js, 200 OK, %100 pas)
+[10] rescue_v3_all_domains.py: 60/60 failed item monomanga'da bulundu
+
+DB UPDATE:
+[11] +60 monomanga sitesi, +3387 episode URL (toplam: 20.625)
+[12] mangawow.org dead işaretlendi, merlintoon.com eklendi
+[13] monomanga health test: 38/38 ep-1 = %100 OK
+
+ANİME SORUNU:
+[14] tranimaci.com 202 CHALLENGE (CF JS PoW) — önceden 529/529 çalışıyordu
+[15] Bu ayrı bir sohbette ele alınacak
 ```
 
 ### Acik Konular
@@ -259,15 +260,24 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (6 Temmuz 2026 - sohbet-104):
+MEVCUT DURUM (6 Temmuz 2026 - sohbet-106):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - Son commit: 66fe80d (kurowatch)
   - FAZ-V7: ✅ TAMAMLANDI (12/12)
-  - PW TESTS: 43/43 PASS ✅ (8 dosya)
-  - API TESTS: 33/33 PASS ✅
-  - TOOL TESTS: 9/9 CODED (content_health.py + url_ping.py)
-  - TEST PLAN: 42/56 (33 PW + 9 tool)
-  - SONRAKİ ADIM: WSL'de content_health --fix çalıştır + kalan 14 PW testi
+  - DB: 20.625 episode kaydı, 1239 site kaydı
+  - monomanga.com.tr ✅ yeni manga kaynağı (60 item, %100 ping)
+  - merlintoon.com ✅ çalışıyor (8 item)
+  - mangawow.org ❌ 403 blocked (dead işaretlendi)
+  - tranimaci.com ⚠️ 202 CHALLENGE (CF JS PoW) — eski anime URL'leri risk altında
+  - SONRAKİ ADIM: tranimaci.com CF bypass çözümü veya yeni anime kaynağı bulma
+
+SOHBET-105/106 — EP_YOK FIX + V3 RESCUE (monomanga.com.tr):
+  [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
+  [x] Mass ping test: 688 URL, %90 pass
+  [x] mangatr.net scam tespiti (Angie server, bulsis.net redirect)
+  [x] rescue_v2: 8 item (mangawow + merlintoon)
+  [x] rescue_v3: 60/60 item monomanga.com.tr'de bulundu
+  [x] DB: +60 site, +3387 episode, 3 mangawow dead
+  [x] monomanga health: 38/38 = %100 OK ✅
 
 SOHBET-101 — KAPSAMLI DETAIL TEST + ANİMASYON TESTLERİ:
   [x] Web araştırması: Netflix mobile UX 2026, Android detail/swipe patternleri
@@ -319,6 +329,34 @@ SOHBET-104 — DOWNLOAD İPTAL + INDICATOR + PLAYER RACE + SCROLL CLIP:
   [x] Devam Et: dogrudan API cagrisi (markBtn.click() bagimliligi kalkti)
   [x] Panel ep click: backend fetch fallback
   [x] Player race condition: oncanplay load() öncesi
+
+SOHBET-105/106 TAMAMLANDI — EP_YOK Toplu Fix + V3 Rescue (monomanga.com.tr):
+  [x] 198 EP_YOK analiz tamam: 24 anime, 19 game, 116 manga, 39 manhwa
+  [x] fix_all_ep_yok.py: derive_ep_url + site switch + 6759 episode INSERT + 2 UPDATE
+  [x] 173 item düzeldi (24 anime + 112 manga + 37 manhwa)
+  [x] 28 site switch: dead primary → working alternative (çoğu mangatr.net'ti)
+  [x] content_health.py mass_ping_test: 688 ep-1 URL test edildi:
+      - 619/688 = %90 pass
+      - anime: 529/530 = %99.8
+      - manga: 71/119 = %60
+      - manhwa: 19/38 = %50
+      - tranimaci.com 529/529 = %100 CHALLENGE ✅
+      - mangatr.net 77/77 = %100 OK ama SAHTE (scam redirector)
+  [x] mangatr.net teşhisi: Server "Angie", empty div#root, obfuscated JS → bulsis.net redirect
+  [x] Real content testi: mangawow.org ✅ / merlintoon.com ✅ / golgebahcesi.com ⚠️ (skycdn)
+  [x] rescue_failed_urls.py: mangatr.net'te 68 item "bulundu" ama fake
+  [x] rescue_v2_real_sites.py: mangawow + merlintoon'da 8 item bulundu
+  [x] mangawow.org artık 403 (Cloudflare blocked)
+  [x] Yeni siteler keşfedildi: monomanga.com.tr, mangaoku.com.tr, golgebahcesi.com, uzaymanga.com
+  [x] rescue_v3_all_domains.py: 60/60 failed item monomanga.com.tr'de bulundu ✅
+  [x] DB güncelleme:
+      - 60 monomanga sitesi eklendi
+      - 3387 monomanga episode URL'si eklendi
+      - 3 mangawow.org sitesi dead işaretlendi
+      - 4 merlintoon sitesi eklendi
+      - Toplam episode: 16.779 → 20.625
+  [x] monomanga health test: 38/38 ep-1 = %100 OK ✅
+  KALAN: tranimaci.com 202 CHALLENGE (CF JS PoW) — anime taraması bozuldu
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
