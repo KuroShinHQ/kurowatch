@@ -314,6 +314,10 @@ SOHBET-104 — DOWNLOAD İPTAL + INDICATOR + PLAYER RACE + SCROLL CLIP:
   [x] Delete job: _done'dan tamamen kaldır, WS broadcast etme
   [x] clearDone: tek render, noRender parametresi
   [x] Title attr: rewind, play/pause, forward, volume, dl buttons
+  [x] Player header: pointer-events:auto (title tooltip hover gösterimi)
+  [x] Devam Et: dogrudan API cagrisi (markBtn.click() bagimliligi kalkti)
+  [x] Panel ep click: backend fetch fallback
+  [x] Player race condition: oncanplay load() öncesi
 
   SEARCH FİLTRELE (Stitch birebir port):
   [x] Buton: icon 18px, gap-2, px-4, hover:brightness, "FİLTRELE" büyük harf
