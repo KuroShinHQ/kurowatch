@@ -10,6 +10,7 @@ import httpx
 
 PING_RESULT = Enum("PING_RESULT", [
     "OK",           # HTTP 200/206 — erişilebilir
+    "CHALLENGE",    # HTTP 202 — kabul edildi ama JS PoW/CF challenge gerekli
     "CF_BLOCKED",   # HTTP 403 + Server: cloudflare
     "SITE_YOK",     # HTTP 404 — sayfa mevcut değil
     "OFFLINE",      # HTTP 502/503 — sunucu hatası
@@ -33,7 +34,7 @@ class PingResult:
     elapsed_ms: int       # Geçen süre
 
     def is_ok(self) -> bool:
-        return self.status == "OK"
+        return self.status in ("OK", "CHALLENGE")
 
     def is_dead(self) -> bool:
         return self.status in ("SITE_YOK", "OFFLINE", "SSL_HATASI",
@@ -73,6 +74,11 @@ async def http_ping(url: str, timeout: float = 5.0) -> PingResult:
             if code in (200, 206):
                 return PingResult("OK", code, f"HTTP {code}", headers,
                                   preview, host, elapsed)
+
+            if code == 202:
+                return PingResult("CHALLENGE", code,
+                                  "HTTP 202 — JS PoW/CF challenge bekleniyor",
+                                  headers, preview, host, elapsed)
 
             if code == 403 and ("cloudflare" in server or "cf" in server):
                 return PingResult("CF_BLOCKED", code,
