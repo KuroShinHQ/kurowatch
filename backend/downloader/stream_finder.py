@@ -9,9 +9,11 @@ Strateji:
 
 Desteklenen siteler:
   - dizibox.so/live   (nodriver CF bypass → curl-cffi)
-  - hdfilmcehennemi.* (site parser → PW click + network interception)
-  - dizigom.*         (site parser → PW click + network interception)
-  - tranimeizle.co    (nodriver CF bypass → curl-cffi)
+   - hdfilmcehennemi.* (site parser → PW click + network interception)
+   - dizigom.*         (site parser → PW click + network interception)
+   - sezonlukdizi.*    (site parser → generic PW)
+   - fullhdfilmizlesene.* (site parser → generic PW)
+   - tranimeizle.co    (nodriver CF bypass → curl-cffi)
   - diziwatch.com     (cookies.txt)
   - turkanime.co/tv   (Playwright)
 """
@@ -271,6 +273,8 @@ async def _nodriver_get_html(url: str, wait_secs: int = 20) -> Optional[str]:
 _SITE_PARSER_DOMAINS = {
     "hdfilmcehennemi": "hdfilmcehennemi",
     "dizigom": "dizigom",
+    "sezonlukdizi": "sezonlukdizi",
+    "fullhdfilmizlesene": "fullhdfilmizlesene",
 }
 
 

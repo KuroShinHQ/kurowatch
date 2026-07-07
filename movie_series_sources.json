@@ -33,7 +33,35 @@
     "parser": "dizigom",
     "cf_protected": true,
     "cookies_file": null,
-    "play_selectors": [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe", ".tab-link:first-child"],
-    "notes": "CF korumali. Vidmoly/Upstream embed. Domain sik degisir."
+    "play_selectors": [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe", ".tab-link:first-child", ".server-btn:first-child", ".source-btn:first-child"],
+    "notes": "CF korumali. Vidmoly/Upstream/Spidypro embed. Domain sik degisir."
+  },
+  "sezonlukdizi": {
+    "label": "SezonlukDizi",
+    "type": "series",
+    "domains": [
+      "sezonlukdizi.com",
+      "sezonlukdizi.vip"
+    ],
+    "parser": "generic",
+    "cf_protected": false,
+    "cookies_file": null,
+    "play_selectors": [".player-area iframe", "#player iframe", ".video-js", ".play-video", "iframe[src*='embed']"],
+    "notes": "Yedek dizi kaynagi. Genellikle CF yok."
+  },
+  "fullhdfilmizlesene": {
+    "label": "FullHDFilmIzlesene",
+    "type": "movie",
+    "domains": [
+      "www.fullhdfilmizlesene.life",
+      "fullhdfilmizlesene.com",
+      "fullhdfilmizlesene.org",
+      "fullhdfilmizlesene.pro"
+    ],
+    "parser": "generic",
+    "cf_protected": false,
+    "cookies_file": null,
+    "play_selectors": [".player-area iframe", "#player iframe", ".video-js", "iframe[src*='embed']", ".play-button", ".film-player iframe"],
+    "notes": "Film sitesi. /film/XXXX slug pattern. fullhdfilmizlesene.life aktif."
   }
 }
