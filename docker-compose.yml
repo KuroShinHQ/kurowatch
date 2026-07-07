@@ -1,0 +1,19 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8099:8099"
+    volumes:
+      - ./memory:/app/memory
+      - ./config.json:/app/config.json
+      - ./downloads:/app/downloads
+      - ./cookies:/app/cookies
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8099/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped

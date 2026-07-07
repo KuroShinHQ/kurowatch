@@ -5,16 +5,16 @@ import time
 import json
 from contextlib import asynccontextmanager
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 _BUILD_TS = int(time.time())
 _VERSIONED_HTML: str | None = None
 
 from backend.database import init_db, seed_content_type_tags
-from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, game_download, mal_sync, stream, analytics
+from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, game_download, mal_sync, stream, analytics, system
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 _CONFIG_PATH  = os.path.join(os.path.dirname(__file__), "config.json")
@@ -103,6 +103,7 @@ app.include_router(game_download.router, prefix="/api", tags=["game_download"])
 app.include_router(mal_sync.router,   prefix="/api", tags=["mal_sync"])
 app.include_router(stream.router,     prefix="/api", tags=["stream"])
 app.include_router(analytics.router,  prefix="/api", tags=["analytics"])
+app.include_router(system.router,    prefix="/api", tags=["system"])
 
 # ── Versioned SPA Index ───────────────────────────────────────────────
 def _versioned_html() -> str:
@@ -120,6 +121,32 @@ def _versioned_html() -> str:
 @app.get("/", response_class=HTMLResponse, include_in_schema=False)
 async def spa_index():
     return HTMLResponse(_versioned_html())
+
+
+# ── Cache-Control Middleware (static assets) ──────────────────────────
+_STATIC_CACHE_TYPES = {
+    ".js": "public, max-age=31536000, immutable",
+    ".css": "public, max-age=31536000, immutable",
+    ".png": "public, max-age=86400",
+    ".jpg": "public, max-age=86400",
+    ".jpeg": "public, max-age=86400",
+    ".webp": "public, max-age=86400",
+    ".ico": "public, max-age=86400",
+    ".svg": "public, max-age=86400",
+    ".woff2": "public, max-age=31536000, immutable",
+    ".json": "public, max-age=3600",
+}
+
+
+@app.middleware("http")
+async def cache_control_middleware(request: Request, call_next):
+    response: Response = await call_next(request)
+    if request.url.path.startswith("/api/"):
+        return response
+    _, ext = os.path.splitext(request.url.path)
+    if ext in _STATIC_CACHE_TYPES:
+        response.headers["Cache-Control"] = _STATIC_CACHE_TYPES[ext]
+    return response
 
 
 # ── Static Files SONRA (catch-all) ───────────────────────────────────
