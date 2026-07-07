@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-110) · **Aktif sürüm:** v1.5.0 · **Son commit:** `d81ca4a`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-111) · **Aktif sürüm:** v1.5.0 · **Son commit:** `b360cab`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -52,12 +52,48 @@ SOHBET-110 (Aşama 1+2) — TMDB API + Domain Pool + Scraper Altyapısı:
     - hdfilmcehennemi: .name, .gg, .ws, .now (canlı) + diğerleri
     - dizigom: .love, .tv (canlı) + diğerleri
 
-SIRADA:
-    - hdfilmcehennemi cookies.txt CF bypass stratejisi
-    - Dizi/film ek site keşfi
-```
+## ✅ TAMAMLANAN — SOHBET-111: CF Bypass + Auto-Assign Tag + Alternatif Siteler
 
-## ✅ TAMAMLANAN — Canlı Test: Pipeline Onaylandı (WSL + PW + yt-dlp)
+```
+[1] Cloudflare Bypass Stratejisi (parsers.py):
+    - launch_persistent_context: profil dizini ile kalici oturum
+    - _load_cf_cookies / _save_cf_cookies: cf_clearance + __cf_bm disk cache
+    - goto wait_until="commit": CF challenge sayfasinda timeout onleme
+    - CF challenge detection: title ile ("Just a moment...", "...")
+    - cf_retry_headless: headless=True -> basarisiz -> headless=False fallback
+    - iframe src extraction: static iframe'ler icin HTML fallback
+    - _KNOWN_HOSTS: rapidvid.net eklendi
+
+[2] Otomatik Etiket Atamasi (content.py):
+    - _auto_assign_type_tag(): create_content sonrasi otomatik tag ata
+    - patch_content: type degisirse tag'i yeniden ata
+    - Mevcut /tags/auto-assign-type endpointi korundu
+
+[3] Alternatif Siteler (movie_series_sources.json):
+    - fullhdfilmizlesene: .life, .com, .org, .pro (domain pool)
+      * parser: generic, play_selectors: iframe src extraction
+      * embed: rapidvid.net ✅ CANLI TEST ONAYLANDI
+      * Film URL pattern: /film/XXXX (ornek: /film/fantastik-dortlu-ilk-adimlar-2-fh/)
+    - sezonlukdizi: .com, .vip (domain pool, Zstandard compression)
+      * parser: generic (CF korumali olabilir)
+
+[4] Düzeltmeler:
+    - asyncio.create_subprocess_exec timeout: Python 3.10 uyumlu
+    - __aexit__ -> pw.stop() (Playwright context manager fix)
+    - JSON fix: movie_series_sources.json extra brace
+    - _SITE_PARSER_DOMAINS: sezonlukdizi + fullhdfilmizlesene eklendi
+
+CANLI TEST (WSL):
+  ✅ dizigom.love: PW persistent context -> embed spidypro.com
+  ✅ fullhdfilmizlesene.life: iframe -> rapidvid.net embed (2 film)
+  ⚠️ hdfilmcehennemi.name: CF challenge -> headless=False denendi -> basarisiz
+  ⚠️ sezonlukdizi.com: Zstandard -> domain dogrulama basarisiz
+
+SIRADA:
+  - hdfilmcehennemi: cookies.txt ile oturum veya PW context import
+  - sezonlukdizi: dogru domain bulunursa ekle
+  - yt-dlp rapidvid.net cozumu (embed -> direkt video)
+```
 
 ```
 TEST: dizigom.love → Silo 3.Sezon 1.Bölüm

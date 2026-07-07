@@ -23,6 +23,26 @@ from backend.scraper import igdb, mal, tmdb
 router = APIRouter()
 
 
+# ── Auto-Assign Tag Helper ────────────────────────────────────────────
+
+async def _auto_assign_type_tag(content_id: int, content_type: str, db: AsyncSession):
+    """Content type'ina gore sistem tag'ini otomatik ata."""
+    r = await db.execute(select(Tag).where(Tag.tag_type == "api", Tag.name == content_type))
+    tag = r.scalar_one_or_none()
+    if not tag:
+        return
+    # Check if already assigned
+    r2 = await db.execute(
+        select(ContentTag).where(
+            ContentTag.content_id == content_id,
+            ContentTag.tag_id == tag.id,
+        )
+    )
+    if not r2.scalar_one_or_none():
+        db.add(ContentTag(content_id=content_id, tag_id=tag.id))
+        await db.flush()
+
+
 # ── Pydantic Şemaları ────────────────────────────────────────────────
 
 class ContentCreate(BaseModel):
@@ -152,6 +172,9 @@ async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)
     await db.commit()
     await db.refresh(c)
     new_id = c.id
+    # Auto-assign type tag
+    await _auto_assign_type_tag(new_id, c.type, db)
+    await db.commit()
     return await get_content(new_id, db)
 
 
@@ -212,6 +235,10 @@ async def patch_content(content_id: int, body: ContentPatch, db: AsyncSession = 
             setattr(c, field, val)
     c.updated_at = datetime.utcnow()
     await db.commit()
+    # Auto-assign type tag if type changed
+    if body.type is not None:
+        await _auto_assign_type_tag(content_id, body.type, db)
+        await db.commit()
     return await get_content(content_id, db)
 
 

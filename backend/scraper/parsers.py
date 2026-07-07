@@ -1,10 +1,14 @@
 """
 Site-specific parsers for movie/series sites.
 Uses Playwright for JS interaction + network interception.
+Supports persistent context for Cloudflare bypass via saved profiles.
 """
 import asyncio
+import json
 import logging
+import os
 import re
+from pathlib import Path
 from typing import Optional
 from urllib.parse import urlparse
 
@@ -16,7 +20,11 @@ _KNOWN_HOSTS = (
     "vidmoly", "streamtape", "filemoon", "doodstream", "voe.sx",
     "fembed", "upstream", "mixdrop", "gounlimited", "mp4upload",
     "sibnet", "ok.ru", "mail.ru", "vk.com/video", "spidypro",
+    "rapidvid.net", "rapidvid",
 )
+
+_PROFILES_DIR = Path(__file__).parent / "pw_profiles"
+_CF_COOKIE_FILE = Path(__file__).parent / "cf_cookies.json"
 
 
 async def resolve_embed_with_ytdlp(embed_url: str) -> Optional[str]:
@@ -51,6 +59,102 @@ async def resolve_embed_with_ytdlp(embed_url: str) -> Optional[str]:
     return embed_url
 
 
+# ── CF Cookie Management ──────────────────────────────────────────────
+
+def _load_cf_cookies() -> dict[str, list[dict]]:
+    """Load saved CF cookies from disk. Returns {domain: [cookies]}."""
+    if _CF_COOKIE_FILE.exists():
+        try:
+            return json.loads(_CF_COOKIE_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _save_cf_cookies(cookies: list[dict], domain_key: str):
+    """Save CF cookies for a domain. Extracts cf_clearance + __cf_bm."""
+    cf_cookies = [c for c in cookies if c.get("name") in ("cf_clearance", "__cf_bm", "__cfruid")]
+    if not cf_cookies:
+        return
+    data = _load_cf_cookies()
+    data[domain_key] = cf_cookies
+    _CF_COOKIE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _CF_COOKIE_FILE.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    logger.info("CF cookies kaydedildi: %s (%d adet)", domain_key, len(cf_cookies))
+
+
+def _detect_cf_challenge(page) -> bool:
+    """Check if page is stuck on Cloudflare challenge."""
+    import asyncio
+    try:
+        title = asyncio.run(asyncio.wait_for(page.title(), timeout=3))
+        if title in ("Just a moment...", "...", "Attention Required! | Cloudflare"):
+            return True
+        # CF challenge iframe kontrolü
+        body_text = asyncio.run(asyncio.wait_for(page.evaluate("document.body?.innerText?.substring(0,200) || ''"), timeout=3))
+        if "Checking your browser" in body_text or "DDoS protection" in body_text:
+            return True
+    except Exception:
+        pass
+    return False
+
+
+async def _ensure_browser_context(headless: bool = True, site_name: str = "", extra_args: list[str] | None = None):
+    """Create a Playwright context. Uses persistent profile for CF sites."""
+    from playwright.async_api import async_playwright
+
+    extra_args = extra_args or []
+    base_args = ["--no-sandbox", "--disable-blink-features=AutomationControlled"] + extra_args
+    ua = (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/131.0.0.0 Safari/537.36"
+    )
+
+    pw = await async_playwright().__aenter__()
+    profile_dir = _PROFILES_DIR / site_name if site_name else None
+
+    if profile_dir and profile_dir.exists():
+        # Persistent context with saved profile
+        ctx = await pw.chromium.launch_persistent_context(
+            user_data_dir=str(profile_dir),
+            headless=headless,
+            args=base_args,
+            user_agent=ua,
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+        # Inject saved CF cookies
+        cf_data = _load_cf_cookies()
+        if site_name in cf_data:
+            try:
+                await ctx.add_cookies(cf_data[site_name])
+                logger.info("CF cookies yuklendi: %s", site_name)
+            except Exception as e:
+                logger.debug("CF cookie yukleme hatasi: %s", e)
+    else:
+        # Fresh context
+        if profile_dir:
+            profile_dir.mkdir(parents=True, exist_ok=True)
+        ctx = await pw.chromium.launch_persistent_context(
+            user_data_dir=str(profile_dir or (_PROFILES_DIR / "_default")),
+            headless=headless,
+            args=base_args,
+            user_agent=ua,
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+
+    # Apply stealth
+    try:
+        from playwright_stealth import Stealth
+        await Stealth().apply_stealth_async(ctx)
+    except Exception:
+        pass
+
+    return pw, ctx
+
+
 async def _pw_click_and_capture(
     url: str,
     click_selectors: list[str],
@@ -58,10 +162,14 @@ async def _pw_click_and_capture(
     wait_before_click: float = 3.0,
     wait_after_click: float = 5.0,
     network_idle_timeout: int = 15000,
+    site_name: str = "",
+    cf_retry_headless: bool = True,
+    popup_selectors: list[str] | None = None,
 ) -> Optional[str]:
-    """Playwright ile sayfaya git, butonlara tıkla, network'ten embed yakala."""
-    from playwright.async_api import async_playwright
-
+    """Playwright ile sayfaya git, butonlara tıkla, network'ten embed yakala.
+    
+    CF korumali siteler icin persistent profile + cookie cache + headless fallback.
+    """
     found: list[str] = []
 
     def _is_target(url: str) -> bool:
@@ -77,75 +185,147 @@ async def _pw_click_and_capture(
             return True
         return False
 
-    async with async_playwright() as pw:
-        browser = await pw.chromium.launch(
-            headless=True,
-            args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
-        )
-        ctx = await browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36"
-            ),
-            locale="tr-TR",
-        )
-        try:
-            from playwright_stealth import Stealth
-            await Stealth().apply_stealth_async(ctx)
-        except Exception:
-            pass
+    async def _try_capture(headless: bool) -> tuple[bool, Optional[str]]:
+        nonlocal found
+        from playwright.async_api import async_playwright
 
-        page = await ctx.new_page()
-        page.on("request", lambda req: found.append(req.url) if _is_target(req.url) and req.url not in found else None)
+        pw = await async_playwright().__aenter__()
+        profile_dir = _PROFILES_DIR / site_name if site_name else None
+        base_args = ["--no-sandbox", "--disable-blink-features=AutomationControlled"]
+        ua = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+              "AppleWebKit/537.36 (KHTML, like Gecko) "
+              "Chrome/131.0.0.0 Safari/537.36")
 
         try:
-            resp = await page.goto(url, timeout=30000, wait_until="domcontentloaded")
-            status = resp.status if resp else 0
+            if profile_dir and profile_dir.exists():
+                ctx = await pw.chromium.launch_persistent_context(
+                    user_data_dir=str(profile_dir), headless=headless, args=base_args,
+                    user_agent=ua, locale="tr-TR", viewport={"width": 1920, "height": 1080},
+                )
+                cf_data = _load_cf_cookies()
+                if site_name in cf_data:
+                    try:
+                        await ctx.add_cookies(cf_data[site_name])
+                    except Exception:
+                        pass
+            else:
+                if profile_dir:
+                    profile_dir.mkdir(parents=True, exist_ok=True)
+                ctx = await pw.chromium.launch_persistent_context(
+                    user_data_dir=str(profile_dir or (_PROFILES_DIR / "_default")),
+                    headless=headless, args=base_args,
+                    user_agent=ua, locale="tr-TR", viewport={"width": 1920, "height": 1080},
+                )
+
+            try:
+                from playwright_stealth import Stealth
+                await Stealth().apply_stealth_async(ctx)
+            except Exception:
+                pass
+
+            page = await ctx.new_page()
+            _local_found: list[str] = []
+            page.on("request", lambda req: _local_found.append(req.url)
+                    if _is_target(req.url) and req.url not in _local_found else None)
+
+            try:
+                resp = await page.goto(url, timeout=45000, wait_until="commit")
+                status = resp.status if resp else 0
+                # Try to reach domcontentloaded (may timeout on CF challenge)
+                try:
+                    await page.wait_for_load_state("domcontentloaded", timeout=20000)
+                except Exception:
+                    pass
+            except Exception as e:
+                logger.error("PW goto (%s, hl=%s): %s", site_name, headless, e)
+                await pw.stop()
+                return False, None
+
+            # CF challenge detection
+            try:
+                title = await page.title()
+                if title in ("Just a moment...", "...", "Attention Required! | Cloudflare"):
+                    logger.warning("CF challenge: %s (hl=%s)", site_name, headless)
+                    await pw.stop()
+                    return True, None
+            except Exception:
+                pass
+
             if status == 404:
                 logger.warning("PW 404: %s", url[:60])
-                return None
-            logger.info("PW %d: %s", status, url[:60])
+                await pw.stop()
+                return False, None
+
+            logger.info("PW %d: %s (hl=%s)", status, url[:60], headless)
+            await asyncio.sleep(wait_before_click)
+
+            # Popups
+            for sel in (popup_selectors or [".modal-close", ".popup-close", ".site-popup-close", "button.close"]):
+                try:
+                    if await page.locator(sel).first.is_visible(timeout=1000):
+                        await page.locator(sel).first.click()
+                        await asyncio.sleep(0.5)
+                except Exception:
+                    pass
+
+            # Click
+            for sel in click_selectors:
+                try:
+                    if await page.locator(sel).first.is_visible(timeout=2000):
+                        await page.locator(sel).first.click(force=True)
+                        await asyncio.sleep(0.5)
+                except Exception:
+                    pass
+
+            await asyncio.sleep(wait_after_click)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=network_idle_timeout)
+            except Exception:
+                pass
+
+            # Save CF cookies on success
+            if site_name and _local_found:
+                try:
+                    await _save_cf_cookies(await ctx.cookies(), site_name)
+                except Exception:
+                    pass
+
+            # Fallback: iframe src extraction from HTML (for sites with static iframes)
+            if not _local_found:
+                try:
+                    html = await page.content()
+                    iframe_srcs = re.findall(r'<iframe[^>]+src="([^"]+)"', html)
+                    for src in iframe_srcs:
+                        if _is_target(src):
+                            _local_found.append(src)
+                except Exception:
+                    pass
+
+            await pw.stop()
+            found = _local_found
+            return False, found[0] if found else None
+
         except Exception as e:
-            logger.error("PW goto hatasi: %s", e)
-            return None
-
-        await asyncio.sleep(wait_before_click)
-
-        # Popup kapat
-        for popup_sel in [".modal-close", ".popup-close", ".site-popup-close", "button.close"]:
+            logger.error("PW kritik (%s): %s", site_name, e)
             try:
-                btn = page.locator(popup_sel).first
-                if await btn.is_visible(timeout=1000):
-                    await btn.click()
-                    await asyncio.sleep(0.5)
-                    logger.info("Popup kapandi: %s", popup_sel)
+                await pw.stop()
             except Exception:
                 pass
+            return False, None
 
-        # Click selectors
-        for sel in click_selectors:
-            try:
-                el = page.locator(sel).first
-                if await el.is_visible(timeout=2000):
-                    await el.click(force=True)
-                    logger.info("Tiklandi: %s", sel)
-                    await asyncio.sleep(0.5)
-            except Exception:
-                pass
+    # Strategy 1: headless=True
+    is_cf, result = await _try_capture(headless=True)
+    if result:
+        return result
 
-        await asyncio.sleep(wait_after_click)
+    # Strategy 2: CF detected → headless=False
+    if is_cf and cf_retry_headless and site_name:
+        logger.info("CF -> headless=False: %s", site_name)
+        _, result2 = await _try_capture(headless=False)
+        if result2:
+            return result2
+        logger.warning("CF bypass basarisiz: %s", site_name)
 
-        try:
-            await page.wait_for_load_state("networkidle", timeout=network_idle_timeout)
-        except Exception:
-            pass
-
-        await browser.close()
-
-    if found:
-        logger.info("Yakalanan URL'ler: %s", [u[:60] for u in found])
-        return found[0]
     return None
 
 
@@ -171,6 +351,7 @@ async def parse_hdfilmcehennemi(slug: str, media_type: str = "movie") -> Optiona
         wait_before_click=4.0,
         wait_after_click=8.0,
         network_idle_timeout=20000,
+        site_name="hdfilmcehennemi",
     )
 
     if embed:
@@ -201,6 +382,7 @@ async def parse_dizigom(slug: str, media_type: str = "episode") -> Optional[str]
         wait_before_click=3.0,
         wait_after_click=6.0,
         network_idle_timeout=15000,
+        site_name="dizigom",
     )
 
     if embed:
@@ -210,15 +392,45 @@ async def parse_dizigom(slug: str, media_type: str = "episode") -> Optional[str]
 
 async def parse_url(site_name: str, url: str) -> Optional[str]:
     """Auto-detect parser by site name and extract video URL."""
+    slug = urlparse(url).path.lstrip("/")
+    
     if site_name == "hdfilmcehennemi":
-        path = urlparse(url).path.lstrip("/")
-        return await parse_hdfilmcehennemi(path)
+        return await parse_hdfilmcehennemi(slug)
     elif site_name == "dizigom":
-        path = urlparse(url).path.lstrip("/")
-        return await parse_dizigom(path)
+        return await parse_dizigom(slug)
+    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene"):
+        return await parse_generic(site_name, url)
     else:
         logger.warning("Bilinmeyen site parser: %s", site_name)
         return None
+
+
+async def parse_generic(site_name: str, url: str) -> Optional[str]:
+    """Generic parser using _pw_click_and_capture with site config."""
+    config = get_source_config(site_name)
+    if not config:
+        logger.warning("Config bulunamadi: %s", site_name)
+        return None
+
+    domain = await _resolve_domain(site_name)
+    if not domain:
+        return None
+
+    embed = await _pw_click_and_capture(
+        url=url,
+        click_selectors=config.get("play_selectors", [
+            ".player-area iframe", "#player iframe", ".video-js",
+            "iframe[src*='embed']", ".play-button",
+        ]),
+        wait_before_click=3.0,
+        wait_after_click=6.0,
+        network_idle_timeout=15000,
+        site_name=site_name,
+    )
+
+    if embed:
+        return await resolve_embed_with_ytdlp(embed)
+    return None
 
 
 async def _resolve_domain(site_name: str) -> Optional[str]:
