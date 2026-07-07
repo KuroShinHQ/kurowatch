@@ -1636,68 +1636,52 @@
   }
   window.showToast = showToast;
 
-  // ── Render: Stats v7 ─────────────────────────────────────────────
+  // ── Render: Stats v8 (backend-driven) ────────────────────────────
   async function renderStats() {
-    let items;
-    try { items = await apiGet('/api/content'); }
+    let data;
+    try { data = await apiGet('/api/analytics/summary'); }
     catch (err) { console.error('renderStats', err); return; }
 
-    const total = items.length || 1;
+    const total = data.total_items || 1;
+    const tc = data.type_counts || {};
+    const typeKeys = ['anime', 'manga', 'manhwa', 'series', 'movie', 'game'];
+    const typeLabels = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', series: 'Dizi', movie: 'Film', game: 'Oyun' };
 
     // ── Bento sayılar ─────────────────────────────────────────────
-    const countEl = document.getElementById('stats-library-count');
-    if (countEl) countEl.textContent = items.length;
+    var el = document.getElementById('stats-library-count');
+    if (el) el.textContent = data.total_items;
 
-    const completed = items.filter(function(i) { return i.status === 'completed'; }).length;
-    const completedEl = document.getElementById('stats-completed');
-    if (completedEl) completedEl.textContent = completed;
+    el = document.getElementById('stats-completed');
+    if (el) el.textContent = data.completed_count;
 
-    const scored = items.filter(function(i) { return i.my_score != null; });
-    const avg = scored.length
-      ? (scored.reduce(function(s, i) { return s + i.my_score; }, 0) / scored.length).toFixed(1)
-      : '—';
-    const avgEl = document.getElementById('stats-avg-score');
-    if (avgEl) avgEl.textContent = avg;
+    el = document.getElementById('stats-avg-score');
+    if (el) el.textContent = data.avg_score > 0 ? data.avg_score.toFixed(1) : '—';
 
-    const hoursEl = document.getElementById('stats-hours');
-    if (hoursEl) {
-      let totalMins = 0;
-      items.forEach(function(it) {
-        if (it.type === 'anime')       totalMins += (it.my_progress || 0) * 24;
-        else if (it.type === 'series') totalMins += (it.my_progress || 0) * (it.runtime_minutes || 45);
-        else if (it.type === 'movie')  totalMins += it.runtime_minutes || 120;
-        else if (it.type === 'manga')  totalMins += (it.my_progress || 0) * 5;
-        else if (it.type === 'manhwa') totalMins += (it.my_progress || 0) * 3;
-      });
-      hoursEl.textContent = Math.round(totalMins / 60).toLocaleString('tr-TR') + 's';
-    }
+    el = document.getElementById('stats-hours');
+    if (el) el.textContent = (data.total_hours || 0).toLocaleString('tr-TR', {maximumFractionDigits: 0}) + 's';
 
     // ── Donut chart ───────────────────────────────────────────────
-    const CIRC = 251.33;
-    const TYPE_LABELS = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', series: 'Dizi', movie: 'Film', game: 'Oyun' };
-    const typeCounts = { anime: 0, manga: 0, manhwa: 0, series: 0, movie: 0, game: 0 };
-    items.forEach(function(it) { if (it.type in typeCounts) typeCounts[it.type]++; });
-    const typeKeys  = ['anime', 'manga', 'manhwa', 'series', 'movie', 'game'];
-    const donutIds  = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-series', 'stat-donut-movie', 'stat-donut-game'];
-    let donutOffset = 0;
+    var CIRC = 251.33;
+    var donutIds = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-series', 'stat-donut-movie', 'stat-donut-game'];
+    var donutOffset = 0;
     donutIds.forEach(function(id, i) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const count = typeCounts[typeKeys[i]];
-      const dash = count > 0 ? Math.max(2, (count / total) * CIRC) : 0;
-      el.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + CIRC);
-      el.setAttribute('stroke-dashoffset', (-donutOffset).toFixed(1));
+      var el_ = document.getElementById(id);
+      if (!el_) return;
+      var count = tc[typeKeys[i]] || 0;
+      var dash = count > 0 ? Math.max(2, (count / total) * CIRC) : 0;
+      el_.setAttribute('stroke-dasharray', dash.toFixed(1) + ' ' + CIRC);
+      el_.setAttribute('stroke-dashoffset', (-donutOffset).toFixed(1));
       donutOffset += dash;
     });
-    const topType = typeKeys.reduce(function(a, b) { return typeCounts[a] >= typeCounts[b] ? a : b; });
-    const topPct  = Math.round((typeCounts[topType] / total) * 100);
-    const centerPct  = document.getElementById('stat-donut-center-pct');
-    const centerType = document.getElementById('stat-donut-center-type');
-    if (centerPct)  centerPct.textContent  = topPct + '%';
-    if (centerType) centerType.textContent = TYPE_LABELS[topType] || topType;
+    var topType = typeKeys.reduce(function(a, b) { return (tc[a] || 0) >= (tc[b] || 0) ? a : b; });
+    var topPct = total > 0 ? Math.round(((tc[topType] || 0) / total) * 100) : 0;
+    var centerPct = document.getElementById('stat-donut-center-pct');
+    var centerType = document.getElementById('stat-donut-center-type');
+    if (centerPct) centerPct.textContent = topPct + '%';
+    if (centerType) centerType.textContent = typeLabels[topType] || topType;
 
-    // ── CSS bar'lar (Platform Kullanımı = tip dağılımı) ───────────
-    const barTypes = [
+    // ── CSS bar'lar ──────────────────────────────────────────────
+    var barTypes = [
       { key: 'anime',  barId: 'stats-bar-anime',  pctId: 'stats-pct-anime'  },
       { key: 'manga',  barId: 'stats-bar-manga',  pctId: 'stats-pct-manga'  },
       { key: 'manhwa', barId: 'stats-bar-manhwa', pctId: 'stats-pct-manhwa' },
@@ -1706,55 +1690,62 @@
       { key: 'game',   barId: 'stats-bar-game',   pctId: 'stats-pct-game'   },
     ];
     barTypes.forEach(function(t) {
-      const pct = Math.round((typeCounts[t.key] / total) * 100);
-      const barEl = document.getElementById(t.barId);
-      const pctEl = document.getElementById(t.pctId);
+      var pct = total > 0 ? Math.round(((tc[t.key] || 0) / total) * 100) : 0;
+      var barEl = document.getElementById(t.barId);
+      var pctEl = document.getElementById(t.pctId);
       if (barEl) barEl.style.width = pct + '%';
       if (pctEl) pctEl.textContent = pct + '%';
     });
 
-    // ── Favori Türler ─────────────────────────────────────────────
-    const genreMap = {};
-    items.forEach(function(it) {
-      (it.genres || []).forEach(function(g) { genreMap[g] = (genreMap[g] || 0) + 1; });
-    });
-    const genresEl = document.getElementById('stats-genres');
+    // ── Favori Türler (backend'dan) ──────────────────────────────
+    var genresEl = document.getElementById('stats-genres');
     if (genresEl) {
-      const sorted = Object.entries(genreMap).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 8);
+      var sorted = (data.top_genres || []).slice(0, 8);
       if (sorted.length === 0) {
         genresEl.innerHTML = '<span class="text-[11px] text-[#9090b0]">Henüz tür verisi yok</span>';
       } else {
-        const colors = ['#00d4ff', '#ffd9a1', '#bbc5eb', '#ffb4ab', '#90e090', '#ff9a3c', '#a0a0d0', '#9090b0'];
+        var colors = ['#00d4ff', '#ffd9a1', '#bbc5eb', '#ffb4ab', '#90e090', '#ff9a3c', '#a0a0d0', '#9090b0'];
         genresEl.innerHTML = sorted.map(function(entry, i) {
-          const c = colors[i] || '#9090b0';
+          var c = colors[i] || '#9090b0';
           return '<span class="px-3 py-1.5 rounded-lg text-[10px] font-bold cursor-pointer"' +
             ' style="background:' + c + '18;color:' + c + ';border:1px solid ' + c + '30">' +
-            escapeHtml(genreTR(entry[0])) + ' <span style="opacity:0.6">(' + entry[1] + ')</span></span>';
+            escapeHtml(genreTR(entry.name)) + ' <span style="opacity:0.6">(' + entry.count + ')</span></span>';
         }).join('');
       }
     }
 
-    // ── Haftalık Aktivite (haftalık toplam tahmini) ───────────────
-    const weeklyEl = document.getElementById('stats-weekly-total');
-    if (weeklyEl) {
-      let wMins = 0;
-      items.forEach(function(it) {
-        if (it.type === 'anime') wMins += Math.min(it.my_progress || 0, 7) * 24;
-        else if (it.type === 'manga') wMins += Math.min(it.my_progress || 0, 7) * 5;
-      });
-      weeklyEl.textContent = wMins > 0 ? Math.round(wMins) + 'd' : '—';
-    }
+    // ── Haftalık Aktivite (backend'dan gerçek veri) ───────────────
+    var weeklyEl = document.getElementById('stats-weekly-total');
+    var weeklyBars = data.weekly_activity || [];
+    var weeklyMax = data.weekly_max_actions || 1;
+    var barIdMap = { 0: 'stats-bar-paz', 1: 'stats-bar-pzt', 2: 'stats-bar-sal', 3: 'stats-bar-car', 4: 'stats-bar-per', 5: 'stats-bar-cum', 6: 'stats-bar-cmt' };
 
-    // ── Son İzlenenler (anime, ilerleme > 0) ──────────────────────
-    const recentAnimeEl = document.getElementById('stats-recent-anime');
+    weeklyBars.forEach(function(wd) {
+      var barEl = document.getElementById(barIdMap[wd.day_index]);
+      if (barEl) {
+        var pct = weeklyMax > 0 ? Math.max(2, (wd.total_actions / weeklyMax) * 100) : 2;
+        barEl.style.height = pct + '%';
+        barEl.style.background = wd.total_actions > 0 ? '#00d4ff' : 'rgba(0,212,255,0.2)';
+        barEl.title = wd.episodes_watched + ' bölüm, ' + wd.items_added + ' eklenen';
+      }
+    });
+
+    var weeklyTotal = weeklyBars.reduce(function(s, wd) { return s + wd.total_actions; }, 0);
+    if (weeklyEl) weeklyEl.textContent = weeklyTotal > 0 ? weeklyTotal : '—';
+
+    // ── Son İzlenenler (client-side, backend'dan gelen content list) ─
+    let items;
+    try { items = await apiGet('/api/content'); } catch (e) { items = []; }
+
+    var recentAnimeEl = document.getElementById('stats-recent-anime');
     if (recentAnimeEl) {
-      const animeItems = items.filter(function(i) { return i.type === 'anime' && (i.my_progress || 0) > 0; })
+      var animeItems = (items || []).filter(function(i) { return i.type === 'anime' && (i.my_progress || 0) > 0; })
         .sort(function(a, b) { return (b.my_progress || 0) - (a.my_progress || 0); }).slice(0, 6);
       if (animeItems.length === 0) {
         recentAnimeEl.innerHTML = '<div class="text-[12px] text-[#9090b0]">Anime aktivitesi yok</div>';
       } else {
         recentAnimeEl.innerHTML = animeItems.map(function(it) {
-          const bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
+          var bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
           return '<div class="flex-none w-32 glass-card rounded-xl p-3 flex flex-col gap-2 cursor-pointer active:scale-95 transition-transform" data-content-id="' + it.id + '">' +
             '<div class="w-full h-20 rounded-lg overflow-hidden" style="' + bg + ';background-size:cover;background-position:center"></div>' +
             '<div>' +
@@ -1766,16 +1757,15 @@
       }
     }
 
-    // ── Son Okunanlar (manga/manhwa, ilerleme > 0) ────────────────
-    const recentMangaEl = document.getElementById('stats-recent-manga');
+    var recentMangaEl = document.getElementById('stats-recent-manga');
     if (recentMangaEl) {
-      const mangaItems = items.filter(function(i) { return (i.type === 'manga' || i.type === 'manhwa') && (i.my_progress || 0) > 0; })
+      var mangaItems = (items || []).filter(function(i) { return (i.type === 'manga' || i.type === 'manhwa') && (i.my_progress || 0) > 0; })
         .sort(function(a, b) { return (b.my_progress || 0) - (a.my_progress || 0); }).slice(0, 4);
       if (mangaItems.length === 0) {
         recentMangaEl.innerHTML = '<div class="text-[12px] text-[#9090b0]">Manga aktivitesi yok</div>';
       } else {
         recentMangaEl.innerHTML = mangaItems.map(function(it) {
-          const bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
+          var bg = it.cover_url ? 'background-image:url(' + escapeHtml(it.cover_url) + ')' : 'background:#16213e';
           return '<div class="glass-card p-3 rounded-xl flex items-center justify-between cursor-pointer active:scale-95 transition-transform" data-content-id="' + it.id + '">' +
             '<div class="flex items-center gap-3">' +
             '<div class="w-12 h-16 rounded-lg flex-shrink-0" style="' + bg + ';background-size:cover;background-position:center"></div>' +

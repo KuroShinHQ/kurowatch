@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-117) · **Aktif sürüm:** v1.8.1 · **Son commit:** `SOHBET-117`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-118) · **Aktif sürüm:** v1.9.0 · **Son commit:** `SOHBET-118`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -336,6 +336,46 @@ SOHBET-117 — WSL Aria2 headless RPC bağlantısı + KuroWatch E2E magnet testi
 [7] Fix'ler:
     - Aria2Client.add_torrent: [[magnet]] double-wrap (SOHBET-117)
     - Aria2Client.get_status: tellActive ayri cagri (SOHBET-117)
+```
+
+## ✅ TAMAMLANAN — SOHBET-118: Backend Analitik + Dashboard Tahkimatı
+
+```
+SOHBET-118 — Server-side analytics engine + real weekly activity + frontend refactor:
+
+[1] backend/routers/analytics.py (YENİ):
+    - GET /api/analytics/summary → tek JSON özet
+    - SQL aggregasyon: COUNT, GROUP BY, AVG, SUM ile hesaplama
+    - type_counts: anime/manga/manhwa/series/movie/game kırılımı
+    - total_hours: anime(ep*24) + series(ep*runtime) + movie(runtime) + manga(ep*5) + manhwa(ep*3) + game_sessions
+    - completed_count, avg_score
+    - top_genres: JSON parse + frekans sıralama (ilk 8)
+    - weekly_activity: son 7 gün, Episode.watched_at + Content.added_at bazlı
+    - game_download_gb: 0 (henüz takip yok, extension noktası)
+
+[2] main.py:
+    - analytics router register
+
+[3] frontend/app.js — renderStats() v8:
+    - Tüm veri artık /api/analytics/summary'den async fetch ✅
+    - Client-side /api/content döngüsü kalktı ✅
+    - SVG donut, CSS bar chart, tür bulutu backend verisiyle render ✅
+    - Haftalık bar chart ARTIK GERÇEK VERİ:
+      * Hardcoded demo heights (40%/60%/85%/...) TAMAMEN KALDIRILDI
+      * Her gün için Episode.watched_at + Content.added_at toplamı
+      * Maksimum güne göre normalize edilmiş yüzdeler
+      * Aktif günler #00d4ff, boş günler rgba(0,212,255,0.2)
+      * Her bar'da title aracılığıyla bölüm/eklenen sayısı tooltip
+    - Son izlenenler/okunanlar hala client-side (content listesi gerekli)
+
+[4] CANLI TEST (VERİTABANI):
+    - ✅ 714 toplam içerik (532 anime, 123 manga, 40 manhwa, 19 game)
+    - ✅ 357 tamamlanmış, ortalama puan 8.0
+    - ✅ 1061.9 saat toplam izleme (63715 dakika)
+    - ✅ İlk 8 tür: Action(355), Fantasy(319), Adventure(203), ...
+    - ✅ Haftalık aktivite: Pazartesi 1 bölüm izlenmiş (gerçek veri)
+    - ✅ game_download_gb: 0 (henüz boyut takibi yok)
+    - ✅ settings, content endpoint'leri hala çalışıyor
 ```
 
 ## ✅ TAMAMLANAN — 2 Ölü Manga Fix
@@ -712,7 +752,8 @@ MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
   - SOHBET-115: Download UI polish, tab değişimi, magnet protocol trigger, saved downloads display
   - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
   - SOHBET-117: ✅ TAMAMLANDI — WSL Aria2 headless RPC test + uçtan uca magnet + SSE + aksiyon butonları
-  - SIRADAKI: qBittorrent-nox testi (opsiyonel), gerçek FitGirl magnet ile canlı indirme testi
+  - SOHBET-118: ✅ TAMAMLANDI — Backend analitik endpoint + haftalık aktivite gerçek veri + frontend refactor
+  - SIRADAKI: qBittorrent-nox testi (opsiyonel), oyun indirme boyutu takibi (game_metadata size_gb)
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
@@ -1045,3 +1086,4 @@ C:\Kuroshin\kurowatch\
 | `1dd682a` | turkanime.tv: Playwright header capture + CF bypass (885MB test OK) |
 | `SOHBET-116` | Download client abstraction (qBittorrent+Aria2) + SSE live torrent panel |
 | `SOHBET-117` | WSL Aria2 headless RPC test + uçtan uca magnet + aksiyon butonları + fix'ler |
+| `SOHBET-118` | Backend analytics endpoint + real weekly bars + renderStats() v8 refactor |
