@@ -45,6 +45,9 @@ _OFFLINE = {
     "majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com",
     "mangagezgini.com",
     "manhwahentai.me",
+    # Temmuz 2026: geçici IP blok / format değişikliği
+    "merlintoon.com",
+    "ragnarscans.com", "ragnarscans.net",
 }
 
 # uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
@@ -95,10 +98,12 @@ _SKIP_PATTERNS = (
     "emoji", "rating", "star", "button", "social", "/ads/", "advert",
     "doubleclick", "googlesyndication", "adservice", "adsense",
     "sidebar", "header", "footer", "menu", "search", "comment",
-    "blank", "transparent", "1x1", "thumb",
+    "blank", "transparent", "1x1", "thumb", "/cover/", "cover-",
     "wp-includes", "captcha", "badge", "ribbon", "arrow", "close",
     "admin-bar", "sprite", "currency", "flag",
 )
+
+_DIM_SUFFIX_RE = re.compile(r"-\d{2,4}x\d{2,4}\.", re.IGNORECASE)
 
 _PAGE_URL_HINTS = (
     "/manga/", "/chapter/", "/chapters/", "/uploads/", "/webtoon/",
@@ -133,7 +138,7 @@ def _extract_img_urls_from_section(section: str, seen: set) -> list:
                     src = "https:" + src
                 if not src or not src.startswith("http"):
                     continue
-                if any(s in src.lower() for s in _SKIP_PATTERNS):
+                if any(s in src.lower() for s in _SKIP_PATTERNS) or _DIM_SUFFIX_RE.search(src):
                     break
                 if src not in seen:
                     seen.add(src)
@@ -496,7 +501,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             src = m.group(1).strip()
             if src.startswith("//"):
                 src = "https:" + src
-            if not src or not src.startswith("http") or any(s in src.lower() for s in _SKIP_PATTERNS):
+            if not src or not src.startswith("http") or any(s in src.lower() for s in _SKIP_PATTERNS) or _DIM_SUFFIX_RE.search(src):
                 continue
             if src not in seen:
                 seen.add(src)

@@ -277,6 +277,8 @@ _SITE_PARSER_DOMAINS = {
     "fullhdfilmizlesene": "fullhdfilmizlesene",
 }
 
+_ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "turkanime.tv", "anizm.net"}
+
 
 from backend.scraper.tag_extractor import extract_site_tags
 
@@ -320,13 +322,21 @@ async def _try_site_parser(domain: str, url: str) -> dict:
     return result
 
 
-async def find_stream_url_with_tags(episode_url: str) -> tuple[str, list[str]]:
+async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime") -> tuple[str, list[str]]:
     """
     find_stream_url'un zengin versiyonu: video URL + kaynak site etiketleri döndür.
+    media_type: "anime", "series", "movie", "cartoon" — anime-only domain'leri filtreler.
     """
     _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
     source_tags: list[str] = []
+    is_anime_domain = any(domain.endswith(d) for d in _ANIME_ONLY_DOMAINS)
+
+    # Anime-only domain kontrolü: series/movie anime sitesinden URL kullanamaz
+    if media_type not in ("anime",) and is_anime_domain:
+        logger.warning("%s tipi için anime sitesi kullanılamaz: %s — yt-dlp direkt deneniyor",
+                       media_type, domain)
+        return episode_url, source_tags
 
     # 0. Site-spesifik parser dene (dizigom / fullhdfilmizlesene)
     try:
@@ -410,12 +420,12 @@ async def find_stream_url_with_tags(episode_url: str) -> tuple[str, list[str]]:
     return episode_url, source_tags
 
 
-async def find_stream_url(episode_url: str) -> str:
+async def find_stream_url(episode_url: str, media_type: str = "anime") -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
     Sıra: site parser → nodriver HTML → CF bypass → cookies → Playwright → orijinal URL.
     """
-    url, _ = await find_stream_url_with_tags(episode_url)
+    url, _ = await find_stream_url_with_tags(episode_url, media_type)
     return url
 
 
