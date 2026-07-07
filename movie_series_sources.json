@@ -3,10 +3,14 @@
     "label": "HDFilmCehennemi",
     "type": "movie",
     "domains": [
+      "hdfilmcehennemi.name",
+      "hdfilmcehennemi.gg",
+      "hdfilmcehennemi.ws",
+      "hdfilmcehennemi.now",
       "hdfilmcehennemi.nl",
-      "hdfilmcehennemi.art",
+      "hdfilmcehennemi.com",
       "hdfilmcehennemi.tv",
-      "hdfilmcehennemi.com"
+      "hdfilmcehennemi.art"
     ],
     "parser": "hdfilmcehennemi",
     "cf_protected": true,
@@ -18,15 +22,18 @@
     "label": "Dizigom",
     "type": "series",
     "domains": [
+      "dizigom.love",
+      "dizigom.tv",
+      "dizigom.net",
       "dizigom.info",
       "dizigom.com",
       "dizigom.vip",
-      "dizigom.net"
+      "dizigom1.com"
     ],
     "parser": "dizigom",
-    "cf_protected": false,
+    "cf_protected": true,
     "cookies_file": null,
-    "play_selectors": [".player-area iframe", ".video-js", "#player"],
-    "notes": "Genellikle CF yok. Vidmoly/Streamtape embed."
+    "play_selectors": [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe", ".tab-link:first-child"],
+    "notes": "CF korumali. Vidmoly/Upstream embed. Domain sik degisir."
   }
 }
