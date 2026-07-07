@@ -14,6 +14,7 @@ _MADARA_DOMAINS = [
     "mangawow.com", "mangawow.org",
     "hayalistic.com.tr",
     "ragnarscans.com", "ragnarscans.net",
+    "golgebahcesi.com",
     "merlintoon.com",
     "mangadenizi.com",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
@@ -45,8 +46,6 @@ _OFFLINE = {
     "majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com",
     "mangagezgini.com",
     "manhwahentai.me",
-    # Temmuz 2026: geçici IP blok / format değişikliği
-    "merlintoon.com",
     "ragnarscans.com", "ragnarscans.net",
 }
 

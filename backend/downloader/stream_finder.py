@@ -334,9 +334,11 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
 
     # Anime-only domain kontrolü: series/movie anime sitesinden URL kullanamaz
     if media_type not in ("anime",) and is_anime_domain:
-        logger.warning("%s tipi için anime sitesi kullanılamaz: %s — yt-dlp direkt deneniyor",
-                       media_type, domain)
-        return episode_url, source_tags
+        msg = (f"MEDYA TİPİ UYUŞMAZLIĞI: '{media_type}' tipi içerik "
+               f"anime sitesi ({domain}) kullanamaz. "
+               f"Site URL'sini dizi/film kaynağı ile güncelleyin.")
+        logger.error(msg)
+        raise RuntimeError(msg)
 
     # 0. Site-spesifik parser dene (dizigom / fullhdfilmizlesene)
     try:
