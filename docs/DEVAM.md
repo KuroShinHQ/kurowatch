@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-116) · **Aktif sürüm:** v1.8.0 · **Son commit:** `SOHBET-116`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-117) · **Aktif sürüm:** v1.8.0 · **Son commit:** `d4e9ddc SOHBET-116`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -666,7 +666,7 @@ MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
   - SOHBET-114: FitGirl scraper (httpx+lxml), game_download router (search/detail/save/list/delete), CANLI KANIT Elden Ring ✅
   - SOHBET-115: Download UI polish, tab değişimi, magnet protocol trigger, saved downloads display
   - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
-  - SIRADAKI: qBittorrent/Aria2 WSL bağlantı testi (WSL'de download servisi gerektirir)
+  - SOHBET-117 (sıradaki): WSL qBittorrent-nox/aria2c headless bağlantı testi + uçtan uca magnet + SSE canlı panel + aksiyon butonları (pause/resume/remove)
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
