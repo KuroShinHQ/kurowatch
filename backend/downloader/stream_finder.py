@@ -9,7 +9,8 @@ Strateji:
 
 Desteklenen siteler:
   - dizibox.so/live   (nodriver CF bypass → curl-cffi)
-  - hdfilmcehennemi.nl (nodriver CF bypass → curl-cffi)
+  - hdfilmcehennemi.* (site parser → PW click + network interception)
+  - dizigom.*         (site parser → PW click + network interception)
   - tranimeizle.co    (nodriver CF bypass → curl-cffi)
   - diziwatch.com     (cookies.txt)
   - turkanime.co/tv   (Playwright)
@@ -43,14 +44,11 @@ _CF_CACHE_TTL = 23 * 3600  # 23 saat (CF cookie ömrü ~24 saat)
 _CF_SITES = {
     "dizibox.live",
     "dizibox.so",
-    "hdfilmcehennemi.nl",
-    "hdfilmcehennemi.art",
-    "hdfilmcehennemi.tv",
-    "hdfilmcehennemi.com",
-    "dizigom.info",
-    "dizigom.com",
-    "dizigom.vip",
-    "dizigom.net",
+    "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com", "hdfilmcehennemi.name", "hdfilmcehennemi.gg",
+    "hdfilmcehennemi.ws", "hdfilmcehennemi.now",
+    "dizigom.info", "dizigom.com", "dizigom.vip", "dizigom.net",
+    "dizigom.love", "dizigom.tv", "dizigom1.com",
     "tranimeizle.co",
     "tranimeizle.io",
     "tranimaci.com",
@@ -103,10 +101,17 @@ _SITE_COOKIES = {
     "hdfilmcehennemi.art": "hdfilmcehennemi_cookies.txt",
     "hdfilmcehennemi.tv":  "hdfilmcehennemi_cookies.txt",
     "hdfilmcehennemi.com": "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.name": "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.gg":   "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.ws":   "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.now":  "hdfilmcehennemi_cookies.txt",
     "dizigom.info":  "dizigom_cookies.txt",
     "dizigom.com":   "dizigom_cookies.txt",
     "dizigom.vip":   "dizigom_cookies.txt",
     "dizigom.net":   "dizigom_cookies.txt",
+    "dizigom.love":  "dizigom_cookies.txt",
+    "dizigom.tv":    "dizigom_cookies.txt",
+    "dizigom1.com":  "dizigom_cookies.txt",
 }
 
 # Bu domainler iframe olarak bulunsa bile atlanır (lisanslı oynatıcılar, reklam ağları)
@@ -119,14 +124,11 @@ _SKIP_IFRAME_DOMAINS = (
 _FORCE_PLAYWRIGHT = {
     "dizibox.live",
     "dizibox.so",
-    "hdfilmcehennemi.nl",
-    "hdfilmcehennemi.art",
-    "hdfilmcehennemi.tv",
-    "hdfilmcehennemi.com",
-    "dizigom.info",
-    "dizigom.com",
-    "dizigom.vip",
-    "dizigom.net",
+    "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com", "hdfilmcehennemi.name", "hdfilmcehennemi.gg",
+    "hdfilmcehennemi.ws", "hdfilmcehennemi.now",
+    "dizigom.info", "dizigom.com", "dizigom.vip", "dizigom.net",
+    "dizigom.love", "dizigom.tv", "dizigom1.com",
     "turkanime.tv",
 }
 
@@ -138,20 +140,16 @@ _NODRIVER_HTML_SITES = {
 # Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
 _POPUP_CLOSE_SELECTORS = {
     "turkanime.tv": ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
+    "hdfilmcehennemi": [".modal-close", ".popup-close", "button.close", ".close-btn"],
+    "dizigom": [".modal-close", ".popup-close", "button.close"],
 }
 
 # Site-spesifik play butonu CSS selector'ları (Playwright için)
 _PLAY_BUTTON_SELECTORS = {
     "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
     "dizibox.so":         [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
-    "hdfilmcehennemi.nl": [".play-that-video", "[aria-label='Play video']", ".play-button", "#play", ".jw-icon-playback"],
-    "hdfilmcehennemi.art": [".play-that-video", ".play-button", "#play"],
-    "hdfilmcehennemi.tv":  [".play-that-video", ".play-button", "#play"],
-    "hdfilmcehennemi.com": [".play-that-video", ".play-button", "#play"],
-    "dizigom.info":  [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
-    "dizigom.com":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
-    "dizigom.vip":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
-    "dizigom.net":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
+    "hdfilmcehennemi": [".play-that-video", "[aria-label='Play video']", ".play-button", "#play", ".jw-icon-playback"],
+    "dizigom": [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
     # IndexIcerik AJAX → iframe inject eder; ilk sunucu butonunu tıkla
     "turkanime.tv":       ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
     "tranimeizle.co":     [
@@ -270,15 +268,47 @@ async def _nodriver_get_html(url: str, wait_secs: int = 20) -> Optional[str]:
                 pass
 
 
+_SITE_PARSER_DOMAINS = {
+    "hdfilmcehennemi": "hdfilmcehennemi",
+    "dizigom": "dizigom",
+}
+
+
+async def _try_site_parser(domain: str, url: str) -> Optional[str]:
+    """Site-specific parser dene (Playwright click + network interception)."""
+    for site_key, site_name in _SITE_PARSER_DOMAINS.items():
+        if site_key in domain:
+            from backend.scraper.parsers import parse_url
+            logger.info("Site parser deneniyor: %s → %s", site_name, url[:60])
+            try:
+                result = await parse_url(site_name, url)
+                if result:
+                    logger.info("Site parser video URL buldu: %s", result[:80])
+                    return result
+                logger.warning("Site parser embed bulamadi: %s", site_name)
+            except Exception as e:
+                logger.error("Site parser hatasi (%s): %s", site_name, e)
+            break
+    return None
+
+
 async def find_stream_url(episode_url: str) -> str:
     """
     Episode sayfasından gerçek video/embed URL'si döndür.
-    Sıra: nodriver HTML → CF bypass (nodriver+curl-cffi) → cookies fetch → Playwright → orijinal URL.
+    Sıra: site parser → nodriver HTML → CF bypass → cookies → Playwright → orijinal URL.
     """
     _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
 
-    # 0. Cloudflare Managed Challenge siteleri: nodriver ile JS-render HTML al
+    # 0. Site-spesifik parser dene (hdfilmcehennemi, dizigom)
+    try:
+        parser_result = await _try_site_parser(domain, episode_url)
+        if parser_result:
+            return parser_result
+    except Exception:
+        pass
+
+    # 1. Cloudflare Managed Challenge siteleri: nodriver ile JS-render HTML al
     if any(domain.endswith(d) for d in _NODRIVER_HTML_SITES):
         logger.info("nodriver HTML site: %s", domain)
         html = await _nodriver_get_html(episode_url, wait_secs=20)
@@ -499,7 +529,9 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         "speedfiles", "sibnet", "ok.ru", "fembed", "upstream",
         "rapidvid", "mixdrop", "gounlimited", "mp4upload",
         "odnoklassniki", "mail.ru", "vk.com/video",
-        "dizibox.live/embed", "dizibox.so/embed", "hdfilmcehennemi.nl/embed",
+        "dizibox.live/embed", "dizibox.so/embed",
+        "hdfilmcehennemi",
+        "dizigom",
         "pichive.online/iframe", "aso1.net",
         "anizmplayer.com", "media.aso",
     )
@@ -592,7 +624,12 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 pass  # timeout OK, devam
 
             # Site-spesifik popup kapat (player butonundan önce)
-            for selector in _POPUP_CLOSE_SELECTORS.get(domain, []):
+            _popup_selectors = []
+            for _popup_key, _popup_sels in _POPUP_CLOSE_SELECTORS.items():
+                if _popup_key in domain:
+                    _popup_selectors = _popup_sels
+                    break
+            for selector in _popup_selectors:
                 try:
                     btn = page.locator(selector).first
                     if await btn.is_visible(timeout=2000):
@@ -613,7 +650,12 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                     pass
 
             # Site-spesifik play/sunucu butonu varsa tıkla
-            for selector in _PLAY_BUTTON_SELECTORS.get(domain, []):
+            _play_selectors = []
+            for _play_key, _play_sels in _PLAY_BUTTON_SELECTORS.items():
+                if _play_key in domain:
+                    _play_selectors = _play_sels
+                    break
+            for selector in _play_selectors:
                 try:
                     btn = page.locator(selector).first
                     if await btn.is_visible(timeout=2000):
@@ -630,8 +672,10 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 wait_secs = 32
             elif "tranimaci.com" in domain:
                 wait_secs = 30  # JS PoW challenge (~5sn) + player load (~15sn) + embed fetch
-            elif "hdfilmcehennemi.nl" in domain:
+            elif "hdfilmcehennemi" in domain:
                 wait_secs = 20  # rplayer iframe lazy-load + CF geçişi
+            elif "dizigom" in domain:
+                wait_secs = 15
             elif "tranimeizle" in domain:
                 wait_secs = 15
             elif any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT):

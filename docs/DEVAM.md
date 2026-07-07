@@ -33,10 +33,30 @@ SOHBET-110 (Aşama 1+2) — TMDB API + Domain Pool + Scraper Altyapısı:
     - Tüm domain varyantları eklendi
 [7] Config defaults: tmdb_api_key eklendi (main.py + settings.py)
 
-SIRADA (SOHBET-110 Aşama 3):
-    - hdfilmcehennemi + dizigom için özel parser (iframe/embed extract)
-    - stream_finder.py entegrasyonu (video host resolver)
-    - Canlı test + 2 ölü manga fix
+## ✅ TAMAMLANAN — SOHBET-110 Aşama 3: Site Parser + Playwright Network Interception
+
+```
+[1] backend/scraper/parsers.py:
+    - parse_hdfilmcehennemi(url) — Playwright + click + network interception
+    - parse_dizigom(url) — aynı şekilde
+    - _pw_click_and_capture() — generic PW interaction engine
+      * Popup kapatma, buton tıklama, network idle bekleme
+      * Vidmoly/Streamtape/m3u8/mp4 pattern yakalama
+    - resolve_embed_with_ytdlp() — embed URL → yt-dlp --get-url → direkt video
+[2] stream_finder.py entegrasyonu:
+    - find_stream_url() başına _try_site_parser() eklendi (step 0)
+    - _SITE_PARSER_DOMAINS: hdfilmcehennemi + dizigom
+    - Fuzzy domain matching: POPUP + PLAY selector'larda
+    - Tüm domain varyantları _CF_SITES/_FORCE_PLAYWRIGHT/_SITE_COOKIES'e eklendi
+[3] movie_series_sources.json: güncel domainler
+    - hdfilmcehennemi: .name, .gg, .ws, .now (canlı) + diğerleri
+    - dizigom: .love, .tv (canlı) + diğerleri
+
+SIRADA (2 ölü manga + canlı test):
+    - #8 Geri Dönen Büyücü → websearch ile bul
+    - #92 Kahramanın Dönüşü → websearch ile bul
+    - Canlı video URL testi (WSL + Playwright gerekli)
+```
 ```
 
 ## ✅ TAMAMLANAN — SOHBET-109: Mimari Genişletme (Dizi + Film + Tag Sistemi)
