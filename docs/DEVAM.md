@@ -753,6 +753,7 @@ MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
   - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
   - SOHBET-117: ✅ TAMAMLANDI — WSL Aria2 headless RPC test + uçtan uca magnet + SSE + aksiyon butonları
   - SOHBET-118: ✅ TAMAMLANDI — Backend analitik endpoint + haftalık aktivite gerçek veri + frontend refactor
+  - FIX: Home'da Dizi/Film bölümleri boş da olsa gösteriliyor (önceden 0 item → gizliydi)
   - SIRADAKI: qBittorrent-nox testi (opsiyonel), oyun indirme boyutu takibi (game_metadata size_gb)
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
