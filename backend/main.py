@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 _BUILD_TS = int(time.time())
 _VERSIONED_HTML: str | None = None
 
-from backend.database import init_db
+from backend.database import init_db, seed_content_type_tags
 from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, mal_sync
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
@@ -70,6 +70,7 @@ async def lifespan(app: FastAPI):
     load_jobs()
     scan_downloaded_files()
     await init_db()
+    await seed_content_type_tags()
     asyncio.create_task(_startup_check_bg())
     yield
 

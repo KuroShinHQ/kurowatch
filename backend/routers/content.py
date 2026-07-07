@@ -39,6 +39,8 @@ class ContentCreate(BaseModel):
     note_text: Optional[str] = None
     note_is_spoiler: bool = False
     genres: Optional[List[str]] = None
+    runtime_minutes: Optional[int] = None
+    release_year: Optional[int] = None
 
 
 class ContentPatch(BaseModel):
@@ -56,6 +58,8 @@ class ContentPatch(BaseModel):
     total_episodes: Optional[int] = None
     total_chapters: Optional[int] = None
     genres: Optional[List[str]] = None
+    runtime_minutes: Optional[int] = None
+    release_year: Optional[int] = None
 
 
 def _serialize(c: Content) -> dict:
@@ -84,6 +88,8 @@ def _serialize(c: Content) -> dict:
         "genres": genres,
         "season_number": c.season_number if hasattr(c, 'season_number') else 1,
         "parent_id": c.parent_id if hasattr(c, 'parent_id') else None,
+        "runtime_minutes": c.runtime_minutes,
+        "release_year": c.release_year,
         "added_at": c.added_at.isoformat() if c.added_at else None,
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
         "sites": [
@@ -133,7 +139,7 @@ async def list_content(
 
 @router.post("/content", status_code=201)
 async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)):
-    if body.type not in ("anime", "manga", "manhwa", "game"):
+    if body.type not in ("anime", "manga", "manhwa", "game", "series", "movie"):
         raise HTTPException(400, "Geçersiz içerik tipi")
 
     data = body.model_dump()
@@ -211,6 +217,24 @@ async def patch_content(content_id: int, body: ContentPatch, db: AsyncSession = 
 
 class ProgressUpdate(BaseModel):
     progress: int
+
+
+@router.post("/content/{content_id}/tags/auto-assign-type", status_code=200)
+async def auto_assign_type_tag(content_id: int, db: AsyncSession = Depends(get_db)):
+    """Content type'ına göre otomatik content_type_tag ata."""
+    result = await db.execute(select(Content).where(Content.id == content_id).options(selectinload(Content.tags)))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "Bulunamadı")
+    r2 = await db.execute(select(Tag).where(Tag.tag_type == "api", Tag.name == c.type))
+    tag = r2.scalar_one_or_none()
+    if not tag:
+        raise HTTPException(404, f"'{c.type}' için sistem etiketi bulunamadı")
+    already = any(ct.tag_id == tag.id for ct in (c.tags or []))
+    if not already:
+        db.add(ContentTag(content_id=c.id, tag_id=tag.id))
+        await db.commit()
+    return {"ok": True, "tag": tag.name}
 
 
 @router.post("/content/{content_id}/progress", status_code=200)
@@ -332,7 +356,7 @@ async def enrich_covers(db: AsyncSession = Depends(get_db)):
     """Cover'ı olmayan anime/manga içerikler için AniList'te agresif arama yap."""
     stmt = select(Content).where(
         Content.cover_url.is_(None),
-        Content.type.in_(["anime", "manga", "manhwa"]),
+        Content.type.in_(["anime", "manga", "manhwa", "series", "movie"]),
     )
     result = await db.execute(stmt)
     items = result.scalars().all()
@@ -443,10 +467,14 @@ async def discover(
         cfg = get_config()
         return await igdb.search(q, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""), page)
 
+    # series/movie: henüz keşif yok (manuel ekleme)
+    if type in ("series", "movie"):
+        return []
+
     if not q and not genre:
         raise HTTPException(400, "q veya genre parametresi gerekli")
     if type not in ("anime", "manga", "manhwa"):
-        raise HTTPException(400, "Geçersiz tip (anime/manga/manhwa/game)")
+        raise HTTPException(400, "Geçersiz tip (anime/manga/manhwa/series/movie/game)")
 
     results = await anilist.search(q, type, page, genre)
 

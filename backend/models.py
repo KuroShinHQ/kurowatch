@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.database import Base
 
 # ── İçerik Tipleri & Durum Enum'ları ────────────────────────────────
-CONTENT_TYPES = ("anime", "manga", "manhwa", "game")
+CONTENT_TYPES = ("anime", "manga", "manhwa", "game", "series", "movie")
 STATUS_VALUES = ("watching", "completed", "on_hold", "dropped", "planning", "rewatching")
 TAG_TYPES     = ("api", "user")
 
@@ -35,6 +35,8 @@ class Content(Base):
     genres:          Mapped[Optional[str]]  = mapped_column(Text,    nullable=True)   # JSON list: ["Action","Fantasy"]
     season_number:   Mapped[int]            = mapped_column(Integer, nullable=False, default=1)
     parent_id:       Mapped[Optional[int]]  = mapped_column(Integer, ForeignKey("content.id"), nullable=True)
+    runtime_minutes: Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)   # movies/series ep length
+    release_year:    Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)   # release year
     added_at:        Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at:      Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 

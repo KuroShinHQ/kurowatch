@@ -241,6 +241,30 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
     <div id="home-manga-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-6 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
   </div>
 
+  <!-- ── Popüler Manhwa Satırı ───────────────────────────── -->
+  <div id="home-manhwa-section" class="mb-12 hidden">
+    <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
+      Popüler Manhwa <span class="material-symbols-outlined text-[#9090b0] text-[20px]">arrow_forward_ios</span>
+    </h3>
+    <div id="home-manhwa-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-6 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
+  </div>
+
+  <!-- ── Popüler Diziler Satırı ───────────────────────────── -->
+  <div id="home-series-section" class="mb-12 hidden">
+    <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
+      Popüler Diziler <span class="material-symbols-outlined text-[#9090b0] text-[20px]">arrow_forward_ios</span>
+    </h3>
+    <div id="home-series-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-6 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
+  </div>
+
+  <!-- ── Popüler Filmler Satırı ───────────────────────────── -->
+  <div id="home-movie-section" class="mb-12 hidden">
+    <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
+      Popüler Filmler <span class="material-symbols-outlined text-[#9090b0] text-[20px]">arrow_forward_ios</span>
+    </h3>
+    <div id="home-movie-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-6 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
+  </div>
+
   <!-- ── Popüler Oyunlar Satırı ─────────────────────────────── -->
   <div id="home-games-section" class="mb-12 hidden">
     <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
@@ -266,6 +290,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="anime">ANİME</button>
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="manga">MANGA</button>
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="manhwa">MANHWA</button>
+        <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="series">DİZİ</button>
+        <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="movie">FİLM</button>
         <button class="filter-type shrink-0 bg-[#1c1d37] border border-white/5 text-[#9090b0] hover:text-white font-label-caps text-label-caps px-4 min-h-[44px] rounded transition-colors inner-glow" data-filter-type="game">OYUN</button>
       </div>
       <!-- Filtre Chips: Durum -->
@@ -504,6 +530,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#00d4ff]/10 text-[#00d4ff] rounded-full text-[11px] font-bold tracking-wider border border-[#00d4ff]/50 active:scale-[0.95]" data-discover-type="anime">Anime</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="manga">Manga</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="manhwa">Manhwa</button>
+          <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="series">Dizi</button>
+          <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="movie">Film</button>
           <button class="discover-type-btn flex-shrink-0 px-4 py-2 bg-[#2f3639] text-[#859398] rounded-full text-[11px] font-bold tracking-wider active:scale-[0.95]" data-discover-type="game">Oyun</button>
         </div>
       </div>
@@ -638,6 +666,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
             <circle id="stat-donut-manga"  cx="50" cy="50" fill="transparent" r="40" stroke="#ffd9a1" stroke-dasharray="75 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-88"></circle>
             <circle id="stat-donut-manhwa" cx="50" cy="50" fill="transparent" r="40" stroke="#bbc5eb" stroke-dasharray="63 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-163"></circle>
             <circle id="stat-donut-game"   cx="50" cy="50" fill="transparent" r="40" stroke="#ffb4ab" stroke-dasharray="25 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="-226"></circle>
+            <circle id="stat-donut-series" cx="50" cy="50" fill="transparent" r="40" stroke="#ff9a3c" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="0"></circle>
+            <circle id="stat-donut-movie"  cx="50" cy="50" fill="transparent" r="40" stroke="#c084fc" stroke-dasharray="0 251.2" stroke-linecap="round" stroke-width="12" stroke-dashoffset="0"></circle>
           </svg>
           <div class="absolute inset-0 flex items-center justify-center flex-col">
             <span id="stat-donut-center-pct" class="text-[16px] font-bold" style="color:#00d4ff">—</span>
@@ -649,6 +679,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
           <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ffd9a1"></span><span class="text-[#9090b0]">Manga</span></div>
           <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#bbc5eb"></span><span class="text-[#9090b0]">Manhwa</span></div>
           <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ffb4ab"></span><span class="text-[#9090b0]">Oyun</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#ff9a3c"></span><span class="text-[#9090b0]">Dizi</span></div>
+          <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full" style="background:#c084fc"></span><span class="text-[#9090b0]">Film</span></div>
         </div>
       </div>
     </section>
@@ -679,6 +711,30 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
           </div>
           <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
             <div id="stats-bar-manhwa" class="h-full rounded-full transition-all duration-700" style="background:#bbc5eb;width:0%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Dizi</span><span id="stats-pct-series" style="color:#ff9a3c">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-series" class="h-full rounded-full transition-all duration-700" style="background:#ff9a3c;width:0%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Film</span><span id="stats-pct-movie" style="color:#c084fc">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-movie" class="h-full rounded-full transition-all duration-700" style="background:#c084fc;width:0%"></div>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <div class="flex justify-between font-bold uppercase tracking-wider text-[#9090b0]">
+            <span>Oyun</span><span id="stats-pct-game" style="color:#ffb4ab">—</span>
+          </div>
+          <div class="w-full rounded-full overflow-hidden" style="height:6px;background:rgba(255,255,255,0.1)">
+            <div id="stats-bar-game" class="h-full rounded-full transition-all duration-700" style="background:#ffb4ab;width:0%"></div>
           </div>
         </div>
       </div>
@@ -1315,6 +1371,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
             <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="anime">🎬 Anime</button>
             <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="manga">📖 Manga</button>
             <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="manhwa">📱 Manhwa</button>
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="series">📺 Dizi</button>
+            <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="movie">🎬 Film</button>
             <button class="edit-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] text-[13px] font-semibold flex items-center justify-center gap-1 transition-colors" data-edit-type="game">🎮 Oyun</button>
           </div>
         </div>
@@ -1384,6 +1442,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
           <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all bg-[#00d4ff]/20 text-[#00d4ff] border border-[#00d4ff]/40" data-step1-type="anime">🎬 Anime</button>
           <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="manga">📖 Manga</button>
           <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="manhwa">📱 Manhwa</button>
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="series">📺 Dizi</button>
+          <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="movie">🎬 Film</button>
           <button class="add-step1-type-btn shrink-0 px-3 py-1.5 min-h-[36px] rounded-full text-[12px] font-bold transition-all text-[#9090b0] border border-[#3c494e]/40" data-step1-type="game">🎮 Oyun</button>
         </div>
         <div class="relative mb-4">
@@ -1430,6 +1490,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
               <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md bg-[#1a2123] text-[#00d4ff] text-[14px] font-semibold shadow-sm border border-[#3c494e]/50 flex items-center justify-center gap-1" data-add-type="anime">🎬 Anime</button>
               <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="manga">📖 Manga</button>
               <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="manhwa">📱 Manhwa</button>
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="series">📺 Dizi</button>
+              <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="movie">🎬 Film</button>
               <button class="add-type-btn flex-1 py-1.5 min-h-[44px] rounded-md text-[#9090b0] hover:text-[#dde3e7] text-[14px] font-semibold flex items-center justify-center gap-1 transition-colors" data-add-type="game">🎮 Oyun</button>
             </div>
           </div>
@@ -1468,6 +1530,8 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
             <input id="add-form-external-id" type="hidden" value=""/>
             <input id="add-form-total-episodes" type="hidden" value=""/>
             <input id="add-form-total-chapters" type="hidden" value=""/>
+            <input id="add-form-runtime-minutes" type="hidden" value=""/>
+            <input id="add-form-release-year" type="hidden" value=""/>
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Notlar</label>

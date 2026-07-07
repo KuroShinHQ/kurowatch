@@ -5,37 +5,47 @@
 
 ---
 
-## 🔥 SIRADA — Mimari Genişletme: Dizi + Film + Tag Sistemi (sohbet-109)
+## ✅ TAMAMLANAN — SOHBET-109: Mimari Genişletme (Dizi + Film + Tag Sistemi)
 
 ```
-SOHBET-109 HEDEF: KuroWatch içerik türlerini genişletmek.
+SOHBET-109 — Content.type genişletme + Tag sistemi + Home layout:
 
-PROBLEM: Şu an sadece anime/manga/manhwa/game var. Oysa Home ekranı
-         TRENDS → ANIMES → MANWHAS → MANGAS → SERIES → MOVIES → GAMES
-         şeklinde katmanlı olmalı.
+[1] Content.type: 'series' + 'movie' eklendi
+    - backend/models.py: CONTENT_TYPES tuple'ı genişletildi
+    - runtime_minutes + release_year kolonları eklendi (migration)
+    - backend/routers/content.py: create/discover/validation yeni türleri kabul ediyor
+    - _serialize: runtime_minutes + release_year JSON'a dahil
+[2] ContentCreate/ContentPatch Pydantic şemaları güncellendi
+[3] Tag sistemi:
+    - backend/database.py: seed_content_type_tags() — 6 sistem tag'i oluşturur
+      (anime#00d4ff, manga#ffd9a1, manhwa#bbc5eb, series#ff9a3c, movie#c084fc, game#ffb4ab)
+    - backend/main.py: startup'da otomatik seed
+    - POST /api/content/{id}/tags/auto-assign-type endpointi
+[4] Home layout güncellendi:
+    - ANIMES → MANHWAS → MANGAS → SERIES → MOVIES → GAMES sırası
+    - Manhwa artık manga'dan ayrı satır (#home-manhwa-section)
+    - Series (#home-series-section) + Movie (#home-movie-section) eklendi
+    - _calcPct helper: movie my_progress_pct, series total_episodes/my_progress
+[5] Frontend TYPE_COLOR: series(#ff9a3c "Dizi"), movie(#c084fc "Film")
+[6] Filtre chip'leri (Kütüphane + Discover + Add Modal + Edit Modal): DİZİ + FİLM eklendi
+[7] renderStats: donut + bars + typeCounts → series/movie dahil
+[8] detail view: isPctType mantığı ile movie/game ortak progress gösterimi
+[9] Discover API: series/movie için boş dizi döner (manuel ekleme)
+[10] Add modal: series/movie için "henüz keşif yok" uyarısı + manuel ekleme
+```
 
-YAPILACAKLAR:
-[1] Content.type enum'una 'series' (dizi) + 'movie' (film) ekle
-    - Mevcut DB migration: type kolonuna yeni değerler
-    - Frontend: yeni türler için filtre/badge/renk
-[2] Tag sistemi: content_type_tag
-    - anime, manga, manhwa, series, movie, game
-    - Aynı tag birden çok türe atanabilir (manga=manhwa)
-[3] Home ekranı layout güncellemesi:
-    TRENDS (tüm türler)
-    ANIMES
-    MANWHAS
-    MANGAS
-    SERIES (diziler)
-    MOVIES (filmler)
-    GAMES
-[4] Dizi/Film için site keşfi:
+## 🔥 SIRADA — Dizi/Film Site Keşfi + 2 Ölü Manga
+
+```
+SIRADAKİ ADIMLAR:
+[1] Dizi/Film için site keşfi:
     - Web search + sitemap taraması
     - Çalışan Türk dizi/film siteleri
     - stream_finder.py genişletme (dizi/film iframe/embed)
-[5] KALAN 2 ÖLÜ MANGA:
+[2] KALAN 2 ÖLÜ MANGA:
     - #8 Geri Dönen Büyücü → websearch ile bul
     - #92 Kahramanın Dönüşü → websearch ile bul
+[3] Content type tag auto-assign: mevcut içeriklere toplu atama scripti
 ```
 
 ## 🔥 TAMAMLANAN — V4 Rescue: Manga/Manhwa Toplu Kurtarma (sohbet-108)
