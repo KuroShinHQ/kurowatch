@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-118) · **Aktif sürüm:** v1.9.0 · **Son commit:** `SOHBET-118`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-119) · **Aktif sürüm:** v1.9.0 · **Son commit:** `SOHBET-119`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -745,16 +745,13 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
+MEVCUT DURUM (7 Temmuz 2026 - sohbet-119):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - SOHBET-113: IGDB developer/publisher/game_metadata kolonları, tag color #ffb4ab→#4ade80, isGame→isPctType ReferenceError fix
-  - SOHBET-114: FitGirl scraper (httpx+lxml), game_download router (search/detail/save/list/delete), CANLI KANIT Elden Ring ✅
-  - SOHBET-115: Download UI polish, tab değişimi, magnet protocol trigger, saved downloads display
-  - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
-  - SOHBET-117: ✅ TAMAMLANDI — WSL Aria2 headless RPC test + uçtan uca magnet + SSE + aksiyon butonları
-  - SOHBET-118: ✅ TAMAMLANDI — Backend analitik endpoint + haftalık aktivite gerçek veri + frontend refactor
-  - FIX: Home'da Dizi/Film bölümleri boş da olsa gösteriliyor (önceden 0 item → gizliydi)
-  - SIRADAKI: qBittorrent-nox testi (opsiyonel), oyun indirme boyutu takibi (game_metadata size_gb)
+  - SOHBET-113~118: IGDB, FitGirl, Aria2, analytics, download client abstraction
+  - SOHBET-119-A: ✅ VERİ TEMİZLİĞİ — 259 type düzeltmesi (movie/cartoon/series/manhwa)
+    * ham_compare.py: hamjsondata.md vs DB safe-matching (startswith engellendi, paren-respecting split)
+    * 90 film, 50 çizgi dizi, 40 dizi, 70 manhwa → doğru type'a
+  - SIRADAKI (SOHBET-119-B): Dockerization, Backup endpoint, Cache-Control, E2E test
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
@@ -1088,3 +1085,4 @@ C:\Kuroshin\kurowatch\
 | `SOHBET-116` | Download client abstraction (qBittorrent+Aria2) + SSE live torrent panel |
 | `SOHBET-117` | WSL Aria2 headless RPC test + uçtan uca magnet + aksiyon butonları + fix'ler |
 | `SOHBET-118` | Backend analytics endpoint + real weekly bars + renderStats() v8 refactor |
+| `SOHBET-119-A` | 259 type düzeltmesi (movie/cartoon/series/manhwa) + ham_compare.py safe-matching |

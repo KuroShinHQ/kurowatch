@@ -1051,4 +1051,28 @@ TRANİMACİ → TURKANİME.TV MİGRATİON (sohbet-74, commit e0d65d6):
 [x] 194 tranimaci ep silindi, 194 turkanime.tv ep eklendi
 [x] 16/16 URL doğrulama 200 OK ✅
 [ ] Kalan 234 tranimaci anime (Türk dizi/film/Western) — kaynak yok
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-8 — VERİ TEMİZLİĞİ & TİP DÜZELTME (7 Tem 2026, SOHBET-119)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[x] backend/ham_compare.py — hamjsondata.md vs DB type karşılaştırma
+[x] backend/reclassify.py — manuel anime→series fix (Dexter, Hannibal, Rick and Morty, What If)
+[x] 259 DB type düzeltmesi (ham_compare.py --apply):
+    - anime → movie:   ~90 (filmler — Inception, LotR, Batman, Harry Potter vd.)
+    - anime → cartoon: ~50 (çizgi diziler — Kim Possible, Samurai Jack, Ben 10 vd.)
+    - anime → series:  ~40 (TV dizileri — Breaking Bad, Sherlock, Game of Thrones vd.)
+    - manga → manhwa:  ~70 (Kore webtoon — Solo Leveling, ORV, Nano Machine vd.)
+    - series → cartoon:  2 (What If...?, Rick and Morty)
+    - manga → anime:     1 (Solo Leveling — anime adaptasyonu var)
+    - series → anime:     3 (Hugo tv-show, Teletubbies)
+[x] Yanlış eşleşme korumaları:
+    - startswith engellendi (Dexter/Dexter's Laboratory, You/Youjo Senki, Sherlock/Sherlock Holmes)
+    - " / " split parantez içi saygı (Breaking Bad (Walter White / Mr. White) tek parça)
+    - Multi-hit DB entry dedup (son JSON type kazanır)
+
+SIRADAKİ (SOHBET-119):
+[ ] Dockerization — docker-compose.yml + Dockerfile (backend + frontend + Aria2)
+[ ] /api/system/backup — SQLite yedekleme + geri yükleme endpoint
+[ ] Frontend asset Cache-Control (statik dosyalar)
+[ ] E2E smoke test — tüm tipler, indirme, player, SSE panel
 ```
