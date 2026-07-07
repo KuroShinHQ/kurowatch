@@ -76,3 +76,32 @@ async def init_db():
             ))
         except Exception:
             pass
+        # Migration: runtime_minutes + release_year kolonları
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN runtime_minutes INTEGER"))
+        except Exception:
+            pass
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN release_year INTEGER"))
+        except Exception:
+            pass
+
+
+async def seed_content_type_tags():
+    """Sistem content_type_tag'lerini oluştur (idempotent)."""
+    from backend.models import Tag
+    from sqlalchemy import select
+    CONTENT_TYPE_TAGS = [
+        ("anime",  "api", "#00d4ff"),
+        ("manga",  "api", "#ffd9a1"),
+        ("manhwa", "api", "#bbc5eb"),
+        ("game",   "api", "#ffb4ab"),
+        ("series", "api", "#ff9a3c"),
+        ("movie",  "api", "#c084fc"),
+    ]
+    async with AsyncSessionLocal() as db:
+        for name, tag_type, color in CONTENT_TYPE_TAGS:
+            r = await db.execute(select(Tag).where(Tag.name == name, Tag.tag_type == tag_type))
+            if not r.scalar_one_or_none():
+                db.add(Tag(name=name, tag_type=tag_type, color=color))
+        await db.commit()

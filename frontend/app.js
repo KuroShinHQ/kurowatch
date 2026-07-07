@@ -76,6 +76,8 @@
     'anime':  { color:'#00d4ff', label:'Anime' },
     'manga':  { color:'#ffd9a1', label:'Manga' },
     'manhwa': { color:'#bbc5eb', label:'Manhwa' },
+    'series': { color:'#ff9a3c', label:'Dizi' },
+    'movie':  { color:'#c084fc', label:'Film' },
     'game':   { color:'#ffb4ab', label:'Oyun' }
   };
   function tcStyle(tc) {
@@ -328,9 +330,13 @@
     }
 
     // Devam Et: progress 1-99%
+    function _calcPct(it) {
+      if (it.type==='game' || it.type==='movie') return it.my_progress_pct||0;
+      const total = it.type==='series' ? (it.total_episodes||1) : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
+      return Math.min(100,Math.round((it.my_progress||0)/total*100));
+    }
     const continueItems = items.filter(it => {
-      const total = it.type==='game' ? 100 : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
-      const pct = it.type==='game' ? (it.my_progress_pct||0) : Math.min(100,Math.round((it.my_progress||0)/total*100));
+      const pct = _calcPct(it);
       return pct > 0 && pct < 100;
     });
     const contRow = document.getElementById('home-continue-row');
@@ -339,8 +345,7 @@
       contSec && contSec.classList.remove('hidden');
       contRow.innerHTML = continueItems.slice(0,10).map(it => {
         const col = (tc[it.type]||tc.anime);
-        const total = it.type==='game' ? 100 : (it.type==='anime' ? (it.total_episodes||1) : (it.total_chapters||1));
-        const pct = it.type==='game' ? (it.my_progress_pct||0) : Math.min(100,Math.round((it.my_progress||0)/total*100));
+        const pct = _calcPct(it);
         const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
         return `<div class="flex-none w-[280px] md:w-[320px] aspect-video relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-transform cursor-pointer snap-start group" data-content-id="${it.id}">
           <div class="absolute inset-0 bg-cover bg-center" ${bg}></div>
@@ -360,12 +365,14 @@
       _addDragScroll(contRow);
     }
 
-    // Tip satırları
+    // Tip satırları (TRENDS → ANIMES → MANHWAS → MANGAS → SERIES → MOVIES → GAMES)
     const rows = [
-      {key:'anime', secId:'home-anime-section', rowId:'home-anime-row', label:'Animeler'},
-      {key:'manga', secId:'home-manga-section', rowId:'home-manga-row', label:'Manga & Manhwa'},
-      {key:'manhwa',secId:'home-manga-section', rowId:'home-manga-row', label:'Manga & Manhwa'},
-      {key:'game',  secId:'home-games-section', rowId:'home-games-row', label:'Oyunlar'},
+      {key:'anime',  secId:'home-anime-section',  rowId:'home-anime-row',  label:'Animeler'},
+      {key:'manhwa', secId:'home-manhwa-section', rowId:'home-manhwa-row', label:'Manhwalar'},
+      {key:'manga',  secId:'home-manga-section',  rowId:'home-manga-row',  label:'Mangalar'},
+      {key:'series', secId:'home-series-section', rowId:'home-series-row', label:'Diziler'},
+      {key:'movie',  secId:'home-movie-section',  rowId:'home-movie-row',  label:'Filmler'},
+      {key:'game',   secId:'home-games-section',  rowId:'home-games-row',  label:'Oyunlar'},
     ];
     const rowMap = {};
     rows.forEach(r => {
@@ -461,10 +468,9 @@
 
     grid.innerHTML = filtered.map(it => {
       const tc = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
-      const isGameCard = it.type === 'game';
-      const isAnimeCard = it.type === 'anime';
-      const total = isGameCard ? 100 : (isAnimeCard ? (it.total_episodes || 1) : (it.total_chapters || 1));
-      const pct = isGameCard
+      const isPctType = it.type === 'game' || it.type === 'movie';
+      const total = isPctType ? 100 : (it.type==='series'||it.type==='anime' ? (it.total_episodes || 1) : (it.total_chapters || 1));
+      const pct = isPctType
         ? (it.my_progress_pct || 0)
         : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
       // Sağ üst: senin puanın (my_score) — yoksa badge gösterme
@@ -605,41 +611,41 @@
     if (!item) return;
 
     const tc = TYPE_COLOR[item.type] || TYPE_COLOR.anime;
-    const isGame = item.type === 'game';
-    const isAnime = item.type === 'anime';
-    const total = isGame ? 100 : (isAnime ? (item.total_episodes || 0) : (item.total_chapters || 0)) || 0;
-    const cur = isGame ? (item.my_progress_pct || 0) : (item.my_progress || 0);
-    const pct = isGame ? cur : (total > 0 ? Math.round(cur / total * 100) : 0);
+    const isPctType = item.type === 'game' || item.type === 'movie';
+    const total = isPctType ? 100 : (item.type==='series'||item.type==='anime' ? (item.total_episodes || 0) : (item.total_chapters || 0)) || 0;
+    const cur = isPctType ? (item.my_progress_pct || 0) : (item.my_progress || 0);
+    const pct = isPctType ? cur : (total > 0 ? Math.round(cur / total * 100) : 0);
 
     document.getElementById('detail-title').textContent = item.title_tr || item.title;
-    const typeLabelMap = { 'anime':'ANİME', 'manga':'MANGA', 'manhwa':'MANHWA', 'game':'OYUN' };
+    const typeLabelMap = { 'anime':'ANİME', 'manga':'MANGA', 'manhwa':'MANHWA', 'series':'DİZİ', 'movie':'FİLM', 'game':'OYUN' };
     const typeBadgeEl = document.getElementById('detail-type-badge');
     typeBadgeEl.textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
     typeBadgeEl.style.cssText = tcStyle(tc).badge;
     document.getElementById('detail-progress-bar').style.background = tc.color;
-    const statusIcon = isGame ? 'sports_esports' : (isAnime ? 'play_circle' : 'menu_book');
+    const statusIcon = item.type==='game' ? 'sports_esports' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime' ? 'play_circle' : 'menu_book'));
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
-    document.getElementById('detail-progress-current').textContent = isGame ? cur + '%' : cur;
-    document.getElementById('detail-progress-total').textContent = isGame ? 'tamamlandı' : ('/ ' + (total || '?'));
+    document.getElementById('detail-progress-current').textContent = isPctType ? cur + '%' : cur;
+    document.getElementById('detail-progress-total').textContent = isPctType ? 'tamamlandı' : ('/ ' + (total || '?'));
     document.getElementById('detail-progress-pct').textContent = pct + '%';
     document.getElementById('detail-progress-bar').style.width = pct + '%';
     const slider = document.getElementById('detail-progress-slider');
-    slider.max = isGame ? 100 : (total || 999);
+    slider.max = isPctType ? 100 : (total || 999);
     slider.value = cur;
-    document.getElementById('detail-slider-max').textContent = isGame ? '100%' : (total || '?');
+    document.getElementById('detail-slider-max').textContent = isPctType ? '100%' : (total || '?');
 
-    // Progress bölüm etiketi (oyun / manga / anime)
+    // Progress bölüm etiketi
     const progressLabel = document.querySelector('#screen-detail .font-label-caps.uppercase');
-    if (progressLabel) progressLabel.textContent = isGame ? 'TAMAMLANMA' : (isAnime ? 'BÖLÜM' : 'CHAPTER');
+    if (progressLabel) progressLabel.textContent = isPctType ? 'TAMAMLANMA' : (item.type==='series'||item.type==='anime' ? 'BÖLÜM' : 'CHAPTER');
 
     // Mark butonu etiketi
     const markBtn = document.getElementById('detail-mark-btn');
     if (markBtn) {
-      if (isGame) {
+      if (isPctType) {
         markBtn.style.display = 'none';
       } else {
         markBtn.style.display = '';
-        markBtn.querySelector('span.font-bold').textContent = isAnime ? 'Sonraki Bölümü İşaretle' : 'Sonraki Chapter\'ı İşaretle';
+        const isEpType = item.type === 'anime' || item.type === 'series';
+        markBtn.querySelector('span.font-bold').textContent = isEpType ? 'Sonraki Bölümü İşaretle' : 'Sonraki Chapter\'ı İşaretle';
       }
     }
 
@@ -647,11 +653,11 @@
     const contBtn = document.getElementById('detail-continue-btn');
     const contLabel = document.getElementById('detail-continue-label');
     if (contBtn) {
-      const showCont = !isGame && pct > 0 && pct < 100;
+      const showCont = !isPctType && pct > 0 && pct < 100;
       contBtn.classList.toggle('hidden', !showCont);
       if (showCont && contLabel) {
         const nextEp = cur + 1;
-        const unitWord = isAnime ? 'Bölüm' : 'Chapter';
+        const unitWord = (item.type==='series'||item.type==='anime') ? 'Bölüm' : 'Chapter';
         contLabel.textContent = 'DEVAM ET — ' + unitWord + ' ' + nextEp;
       }
       if (showCont && markBtn) {
@@ -750,7 +756,7 @@
     }
 
     // Mark butonu
-    if (markBtn && !isGame) {
+    if (markBtn && !isPctType) {
       markBtn.onclick = async function() {
         const btn = this;
         if (btn.disabled) return;
@@ -1369,6 +1375,8 @@
       let totalMins = 0;
       items.forEach(function(it) {
         if (it.type === 'anime')       totalMins += (it.my_progress || 0) * 24;
+        else if (it.type === 'series') totalMins += (it.my_progress || 0) * (it.runtime_minutes || 45);
+        else if (it.type === 'movie')  totalMins += it.runtime_minutes || 120;
         else if (it.type === 'manga')  totalMins += (it.my_progress || 0) * 5;
         else if (it.type === 'manhwa') totalMins += (it.my_progress || 0) * 3;
       });
@@ -1377,11 +1385,11 @@
 
     // ── Donut chart ───────────────────────────────────────────────
     const CIRC = 251.33;
-    const TYPE_LABELS = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
-    const typeCounts = { anime: 0, manga: 0, manhwa: 0, game: 0 };
+    const TYPE_LABELS = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', series: 'Dizi', movie: 'Film', game: 'Oyun' };
+    const typeCounts = { anime: 0, manga: 0, manhwa: 0, series: 0, movie: 0, game: 0 };
     items.forEach(function(it) { if (it.type in typeCounts) typeCounts[it.type]++; });
-    const typeKeys  = ['anime', 'manga', 'manhwa', 'game'];
-    const donutIds  = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-game'];
+    const typeKeys  = ['anime', 'manga', 'manhwa', 'series', 'movie', 'game'];
+    const donutIds  = ['stat-donut-anime', 'stat-donut-manga', 'stat-donut-manhwa', 'stat-donut-series', 'stat-donut-movie', 'stat-donut-game'];
     let donutOffset = 0;
     donutIds.forEach(function(id, i) {
       const el = document.getElementById(id);
@@ -1404,6 +1412,9 @@
       { key: 'anime',  barId: 'stats-bar-anime',  pctId: 'stats-pct-anime'  },
       { key: 'manga',  barId: 'stats-bar-manga',  pctId: 'stats-pct-manga'  },
       { key: 'manhwa', barId: 'stats-bar-manhwa', pctId: 'stats-pct-manhwa' },
+      { key: 'series', barId: 'stats-bar-series', pctId: 'stats-pct-series' },
+      { key: 'movie',  barId: 'stats-bar-movie',  pctId: 'stats-pct-movie'  },
+      { key: 'game',   barId: 'stats-bar-game',   pctId: 'stats-pct-game'   },
     ];
     barTypes.forEach(function(t) {
       const pct = Math.round((typeCounts[t.key] / total) * 100);
@@ -3186,7 +3197,7 @@
         });
         const q = inp.value.trim();
         if (q.length >= 2) inp.dispatchEvent(new Event('input'));
-        else resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Başlık yaz, ' + (_addStep1Type === 'game' ? 'IGDB' : 'AniList') + '\'te ara...</div>';
+        else resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Başlık yaz, ' + (_addStep1Type === 'game' ? 'IGDB' : (_addStep1Type==='series'||_addStep1Type==='movie' ? 'manuel giriş' : 'AniList')) + '\'te ara...</div>';
       });
     });
 
@@ -3198,6 +3209,12 @@
       const q = this.value.trim();
       if (q.length < 2) {
         resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">En az 2 karakter yaz...</div>';
+        return;
+      }
+      // series/movie için API araması yok → direkt manuel form
+      if (_addStep1Type === 'series' || _addStep1Type === 'movie') {
+        _addStep1Type = '';
+        resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-8 text-[13px]">Henüz keşif yok — manuel eklemek için "Manuel Ekle" butonuna basın</div>';
         return;
       }
       resultsBox.innerHTML = '<div class="text-center text-[#9090b0] py-6 text-[13px] flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Aranıyor...</div>';
@@ -3213,7 +3230,7 @@
               ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover" loading="lazy"/>'
               : '<span class="font-bold text-xs text-[#9090b0]">' + escapeHtml((it.title || '?').slice(0,2).toUpperCase()) + '</span>';
             const yr = it.year || '';
-            const tpMap2 = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', game: 'Oyun' };
+            const tpMap2 = { anime: 'Anime', manga: 'Manga', manhwa: 'Manhwa', series: 'Dizi', movie: 'Film', game: 'Oyun' };
             const tp = tpMap2[it.type] || (it.type || 'anime');
             return '<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-[#2f3639] transition-transform active:scale-[0.97] etched-border bg-[#0e1417]" data-add-pick=\'' + JSON.stringify(it).replace(/'/g, '&#39;') + '\'>' +
               '<div class="w-[40px] h-[56px] bg-[#2f3639] rounded-md overflow-hidden flex-shrink-0 flex items-center justify-center">' + cover + '</div>' +
@@ -3284,6 +3301,10 @@
     const _chRaw = (document.getElementById('add-form-total-chapters') || {}).value;
     const total_episodes = _epRaw ? parseInt(_epRaw) || null : null;
     const total_chapters = _chRaw ? parseInt(_chRaw) || null : null;
+    const _rtRaw = (document.getElementById('add-form-runtime-minutes') || {}).value;
+    const _yrRaw = (document.getElementById('add-form-release-year') || {}).value;
+    const runtime_minutes = _rtRaw ? parseInt(_rtRaw) || null : null;
+    const release_year = _yrRaw ? parseInt(_yrRaw) || null : null;
     const starEl = document.querySelector('input[name="add-rating"]:checked');
     const my_score = starEl ? parseFloat(starEl.value) : null;
     const genresRaw = (document.getElementById('add-form-genres') || {}).value || '[]';
@@ -3294,7 +3315,7 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
 
     try {
-      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined });
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined, runtime_minutes: runtime_minutes || undefined, release_year: release_year || undefined });
       closeModal('modal-add');
       // Formu temizle
       ['add-form-title','add-form-cover','add-form-note'].forEach(id => {
