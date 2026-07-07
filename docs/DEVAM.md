@@ -1,9 +1,96 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-119) · **Aktif sürüm:** v1.9.0 · **Son commit:** `SOHBET-119`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-120 final) · **Aktif sürüm:** v1.9.1 · **Son commit:** `SOHBET-119` + uncommitted SOHBET-120 fixes
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
+
+## ✅ TAMAMLANDI — SOHBET-120: Orijinal Kaynak Etiket Senkronizasyonu + Production Hardening
+
+```
+ODAK: Kaynak sitelerden yerel etiket avcılığı, otonom etiket düzeltme motoru,
+      mobil uyumluluk sertifikasyonu ve nihai production hardening.
+
+SOHBET-120-A — Kaynak Sitelerden Tag Extractor Kancaları:
+  [x] backend/scraper/tag_extractor.py YENİ:
+      - normalize_tag / title_case_tag / turkish_to_english / tag_color
+      - extract_dizigom_tags() / extract_fullhdfilmizlesene_tags()
+        / extract_movie_series_tags() / extract_manga_source_tags()
+        / extract_site_tags()
+  [x] backend/scraper/parsers.py:
+      - _pw_click_and_capture artık (embed_url, page_html) tuple döndürüyor
+      - parse_url_with_tags() yeni: {stream_url, tags}
+      - parse_hdfilmcehennemi / parse_dizigom / parse_generic html+embed tuple uyumlu
+  [x] backend/downloader/stream_finder.py:
+      - find_stream_url_with_tags() yeni
+      - find_stream_url() geriye uyumlu wrapper
+      - Site parser aşamasında çıkarılan tags eşzamanlı toplanır
+
+SOHBET-120-B — Otonom Etiket Düzeltme / Eşleştirme Motoru:
+  [x] backend/services/tag_sync.py YENİ:
+      - ensure_tag(): yoksa Tag oluştur (idempotent)
+      - attach_tag(): ContentTag ilişkilendir (zaten varsa tekrarlamaz)
+      - sync_genres_to_tags(): AniList/TMDB genres'leri otomatik ContentTag
+      - sync_site_tags(): site etiketlerini content.genres ile çapraz kontrol,
+        küresel metadata uyuşmazlığında site etiketini referans alarak
+        content.genres UPDATE + eksik Tag/ContentTag tamamlama
+  [x] backend/routers/content.py:
+      - POST /api/content/{id}/tags/sync-site-tags
+      - POST /api/content/{id}/tags/sync-genres
+      - create_content sonrası genres varsa otomatik sync_genres_to_tags()
+  [x] backend/downloader/anime.py:
+      - download_anime content_id parametresi alır
+      - find_stream_url_with_tags() ile yakalanan source_tags varsa
+        indirme başarıldıktan sonra tag_sync.sync_site_tags() çalıştırır
+  [x] backend/downloader/manager.py:
+      - anime indirmede content_id ile download_anime çağrır
+      - manga/manhwa indirmede content_id varsa
+        extract_manga_chapter_tags() + sync_site_tags() çalıştırır
+
+SOHBET-120-C — Production Hardening / Mobil Uyumluluk:
+  [x] frontend/app.js:
+      - _addDragScroll mobil touch drag-to-scroll desteği + snap yönetimi
+      - visualViewport.resize / orientationchange / window.resize handler:
+        sanal klavyede input görünürlüğü ve player boyutlandırma
+      - Global window.onerror + unhandledrejection → toast bildirim
+      - Service Worker kayıt hatasında toast
+      - Boş catch {} düzeltildi (MAL status refresh)
+  [x] frontend/player.js:
+      - Tüm boş catch {} bloklarına console.error log eklendi
+      - PiP/subtitle/intro/outro/translate hataları sessiz yutulmuyor
+
+KANIT:
+  [x] py_compile PASS:
+      backend\scraper\tag_extractor.py backend\services\tag_sync.py
+      backend\scraper\parsers.py backend\downloader\stream_finder.py
+      backend\downloader\anime.py backend\downloader\manager.py
+      backend\downloader\manga.py backend\routers\content.py
+  [x] node --check PASS: frontend/app.js, frontend/player.js, frontend/sw.js, frontend/pwa.js
+  [x] Gerçek E2E PASS:
+      python tests\test_backend_integrity.py --skip-video-probe
+      KUROWATCH_INTEGRITY_TITLE="A Returner's Magic Should Be Special" KUROWATCH_INTEGRITY_EPISODE=1 KUROWATCH_API_BASE=http://127.0.0.1:8100
+      → Direct scraper PASS / API health 200 / start→queue poll→pages→page→DELETE
+      → SQLite WAL / busy_timeout doğrulandı / fiziksel silme doğrulandı
+  [x] Tag sync endpoint canlı kanıt:
+      POST /api/content/10/tags/sync-site-tags {"site_tags":["İntikam","Webtoon","Gizem","Gençlik"]}
+      → 200, genres UPDATE + ContentTag attach doğrulandı
+
+GIT DURUMU SOHBET-120:
+  Modified:
+    backend/downloader/anime.py
+    backend/downloader/manager.py
+    backend/downloader/manga.py
+    backend/downloader/stream_finder.py
+    backend/scraper/parsers.py
+    backend/routers/content.py
+    frontend/app.js
+    frontend/player.js
+  New:
+    backend/scraper/tag_extractor.py
+    backend/services/tag_sync.py
+    backend/services/__init__.py
+  (SOHBET-119 kayıpları yok; önceki uncommitted integrity dosyaları korundu.)
+```
 
 ## ✅ TAMAMLANAN — SOHBET-110 Aşama 1+2: TMDB + Domain Pool + Stream Finder
 

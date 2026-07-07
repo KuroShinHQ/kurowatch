@@ -8,7 +8,17 @@ import os
 import re
 from datetime import datetime, timezone
 from typing import Optional
+from urllib.parse import urlparse
 from fastapi import WebSocket
+
+from backend.downloader.integrity import (
+    remove_output_base_artifacts,
+    remove_path,
+    remove_video_artifacts,
+    validate_manga_dir,
+    validate_manga_files,
+    validate_video_file,
+)
 
 _MAX_CONCURRENT = 2
 
@@ -40,7 +50,23 @@ def load_jobs():
     try:
         with open(_JOBS_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
-        _done.extend(data)
+        cleaned: list[dict] = []
+        for job in data:
+            if job.get("status") == "done":
+                path = job.get("file_path")
+                try:
+                    if job.get("media_type") == "anime":
+                        job["file_size_bytes"] = validate_video_file(path)
+                    elif job.get("media_type") in ("manga", "manhwa"):
+                        _, total_bytes = validate_manga_dir(path)
+                        job["file_size_bytes"] = total_bytes
+                except Exception as exc:
+                    print(f"[manager] stale done job atlandi #{job.get('id')}: {exc}")
+                    continue
+            cleaned.append(job)
+        _done.extend(cleaned)
+        if len(cleaned) != len(data):
+            _save_jobs()
         if _done:
             _counter = max(j["id"] for j in _done)
     except Exception as exc:
@@ -84,6 +110,11 @@ def scan_downloaded_files():
                 continue
             ep_num = int(m.group(1))
             file_path = os.path.join(cid_path, fname)
+            try:
+                file_size = validate_video_file(file_path)
+            except Exception as exc:
+                print(f"[manager] bozuk video atlandi: {file_path} ({exc})")
+                continue
             if (content_id, ep_num, _normalize_path(file_path)) in indexed:
                 continue
             _counter += 1
@@ -99,7 +130,7 @@ def scan_downloaded_files():
                 "progress_pct": 100,
                 "file_path": file_path,
                 "error_msg": None,
-                "file_size_bytes": os.path.getsize(file_path) if os.path.isfile(file_path) else 0,
+                "file_size_bytes": file_size,
                 "created_at": _now_iso(),
                 "completed_at": _now_iso(),
             }
@@ -211,6 +242,17 @@ def get_storage_bytes() -> int:
 def remove_done_job(job_id: int) -> bool:
     """Job'u _done listesinden kaldir (status farketmez)."""
     global _done
+    job = next((j for j in _done if j["id"] == job_id), None)
+    if job:
+        path = job.get("file_path")
+        try:
+            if path and os.path.exists(path):
+                if job.get("media_type") == "anime":
+                    remove_video_artifacts(path)
+                else:
+                    remove_path(path)
+        except OSError:
+            pass
     before = len(_done)
     _done[:] = [j for j in _done if j["id"] != job_id]
     if len(_done) < before:
@@ -219,27 +261,28 @@ def remove_done_job(job_id: int) -> bool:
     return False
 
 
-def delete_job_file(job_id: int) -> bool:
-    """İndirilmiş dosyayı/dizini sil (izle-sil için)."""
+def delete_job_file(job_id: int) -> dict:
+    """Indirilmis dosyayi/dizini sil ve job kaydini temizle."""
     global _done
-    import shutil
     job = get_job(job_id)
     if not job or job["status"] != "done":
-        return False
+        return {"ok": False, "action": "not_done"}
     path = job.get("file_path")
-    if not path or not os.path.exists(path):
-        return False
     try:
-        if os.path.isdir(path):
-            shutil.rmtree(path)
+        if path and os.path.exists(path):
+            if job.get("media_type") == "anime":
+                remove_video_artifacts(path)
+            else:
+                remove_path(path)
+            action = "file_deleted"
         else:
-            os.remove(path)
-        # Job'u _done listesinden tamamen kaldır (kullanıcı silince kaybolsun)
+            action = "stale_job_removed"
+
         _done[:] = [j for j in _done if j["id"] != job_id]
         _save_jobs()
-        return True
-    except OSError:
-        return False
+        return {"ok": True, "action": action}
+    except OSError as exc:
+        return {"ok": False, "action": "delete_failed", "error": str(exc)}
 
 
 # ── WebSocket ────────────────────────────────────────────────────────
@@ -282,6 +325,8 @@ async def _run_job(job: dict):
 
     job["status"] = "downloading"
     await _broadcast({"event": "started", "job": job})
+    cleanup_path: str | None = None
+    cleanup_base: str | None = None
 
     try:
         if job["media_type"] == "anime":
@@ -290,17 +335,23 @@ async def _run_job(job: dict):
             out_dir = _job_dir(job)
             os.makedirs(out_dir, exist_ok=True)
             out_base = os.path.join(out_dir, f"ep{job['episode_number']:03d}")
+            cleanup_base = out_base
 
             async def _on_pct(pct: int):
                 job["progress_pct"] = pct
                 await _broadcast({"event": "progress", "job_id": job["id"], "pct": pct})
 
-            file_path = await download_anime(job["url"], out_base, job.get("quality", "720p"), _on_pct)
+            file_path = await download_anime(
+                job["url"], out_base, job.get("quality", "720p"),
+                _on_pct, content_id=job.get("content_id")
+            )
+            validate_video_file(file_path)
             job["file_path"] = file_path
-            job["file_size_bytes"] = os.path.getsize(file_path) if os.path.exists(file_path) else 0
+            job["file_size_bytes"] = os.path.getsize(file_path)
 
         else:  # manga / manhwa
             out_dir = _job_dir(job)
+            cleanup_path = out_dir
             total_pages: list[int] = [0]
 
             async def _on_page(downloaded: int, total: int):
@@ -311,10 +362,21 @@ async def _run_job(job: dict):
                 await _broadcast({"event": "progress", "job_id": job["id"], "pct": pct})
 
             files = await download_manga_chapter(job["url"], out_dir, _on_page)
+            total_bytes = validate_manga_files(files)
             job["file_path"] = out_dir
-            job["file_size_bytes"] = sum(
-                os.path.getsize(f) for f in files if os.path.exists(f)
-            )
+            job["file_size_bytes"] = total_bytes
+            # Otonom etiket senkronizasyonu: manga/manhwa kaynak etiketleri
+            content_id = job.get("content_id")
+            if content_id:
+                try:
+                    from backend.downloader.manga import extract_manga_chapter_tags
+                    from backend.services import tag_sync
+                    tags = await extract_manga_chapter_tags(job["url"])
+                    if tags:
+                        await tag_sync.sync_site_tags(content_id, urlparse(job["url"]).netloc, tags)
+                except Exception as exc:  # noqa: BLE001
+                    import logging
+                    logging.getLogger(__name__).warning("Manga tag sync failed: %s", exc)
 
         job["status"] = "done"
         job["progress_pct"] = 100
@@ -322,9 +384,23 @@ async def _run_job(job: dict):
 
     except asyncio.CancelledError:
         job["status"] = "cancelled"
+        if cleanup_base:
+            remove_output_base_artifacts(cleanup_base)
+        elif cleanup_path:
+            try:
+                remove_path(cleanup_path)
+            except OSError:
+                pass
     except Exception as exc:
         job["status"] = "failed"
         job["error_msg"] = str(exc)[:500]
+        if cleanup_base:
+            remove_output_base_artifacts(cleanup_base)
+        elif cleanup_path:
+            try:
+                remove_path(cleanup_path)
+            except OSError:
+                pass
 
     finally:
         _active.pop(job["id"], None)

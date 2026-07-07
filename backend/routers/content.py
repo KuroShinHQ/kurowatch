@@ -16,9 +16,11 @@ _COVERS_DIR.mkdir(exist_ok=True)
 
 from backend.config import get_config
 from backend.database import get_db
-from backend.models import Content, ContentTag, Tag
+from backend.models import CONTENT_TYPES, Content, ContentTag, Tag
 from backend.scraper import anilist
-from backend.scraper import igdb, mal, tmdb
+from backend.scraper.igdb import get_detail as igdb_get_detail, search as igdb_search
+from backend.scraper.tmdb import search_all as tmdb_search_all
+from backend.services import tag_sync
 
 router = APIRouter()
 
@@ -168,7 +170,7 @@ async def list_content(
 
 @router.post("/content", status_code=201)
 async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)):
-    if body.type not in ("anime", "manga", "manhwa", "game", "series", "movie"):
+    if body.type not in CONTENT_TYPES:
         raise HTTPException(400, "Geçersiz içerik tipi")
 
     data = body.model_dump()
@@ -184,6 +186,9 @@ async def create_content(body: ContentCreate, db: AsyncSession = Depends(get_db)
     # Auto-assign type tag
     await _auto_assign_type_tag(new_id, c.type, db)
     await db.commit()
+    # AniList/TMDB genres'leri otomatik ContentTag'a dönüştür
+    if c.genres:
+        await tag_sync.sync_genres_to_tags(new_id)
     return await get_content(new_id, db)
 
 
@@ -273,6 +278,36 @@ async def auto_assign_type_tag(content_id: int, db: AsyncSession = Depends(get_d
     return {"ok": True, "tag": tag.name}
 
 
+class SyncSiteTagsIn(BaseModel):
+    site_tags: list[str]
+    site_name: str = "site"
+
+
+@router.post("/content/{content_id}/tags/sync-site-tags", status_code=200)
+async def sync_site_tags_endpoint(content_id: int, body: SyncSiteTagsIn, db: AsyncSession = Depends(get_db)):
+    """
+    Kaynak sitesinden çıkarılan yerel etiketleri DB'deki küresel metadata ile
+    çapraz kontrol eder; eksik türleri ve etiketleri otomatik ekler.
+    """
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    if not result.scalar_one_or_none():
+        raise HTTPException(404, "Bulunamadı")
+    res = await tag_sync.sync_site_tags(content_id, body.site_name or "site", body.site_tags)
+    if not res.get("ok"):
+        raise HTTPException(404, res.get("error", "Bulunamadı"))
+    return res
+
+
+@router.post("/content/{content_id}/tags/sync-genres", status_code=200)
+async def sync_genres_to_tags_endpoint(content_id: int, db: AsyncSession = Depends(get_db)):
+    """content.genres JSON listesindeki her türü ContentTag olarak oluştur/ata."""
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    if not result.scalar_one_or_none():
+        raise HTTPException(404, "Bulunamadı")
+    res = await tag_sync.sync_genres_to_tags(content_id)
+    return res
+
+
 @router.post("/content/{content_id}/progress", status_code=200)
 async def update_progress(content_id: int, body: ProgressUpdate, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(Content).where(Content.id == content_id).options(selectinload(Content.sites), selectinload(Content.tags)))
@@ -324,7 +359,7 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
         else:
             detail = await tmdb_mod.get_tv_details(tmdb_id, api_key)
     elif c.type == "game":
-        detail = await igdb.get_detail(ext, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""))
+        detail = await igdb_get_detail(ext, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""))
     else:
         detail = await anilist.get_detail(ext)
 
@@ -528,7 +563,7 @@ async def discover(
         if not q:
             raise HTTPException(400, "Oyun araması için q parametresi gerekli")
         cfg = get_config()
-        return await igdb.search(q, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""), page)
+        return await igdb_search(q, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""), page)
 
     # series/movie → TMDB
     if type in ("series", "movie"):
@@ -536,7 +571,7 @@ async def discover(
         api_key = cfg.get("tmdb_api_key", "")
         if not api_key:
             return []
-        return await tmdb.search_all(q, type, page, api_key)
+        return await tmdb_search_all(q, type, page, api_key)
 
     if not q and not genre:
         raise HTTPException(400, "q veya genre parametresi gerekli")

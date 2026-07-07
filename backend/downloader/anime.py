@@ -4,7 +4,12 @@ import re
 from typing import Callable, Coroutine, Optional
 from urllib.parse import urlparse
 
-from backend.downloader.stream_finder import find_stream_url, get_yt_dlp_cookies_arg, get_session_header_args
+from backend.downloader.integrity import validate_video_file
+from backend.downloader.stream_finder import (
+    find_stream_url_with_tags,
+    get_session_header_args,
+    get_yt_dlp_cookies_arg,
+)
 
 
 async def download_anime(
@@ -12,15 +17,16 @@ async def download_anime(
     output_path: str,
     quality: str = "720p",
     on_progress: Optional[Callable] = None,
+    content_id: Optional[int] = None,
 ) -> str:
     """yt-dlp ile anime/video indir. stream_finder ile gerçek URL tespit edilir."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     height = quality.replace("p", "")
 
-    # Gerçek stream URL'sini bul (embed player URL veya orijinal)
+    # Gerçek stream URL'sini bul (embed player URL veya orijinal); etiketleri de yakala
     if on_progress:
         await on_progress(0)  # stream_finder basladi
-    actual_url = await find_stream_url(url)
+    actual_url, source_tags = await find_stream_url_with_tags(url)
     if on_progress:
         await on_progress(1)  # stream URL bulundu
 
@@ -111,8 +117,20 @@ async def download_anime(
     for ext in ("mp4", "mkv", "webm", "avi"):
         p = f"{output_path}.{ext}"
         if os.path.exists(p):
+            validate_video_file(p)
             if on_progress:
                 await on_progress(100)
+            # Otonom etiket senkronizasyonu: kaynak site etiketlerini DB'ye yansıt
+            if content_id and source_tags:
+                try:
+                    from backend.services import tag_sync
+                    site_key = urlparse(url).netloc.lstrip("www.")
+                    await tag_sync.sync_site_tags(content_id, site_key, source_tags)
+                    logger = __import__("logging").getLogger(__name__)
+                    logger.info("Otonom tag sync calisti: content_id=%s tags=%s", content_id, source_tags)
+                except Exception as exc:  # noqa: BLE001
+                    logger = __import__("logging").getLogger(__name__)
+                    logger.warning("Otonom tag sync basarisiz: %s", exc)
             return p
 
     raise RuntimeError(f"Çıktı dosyası bulunamadı: {output_path}.*")

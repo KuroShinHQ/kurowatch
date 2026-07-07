@@ -8,6 +8,7 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from backend.downloader import manager
+from backend.downloader.integrity import DownloadIntegrityError, validate_manga_dir, validate_video_file
 from backend.config import get_config
 from backend.services.download_client import create_client
 
@@ -60,10 +61,13 @@ async def cancel_or_delete(job_id: int):
     if not job:
         raise HTTPException(404, "Job bulunamadı")
     if job["status"] == "done":
-        manager.delete_job_file(job_id)
-        return {"ok": True, "action": "file_deleted"}
+        result = manager.delete_job_file(job_id)
+        if not result.get("ok"):
+            raise HTTPException(500, result.get("error") or result.get("action") or "Silme başarısız")
+        return result
     if job["status"] in ("failed", "cancelled", "deleted"):
-        manager.remove_done_job(job_id)
+        if not manager.remove_done_job(job_id):
+            raise HTTPException(404, "Job kaydı temizlenemedi")
         return {"ok": True, "action": "removed"}
     removed = manager.cancel_job(job_id)
     if not removed:
@@ -100,6 +104,11 @@ async def serve_video(job_id: int):
         # Dosya yoksa job'u temizle (eski kayit)
         manager.remove_done_job(job_id)
         raise HTTPException(404, "Dosya bulunamadı (kayıt temizlendi)")
+    try:
+        validate_video_file(path)
+    except DownloadIntegrityError as exc:
+        manager.delete_job_file(job_id)
+        raise HTTPException(409, f"Video dosyası bozuk; kayıt temizlendi: {exc}")
     return FileResponse(path, media_type="video/mp4", headers={"Accept-Ranges": "bytes"})
 
 
@@ -125,11 +134,12 @@ async def list_manga_pages(job_id: int):
     if not job or job["status"] != "done" or job["media_type"] not in ("manga", "manhwa"):
         raise HTTPException(404, "Manga bölümü hazır değil")
     dir_path = job.get("file_path")
-    if not dir_path or not os.path.isdir(dir_path):
-        raise HTTPException(404, "Dizin bulunamadı")
-
-    exts = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
-    files = sorted(f for f in os.listdir(dir_path) if os.path.splitext(f)[1].lower() in exts)
+    try:
+        files_abs, _ = validate_manga_dir(dir_path)
+    except DownloadIntegrityError as exc:
+        manager.delete_job_file(job_id)
+        raise HTTPException(409, f"Manga bölümü bozuk; kayıt temizlendi: {exc}")
+    files = [os.path.basename(f) for f in files_abs]
     pages = [f"/api/download/page/{job_id}/{i}" for i in range(len(files))]
     return {"pages": pages, "count": len(files)}
 
@@ -141,11 +151,12 @@ async def serve_manga_page(job_id: int, page_index: int):
     if not job or job["status"] != "done":
         raise HTTPException(404, "Bölüm hazır değil")
     dir_path = job.get("file_path")
-    if not dir_path or not os.path.isdir(dir_path):
-        raise HTTPException(404, "Dizin bulunamadı")
-
-    exts = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
-    files = sorted(f for f in os.listdir(dir_path) if os.path.splitext(f)[1].lower() in exts)
+    try:
+        files_abs, _ = validate_manga_dir(dir_path)
+    except DownloadIntegrityError as exc:
+        manager.delete_job_file(job_id)
+        raise HTTPException(409, f"Manga bölümü bozuk; kayıt temizlendi: {exc}")
+    files = [os.path.basename(f) for f in files_abs]
     if page_index < 0 or page_index >= len(files):
         raise HTTPException(404, f"Sayfa {page_index} mevcut değil ({len(files)} sayfa var)")
 

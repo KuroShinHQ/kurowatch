@@ -168,7 +168,7 @@
       const r = await fetch(API + '/api/download/storage');
       if (!r.ok) return null;
       return r.json();
-    } catch { return null; }
+    } catch (err) { console.error('[Player] storage fetch failed:', err); return null; }
   }
 
   // ── İndirmeler Ekranı Render ──────────────────────────────────────
@@ -487,7 +487,8 @@
       } else {
         await video.requestPictureInPicture();
       }
-    } catch {
+    } catch (err) {
+      console.error('[Player] PiP toggle failed:', err);
       if (window.showToast) window.showToast('PiP açılamadı', 'error');
     }
   }
@@ -529,7 +530,7 @@
       const blob = await r.blob();
       track.src = URL.createObjectURL(blob);
       track.mode = 'hidden';
-    } catch {}
+    } catch (err) { console.error('[Player] subtitle load failed:', err); }
   }
 
   async function _loadStreamSubtitle(subtitleUrl) {
@@ -542,7 +543,7 @@
       const blob = await r.blob();
       track.src = URL.createObjectURL(blob);
       track.mode = 'hidden';
-    } catch {}
+    } catch (err) { console.error('[Player] subtitle load failed:', err); }
   }
 
   // ── HLS.js ────────────────────────────────────────────────────────
@@ -672,7 +673,7 @@
           this.start = d.start;
           this.end   = d.end;
         }
-      } catch {}
+      } catch (err) { console.error('[Player] operation failed:', err); }
     },
 
     tick(currentTime) {
@@ -714,7 +715,7 @@
           this.start = d.start;
           this.end   = d.end;
         }
-      } catch {}
+      } catch (err) { console.error('[Player] operation failed:', err); }
     },
 
     tick(currentTime) {
@@ -1382,7 +1383,7 @@
         if (!r.ok) { this._gpu = false; return false; }
         const d = await r.json();
         this._gpu = d.available ? d : false;
-      } catch { this._gpu = false; }
+      } catch (err) { console.error('[Player] GPU check failed:', err); this._gpu = false; }
       return this._gpu;
     },
 
@@ -1397,7 +1398,7 @@
           const s = await r.json();
           this._applyStatus(s);
         }
-      } catch {}
+      } catch (err) { console.error('[Player] operation failed:', err); }
 
       // GPU var mı?
       const gpu = await this.checkGpu();
@@ -1441,7 +1442,8 @@
         const r = await fetch(`${API}/api/translate/${cid}/${ep}`, { method: 'POST' });
         if (!r.ok) throw new Error(r.status);
         this._connectWS();
-      } catch {
+      } catch (err) {
+        console.error('[Player] translate start failed:', err);
         if (label) label.textContent = 'Hata';
         if (btn) btn.disabled = false;
       }
@@ -1476,7 +1478,7 @@
           _reader._render();
           this._setLang('tr');
         }
-      } catch {}
+      } catch (err) { console.error('[Player] operation failed:', err); }
     },
 
     showOriginal() {
