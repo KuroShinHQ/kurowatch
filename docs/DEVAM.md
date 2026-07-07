@@ -53,7 +53,36 @@ SOHBET-110 (Aşama 1+2) — TMDB API + Domain Pool + Scraper Altyapısı:
     - dizigom: .love, .tv (canlı) + diğerleri
 
 SIRADA:
-    Canlı video URL testi (WSL + Playwright gerekli)
+    - hdfilmcehennemi cookies.txt CF bypass stratejisi
+    - Dizi/film ek site keşfi
+```
+
+## ✅ TAMAMLANAN — Canlı Test: Pipeline Onaylandı (WSL + PW + yt-dlp)
+
+```
+TEST: dizigom.love → Silo 3.Sezon 1.Bölüm
+  ├ PW: HTTP 200 ✅ title: "Silo 3.Sezon 1.Bölüm izle - Dizigom..."
+  ├ CF bypass: ✅ (playwright-stealth)
+  ├ Play buton: ✅ (.player-area iframe / .tab-link:first-child)
+  ├ Network intercept: ✅ 18 URL yakalandı!
+  │  ├ spidypro.com/embed/SlZtHbZ1S73V2hO (embed)
+  │  ├ spidypro.com/m3u/WUJBWjNmOUVFL... (HLS playlist/m3u8)
+  │  ├ tur_sub.vtt (Türkçe altyazı — kanıt)
+  │  └ spidypro[1-10].top/process/... (CDN video segment)
+  └ yt-dlp: ℹ️ spidypro unsupported → embed URL fallback (beklenen)
+
+TEST: hdfilmcehennemi.name → The Accountant 2
+  └ ❌ CF JS challenge bypass edilemedi (stealth yetersiz)
+  └ Cozum: cookies.txt import veya farkli bypass
+
+PIPELINE KANITI: dizigom.love ✅ FULL CHAIN DOGRULANDI
+  CF → PW click → Network Interception → embed + m3u URL
+  yt-dlp best-effort (known host'larda .mp4/.m3u8 cozer)
+
+DÜZELTMELER:
+  - parsers.py: resolve_embed_with_ytdlp() timeout Python 3.10 fix
+  - parsers.py: _is_target() .m3u + /m3u/ pattern eklendi
+  - parsers.py: spidypro _KNOWN_HOSTS'a eklendi
 ```
 
 ## ✅ TAMAMLANAN — 2 Ölü Manga Fix

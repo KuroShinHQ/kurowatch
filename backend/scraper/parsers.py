@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 _KNOWN_HOSTS = (
     "vidmoly", "streamtape", "filemoon", "doodstream", "voe.sx",
     "fembed", "upstream", "mixdrop", "gounlimited", "mp4upload",
-    "sibnet", "ok.ru", "mail.ru", "vk.com/video",
+    "sibnet", "ok.ru", "mail.ru", "vk.com/video", "spidypro",
 )
 
 
@@ -31,9 +31,13 @@ async def resolve_embed_with_ytdlp(embed_url: str) -> Optional[str]:
             embed_url,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
-            timeout=30,
         )
-        stdout, stderr = await proc.communicate()
+        try:
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=30)
+        except asyncio.TimeoutError:
+            proc.kill()
+            logger.warning("yt-dlp timeout (30sn)")
+            return embed_url
         out = stdout.decode("utf-8", errors="replace").strip()
         if out and out.startswith("http"):
             logger.info("yt-dlp çözüm: %s", out[:80])
@@ -65,7 +69,9 @@ async def _pw_click_and_capture(
             return False
         if any(h in url for h in known_hosts):
             return True
-        if re.search(r"\.m3u8|/hls/|\.mp4\?", url, re.IGNORECASE):
+        if re.search(r"\.m3u8?|/hls/|\.mp4\?", url, re.IGNORECASE):
+            return True
+        if "/m3u/" in url:
             return True
         if "/embed/" in url or "/iframe.php" in url or "/player/" in url:
             return True
