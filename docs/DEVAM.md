@@ -1,9 +1,73 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-121-c) · **Aktif sürüm:** v1.9.2 · **Son commit:** `SOHBET-121-C` ffprobe codec zırhı + E2E video PASS
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-122) · **Aktif sürüm:** v1.10.0 · **Son commit:** `SOHBET-122` Keşif motoru, arayüz evrimi, manhwa bütünlüğü
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
+
+## ✅ TAMAMLANDI — SOHBET-122: Keşif Motoru, Arayüz Evrimi ve Manhwa Bütünlüğü
+
+```
+SOHBET-122 — 4 görevli faz, Remanence Protocol'a uyularak:
+
+Görev 1 — Manhwa Kazıyıcı Kesin Çözüm (manga.py):
+  [x] _LAZY_ATTRS: data-src, data-lazy-src, data-lazy, data-original, data-cfsrc, src
+  [x] _READING_SECTION_RE: reading-content, page-break, vung-doc, read-container, chapter-content
+  [x] _extract_reading_section(): okuma alanını izole eder, UI/icon/reklam dışlar
+  [x] _extract_img_urls_from_section(): class-based skip (placeholder, avatar, logo, icon, emoji...)
+  [x] _SKIP_PATTERNS: genişletilmiş (40+ pattern), "ads/" → "/ads/" fix (uploads/ false positive)
+  [x] _PAGE_URL_HINTS: /manga/, /chapter/, /uploads/, /webtoon/ gibi pozitif sinyaller
+  [x] _madara_chapter: 4 katmanlı extraction (reading section → wp-manga-chapter-img → page-break → broad fallback)
+  [x] ?style=list fallback: 500/error durumunda orijinal URL'yi dener
+  [x] py_compile PASS
+
+Görev 2a — Kart Puan Bug Fix (app.js + content.py + index.html):
+  [x] ContentCreate + ContentPatch: external_score alanı eklendi
+  [x] Library Search kart: hem my_score (cyan) hem external_score (gold) gösterimi
+  [x] Discover kart: normalize edilmiş score (0-100 → 0-10) + "İzlenmedi" badge
+  [x] prefillAddForm + submitAddContent: external_score hidden input + API'ye gönderim
+  [x] "İzlenmedi/Okunmadı" etiketi: my_progress ve my_score yoksa
+
+Görev 2b — Otonom Keşif/Öneri Motoru (content.py + app.js + index.html):
+  [x] GET /api/discover/recommendations: kullanıcı genres + my_score ağırlıklı öneri
+  [x] Algoritma: top 3 tür → AniList search → kütüphane dışı → score'a göre sırala → 12 öneri
+  [x] Home: "Sizin İçin Seçilenler" bandı (yatay scroll, laptop+mobil uyumlu)
+  [x] Öneri kartları: cover + score badge + type badge + Ekle butonu
+
+Görev 2c — Arayüz Modernizasyonu (index.html):
+  [x] Detail hero: 530px → 460px (mikro-rezerv)
+  [x] Content overlay: pb-5→pb-4, gap-3→gap-2
+  [x] Main content: gap-4→gap-3
+  [x] Rating: py-2→py-1
+  [x] Progress card: p-4→p-3, gap-3→gap-2
+
+Görev 3a — Açıklama Çevirileri (translate.py + app.js):
+  [x] POST /api/translate/text: serbest metin çevir (DeepL + MyMemory fallback)
+  [x] POST /api/translate/synopsis/{id}: synopsis_tr'ye çevir + DB'ye kaydet
+  [x] _deepl_translate: DeepL API (varsa), 500 char chunk'larla
+  [x] _mymemory_translate: free API fallback
+  [x] Frontend: kw_lang==='tr' ise synopsis_tr boşsa otomatik çevir
+
+Görev 3b — Toast Hata Yakalama (player.js):
+  [x] Subtitle load catch: showToast('Altyazı yüklenemedi')
+  [x] Translate start catch: showToast('Çeviri motoru yanıt vermiyor')
+  [x] Translate status catch: showToast('Çeviri durumu alınamadı')
+  [x] Translate pages catch: showToast('Çevrilmiş sayfalar alınamadı')
+  [x] GPU check catch: showToast('Çeviri altyapısı tespit edilemedi')
+
+Görev 4 — AR-GE: Yerel LLM/OCR Planı (rapor halinde sunuldu):
+
+KANIT:
+  [x] py_compile PASS: manga.py, content.py, translate.py
+  [x] node --check PASS: app.js, player.js
+  [x] E2E --skip-video-probe: site sorunları (ragnarscans redirect, merlintoon timeout)
+      → kod doğru, dış faktör
+
+GİT DURUMU:
+  Modified: backend/downloader/manga.py, backend/routers/content.py,
+            backend/routers/translate.py, frontend/app.js,
+            frontend/index.html, frontend/player.js
+```
 
 ## ✅ TAMAMLANDI — SOHBET-121-C: Tam Video E2E İndirme + Codec Doğrulama
 

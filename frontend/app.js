@@ -409,6 +409,51 @@
       _addDragScroll(contRow);
     }
 
+    // Sizin İçin Seçilenler (öneri motoru)
+    const recSec = document.getElementById('home-recommendations-section');
+    const recRow = document.getElementById('home-recommendations-row');
+    if (recRow) {
+      apiGet('/api/discover/recommendations').then(function(recs) {
+        if (recs && recs.length > 0 && recSec && recRow) {
+          recSec.classList.remove('hidden');
+          recRow.innerHTML = recs.map(function(it) {
+            var normScore = 0;
+            if (it.score && it.score > 0) normScore = Math.round(it.score / 10 * 10) / 10;
+            else if (it.external_score && it.external_score > 0) normScore = it.external_score;
+            var tc2 = TYPE_COLOR[it.type] || TYPE_COLOR.anime;
+            var cover = it.cover_url
+              ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"/>'
+              : '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-2xl font-bold">' + escapeHtml((it.title||'??').slice(0,2).toUpperCase()) + '</div>';
+            var scoreBadge = normScore > 0
+              ? '<div class="absolute top-2 left-2 z-20 flex items-center gap-0.5 px-1.5 py-0.5 rounded-full" style="background:rgba(10,10,18,0.8);backdrop-filter:blur(4px)"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:10px">star</span><span class="text-[9px] font-bold text-[#feb528]">' + normScore.toFixed(1) + '</span></div>'
+              : '';
+            var discoverData = JSON.stringify({
+              title: it.title, type: it.type || 'anime', cover_url: it.cover_url || '',
+              external_id: String(it.external_id || ''), genres: it.genres || [],
+              external_score: normScore || undefined, total_episodes: it.total_episodes || undefined,
+              total_chapters: it.total_chapters || undefined, year: it.year || undefined
+            });
+            return '<div class="flex-none w-[140px] md:w-[160px] aspect-[2/3] relative rounded-lg overflow-hidden bg-[#1a1a2e] cursor-pointer active:scale-[0.95] transition-all duration-300 snap-start group" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
+              '<div class="absolute inset-0">' + cover + '</div>' +
+              '<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/30 to-transparent"></div>' +
+              scoreBadge +
+              '<div class="absolute inset-0 z-20 flex flex-col justify-end p-2">' +
+              '<span class="inline-block px-1.5 py-0.5 rounded mb-1 w-max text-[8px] font-bold uppercase" style="background:rgba(10,10,18,0.8);color:' + tc2.color + '">' + (tc2.label||'Anime') + '</span>' +
+              '<p class="text-[11px] font-bold text-white line-clamp-2 leading-tight">' + escapeHtml(it.title) + '</p>' +
+              '</div></div>';
+          }).join('');
+          recRow.querySelectorAll('[data-discover-add]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              var data = JSON.parse(this.dataset.discoverAdd);
+              prefillAddForm(data);
+              openModal('modal-add');
+            });
+          });
+          _addDragScroll(recRow);
+        }
+      }).catch(function() {});
+    }
+
     // Tip satırları (TRENDS → ANIMES → MANHWAS → MANGAS → SERIES → MOVIES → GAMES)
     const rows = [
       {key:'anime',  secId:'home-anime-section',  rowId:'home-anime-row',  label:'Animeler'},
@@ -1288,6 +1333,18 @@
     }
 
     var _synShown = _showSynopsis(item.synopsis_tr || item.synopsis);
+
+    // Auto-translate: synopsis_tr boş, synopsis var, sistem dili TR → çevir
+    if (!item.synopsis_tr && item.synopsis && _synShown &&
+        (localStorage.getItem('kw_lang') || 'tr') === 'tr') {
+      apiPost('/api/translate/synopsis/' + id, {}).then(function(r) {
+        if (r && r.synopsis_tr && synEl) {
+          synEl.textContent = r.synopsis_tr;
+        }
+      }).catch(function(err) {
+        if (typeof showToast === 'function') showToast('Özet çevrilemedi', 'error');
+      });
+    }
 
     if (item.external_id) {
       apiGet('/api/content/' + id + '/anilist').then(function(al) {
@@ -3545,17 +3602,25 @@
         const cover = it.cover_url
           ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"/>'
           : '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-2xl font-bold">' + escapeHtml((it.title||'?').slice(0,2).toUpperCase()) + '</div>';
-        const score = it.my_score != null
-          ? '<div class="flex items-center gap-1"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:10px">star</span><span class="text-[9px] text-[#9090b0]">' + it.my_score.toFixed(1) + '</span></div>'
+        const extScore = it.external_score != null && it.external_score > 0
+          ? '<div class="flex items-center gap-0.5"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:11px">star</span><span class="text-[9px] font-bold text-[#feb528]">' + it.external_score.toFixed(1) + '</span></div>'
           : '';
+        const myScore = it.my_score != null && it.my_score > 0
+          ? '<div class="flex items-center gap-0.5"><span class="material-symbols-outlined fill-1 text-[#00d4ff]" style="font-size:11px">grade</span><span class="text-[9px] font-bold text-[#00d4ff]">' + it.my_score.toFixed(1) + '</span></div>'
+          : '';
+        const hasProgress = (it.my_progress && it.my_progress > 0) || (it.my_progress_pct && it.my_progress_pct > 0);
+        const unwatched = !myScore && !hasProgress
+          ? '<span class="text-[8px] font-bold uppercase tracking-wider text-[#9090b0] opacity-50 px-1.5 py-0.5 rounded bg-white/5">İzlenmedi</span>'
+          : '';
+        const scoreRow = '<div class="flex items-center gap-2 mb-1">' + extScore + myScore + unwatched + '</div>';
         return '<div class="group relative aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1a2e] cursor-pointer active:scale-[0.95] transition-all duration-300 inner-glow shadow-[0_4px_12px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_32px_rgba(0,0,0,0.7)] hover:scale-[1.02]" data-content-id="' + it.id + '">' +
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
           '<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/40 to-transparent z-10"></div>' +
           cover +
           '<div class="absolute inset-0 z-20 flex flex-col justify-end p-3">' +
           '<span class="inline-block px-2 py-0.5 rounded mb-1 w-max text-[9px] font-bold uppercase" style="background:rgba(26,27,45,0.85);backdrop-filter:blur(4px);color:' + stripe + ';border:1px solid ' + stripe + '33">' + label + '</span>' +
-          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title_tr||it.title||'') + '</p>' +
-          score +
+          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight">' + escapeHtml(it.title_tr||it.title||'') + '</p>' +
+          scoreRow +
           '</div>' +
           '</div>';
       }).join('');
@@ -3624,20 +3689,34 @@
         const cover = it.cover_url
           ? '<img src="' + escapeHtml(it.cover_url) + '" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy"/>'
           : '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-2xl font-bold">' + escapeHtml((it.title||'??').slice(0,2).toUpperCase()) + '</div>';
+        var normScore = 0;
+        if (it.score && it.score > 0) normScore = Math.round(it.score / 10 * 10) / 10;
+        else if (it.external_score && it.external_score > 0) normScore = it.external_score;
+        const scoreBadge = normScore > 0
+          ? '<div class="absolute top-2 left-2 z-20 flex items-center gap-0.5 px-1.5 py-0.5 rounded-full" style="background:rgba(10,10,18,0.8);backdrop-filter:blur(4px)"><span class="material-symbols-outlined fill-1 text-[#feb528]" style="font-size:10px">star</span><span class="text-[9px] font-bold text-[#feb528]">' + normScore.toFixed(1) + '</span></div>'
+          : '';
+        const unwatchedBadge = '<div class="absolute top-2 right-2 z-20 px-1.5 py-0.5 rounded-full text-[8px] font-bold uppercase tracking-wider" style="background:rgba(10,10,18,0.8);backdrop-filter:blur(4px);color:#9090b0">İzlenmedi</div>';
+        const yearBadge = it.year ? '<span class="text-[9px] text-[#9090b0]">' + it.year + '</span>' : '';
         const discoverData = JSON.stringify({
           title: it.title,
           type: it.type || 'anime',
           cover_url: it.cover_url || '',
           external_id: String(it.external_id || ''),
-          genres: it.genres || []
+          genres: it.genres || [],
+          external_score: normScore || undefined,
+          total_episodes: it.total_episodes || undefined,
+          total_chapters: it.total_chapters || undefined,
+          year: it.year || undefined
         });
         return '<div class="group relative aspect-[2/3] rounded-lg overflow-hidden bg-[#1a1a2e] cursor-pointer active:scale-[0.95] transition-all duration-300 inner-glow shadow-[0_4px_12px_rgba(0,0,0,0.4)] hover:shadow-[0_16px_32px_rgba(0,0,0,0.7)] hover:scale-[1.02]">' +
           '<div class="absolute top-0 left-0 w-1 h-full z-10" style="background:' + stripe + '"></div>' +
           '<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a12] via-[#0a0a12]/40 to-transparent z-10"></div>' +
+          scoreBadge + unwatchedBadge +
           cover +
           '<div class="absolute inset-0 z-20 flex flex-col justify-end p-3">' +
           '<span class="inline-block px-2 py-0.5 rounded mb-1 w-max text-[9px] font-bold uppercase" style="background:rgba(26,27,45,0.85);backdrop-filter:blur(4px);color:' + stripe + ';border:1px solid ' + stripe + '33">' + typeLabel + '</span>' +
-          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-2">' + escapeHtml(it.title) + '</p>' +
+          '<p class="text-[12px] font-bold text-white line-clamp-2 leading-tight mb-1">' + escapeHtml(it.title) + '</p>' +
+          '<div class="flex items-center justify-between mb-2">' + yearBadge + '</div>' +
           '<button class="w-full h-8 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 active:scale-[0.97] transition-all" style="background:rgba(0,212,255,0.9);color:#003642" data-discover-add=\'' + discoverData.replace(/'/g,'&#39;') + '\'>' +
           '<span class="material-symbols-outlined" style="font-size:14px">add</span>Ekle</button>' +
           '</div></div>';
@@ -3752,6 +3831,10 @@
     if (pubEl) pubEl.value = data.publisher || '';
     const gmEl = document.getElementById('add-form-game-metadata');
     if (gmEl) gmEl.value = data.game_metadata ? JSON.stringify(data.game_metadata) : '';
+    const extScoreEl = document.getElementById('add-form-external-score');
+    if (extScoreEl) extScoreEl.value = data.external_score || '';
+    const yrEl = document.getElementById('add-form-release-year');
+    if (yrEl && data.year) yrEl.value = data.year;
 
     // Tip seçimi
     document.querySelectorAll('.add-type-btn').forEach(btn => {
@@ -3796,6 +3879,8 @@
     try { game_metadata = JSON.parse(_gmRaw); } catch (e) { game_metadata = null; }
     const starEl = document.querySelector('input[name="add-rating"]:checked');
     const my_score = starEl ? parseFloat(starEl.value) : null;
+    const _extScoreRaw = (document.getElementById('add-form-external-score') || {}).value;
+    const external_score = _extScoreRaw ? parseFloat(_extScoreRaw) || null : null;
     const genresRaw = (document.getElementById('add-form-genres') || {}).value || '[]';
     let genres = [];
     try { genres = JSON.parse(genresRaw); } catch (e) { genres = []; }
@@ -3804,7 +3889,7 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
 
     try {
-      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined, runtime_minutes: runtime_minutes || undefined, release_year: release_year || undefined, developer: developer || undefined, publisher: publisher || undefined, game_metadata: game_metadata ? JSON.stringify(game_metadata) : undefined });
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, external_score: external_score || undefined, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined, runtime_minutes: runtime_minutes || undefined, release_year: release_year || undefined, developer: developer || undefined, publisher: publisher || undefined, game_metadata: game_metadata ? JSON.stringify(game_metadata) : undefined });
       closeModal('modal-add');
       // Formu temizle
       ['add-form-title','add-form-cover','add-form-note'].forEach(id => {

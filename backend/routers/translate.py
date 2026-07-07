@@ -7,24 +7,89 @@ GET  /translate/pages/{content_id}/{episode} → çevrilmiş sayfa URL listesi
 GET  /translate/page/{content_id}/{episode}/{page_index} → tek çevrilmiş sayfa
 DELETE /translate/{content_id}/{episode}   → çevrilmiş dosyaları sil
 WebSocket /translate/ws                   → ilerleme push
+POST /translate/text                       → serbest metin çevir (EN→TR)
+POST /translate/synopsis/{content_id}      → içerik özetini TR'ye çevir + DB'ye kaydet
 """
 import os
+import re
 import shutil
-from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
+from datetime import datetime
+from fastapi import APIRouter, HTTPException, Depends, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.config import get_config
+from backend.database import get_db
 from backend.downloader.manager import _DOWNLOADS_ROOT
+from backend.models import Content
 from backend.translator.detect_gpu import detect_gpu
 from backend.translator.engine import translate_chapter, list_pages, translated_dir
 
 router = APIRouter()
 
-# ── Bellek içi çeviri oturumları ─────────────────────────────────────
-# key: "{content_id}:{episode_number}"
 _sessions: dict[str, dict] = {}
 _ws_clients: set[WebSocket] = set()
 
 _IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
+
+_MYMEMORY_URL = "https://api.mymemory.translated.net/get"
+_MYMEMORY_MAX = 500
+
+
+async def _mymemory_translate(text: str, source: str = "en", target: str = "tr") -> str:
+    import httpx
+    chunk = text[:_MYMEMORY_MAX]
+    params = {"q": chunk, "langpair": f"{source}|{target}"}
+    async with httpx.AsyncClient(timeout=15) as c:
+        r = await c.get(_MYMEMORY_URL, params=params,
+                        headers={"User-Agent": "KuroWatch/1.0"})
+        if r.status_code == 200:
+            data = r.json()
+            if data.get("responseStatus") == 200:
+                return data.get("responseData", {}).get("translatedText", "") or chunk
+    return chunk
+
+
+async def _deepl_translate(text: str, api_key: str, target: str = "TR") -> str:
+    import httpx
+    url = ("https://api-free.deepl.com/v2/translate" if api_key.endswith(":fx")
+           else "https://api.deepl.com/v2/translate")
+    chunks = [text[i:i+500] for i in range(0, min(len(text), 2000), 500)]
+    results: list[str] = []
+    async with httpx.AsyncClient(timeout=15) as c:
+        for chunk in chunks:
+            r = await c.post(url, data={"auth_key": api_key, "text": chunk, "target_lang": target})
+            if r.status_code != 200:
+                return text
+            data = r.json()
+            if data.get("translations"):
+                results.append(data["translations"][0]["text"])
+    return " ".join(results) if results else text
+
+
+async def _translate_text(text: str, target: str = "tr") -> tuple[str, str]:
+    if not text or len(text) < 2:
+        return "", "none"
+    clean = re.sub(r'<[^>]+>', '', text).strip()
+    if not clean:
+        return "", "none"
+    cfg = get_config()
+    deepl_key = cfg.get("deepl_api_key", "")
+    if deepl_key:
+        try:
+            tr = await _deepl_translate(clean, deepl_key)
+            if tr and tr != clean:
+                return tr, "deepl"
+        except Exception:
+            pass
+    try:
+        tr = await _mymemory_translate(clean, target=target)
+        if tr and tr != clean:
+            return tr, "mymemory"
+    except Exception:
+        pass
+    return clean, "fallback"
 
 
 # ── Yardımcı ─────────────────────────────────────────────────────────
@@ -84,6 +149,34 @@ async def _run_translation(content_id: int, episode_number: int, target_lang: st
 async def get_gpu_info():
     """GPU + manga-image-translator kurulum durumu (frontend caching için)."""
     return detect_gpu()
+
+
+@router.post("/translate/text")
+async def translate_text(body: dict):
+    """Serbest metin çevir (EN→TR). DeepL veya MyMemory fallback."""
+    text = body.get("text", "")
+    target = body.get("target_lang", "tr")
+    translated, source = await _translate_text(text, target)
+    return {"translated": translated, "source": source}
+
+
+@router.post("/translate/synopsis/{content_id}")
+async def translate_synopsis(content_id: int, db: AsyncSession = Depends(get_db)):
+    """İçerik synopsis'ini TR'ye çevir ve synopsis_tr'ye kaydet."""
+    result = await db.execute(select(Content).where(Content.id == content_id))
+    c = result.scalar_one_or_none()
+    if not c:
+        raise HTTPException(404, "İçerik bulunamadı")
+    if not c.synopsis:
+        return {"synopsis_tr": "", "source": "none"}
+    if c.synopsis_tr:
+        return {"synopsis_tr": c.synopsis_tr, "source": "cached"}
+    translated, source = await _translate_text(c.synopsis, "tr")
+    if translated:
+        c.synopsis_tr = translated
+        c.updated_at = datetime.utcnow()
+        await db.commit()
+    return {"synopsis_tr": translated, "source": source}
 
 
 @router.post("/translate/{content_id}/{episode_number}")

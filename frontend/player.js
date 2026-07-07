@@ -530,7 +530,7 @@
       const blob = await r.blob();
       track.src = URL.createObjectURL(blob);
       track.mode = 'hidden';
-    } catch (err) { console.error('[Player] subtitle load failed:', err); }
+    } catch (err) { console.error('[Player] subtitle load failed:', err); if (window.showToast) window.showToast('Altyazı yüklenemedi', 'error'); }
   }
 
   async function _loadStreamSubtitle(subtitleUrl) {
@@ -543,7 +543,7 @@
       const blob = await r.blob();
       track.src = URL.createObjectURL(blob);
       track.mode = 'hidden';
-    } catch (err) { console.error('[Player] subtitle load failed:', err); }
+    } catch (err) { console.error('[Player] subtitle load failed:', err); if (window.showToast) window.showToast('Altyazı yüklenemedi', 'error'); }
   }
 
   // ── HLS.js ────────────────────────────────────────────────────────
@@ -1383,7 +1383,7 @@
         if (!r.ok) { this._gpu = false; return false; }
         const d = await r.json();
         this._gpu = d.available ? d : false;
-      } catch (err) { console.error('[Player] GPU check failed:', err); this._gpu = false; }
+      } catch (err) { console.error('[Player] GPU check failed:', err); this._gpu = false; if (window.showToast) window.showToast('Çeviri altyapısı tespit edilemedi', 'error'); }
       return this._gpu;
     },
 
@@ -1398,7 +1398,7 @@
           const s = await r.json();
           this._applyStatus(s);
         }
-      } catch (err) { console.error('[Player] operation failed:', err); }
+      } catch (err) { console.error('[Player] translate status failed:', err); if (window.showToast) window.showToast('Çeviri durumu alınamadı', 'error'); }
 
       // GPU var mı?
       const gpu = await this.checkGpu();
@@ -1444,6 +1444,7 @@
         this._connectWS();
       } catch (err) {
         console.error('[Player] translate start failed:', err);
+        if (window.showToast) window.showToast('Çeviri motoru yanıt vermiyor', 'error');
         if (label) label.textContent = 'Hata';
         if (btn) btn.disabled = false;
       }
@@ -1478,7 +1479,7 @@
           _reader._render();
           this._setLang('tr');
         }
-      } catch (err) { console.error('[Player] operation failed:', err); }
+      } catch (err) { console.error('[Player] translate pages failed:', err); if (window.showToast) window.showToast('Çevrilmiş sayfalar alınamadı', 'error'); }
     },
 
     showOriginal() {
