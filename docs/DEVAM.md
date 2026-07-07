@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-111) · **Aktif sürüm:** v1.5.0 · **Son commit:** `b360cab`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-112) · **Aktif sürüm:** v1.5.0 · **Son commit:** `SOHBET-112`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -93,6 +93,38 @@ SIRADA:
   - hdfilmcehennemi: cookies.txt ile oturum veya PW context import
   - sezonlukdizi: dogru domain bulunursa ekle
   - yt-dlp rapidvid.net cozumu (embed -> direkt video)
+```
+
+## ✅ TAMAMLANAN — SOHBET-112: CORS Proxy + HLS Stream Bridge + Frontend Player
+
+```
+[1] Backend Stream Proxy (backend/routers/stream.py):
+    - GET /api/stream/url?content_id=X&episode_number=Y&url=... — find_stream_url + wrap proxy
+    - GET /api/stream/proxy?url=... — generic video/segment proxy with Range + Referer spoofing
+    - GET /api/stream/hls?url=... — HLS master playlist fetch + segment URL rewriting through proxy
+    - GET /api/stream/subtitle?url=... — .vtt subtitle proxy
+    - Referer spoofing: spidypro.com → dizigom.love, rapidvid.net → fullhdfilmizlesene
+    - Registered in main.py
+
+[2] Frontend HLS Support (player.js + index.html):
+    - hls.js CDN added to index.html
+    - _initHls(video, url): hls.js init with native fallback
+    - _destroyHls(): cleanup on player close / source switch
+    - _player.openStream(proxyUrl, title, contentId, epNum, isHls, subtitleUrl)
+    - _player._openCommon(): shared UI setup refactored out
+    - _loadStreamSubtitle(url): blob URL track injection for streamed subtitles
+
+[3] Stream Button in Episode UI (app.js):
+    - ep-stream-btn added next to download button (anime/series/movie only)
+    - Click → fetch /api/stream/url → openStream() → HLS or MP4 via proxy
+    - Falls back to local file if already downloaded
+
+CANLI TEST: rapidvid.net proxy ✅ (JW Player HTML proxied through backend)
+
+SIRADA:
+    - yt-dlp rapidvid.net embed cozumu
+    - HLS segment URL rewriting dogrulama testi
+    - Stream subtitle extraction from page parser (vtt URL parse)
 ```
 
 ```

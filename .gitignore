@@ -20,3 +20,9 @@ start_kw.sh
 start_kw_backend.sh
 backend/tools/check_queue.py
 backend/tools/list_sites.py
+backend/scraper/pw_profiles/
+backend/scraper/cf_cookies.json
+scripts/_*.py
+scripts/test_*.py
+rescue_*.json
+config.json
