@@ -1,9 +1,59 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-120 final) · **Aktif sürüm:** v1.9.1 · **Son commit:** `SOHBET-119` + uncommitted SOHBET-120 fixes
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-121-c) · **Aktif sürüm:** v1.9.2 · **Son commit:** `SOHBET-121-C` ffprobe codec zırhı + E2E video PASS
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
+
+## ✅ TAMAMLANDI — SOHBET-121-C: Tam Video E2E İndirme + Codec Doğrulama
+
+```
+SOHBET-121-C — ffprobe codec zırhı + --include-video-download E2E test hattı mühürlendi:
+
+C-1 — backend/downloader/integrity.py:
+  [x] probe_video_codec(path) — ffprobe -show_streams ile codec bilgisi çıkar
+      * _FFPROBE_BIN: shutil.which("ffprobe") (WSL'de /usr/bin/ffprobe)
+      * Windows fallback: wsl -- ffprobe + _to_wsl_path (C:\ → /mnt/c/)
+      * ffprobe yoksa None döner (graceful fallback — regression yok)
+  [x] _resolve_ffprobe_cmd — platform-aware: direct ffprobe veya wsl -- ffprobe
+  [x] _KNOWN_VIDEO_CODECS: h264/h265/hevc/vp9/vp8/av1/mpeg4/wmv/theora/flv1
+  [x] validate_video_file_playable(path) — validate_video_file + codec probe
+      * ffprobe yoksa mevcut magic-byte kontrolüne düşer (regression yok)
+      * stream yoksa veya codec bilinmiyorsa DownloadIntegrityError
+
+C-2 — backend/downloader/anime.py:
+  [x] import + çağrı: validate_video_file → validate_video_file_playable
+  [x] İndirme tamamlandıktan sonra ffprobe codec doğrulaması
+
+C-3 — tests/test_backend_integrity.py:
+  [x] import: probe_video_codec + validate_video_file_playable
+  [x] api_video_download_check: validate_video_file_playable + codec log
+      * log: "codec=h264, res=1920x1080" formatında
+  [x] host_path bug fix: normalized[5] → normalized[6] (WSL→Windows drive conversion)
+      * /mnt/c/... → C:\... dönüşümü Windows'ta artık çalışıyor
+
+KANIT (gerçek E2E --include-video-download):
+  [x] py_compile PASS: integrity.py, anime.py, test_backend_integrity.py
+  [x] ffprobe entegrasyon testi: h264, 1280x720, 15s → validate_video_file_playable PASS
+  [x] Gerçek E2E PASS:
+      python tests\test_backend_integrity.py --include-video-download
+      KUROWATCH_API_BASE=http://127.0.0.1:8099
+      KUROWATCH_INTEGRITY_TITLE="A Returner's Magic Should Be Special"
+      → SQLite WAL doğrulandı
+      → Manga direct scraper: 17 pages, 1.86MB, progress_events=17
+      → Manga API download→serve→delete→physical delete
+      → Video stream probe: HTTP 206, video/mp4, 65536 bytes
+        (cdn2.videostraeam2.can.re/.../1080p.mp4?token=...)
+      → Video download: 290,746,726 bytes (277MB), codec=h264, res=1920x1080
+      → Video serve: HTTP 206, 65536 bytes
+      → Video delete→physical delete
+      → BACKEND INTEGRITY PASS
+
+GİT DURUMU:
+  Modified: backend/downloader/integrity.py, backend/downloader/anime.py,
+            tests/test_backend_integrity.py
+  (SOHBET-119/120 kayıpları yok; tüm mevcut yapı korundu)
+```
 
 ## ✅ TAMAMLANDI — SOHBET-120: Orijinal Kaynak Etiket Senkronizasyonu + Production Hardening
 

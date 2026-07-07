@@ -4,7 +4,7 @@ import re
 from typing import Callable, Coroutine, Optional
 from urllib.parse import urlparse
 
-from backend.downloader.integrity import validate_video_file
+from backend.downloader.integrity import validate_video_file_playable
 from backend.downloader.stream_finder import (
     find_stream_url_with_tags,
     get_session_header_args,
@@ -117,7 +117,7 @@ async def download_anime(
     for ext in ("mp4", "mkv", "webm", "avi"):
         p = f"{output_path}.{ext}"
         if os.path.exists(p):
-            validate_video_file(p)
+            validate_video_file_playable(p)
             if on_progress:
                 await on_progress(100)
             # Otonom etiket senkronizasyonu: kaynak site etiketlerini DB'ye yansıt
