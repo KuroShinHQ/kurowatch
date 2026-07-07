@@ -58,6 +58,7 @@ class ContentCreate(BaseModel):
     my_progress: int = 0
     my_progress_pct: Optional[int] = None
     my_score: Optional[float] = None
+    external_score: Optional[float] = None
     note_text: Optional[str] = None
     note_is_spoiler: bool = False
     genres: Optional[List[str]] = None
@@ -78,6 +79,7 @@ class ContentPatch(BaseModel):
     my_progress: Optional[int] = None
     my_progress_pct: Optional[int] = None
     my_score: Optional[float] = None
+    external_score: Optional[float] = None
     note_text: Optional[str] = None
     note_is_spoiler: Optional[bool] = None
     total_episodes: Optional[int] = None
@@ -550,6 +552,58 @@ async def auto_progress(body: AutoProgressIn, db: AsyncSession = Depends(get_db)
 
 
 # ── Discover (AniList proxy) ─────────────────────────────────────────
+
+@router.get("/discover/recommendations")
+async def get_recommendations(db: AsyncSession = Depends(get_db)):
+    """Kullanıcının izleme/okuma/puanlama geçmişine dayalı öneri motoru."""
+    result = await db.execute(select(Content))
+    contents = result.scalars().all()
+
+    genre_weights: dict[str, float] = {}
+    type_counts: dict[str, int] = {}
+    for c in contents:
+        try:
+            genres = json.loads(c.genres) if c.genres else []
+        except Exception:
+            genres = []
+        weight = 1.0 + (c.my_score or 0) / 10.0
+        for g in genres:
+            genre_weights[g] = genre_weights.get(g, 0.0) + weight
+        type_counts[c.type] = type_counts.get(c.type, 0) + 1
+
+    if not genre_weights:
+        return await anilist.search(None, "anime", 1, None)
+
+    top_genres = sorted(genre_weights.items(), key=lambda x: -x[1])[:3]
+    library_ids = {c.external_id for c in contents if c.external_id}
+
+    search_types = []
+    if type_counts.get("anime", 0) >= type_counts.get("manga", 0):
+        search_types = ["anime", "manga"]
+    else:
+        search_types = ["manga", "anime"]
+
+    all_recs: list[dict] = []
+    seen_ids: set[str] = set()
+    for genre_name, _ in top_genres:
+        for ctype in search_types:
+            try:
+                results = await anilist.search(None, ctype, 1, genre_name)
+            except Exception:
+                results = []
+            for r in results:
+                eid = str(r.get("external_id", ""))
+                if eid and eid not in library_ids and eid not in seen_ids:
+                    seen_ids.add(eid)
+                    all_recs.append(r)
+            if len(all_recs) >= 24:
+                break
+        if len(all_recs) >= 24:
+            break
+
+    all_recs.sort(key=lambda r: -(r.get("score") or 0))
+    return all_recs[:12]
+
 
 @router.get("/discover")
 async def discover(

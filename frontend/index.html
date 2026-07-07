@@ -225,6 +225,14 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
     <div id="home-continue-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-4 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
   </div>
 
+  <!-- ── Sizin İçin Seçilenler (Öneri Motoru) ──────────────────── -->
+  <div id="home-recommendations-section" class="mb-12 hidden">
+    <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
+      Sizin İçin Seçilenler <span class="material-symbols-outlined text-[#00d4ff] text-[20px]">auto_awesome</span>
+    </h3>
+    <div id="home-recommendations-row" class="flex gap-4 overflow-x-auto hide-scrollbar pb-6 pl-4 md:pl-5 pr-4 snap-x snap-proximity" style="touch-action:pan-x;-webkit-overflow-scrolling:touch;cursor:grab"></div>
+  </div>
+
   <!-- ── Popüler Anime Satırı ─────────────────────────────────── -->
   <div id="home-anime-section" class="mb-12 hidden">
     <h3 class="font-headline-md text-[20px] tracking-tight text-[#e1e0ff] mb-4 px-4 md:px-5 flex items-center gap-2">
@@ -316,7 +324,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
 <!-- ════════════════════════════════════════════════════════════════ -->
 <section id="screen-detail" class="screen hidden w-full flex flex-col antialiased pb-safe font-sans" style="height:100dvh;overflow-y:auto">
 <!-- Hero v7: Cover + Cinema Gradient + Actions -->
-<div class="relative flex-shrink-0" style="height:530px">
+<div class="relative flex-shrink-0" style="height:460px">
   <div class="absolute inset-0 bg-cover bg-center" id="detail-cover-bg" style="background-color:#16213e"></div>
   <div class="absolute inset-0" style="background:linear-gradient(0deg,#0d0d1a 0%,rgba(13,13,26,0.78) 40%,rgba(13,13,26,0) 100%)"></div>
   <div class="absolute inset-0" style="background:rgba(14,20,23,0.35);backdrop-filter:blur(0px)"></div>
@@ -336,7 +344,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
     </div>
   </div>
   <!-- Content overlay: badges + title + CTA -->
-  <div class="absolute bottom-0 left-0 w-full px-4 pb-5 flex flex-col gap-3 z-10">
+  <div class="absolute bottom-0 left-0 w-full px-4 pb-4 flex flex-col gap-2 z-10">
     <div class="flex flex-wrap gap-2 items-center">
       <span id="detail-type-badge" class="px-2 py-0.5 rounded font-label-caps text-label-caps uppercase" style="background:rgba(187,197,235,0.18);border:1px solid #bbc5eb;color:#bbc5eb">TV</span>
       <span id="detail-status-badge" class="px-2 py-0.5 rounded font-label-caps text-label-caps flex items-center gap-1 uppercase" style="background:rgba(254,181,40,0.15);border:1px solid #feb528;color:#feb528">
@@ -370,9 +378,9 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
   <div id="detail-season-bar" style="display:none" class="px-4 pt-3 pb-1">
     <div id="detail-season-tabs" class="flex gap-2 overflow-x-auto hide-scrollbar"></div>
   </div>
-  <div class="p-gutter flex flex-col gap-4">
+  <div class="p-gutter flex flex-col gap-3">
     <!-- Rating -->
-    <div class="flex flex-col items-center gap-1 py-2">
+    <div class="flex flex-col items-center gap-1 py-1">
       <div class="flex items-center gap-1" id="detail-rating-container">
         <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
         <span class="material-symbols-outlined text-[#00d4ff] cursor-pointer text-[28px]" style="font-variation-settings:'FILL' 1;">star</span>
@@ -388,7 +396,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
       <span id="detail-score-text" class="text-[13px] font-bold text-[#9090b0]">— / 10</span>
     </div>
     <!-- Progress Card -->
-    <div class="bg-[#16213e] rounded-xl p-4 inner-glow border border-white/5 flex flex-col gap-3">
+    <div class="bg-[#16213e] rounded-xl p-3 inner-glow border border-white/5 flex flex-col gap-2">
       <div class="flex justify-between items-end">
         <div class="flex flex-col relative">
           <span class="font-label-caps text-label-caps text-[#9090b0] uppercase">İLERLEME</span>
@@ -1596,6 +1604,7 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
             <input id="add-form-cover" class="w-full h-[44px] px-3 bg-[#1a1a2e] border border-[#3c494e] rounded-lg text-[12px] text-[#9090b0] font-mono focus:outline-none focus:ring-1 focus:ring-[#00d4ff]/50" type="text" placeholder="https://..."/>
             <input id="add-form-genres" type="hidden" value=""/>
             <input id="add-form-external-id" type="hidden" value=""/>
+            <input id="add-form-external-score" type="hidden" value=""/>
             <input id="add-form-total-episodes" type="hidden" value=""/>
             <input id="add-form-total-chapters" type="hidden" value=""/>
             <input id="add-form-runtime-minutes" type="hidden" value=""/>
