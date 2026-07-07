@@ -78,7 +78,7 @@
     'manhwa': { color:'#bbc5eb', label:'Manhwa' },
     'series': { color:'#ff9a3c', label:'Dizi' },
     'movie':  { color:'#c084fc', label:'Film' },
-    'game':   { color:'#ffb4ab', label:'Oyun' }
+    'game':   { color:'#4ade80', label:'Oyun' }
   };
   function tcStyle(tc) {
     const c = tc.color;
@@ -95,7 +95,7 @@
     'rewatching': 'Tekrar İzliyor'
   };
 
-  const TAG_COLORS = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#ffb4ab', '#90e090', '#ff9a3c'];
+  const TAG_COLORS = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#4ade80', '#ffb4ab', '#90e090', '#ff9a3c'];
   let _selectedTagColor = TAG_COLORS[0];
   let _tagPickerEl = null;
 
@@ -387,11 +387,18 @@
       row.innerHTML = rowItems.slice(0,20).map(it => {
         const col = (tc[it.type]||tc.anime);
         const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
+        const isGame = it.type === 'game';
+        const gameMeta = it.game_metadata || {};
+        const platforms = (it.platforms || gameMeta.platforms || []).slice(0,3);
+        const yearBadge = it.release_year ? `<span class="text-[9px] text-[#9090b0] font-medium">${it.release_year}</span>` : '';
+        const platBadges = platforms.length ? platforms.map(function(p){return '<span class="text-[8px] px-1 py-0.5 rounded bg-white/10 text-[#859398] font-medium leading-tight">'+escapeHtml(p)+'</span>';}).join('') : '';
+        const extraInfo = isGame && (yearBadge || platBadges) ? '<div class="flex items-center gap-1.5 mt-0.5 flex-wrap">'+yearBadge+platBadges+'</div>' : '';
         return `<div class="flex-none w-[140px] md:w-[180px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
           <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
           <div class="absolute top-2 right-2 z-20"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span></div>
           <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
             <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
+            ${extraInfo}
           </div>
         </div>`;
       }).join('');
@@ -785,7 +792,7 @@
     // Slider değişimi
     slider.oninput = function() {
       const v = parseInt(this.value, 10);
-      if (isGame) {
+      if (isPctType) {
         document.getElementById('detail-progress-current').textContent = v + '%';
         document.getElementById('detail-progress-pct').textContent = v + '%';
         document.getElementById('detail-progress-bar').style.width = v + '%';
@@ -798,7 +805,7 @@
     };
     slider.onchange = function() {
       const v = parseInt(this.value, 10);
-      if (isGame) {
+      if (isPctType) {
         item.my_progress_pct = v;
         apiPatch('/api/content/' + id, { my_progress_pct: v });
       } else {
@@ -815,7 +822,7 @@
         e.stopPropagation();
         const open = qePanel.style.display !== 'none';
         qePanel.style.display = open ? 'none' : '';
-        if (!open) { qeInput.value = isGame ? (item.my_progress_pct || 0) : (item.my_progress || 0); qeInput.focus(); }
+        if (!open) { qeInput.value = isPctType ? (item.my_progress_pct || 0) : (item.my_progress || 0); qeInput.focus(); }
       };
       document.getElementById('pqe-minus').onclick = function() { qeInput.value = Math.max(0, parseInt(qeInput.value || 0, 10) - 1); };
       document.getElementById('pqe-plus').onclick  = function() { qeInput.value = parseInt(qeInput.value || 0, 10) + 1; };
@@ -823,7 +830,7 @@
         const v = parseInt(qeInput.value, 10);
         if (isNaN(v) || v < 0) return;
         qePanel.style.display = 'none';
-        if (isGame) {
+        if (isPctType) {
           item.my_progress_pct = v;
           await apiPatch('/api/content/' + id, { my_progress_pct: v });
         } else {
@@ -885,6 +892,27 @@
       } else {
         genresRow.classList.add('hidden');
         genresRow.classList.remove('flex');
+      }
+    }
+
+    // Game metadata
+    const gameMeta = document.getElementById('detail-game-meta');
+    if (gameMeta) {
+      if (item.type === 'game' && (item.developer || item.publisher || (item.game_metadata && item.game_metadata.platforms && item.game_metadata.platforms.length))) {
+        gameMeta.classList.remove('hidden');
+        const platRow = document.getElementById('detail-game-platforms');
+        if (platRow) {
+          const platforms = (item.game_metadata && item.game_metadata.platforms) || item.platforms || [];
+          platRow.innerHTML = platforms.map(function(p) {
+            return '<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#4ade80]/10 text-[#4ade80] border border-[#4ade80]/30">' + escapeHtml(p) + '</span>';
+          }).join('');
+        }
+        const devEl = document.getElementById('detail-game-developer');
+        if (devEl) devEl.textContent = item.developer ? 'Geliştirici: ' + escapeHtml(item.developer) : '';
+        const pubEl = document.getElementById('detail-game-publisher');
+        if (pubEl) pubEl.textContent = item.publisher ? 'Yayıncı: ' + escapeHtml(item.publisher) : '';
+      } else {
+        gameMeta.classList.add('hidden');
       }
     }
 
@@ -3114,7 +3142,7 @@
         box.innerHTML = '<div class="col-span-3 text-center py-12 flex flex-col items-center gap-3"><span class="material-symbols-outlined text-[#9090b0]" style="font-size:48px;opacity:0.4">filter_list_off</span><p class="text-[14px] font-medium text-[#9090b0]">Filtrelerle eşleşen sonuç yok</p></div>';
         return;
       }
-      const _TYPE_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#ffb4ab'};
+      const _TYPE_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#4ade80'};
       const _TYPE_LABEL  = {anime:'Anime',manga:'Manga',manhwa:'Manhwa',game:'Oyun'};
       box.innerHTML = items.map(function(it) {
         const stripe = _TYPE_STRIPE[it.type] || '#00d4ff';
@@ -3193,7 +3221,7 @@
           '</div>';
         return;
       }
-      const _DS_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#ffb4ab'};
+      const _DS_STRIPE = {anime:'#00d4ff',manga:'#ffd9a1',manhwa:'#bbc5eb',game:'#4ade80'};
       const _DS_LABEL  = {anime:'Anime',manga:'Manga',manhwa:'Manhwa',game:'Oyun'};
       results.innerHTML = items.map(function(it) {
         const stripe = _DS_STRIPE[it.type] || '#00d4ff';
@@ -3323,6 +3351,12 @@
     if (epEl) epEl.value = data.total_episodes != null ? data.total_episodes : '';
     const chEl = document.getElementById('add-form-total-chapters');
     if (chEl) chEl.value = data.total_chapters != null ? data.total_chapters : '';
+    const devEl = document.getElementById('add-form-developer');
+    if (devEl) devEl.value = data.developer || '';
+    const pubEl = document.getElementById('add-form-publisher');
+    if (pubEl) pubEl.value = data.publisher || '';
+    const gmEl = document.getElementById('add-form-game-metadata');
+    if (gmEl) gmEl.value = data.game_metadata ? JSON.stringify(data.game_metadata) : '';
 
     // Tip seçimi
     document.querySelectorAll('.add-type-btn').forEach(btn => {
@@ -3360,6 +3394,11 @@
     const _yrRaw = (document.getElementById('add-form-release-year') || {}).value;
     const runtime_minutes = _rtRaw ? parseInt(_rtRaw) || null : null;
     const release_year = _yrRaw ? parseInt(_yrRaw) || null : null;
+    const developer = (document.getElementById('add-form-developer') || {}).value || null;
+    const publisher = (document.getElementById('add-form-publisher') || {}).value || null;
+    const _gmRaw = (document.getElementById('add-form-game-metadata') || {}).value || 'null';
+    let game_metadata = null;
+    try { game_metadata = JSON.parse(_gmRaw); } catch (e) { game_metadata = null; }
     const starEl = document.querySelector('input[name="add-rating"]:checked');
     const my_score = starEl ? parseFloat(starEl.value) : null;
     const genresRaw = (document.getElementById('add-form-genres') || {}).value || '[]';
@@ -3370,7 +3409,7 @@
     if (btn) { btn.disabled = true; btn.textContent = 'Kaydediliyor...'; }
 
     try {
-      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined, runtime_minutes: runtime_minutes || undefined, release_year: release_year || undefined });
+      await apiPost('/api/content', { title: title.trim(), type, status, cover_url, note_text, external_id, my_score, genres: genres.length ? genres : undefined, total_episodes: total_episodes || undefined, total_chapters: total_chapters || undefined, runtime_minutes: runtime_minutes || undefined, release_year: release_year || undefined, developer: developer || undefined, publisher: publisher || undefined, game_metadata: game_metadata ? JSON.stringify(game_metadata) : undefined });
       closeModal('modal-add');
       // Formu temizle
       ['add-form-title','add-form-cover','add-form-note'].forEach(id => {

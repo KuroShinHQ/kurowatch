@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-112) · **Aktif sürüm:** v1.5.0 · **Son commit:** `SOHBET-112`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-113) · **Aktif sürüm:** v1.6.0 · **Son commit:** `SOHBET-113`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -125,6 +125,52 @@ SIRADA:
     - yt-dlp rapidvid.net embed cozumu
     - HLS segment URL rewriting dogrulama testi
     - Stream subtitle extraction from page parser (vtt URL parse)
+```
+
+## ✅ TAMAMLANAN — SOHBET-113: IGDB Oyun Modeli + Developer/Publisher + Tag Renk Fix + Game Card Zenginlestirme
+```
+SOHBET-113 — Game developer/publisher/game_metadata kolonlari + IGDB involved_companies + tag color fix:
+
+[1] Backend: Content model (models.py):
+    - developer (String 500, nullable) — IGDB from involved_companies
+    - publisher (String 500, nullable) — IGDB from involved_companies  
+    - game_metadata (Text, nullable) — JSON: platforms, rating_count
+    - Serileştirme: content.py _serialize → developer, publisher, game_metadata (JSON parse)
+
+[2] Database migration (database.py):
+    - 3 ALTER TABLE migration (idempotent)
+    - seed_content_type_tags: game tag #ffb4ab → #4ade80, existing tag UPDATE logic
+    - Artık mevcut tag varsa color'u UPDATE eder (yoksa INSERT)
+
+[3] IGDB scraper enhancement (igdb.py):
+    - search/get_detail: involved_companies.company.name, .developer, .publisher fields
+    - _format(): developer/publisher extraction from involved_companies
+    - game_metadata: {platforms, rating_count} JSON
+
+[4] Content API (content.py):
+    - ContentCreate + ContentPatch: developer, publisher, game_metadata fields
+    - /api/content/{id}/anilist (game type): lazy-save developer/publisher/game_metadata
+    - Add form hidden inputs: developer, publisher, game-metadata
+
+[5] Frontend UI (app.js + index.html):
+    - Game color: #ffb4ab → #4ade80 (TYPE_COLOR, _TYPE_STRIPE, _DS_STRIPE, TAG_COLORS)
+    - isGame → isPctType bug fix (lines 788,801,818,826 — ReferenceError fix)
+    - Home game card: year badge + platform badge (PC/PS/XBOX) for game items
+    - Detail view: #detail-game-meta section with platform badges + developer/publisher info
+    - Add form (index.html): hidden fields for developer, publisher, game-metadata
+    - prefillAddForm + submitAddContent: game metadata save
+
+[6] Canlı kanıt: Backend test = ✅ (syntax/import clean)
+```
+
+```
+TEST PLAN:
+  [ ] Game ekle (IGDB discover → pick → add): developer/publisher/game_metadata kaydı
+  [ ] Game detail: yeşil tag #4ade80, platform badge, developer/publisher bilgisi
+  [ ] Home row: game card'ta yıl + platform badge
+  [ ] isGame→isPctType: game progress slider ReferenceError düzeltmesi
+  [ ] Eski game tag: seed calisinca #ffb4ab → #4ade80 update
+  [ ] Manual game add: developer/publisher bos (nullable) sorunsuz
 ```
 
 ```
@@ -520,7 +566,16 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (6 Temmuz 2026 - sohbet-106):
+MEVCUT DURUM (7 Temmuz 2026 - sohbet-113):
+  - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
+  - DB: developer/publisher/game_metadata kolonlari eklendi
+  - Game tag rengi: #ffb4ab → #4ade80 (yesil)
+  - IGDB scraper: involved_companies ile developer/publisher cikarimi
+  - isGame→isPctType ReferenceError fix (slider input/change/quick-edit)
+  - Home game card: yil badge + platform badge
+  - Detail view: platform badges + developer/publisher bilgisi
+  - SIRADAKI: yt-dlp rapidvid.net embed cozumu, HLS segment test
+```
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
   - FAZ-V7: ✅ TAMAMLANDI (12/12)
   - DB: 20.625 episode kaydı, 1239 site kaydı

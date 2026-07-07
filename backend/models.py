@@ -37,6 +37,9 @@ class Content(Base):
     parent_id:       Mapped[Optional[int]]  = mapped_column(Integer, ForeignKey("content.id"), nullable=True)
     runtime_minutes: Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)   # movies/series ep length
     release_year:    Mapped[Optional[int]]  = mapped_column(Integer, nullable=True)   # release year
+    developer:       Mapped[Optional[str]]  = mapped_column(String(500), nullable=True)  # game developer (IGDB)
+    publisher:       Mapped[Optional[str]]  = mapped_column(String(500), nullable=True)  # game publisher (IGDB)
+    game_metadata:   Mapped[Optional[str]]  = mapped_column(Text, nullable=True)         # game-specific JSON
     added_at:        Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow)
     updated_at:      Mapped[datetime]       = mapped_column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
 

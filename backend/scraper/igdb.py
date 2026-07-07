@@ -54,7 +54,8 @@ async def search(q: str, client_id: str, client_secret: str, page: int = 1) -> l
         body = (
             f'search "{q}"; '
             f'fields id,name,cover.image_id,genres.name,first_release_date,'
-            f'total_rating,total_rating_count,summary,platforms.abbreviation,status; '
+            f'total_rating,total_rating_count,summary,platforms.abbreviation,status,'
+            f'involved_companies.company.name,involved_companies.developer,involved_companies.publisher; '
             f'where version_parent = null; '
             f'limit 12; offset {offset};'
         )
@@ -72,7 +73,8 @@ async def get_detail(game_id: str, client_id: str, client_secret: str) -> dict |
         body = (
             f'where id = {game_id}; '
             f'fields id,name,cover.image_id,genres.name,first_release_date,'
-            f'total_rating,total_rating_count,summary,platforms.abbreviation,status,dlcs.name; '
+            f'total_rating,total_rating_count,summary,platforms.abbreviation,status,dlcs.name,'
+            f'involved_companies.company.name,involved_companies.developer,involved_companies.publisher; '
             f'limit 1;'
         )
         games = await _igdb_post("games", body, client_id, token)
@@ -101,6 +103,22 @@ def _format(g: dict) -> dict:
     raw_rating = g.get("total_rating")
     score = round(raw_rating) if raw_rating else None  # IGDB 0-100 → keep as-is
 
+    # Extract developer/publisher from involved_companies
+    developer = None
+    publisher = None
+    for ic in (g.get("involved_companies") or []):
+        company_name = (ic.get("company") or {}).get("name")
+        if company_name:
+            if ic.get("developer"):
+                developer = company_name
+            if ic.get("publisher"):
+                publisher = company_name
+
+    game_metadata = {
+        "platforms": platforms,
+        "rating_count": g.get("total_rating_count"),
+    }
+
     return {
         "external_id": str(g["id"]),
         "title": g.get("name", ""),
@@ -116,4 +134,7 @@ def _format(g: dict) -> dict:
         "synopsis": g.get("summary") or "",
         "next_airing_episode": None,
         "platforms": platforms,
+        "developer": developer,
+        "publisher": publisher,
+        "game_metadata": game_metadata,
     }
