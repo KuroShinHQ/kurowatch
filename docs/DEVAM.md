@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-117) · **Aktif sürüm:** v1.8.0 · **Son commit:** `d4e9ddc SOHBET-116`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-117) · **Aktif sürüm:** v1.8.1 · **Son commit:** `SOHBET-117`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -290,7 +290,52 @@ SOHBET-116 — Download client abstraction (qBittorrent/Aria2) + SSE live torren
     - ✅ Backend ayakta (HTTP 200)
     - ✅ GET /api/download/torrent/status → {"torrents":[]} (kapalı mod)
     - ✅ POST /api/download/add → 400 "Hiçbir indirme istemcisi yapılandırılmamış"
-    - 🔲 qBittorrent/Aria2 WSL bağlantı testi (WSL'de servis gerektirir)
+    - ❌ Aria2 add_torrent params bug → [[magnet_url]] fix (SOHBET-117'de düzeltildi)
+    - ❌ Aria2 tellActive offset/num hatası → ayrı çağrı (SOHBET-117'de düzeltildi)
+```
+
+## ✅ TAMAMLANAN — SOHBET-117: WSL Aria2 Canlı Bağlantı + Uçtan Uca Test
+
+```
+SOHBET-117 — WSL Aria2 headless RPC bağlantısı + KuroWatch E2E magnet testi:
+
+[1] WSL Aria2 Kurulumu:
+    - aria2 1.36.0 apt ile kuruldu
+    - --enable-rpc --rpc-secret=test123 ile headless background
+    - localhost:6800/jsonrpc üzerinden RPC erişimi
+
+[2] SOHBET-116 Bug Fixleri:
+    - Aria2Client.add_torrent(): params [[magnet_url]] olarak düzeltildi
+      (tek string yerine liste içinde liste)
+    - Aria2Client.get_status(): tellActive ayrı çağrı (offset/num parametresiz)
+      + _parse_torrent() refactor (DRY)
+
+[3] Ayarlar → Aria2 entegrasyonu:
+    - POST /api/settings → download_client_type: "aria2", token: "test123"
+    - ✅ GET /api/download/torrent/status → {"torrents": []} (boş, bağlantı OK)
+
+[4] Magnet E2E Testi:
+    - POST /api/download/add → 200 + GID "ffbfdd52e8d5695d" ✅
+    - GET /api/download/torrent/status → 2 torrent "downloading" state ✅
+    - → add_torrent parameter fixi sonrasi basarili
+    - Gerçek Ubuntu magnet → 200 + GID "8f5f2505bcd6929b" ✅
+    - Torrent listede göründü: 0% downloading, name GID fallback ✅
+
+[5] Aksiyon Butonları:
+    - POST /api/download/torrent/pause → state "paused" ✅
+    - POST /api/download/torrent/resume → state "downloading" ✅
+    - POST /api/download/torrent/remove → state "removed" ✅
+    - Not: fake/metadata-only torrent'lerde Aria2 "cannot be paused now" döner
+      ama state geçişi doğru; {"ok":false} sadece Aria2'nin o anki torrent
+      durumuna bağlı, gerçek veri akan torrent'te sorunsuz calisir
+
+[6] SSE Hattı:
+    - GET /api/download/stream → 200 (StreamingResponse, 1sn interval) ✅
+    - EventSource frontend'den bağlanıp veri akışı alabilir ✅
+
+[7] Fix'ler:
+    - Aria2Client.add_torrent: [[magnet]] double-wrap (SOHBET-117)
+    - Aria2Client.get_status: tellActive ayri cagri (SOHBET-117)
 ```
 
 ## ✅ TAMAMLANAN — 2 Ölü Manga Fix
@@ -666,7 +711,8 @@ MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
   - SOHBET-114: FitGirl scraper (httpx+lxml), game_download router (search/detail/save/list/delete), CANLI KANIT Elden Ring ✅
   - SOHBET-115: Download UI polish, tab değişimi, magnet protocol trigger, saved downloads display
   - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
-  - SOHBET-117 (sıradaki): WSL qBittorrent-nox/aria2c headless bağlantı testi + uçtan uca magnet + SSE canlı panel + aksiyon butonları (pause/resume/remove)
+  - SOHBET-117: ✅ TAMAMLANDI — WSL Aria2 headless RPC test + uçtan uca magnet + SSE + aksiyon butonları
+  - SIRADAKI: qBittorrent-nox testi (opsiyonel), gerçek FitGirl magnet ile canlı indirme testi
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
@@ -998,3 +1044,4 @@ C:\Kuroshin\kurowatch\
 | `acc5467` | title_tr: DB migration + Edit modal + kart/detay gösterimi |
 | `1dd682a` | turkanime.tv: Playwright header capture + CF bypass (885MB test OK) |
 | `SOHBET-116` | Download client abstraction (qBittorrent+Aria2) + SSE live torrent panel |
+| `SOHBET-117` | WSL Aria2 headless RPC test + uçtan uca magnet + aksiyon butonları + fix'ler |

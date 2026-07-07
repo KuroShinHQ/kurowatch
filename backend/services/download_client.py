@@ -209,7 +209,7 @@ class Aria2Client(DownloadClient):
             return None
 
     async def add_torrent(self, magnet_url: str, save_path: Optional[str] = None) -> str:
-        params = [magnet_url]
+        params = [[magnet_url]]
         if save_path:
             params.append({"dir": save_path})
         r = await self._call("aria2.addUri", params)
@@ -217,42 +217,50 @@ class Aria2Client(DownloadClient):
             return str(r)  # GID
         return ""
 
+    def _parse_torrent(self, t: dict) -> TorrentInfo:
+        total = int(t.get("totalLength", 0))
+        completed = int(t.get("completedLength", 0))
+        speed = int(t.get("downloadSpeed", 0))
+        state = t.get("status", "unknown")
+        remaining = t.get("remainingTime")
+        try:
+            eta = int(remaining) if remaining else 0
+        except (ValueError, TypeError):
+            eta = 0
+        if state == "complete":
+            state = "completed"
+        elif state == "active":
+            state = "downloading"
+        elif state == "paused":
+            state = "paused"
+        elif state == "error":
+            state = "error"
+        return TorrentInfo(
+            name=t.get("bittorrent", {}).get("info", {}).get("name", t.get("gid", "")),
+            size=total,
+            progress=(completed / total * 100) if total > 0 else 0,
+            speed=speed,
+            eta=eta,
+            state=state,
+            hash_id=t.get("gid", ""),
+        )
+
     async def get_status(self) -> list[TorrentInfo]:
         result = []
-        # Get active + waiting + stopped
-        for status_type in ["active", "waiting", "stopped"]:
+        # tellActive: offset/num kabul etmez, sadece [keys] alir
+        r = await self._call("aria2.tellActive")
+        if r:
+            for t in r:
+                result.append(self._parse_torrent(t))
+        # tellWaiting + tellStopped: offset, num parametreli
+        for status_type in ["waiting", "stopped"]:
             r = await self._call(f"aria2.tell{status_type.capitalize()}", [
                 -1, 1000  # offset, num
             ])
             if not r:
                 continue
             for t in r:
-                total = int(t.get("totalLength", 0))
-                completed = int(t.get("completedLength", 0))
-                speed = int(t.get("downloadSpeed", 0))
-                state = t.get("status", "unknown")
-                remaining = t.get("remainingTime")
-                try:
-                    eta = int(remaining) if remaining else 0
-                except (ValueError, TypeError):
-                    eta = 0
-                if state == "complete":
-                    state = "completed"
-                elif state == "active":
-                    state = "downloading"
-                elif state == "paused":
-                    state = "paused"
-                elif state == "error":
-                    state = "error"
-                result.append(TorrentInfo(
-                    name=t.get("bittorrent", {}).get("info", {}).get("name", t.get("gid", "")),
-                    size=total,
-                    progress=(completed / total * 100) if total > 0 else 0,
-                    speed=speed,
-                    eta=eta,
-                    state=state,
-                    hash_id=t.get("gid", ""),
-                ))
+                result.append(self._parse_torrent(t))
         return result
 
     async def pause(self, hash_id: str) -> bool:
