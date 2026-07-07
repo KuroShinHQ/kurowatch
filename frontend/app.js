@@ -6,9 +6,50 @@
 (function() {
   'use strict';
 
+  // Mobil cihazlarda yatay/dikey değişim ve sanal klavye yönetimi
+  (function _initMobileViewport() {
+    function _resizeHandler() {
+      // iOS/Android sanal klavye açıldığında focus'taki input görünür kalsın
+      const focused = document.activeElement;
+      if (focused && (focused.tagName === 'INPUT' || focused.tagName === 'TEXTAREA')) {
+        setTimeout(function() {
+          focused.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 120);
+      }
+      // Video player esnekliği: oynatıcı açıksa boyutlandır
+      const player = document.getElementById('modal-player');
+      if (player && player.classList.contains('open')) {
+        const video = document.getElementById('player-video');
+        if (video) {
+          video.style.maxHeight = Math.min(window.innerHeight, window.innerWidth) + 'px';
+        }
+      }
+    }
+    if ('visualViewport' in window) {
+      window.visualViewport.addEventListener('resize', _resizeHandler);
+    }
+    window.addEventListener('orientationchange', function() {
+      setTimeout(_resizeHandler, 150);
+    });
+    window.addEventListener('resize', _resizeHandler);
+  })();
+
+  // Global hata sınırı: yakalanmamış hatalarda kullanıcıya toast
+  window.onerror = function(message, source, lineno, colno, error) {
+    var msg = '[Runtime Error] ' + (message || 'Bilinmeyen hata');
+    if (lineno) msg += ' (' + source + ':' + lineno + ')';
+    console.error(msg, error);
+    if (window.showToast) window.showToast('Beklenmeyen hata oluştu; sayfayı yenileyin.', 'error');
+    return false;
+  };
+  window.addEventListener('unhandledrejection', function(e) {
+    console.error('[Unhandled Promise]', e.reason);
+    if (window.showToast) window.showToast('Beklenmeyen ağ/işlem hatası.', 'error');
+  });
+
   // ── Konfigürasyon ─────────────────────────────────────────────────
   const API_BASE = window.location.origin;
-  let USE_MOCK = false; // backend :8099 bağlı
+  const USE_MOCK = false; // SOHBET-120: mock API responses are disabled
 
   // ── Mock Data ─────────────────────────────────────────────────────
   const MOCK_LIBRARY = [
@@ -101,13 +142,7 @@
 
   // ── API Layer ─────────────────────────────────────────────────────
   function getMockData(path) {
-    if (path === '/api/content')          return Promise.resolve(MOCK_LIBRARY);
-    if (path === '/api/updates')          return Promise.resolve(MOCK_UPDATES);
-    if (path.startsWith('/api/content/')) {
-      const id = parseInt(path.split('/').pop(), 10);
-      return Promise.resolve(MOCK_LIBRARY.find(c => c.id === id) || null);
-    }
-    return Promise.resolve(null);
+    throw new Error('Mock API mode is disabled: ' + path);
   }
 
   async function apiGet(path) {
@@ -147,7 +182,16 @@
   }
 
   // Expose
-  window.kuroAPI = { get: apiGet, post: apiPost, patch: apiPatch, del: apiDelete, setMockMode: m => USE_MOCK = m };
+  window.kuroAPI = {
+    get: apiGet,
+    post: apiPost,
+    patch: apiPatch,
+    del: apiDelete,
+    setMockMode: function() {
+      console.warn('Mock API mode is disabled.');
+      return false;
+    }
+  };
 
   // ── Navigasyon Sistemi ────────────────────────────────────────────
   const _NAV_ORDER = ['screen-home','screen-search','screen-updates','screen-downloads','screen-settings','screen-stats','screen-archive'];
@@ -579,21 +623,52 @@
   }
 
   function _addDragScroll(el) {
-    let isDown = false, startX = 0, scrollLeft = 0;
+    let isDown = false, startX = 0, scrollLeft = 0, touched = false, moved = false;
+    el.style.scrollSnapType = 'none';
     el.addEventListener('mousedown', function(e) {
       isDown = true;
+      touched = false;
       startX = e.pageX - el.offsetLeft;
       scrollLeft = el.scrollLeft;
       el.style.cursor = 'grabbing';
+      el.style.scrollBehavior = 'auto';
+      el.style.scrollSnapType = 'none';
     });
     el.addEventListener('mouseleave', function() { isDown = false; el.style.cursor = 'grab'; });
     el.addEventListener('mouseup', function() { isDown = false; el.style.cursor = 'grab'; });
     el.addEventListener('mousemove', function(e) {
-      if (!isDown) return;
+      if (!isDown || touched) return;
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
       el.scrollLeft = scrollLeft - (x - startX) * 1.5;
     });
+    // Mobil touch drag-to-scroll
+    el.addEventListener('touchstart', function(e) {
+      touched = true;
+      moved = false;
+      startX = e.touches[0].pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+      el.style.scrollBehavior = 'auto';
+      el.style.scrollSnapType = 'none';
+    }, { passive: true });
+    el.addEventListener('touchmove', function(e) {
+      if (e.touches.length !== 1) return;
+      const x = e.touches[0].pageX - el.offsetLeft;
+      const dx = Math.abs(x - startX);
+      if (dx > 6) {
+        moved = true;
+        el.scrollLeft = scrollLeft - (x - startX) * 1.5;
+      }
+    }, { passive: true });
+    el.addEventListener('touchend', function() {
+      touched = false;
+      setTimeout(function() {
+        el.style.scrollSnapType = '';
+        el.style.scrollBehavior = '';
+      }, 50);
+    });
+    // Yatay kaydırma sürüklemesi native scroll'u bloke etmese de zarif olsun
+    el.style.cursor = 'grab';
   }
 
   async function renderHome() {
@@ -2524,7 +2599,7 @@
           importBtn.classList.add('hidden');
           disconnectBtn.classList.add('hidden');
         }
-      } catch {}
+      } catch (err) { console.error('[MAL] status refresh failed:', err); }
     }
     await _refreshMalStatus();
 
@@ -3969,6 +4044,7 @@
     window.addEventListener('load', function() {
       navigator.serviceWorker.register('sw.js').catch(err => {
         console.warn('SW kayıt hatası:', err);
+        if (window.showToast) window.showToast('Çevrimdışı önbellek kaydedilemedi.', 'error');
       });
     });
   }

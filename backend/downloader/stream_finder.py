@@ -278,37 +278,62 @@ _SITE_PARSER_DOMAINS = {
 }
 
 
-async def _try_site_parser(domain: str, url: str) -> Optional[str]:
+from backend.scraper.tag_extractor import extract_site_tags
+
+
+def _extract_tags_from_html(html: str, domain: str) -> list[str]:
+    """Domain içeriğine göre sayfa HTML'den tür etiketi çıkar."""
+    site_key = ""
+    for key in _SITE_PARSER_DOMAINS:
+        if key in domain:
+            site_key = key
+            break
+    if not site_key:
+        return []
+    try:
+        return extract_site_tags(site_key, html, domain)
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("Tag extraction failed for %s: %s", domain, exc)
+        return []
+
+
+async def _try_site_parser(domain: str, url: str) -> dict:
     """Site-specific parser dene (Playwright click + network interception)."""
+    result = {"stream_url": None, "tags": []}
     for site_key, site_name in _SITE_PARSER_DOMAINS.items():
         if site_key in domain:
-            from backend.scraper.parsers import parse_url
-            logger.info("Site parser deneniyor: %s → %s", site_name, url[:60])
+            from backend.scraper.parsers import parse_url_with_tags
+            logger.info("Site parser (tags) deneniyor: %s → %s", site_name, url[:60])
             try:
-                result = await parse_url(site_name, url)
-                if result:
-                    logger.info("Site parser video URL buldu: %s", result[:80])
+                data = await parse_url_with_tags(site_name, url)
+                if data and data.get("stream_url"):
+                    logger.info("Site parser video URL buldu: %s", data["stream_url"][:80])
+                    result["stream_url"] = data["stream_url"]
+                    result["tags"] = data.get("tags", [])
                     return result
                 logger.warning("Site parser embed bulamadi: %s", site_name)
+                if data and data.get("tags"):
+                    result["tags"] = data["tags"]
             except Exception as e:
                 logger.error("Site parser hatasi (%s): %s", site_name, e)
             break
-    return None
+    return result
 
 
-async def find_stream_url(episode_url: str) -> str:
+async def find_stream_url_with_tags(episode_url: str) -> tuple[str, list[str]]:
     """
-    Episode sayfasından gerçek video/embed URL'si döndür.
-    Sıra: site parser → nodriver HTML → CF bypass → cookies → Playwright → orijinal URL.
+    find_stream_url'un zengin versiyonu: video URL + kaynak site etiketleri döndür.
     """
     _SESSION_HEADERS.clear()
     domain = _domain(episode_url)
+    source_tags: list[str] = []
 
-    # 0. Site-spesifik parser dene (hdfilmcehennemi, dizigom)
+    # 0. Site-spesifik parser dene (dizigom / fullhdfilmizlesene)
     try:
         parser_result = await _try_site_parser(domain, episode_url)
-        if parser_result:
-            return parser_result
+        if parser_result.get("stream_url"):
+            return parser_result["stream_url"], parser_result.get("tags", [])
+        source_tags = parser_result.get("tags", [])
     except Exception:
         pass
 
@@ -319,32 +344,35 @@ async def find_stream_url(episode_url: str) -> str:
         if html:
             embed = _extract_mp4_from_html(html) or _extract_embed_from_html(html)
             if embed:
+                tags = _extract_tags_from_html(html, domain) or source_tags
                 logger.info("nodriver HTML embed buldu: %s", embed[:80])
-                return embed
+                return embed, tags
             logger.warning("nodriver HTML alındı ama embed bulunamadı (len=%d)", len(html))
+            source_tags = source_tags or _extract_tags_from_html(html, domain)
         else:
             logger.warning("nodriver HTML alınamadı, Playwright fallback deneniyor")
 
-    # 1. CF korumalı site: nodriver cf_clearance + curl-cffi fetch
+    # 2. CF korumalı site: nodriver cf_clearance + curl-cffi fetch
     if any(domain.endswith(d) for d in _CF_SITES):
         logger.info("CF site tespit edildi (%s) — nodriver bypass deneniyor", domain)
         try:
             html = await _fetch_with_cf_bypass(episode_url)
             if html:
-                # tranimaci: direkt MP4 linki ara (player sayfası)
                 url = _extract_mp4_from_html(html)
                 if not url:
                     url = _extract_embed_from_html(html)
                 if url:
+                    tags = _extract_tags_from_html(html, domain) or source_tags
                     logger.info("CF bypass URL buldu: %s", url[:80])
-                    return url
+                    return url, tags
                 logger.warning("CF bypass HTML alındı ama URL bulunamadı (len=%d)", len(html))
+                source_tags = source_tags or _extract_tags_from_html(html, domain)
         except Exception as exc:
             logger.error("CF bypass hatası: %s", exc)
 
     force_pw = any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT)
 
-    # 2. Cookies.txt varsa dene
+    # 3. Cookies.txt varsa dene
     if not force_pw:
         cookies_file = _cookies_path(episode_url)
         if cookies_file:
@@ -354,30 +382,41 @@ async def find_stream_url(episode_url: str) -> str:
                 if html:
                     embed = _extract_embed_from_html(html)
                     if embed:
-                        return embed
+                        tags = _extract_tags_from_html(html, domain) or source_tags
+                        return embed, tags
                     logger.warning("HTML alındı ama embed bulunamadı (len=%d)", len(html))
+                    source_tags = source_tags or _extract_tags_from_html(html, domain)
             except Exception as exc:
                 logger.error("stream_finder fetch hatası: %s", exc)
     else:
         logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
-    # 3. Playwright: JS-render + ağ isteği izleme (fallback)
+    # 4. Playwright: JS-render + ağ isteği izleme (fallback)
     if "turkanime.tv" in domain:
         pw_timeout = 60000
     elif "tranimaci.com" in domain:
-        pw_timeout = 45000  # JS PoW challenge (~5sn) + player yüklenmesi (~20sn)
+        pw_timeout = 45000
     else:
         pw_timeout = 15000
     try:
         embed = await _playwright_find_embed(episode_url, timeout_ms=pw_timeout)
         if embed:
             logger.info("Playwright embed buldu: %s", embed[:80])
-            return embed
+            return embed, source_tags
     except Exception as exc:
         logger.warning("Playwright fallback başarısız: %s", exc)
 
     logger.info("Embed bulunamadı, orijinal URL kullanılıyor: %s", episode_url[:60])
-    return episode_url
+    return episode_url, source_tags
+
+
+async def find_stream_url(episode_url: str) -> str:
+    """
+    Episode sayfasından gerçek video/embed URL'si döndür.
+    Sıra: site parser → nodriver HTML → CF bypass → cookies → Playwright → orijinal URL.
+    """
+    url, _ = await find_stream_url_with_tags(episode_url)
+    return url
 
 
 async def _nodriver_get_cookies(domain: str, base_url: str) -> tuple[dict, str]:

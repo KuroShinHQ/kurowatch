@@ -6,6 +6,9 @@ from urllib.parse import urlparse
 
 import httpx
 
+from backend.downloader.integrity import validate_image_file, validate_manga_files
+from backend.scraper.tag_extractor import extract_manga_source_tags
+
 _MADARA_DOMAINS = [
     # 5 Tem 2026 — gerçek chapter testi ile onaylanan siteler
     "mangawow.com", "mangawow.org",
@@ -49,9 +52,46 @@ _UZAY_CDN_RE = re.compile(r"cdn-u\.efsaneler\d+\.can\.re/_manga/\d+/\d+/[^\s\"'<
 
 _HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.5",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Upgrade-Insecure-Requests": "1",
 }
+
+
+def _image_headers(referer: str) -> dict[str, str]:
+    headers = dict(_HEADERS)
+    headers.update({
+        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8",
+        "Referer": referer,
+        "Sec-Fetch-Dest": "image",
+        "Sec-Fetch-Mode": "no-cors",
+        "Sec-Fetch-Site": "cross-site",
+    })
+    return headers
+
+
+def _save_image_response(resp: httpx.Response, dest: str, img_url: str) -> None:
+    resp.raise_for_status()
+    content_type = (resp.headers.get("content-type") or "").lower()
+    if "text/html" in content_type or "application/json" in content_type:
+        raise RuntimeError(f"Görsel yerine {content_type or 'bilinmeyen'} döndü: {img_url}")
+    if not resp.content:
+        raise RuntimeError(f"Boş görsel cevabı: {img_url}")
+    with open(dest, "wb") as fh:
+        fh.write(resp.content)
+    try:
+        validate_image_file(dest)
+    except Exception:
+        try:
+            os.remove(dest)
+        except OSError:
+            pass
+        raise
 
 
 def _is_madara(url: str) -> bool:
@@ -110,15 +150,14 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
             ext = os.path.splitext(page)[1] or ".jpg"
             dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
 
-            img_r = await client.get(img_url, timeout=60)
-            img_r.raise_for_status()
-            with open(dest, "wb") as fh:
-                fh.write(img_r.content)
+            img_r = await client.get(img_url, timeout=60, headers=_image_headers(url))
+            _save_image_response(img_r, dest, img_url)
 
             files.append(dest)
             if on_progress:
                 await on_progress(i + 1, total)
 
+        validate_manga_files(files)
         return files
 
 
@@ -179,16 +218,15 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         for i, img_url in enumerate(img_urls):
             ext = os.path.splitext(img_url.split("?")[0])[1] or ".webp"
             dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
-            img_r = await client.get(img_url)
-            img_r.raise_for_status()
-            with open(dest, "wb") as fh:
-                fh.write(img_r.content)
+            img_r = await client.get(img_url, headers=_image_headers(url))
+            _save_image_response(img_r, dest, img_url)
             files.append(dest)
             if on_progress:
                 await on_progress(i + 1, total)
 
     if not files:
         raise RuntimeError(f"NextJS: hiç sayfa indirilemedi — {url}")
+    validate_manga_files(files)
     return files
 
 
@@ -274,16 +312,15 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             ext = re.search(r'\.(jpg|jpeg|png|webp)', img_url, re.IGNORECASE)
             ext_str = "." + (ext.group(1).lower() if ext else "jpg")
             dest = os.path.join(output_dir, f"{i + 1:04d}{ext_str}")
-            img_r = await client.get(img_url)
-            img_r.raise_for_status()
-            with open(dest, "wb") as fh:
-                fh.write(img_r.content)
+            img_r = await client.get(img_url, headers=_image_headers(list_url))
+            _save_image_response(img_r, dest, img_url)
             files.append(dest)
             if on_progress:
                 await on_progress(i + 1, total)
 
     if not files:
         raise RuntimeError(f"Madara: hiç sayfa indirilemedi — {url}")
+    validate_manga_files(files)
     return files
 
 
@@ -328,17 +365,27 @@ async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str
         for i, img_url in enumerate(img_urls):
             ext = os.path.splitext(img_url.split("?")[0])[1] or ".avif"
             dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
-            img_r = await client.get(img_url)
-            img_r.raise_for_status()
-            with open(dest, "wb") as fh:
-                fh.write(img_r.content)
+            img_r = await client.get(img_url, headers=_image_headers(fetch_url))
+            _save_image_response(img_r, dest, img_url)
             files.append(dest)
             if on_progress:
                 await on_progress(i + 1, total)
 
     if not files:
         raise RuntimeError(f"uzaymanga.com: hiç sayfa indirilemedi — {fetch_url}")
+    validate_manga_files(files)
     return files
+
+
+async def extract_manga_chapter_tags(url: str) -> list[str]:
+    """Manga/manhwa bölüm sayfasından yerel kaynak etiketlerini çıkar."""
+    try:
+        html, _ = await _fetch_with_cf(url)
+        return extract_manga_source_tags(html, url)
+    except Exception as exc:  # noqa: BLE001
+        import logging
+        logging.getLogger(__name__).warning("Manga tag extraction failed for %s: %s", url[:60], exc)
+        return []
 
 
 async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str]:
@@ -375,4 +422,5 @@ async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str
     )
     if not files:
         raise RuntimeError(f"gallery-dl hiç dosya indirmedi: {output_dir}")
+    validate_manga_files(files)
     return files

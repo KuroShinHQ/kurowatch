@@ -165,12 +165,14 @@ async def _pw_click_and_capture(
     site_name: str = "",
     cf_retry_headless: bool = True,
     popup_selectors: list[str] | None = None,
-) -> Optional[str]:
+) -> tuple[Optional[str], Optional[str]]:
     """Playwright ile sayfaya git, butonlara tıkla, network'ten embed yakala.
     
     CF korumali siteler icin persistent profile + cookie cache + headless fallback.
+    Donus: (yakalanan_embed_url, son_html_icerigi)
     """
     found: list[str] = []
+    captured_html: Optional[str] = None
 
     def _is_target(url: str) -> bool:
         if url.endswith((".js", ".css", ".png", ".ico", ".svg", ".woff", ".woff2")):
@@ -239,7 +241,7 @@ async def _pw_click_and_capture(
             except Exception as e:
                 logger.error("PW goto (%s, hl=%s): %s", site_name, headless, e)
                 await pw.stop()
-                return False, None
+                return False, (None, None)
 
             # CF challenge detection
             try:
@@ -247,14 +249,14 @@ async def _pw_click_and_capture(
                 if title in ("Just a moment...", "...", "Attention Required! | Cloudflare"):
                     logger.warning("CF challenge: %s (hl=%s)", site_name, headless)
                     await pw.stop()
-                    return True, None
+                    return True, (None, None)
             except Exception:
                 pass
 
             if status == 404:
                 logger.warning("PW 404: %s", url[:60])
                 await pw.stop()
-                return False, None
+                return False, (None, None)
 
             logger.info("PW %d: %s (hl=%s)", status, url[:60], headless)
             await asyncio.sleep(wait_before_click)
@@ -293,17 +295,23 @@ async def _pw_click_and_capture(
             # Fallback: iframe src extraction from HTML (for sites with static iframes)
             if not _local_found:
                 try:
-                    html = await page.content()
-                    iframe_srcs = re.findall(r'<iframe[^>]+src="([^"]+)"', html)
+                    captured_html = await page.content()
+                    iframe_srcs = re.findall(r'<iframe[^>]+src="([^"]+)"', captured_html)
                     for src in iframe_srcs:
                         if _is_target(src):
                             _local_found.append(src)
                 except Exception:
                     pass
 
+            if captured_html is None:
+                try:
+                    captured_html = await page.content()
+                except Exception:
+                    pass
+
             await pw.stop()
             found = _local_found
-            return False, found[0] if found else None
+            return False, (found[0] if found else None, captured_html)
 
         except Exception as e:
             logger.error("PW kritik (%s): %s", site_name, e)
@@ -311,22 +319,24 @@ async def _pw_click_and_capture(
                 await pw.stop()
             except Exception:
                 pass
-            return False, None
+            return False, (None, None)
 
     # Strategy 1: headless=True
     is_cf, result = await _try_capture(headless=True)
-    if result:
-        return result
+    embed_url, page_html = result if result else (None, None)
+    if embed_url:
+        return embed_url, page_html
 
     # Strategy 2: CF detected → headless=False
     if is_cf and cf_retry_headless and site_name:
         logger.info("CF -> headless=False: %s", site_name)
         _, result2 = await _try_capture(headless=False)
-        if result2:
-            return result2
+        embed_url2, page_html2 = result2 if result2 else (None, None)
+        if embed_url2:
+            return embed_url2, page_html2
         logger.warning("CF bypass basarisiz: %s", site_name)
 
-    return None
+    return None, None
 
 
 async def parse_hdfilmcehennemi(slug: str, media_type: str = "movie") -> Optional[str]:
@@ -343,7 +353,7 @@ async def parse_hdfilmcehennemi(slug: str, media_type: str = "movie") -> Optiona
     url = f"https://{domain}/{slug}"
     logger.info("hdfilmcehennemi parser: %s", url)
 
-    embed = await _pw_click_and_capture(
+    embed, _ = await _pw_click_and_capture(
         url=url,
         click_selectors=config.get("play_selectors", [
             ".play-that-video", ".play-button", "#play", ".jw-icon-playback",
@@ -373,7 +383,7 @@ async def parse_dizigom(slug: str, media_type: str = "episode") -> Optional[str]
     url = f"https://{domain}/{slug}"
     logger.info("dizigom parser: %s", url)
 
-    embed = await _pw_click_and_capture(
+    embed, _ = await _pw_click_and_capture(
         url=url,
         click_selectors=config.get("play_selectors", [
             ".player-area iframe", ".video-js", "#player iframe", ".film-player iframe",
@@ -405,18 +415,85 @@ async def parse_url(site_name: str, url: str) -> Optional[str]:
         return None
 
 
-async def parse_generic(site_name: str, url: str) -> Optional[str]:
-    """Generic parser using _pw_click_and_capture with site config."""
+async def parse_url_with_tags(site_name: str, url: str) -> dict:
+    """Auto-detect parser and extract both video URL + local site tags."""
+    from backend.scraper.tag_extractor import extract_site_tags
+
+    slug = urlparse(url).path.lstrip("/")
+    page_html: Optional[str] = None
+    embed: Optional[str] = None
+
+    if site_name == "hdfilmcehennemi":
+        embed, page_html = await _parse_hdfilmcehennemi_raw(slug)
+    elif site_name == "dizigom":
+        embed, page_html = await _parse_dizigom_raw(slug)
+    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene"):
+        embed, page_html = await _parse_generic_raw(site_name, url)
+    else:
+        logger.warning("Bilinmeyen site parser (tags): %s", site_name)
+
+    tags: list[str] = []
+    if page_html:
+        tags = extract_site_tags(site_name, page_html, url)
+
+    result = {"stream_url": None, "tags": tags}
+    if embed:
+        result["stream_url"] = await resolve_embed_with_ytdlp(embed)
+    return result
+
+
+async def _parse_hdfilmcehennemi_raw(slug: str) -> tuple[Optional[str], Optional[str]]:
+    """hdfilmcehennemi için (embed, html) tuple döndür."""
+    config = get_source_config("hdfilmcehennemi")
+    if not config:
+        return None, None
+    domain = await _resolve_domain("hdfilmcehennemi")
+    if not domain:
+        return None, None
+    url = f"https://{domain}/{slug}"
+    return await _pw_click_and_capture(
+        url=url,
+        click_selectors=config.get("play_selectors", [
+            ".play-that-video", ".play-button", "#play", ".jw-icon-playback",
+        ]),
+        wait_before_click=4.0,
+        wait_after_click=8.0,
+        network_idle_timeout=20000,
+        site_name="hdfilmcehennemi",
+    )
+
+
+async def _parse_dizigom_raw(slug: str) -> tuple[Optional[str], Optional[str]]:
+    """dizigom için (embed, html) tuple döndür."""
+    config = get_source_config("dizigom")
+    if not config:
+        return None, None
+    domain = await _resolve_domain("dizigom")
+    if not domain:
+        return None, None
+    url = f"https://{domain}/{slug}"
+    return await _pw_click_and_capture(
+        url=url,
+        click_selectors=config.get("play_selectors", [
+            ".player-area iframe", ".video-js", "#player iframe", ".film-player iframe",
+            ".tab-link:first-child", ".server-btn:first-child", ".source-btn:first-child",
+        ]),
+        wait_before_click=3.0,
+        wait_after_click=6.0,
+        network_idle_timeout=15000,
+        site_name="dizigom",
+    )
+
+
+async def _parse_generic_raw(site_name: str, url: str) -> tuple[Optional[str], Optional[str]]:
+    """Generic site için (embed, html) tuple döndür."""
     config = get_source_config(site_name)
     if not config:
-        logger.warning("Config bulunamadi: %s", site_name)
-        return None
-
+        return None, None
     domain = await _resolve_domain(site_name)
     if not domain:
-        return None
-
-    embed = await _pw_click_and_capture(
+        return None, None
+    return await _pw_click_and_capture(
         url=url,
         click_selectors=config.get("play_selectors", [
             ".player-area iframe", "#player iframe", ".video-js",
@@ -428,6 +505,10 @@ async def parse_generic(site_name: str, url: str) -> Optional[str]:
         site_name=site_name,
     )
 
+
+async def parse_generic(site_name: str, url: str) -> Optional[str]:
+    """Generic parser using _pw_click_and_capture with site config."""
+    embed, _ = await _parse_generic_raw(site_name, url)
     if embed:
         return await resolve_embed_with_ytdlp(embed)
     return None

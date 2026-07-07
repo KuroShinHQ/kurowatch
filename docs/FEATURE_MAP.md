@@ -868,7 +868,7 @@ gap: 8px | 12px | 16px | 24px | 32px | 48px  ONLY
 
 ## ✅ Özellik Tamamlanma Durumu
 
-> Son güncelleme: 23 Haz 2026 (sohbet-77)
+> Son güncelleme: 7 Temmuz 2026 (sohbet-120 final)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1071,8 +1071,44 @@ FAZ-8 — VERİ TEMİZLİĞİ & TİP DÜZELTME (7 Tem 2026, SOHBET-119)
     - Multi-hit DB entry dedup (son JSON type kazanır)
 
 SIRADAKİ (SOHBET-119):
-[ ] Dockerization — docker-compose.yml + Dockerfile (backend + frontend + Aria2)
-[ ] /api/system/backup — SQLite yedekleme + geri yükleme endpoint
-[ ] Frontend asset Cache-Control (statik dosyalar)
-[ ] E2E smoke test — tüm tipler, indirme, player, SSE panel
+[x] Dockerization — docker-compose.yml + Dockerfile (backend + frontend + Aria2)
+[x] /api/system/backup — SQLite yedekleme + geri yükleme endpoint
+[x] Frontend asset Cache-Control (statik dosyalar)
+[x] E2E smoke test — tüm tipler, indirme, player, SSE panel
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FAZ-9 — ORİJİNAL KAYNAK ETİKET SENKRONİZASYONU & PRODUCTION HARDENING
+         (7 Temmuz 2026, SOHBET-120)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TAG EXTRACTORS — Kaynak sitelerden yerel etiket avcılığı:
+[x] backend/scraper/tag_extractor.py — dizigom / fullhdfilmizlesene / hdfilmcehennemi / manga tag extractor'ları
+[x] backend/scraper/parsers.py — _pw_click_and_capture (embed_url, page_html) tuple + parse_url_with_tags()
+[x] backend/downloader/stream_finder.py — find_stream_url_with_tags() ile parser aşamasında tag toplama
+[x] backend/downloader/manga.py — extract_manga_chapter_tags() her chapter sayfasından tag çıkarımı
+
+OTONOM ETİKET MOTORU:
+[x] backend/services/tag_sync.py — ensure_tag / attach_tag / sync_genres_to_tags / sync_site_tags
+[x] Çapraz kontrol: site etiketleri ↔ content.genres ↔ content_tags
+[x] Uyuşmazlıkta site etiketini referans al: content.genres UPDATE + eksik Tag/ContentTag tamamlama
+[x] API endpoint'leri:
+    - POST /api/content/{id}/tags/sync-site-tags
+    - POST /api/content/{id}/tags/sync-genres
+[x] create_content sonrası genres varsa otomatik sync_genres_to_tags()
+[x] anime.py + manager.py — indirme başarılı olunca source_tags ile otonom sync_site_tags()
+[x] manager.py (manga/manhwa) — extract_manga_chapter_tags() + sync_site_tags()
+
+PRODUCTION HARDENING / MOBİL UYUMLULUK:
+[x] frontend/app.js:
+    - _addDragScroll mobil touch drag-to-scroll
+    - visualViewport / orientationchange / resize handler (sanal klavye + player esneklik)
+    - Global window.onerror + unhandledrejection → toast
+    - Service Worker kayıt hatasında toast
+[x] frontend/player.js — tüm boş catch {} bloklarına console.error log eklendi
+[x] Node syntax check PASS: app.js, player.js, sw.js, pwa.js
+
+TEST ve KANIT:
+[x] py_compile PASS — tag_extractor.py, tag_sync.py, parsers.py, stream_finder.py, anime.py, manager.py, manga.py, content.py
+[x] Real E2E PASS — tests/test_backend_integrity.py --skip-video-probe
+[x] Tag sync endpoint canlı kanıt — 200 OK, genres/tags güncellendi
 ```

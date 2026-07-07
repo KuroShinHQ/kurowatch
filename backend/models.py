@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from backend.database import Base
 
 # ── İçerik Tipleri & Durum Enum'ları ────────────────────────────────
-CONTENT_TYPES = ("anime", "manga", "manhwa", "game", "series", "movie")
+CONTENT_TYPES = ("anime", "manga", "manhwa", "game", "series", "movie", "cartoon")
 STATUS_VALUES = ("watching", "completed", "on_hold", "dropped", "planning", "rewatching")
 TAG_TYPES     = ("api", "user")
 
