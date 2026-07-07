@@ -379,11 +379,19 @@
       if (!rowMap[r.rowId]) rowMap[r.rowId] = {secId:r.secId, items:[]};
       rowMap[r.rowId].items.push(...items.filter(it => it.type===r.key));
     });
+    const rowLabelMap = {
+      'home-anime-row': 'Anime', 'home-manga-row': 'Manga', 'home-manhwa-row': 'Manhwa',
+      'home-series-row': 'Dizi', 'home-movie-row': 'Film', 'home-games-row': 'Oyun',
+    };
     Object.entries(rowMap).forEach(([rowId, {secId, items:rowItems}]) => {
       const row = document.getElementById(rowId);
       const sec = document.getElementById(secId);
-      if (!row || rowItems.length === 0) return;
+      if (!row) return;
       sec && sec.classList.remove('hidden');
+      if (rowItems.length === 0) {
+        row.innerHTML = '<div class="flex-none w-full text-center text-[12px] text-[#9090b0] py-4">Henüz ' + (rowLabelMap[rowId] || 'içerik') + ' eklenmemiş.</div>';
+        return;
+      }
       row.innerHTML = rowItems.slice(0,20).map(it => {
         const col = (tc[it.type]||tc.anime);
         const bg = it.cover_url ? `style="background-image:url(${escapeHtml(it.cover_url)})"` : '';
