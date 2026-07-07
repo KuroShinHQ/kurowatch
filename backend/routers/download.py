@@ -1,11 +1,15 @@
+import asyncio
+import json
 import os
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from backend.downloader import manager
+from backend.config import get_config
+from backend.services.download_client import create_client
 
 router = APIRouter()
 
@@ -19,6 +23,15 @@ class StartDownloadReq(BaseModel):
     episode_number: int
     url: str
     quality: Optional[str] = "720p"
+
+
+class TorrentAddReq(BaseModel):
+    magnet: str
+    save_path: Optional[str] = None
+
+
+class TorrentActionReq(BaseModel):
+    hash: str
 
 
 # ── Endpoint'ler ─────────────────────────────────────────────────────
@@ -141,6 +154,96 @@ async def serve_manga_page(job_id: int, page_index: int):
     mime = {"jpg": "image/jpeg", "jpeg": "image/jpeg", "png": "image/png",
             "webp": "image/webp", "avif": "image/avif"}.get(ext.lstrip("."), "image/jpeg")
     return FileResponse(full_path, media_type=mime)
+
+
+# ── Torrent Client Endpoints ─────────────────────────────────────────
+
+@router.post("/download/add")
+async def torrent_add(body: TorrentAddReq):
+    """Add magnet to configured download client (qBittorrent/Aria2)."""
+    cfg = get_config()
+    client = create_client(cfg)
+    if not client:
+        raise HTTPException(400, "Hiçbir indirme istemcisi yapılandırılmamış (Ayarlar → İndirme İstemcisi)")
+    result = await client.add_torrent(body.magnet, body.save_path)
+    if not result:
+        raise HTTPException(502, "Torrent eklenemedi — istemci bağlantısını kontrol et")
+    return {"ok": True, "id": result}
+
+
+@router.get("/download/torrent/status")
+async def torrent_status():
+    """Get all torrents from configured client."""
+    cfg = get_config()
+    client = create_client(cfg)
+    if not client:
+        return {"torrents": []}
+    try:
+        torrents = await client.get_status()
+        return {"torrents": [t.to_dict() for t in torrents]}
+    except Exception as e:
+        return {"torrents": [], "error": str(e)}
+
+
+@router.post("/download/torrent/pause")
+async def torrent_pause(body: TorrentActionReq):
+    cfg = get_config()
+    client = create_client(cfg)
+    if not client:
+        raise HTTPException(400, "İstemci yapılandırılmamış")
+    ok = await client.pause(body.hash)
+    return {"ok": ok}
+
+
+@router.post("/download/torrent/resume")
+async def torrent_resume(body: TorrentActionReq):
+    cfg = get_config()
+    client = create_client(cfg)
+    if not client:
+        raise HTTPException(400, "İstemci yapılandırılmamış")
+    ok = await client.resume(body.hash)
+    return {"ok": ok}
+
+
+@router.post("/download/torrent/remove")
+async def torrent_remove(body: TorrentActionReq):
+    cfg = get_config()
+    client = create_client(cfg)
+    if not client:
+        raise HTTPException(400, "İstemci yapılandırılmamış")
+    ok = await client.remove(body.hash)
+    return {"ok": ok}
+
+
+# ── SSE Live Stream ──────────────────────────────────────────────────
+
+@router.get("/download/stream")
+async def download_stream():
+    """SSE endpoint: streams torrent status every second."""
+    async def event_generator():
+        while True:
+            try:
+                cfg = get_config()
+                client = create_client(cfg)
+                torrents = []
+                if client:
+                    t_list = await client.get_status()
+                    torrents = [t.to_dict() for t in t_list]
+                payload = json.dumps({"torrents": torrents}, ensure_ascii=False)
+                yield f"data: {payload}\n\n"
+            except Exception:
+                yield "data: {\"torrents\":[]}\n\n"
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+            "Connection": "keep-alive",
+        },
+    )
 
 
 # ── WebSocket ────────────────────────────────────────────────────────
