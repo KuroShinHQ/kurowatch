@@ -437,6 +437,14 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
   </div>
   <!-- Genres -->
   <div id="detail-genres-row" class="hidden flex-wrap gap-2 px-4 pb-3 pt-1"></div>
+  <!-- Game Metadata -->
+  <div id="detail-game-meta" class="hidden px-4 pb-3 pt-1 flex flex-col gap-1.5">
+    <div class="flex flex-wrap gap-2 items-center" id="detail-game-platforms"></div>
+    <div class="flex gap-2 text-[12px] text-[#9090b0]">
+      <span id="detail-game-developer"></span>
+      <span id="detail-game-publisher" class="before:content-['·'] before:mr-2 before:text-[#3c494e]"></span>
+    </div>
+  </div>
   <!-- Tags -->
   <div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
   <!-- Tabs v7 -->
@@ -1541,6 +1549,9 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
             <input id="add-form-total-chapters" type="hidden" value=""/>
             <input id="add-form-runtime-minutes" type="hidden" value=""/>
             <input id="add-form-release-year" type="hidden" value=""/>
+            <input id="add-form-developer" type="hidden" value=""/>
+            <input id="add-form-publisher" type="hidden" value=""/>
+            <input id="add-form-game-metadata" type="hidden" value=""/>
           </div>
           <div>
             <label class="block text-[14px] font-semibold text-[#9090b0] mb-1">Notlar</label>

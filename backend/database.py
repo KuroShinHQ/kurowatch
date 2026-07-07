@@ -85,23 +85,42 @@ async def init_db():
             await conn.execute(text("ALTER TABLE content ADD COLUMN release_year INTEGER"))
         except Exception:
             pass
+        # Migration: game developer kolonu
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN developer TEXT"))
+        except Exception:
+            pass
+        # Migration: game publisher kolonu
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN publisher TEXT"))
+        except Exception:
+            pass
+        # Migration: game_metadata JSON kolonu
+        try:
+            await conn.execute(text("ALTER TABLE content ADD COLUMN game_metadata TEXT"))
+        except Exception:
+            pass
 
 
 async def seed_content_type_tags():
-    """Sistem content_type_tag'lerini oluştur (idempotent)."""
+    """Sistem content_type_tag'lerini oluştur/güncelle (idempotent)."""
     from backend.models import Tag
     from sqlalchemy import select
     CONTENT_TYPE_TAGS = [
         ("anime",  "api", "#00d4ff"),
         ("manga",  "api", "#ffd9a1"),
         ("manhwa", "api", "#bbc5eb"),
-        ("game",   "api", "#ffb4ab"),
+        ("game",   "api", "#4ade80"),
         ("series", "api", "#ff9a3c"),
         ("movie",  "api", "#c084fc"),
     ]
     async with AsyncSessionLocal() as db:
         for name, tag_type, color in CONTENT_TYPE_TAGS:
             r = await db.execute(select(Tag).where(Tag.name == name, Tag.tag_type == tag_type))
-            if not r.scalar_one_or_none():
+            existing = r.scalar_one_or_none()
+            if existing:
+                if existing.color != color:
+                    existing.color = color
+            else:
                 db.add(Tag(name=name, tag_type=tag_type, color=color))
         await db.commit()

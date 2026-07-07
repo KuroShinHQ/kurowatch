@@ -61,6 +61,9 @@ class ContentCreate(BaseModel):
     genres: Optional[List[str]] = None
     runtime_minutes: Optional[int] = None
     release_year: Optional[int] = None
+    developer: Optional[str] = None
+    publisher: Optional[str] = None
+    game_metadata: Optional[str] = None
 
 
 class ContentPatch(BaseModel):
@@ -80,6 +83,9 @@ class ContentPatch(BaseModel):
     genres: Optional[List[str]] = None
     runtime_minutes: Optional[int] = None
     release_year: Optional[int] = None
+    developer: Optional[str] = None
+    publisher: Optional[str] = None
+    game_metadata: Optional[str] = None
 
 
 def _serialize(c: Content) -> dict:
@@ -110,6 +116,9 @@ def _serialize(c: Content) -> dict:
         "parent_id": c.parent_id if hasattr(c, 'parent_id') else None,
         "runtime_minutes": c.runtime_minutes,
         "release_year": c.release_year,
+        "developer": c.developer,
+        "publisher": c.publisher,
+        "game_metadata": json.loads(c.game_metadata) if c.game_metadata else None,
         "added_at": c.added_at.isoformat() if c.added_at else None,
         "updated_at": c.updated_at.isoformat() if c.updated_at else None,
         "sites": [
@@ -330,6 +339,25 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
         c.synopsis = clean
         c.updated_at = datetime.utcnow()
         await db.commit()
+
+    # Game-specific lazy-save
+    if c.type == "game":
+        changed = False
+        if detail.get("developer") and not c.developer:
+            c.developer = detail["developer"]
+            changed = True
+        if detail.get("publisher") and not c.publisher:
+            c.publisher = detail["publisher"]
+            changed = True
+        if detail.get("game_metadata"):
+            import json
+            meta_str = json.dumps(detail["game_metadata"], ensure_ascii=False)
+            if not c.game_metadata or c.game_metadata != meta_str:
+                c.game_metadata = meta_str
+                changed = True
+        if changed:
+            c.updated_at = datetime.utcnow()
+            await db.commit()
 
     return detail
 
