@@ -343,8 +343,8 @@ async def _run_job(job: dict):
 
             file_path = await download_anime(
                 job["url"], out_base, job.get("quality", "720p"),
-                _on_pct, content_id=job.get("content_id")
-            )
+                _on_pct, content_id=job.get("content_id"),
+                media_type=job.get("media_type", "anime"))
             validate_video_file(file_path)
             job["file_path"] = file_path
             job["file_size_bytes"] = os.path.getsize(file_path)

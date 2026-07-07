@@ -2703,7 +2703,13 @@
     const isAnime = contentType === 'anime';
     const readLabel = isAnime ? 'İzle' : 'Oku';
     const readIcon  = isAnime ? 'play_circle' : 'menu_book';
-    const syncLabel = 'Bölümleri Güncelle';
+    const isAnimeOrManga = contentType === 'anime' || contentType === 'manga' || contentType === 'manhwa';
+    const isSeriesOrMovie = contentType === 'series' || contentType === 'movie';
+    const syncLabel = isAnimeOrManga ? 'AniList\'ten Yükle' : (isSeriesOrMovie ? 'Kaynaklardan Güncelle' : '');
+    const syncBtnHtml = syncLabel
+      ? '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
+        '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
+      : '';
 
     // ── Sezon yönetimi ──
     const allSeasons = episodes.length
@@ -2723,6 +2729,30 @@
       const targetLabel = (nextEp && nextEp.url)
         ? readLabel + ' — Bölüm ' + nextEpNum
         : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
+
+      // ── Sync butonu (içerik tipine göre) ──
+      const syncBtnHtml = syncLabel
+        ? '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
+          '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
+        : '';
+
+      // ── Sezon ekleme formu (AniList sadece anime/manga/mahnwa için) ──
+      const seasonFormLabel = isAnimeOrManga ? 'Yeni sezon yükle (AniList ID ile)' : (isSeriesOrMovie ? 'Yeni sezon ekle (sezon numarası)' : '');
+      const seasonFormAnilistPlaceholder = isAnimeOrManga ? 'AniList ID (opsiyonel)' : '';
+      const addSeasonFormHtml = (isAnimeOrManga || isSeriesOrMovie)
+        ? '<div id="ep-add-season-form" style="display:none;flex-direction:column;gap:6px;padding:10px;background:#16213e;border-radius:10px;border:1px solid #00d4ff2a;margin-bottom:8px">' +
+          '<div style="font-size:11px;color:#9090b0;margin-bottom:2px">' + seasonFormLabel + '</div>' +
+          '<div style="display:flex;gap:6px">' +
+          '<input id="ep-new-season-num" type="number" min="1" value="' + (activeSeason + 1) + '" placeholder="Sezon No" ' +
+          'style="width:80px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:13px;text-align:center;padding:0 8px">' +
+          (isAnimeOrManga
+            ? '<input id="ep-new-anilist-id" type="text" placeholder="' + seasonFormAnilistPlaceholder + '" ' +
+              'style="flex:1;height:36px;background:#0d0d1a;border:1px solid #ffffff1a;border-radius:8px;color:#e1e0ff;font-size:12px;padding:0 8px">'
+            : '') +
+          '<button id="ep-new-season-load" data-content-id="' + contentId + '" ' +
+          'style="height:36px;padding:0 14px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">Yükle</button>' +
+          '</div></div>'
+        : '';
       // Sıradaki bölüm indirilmişse oynat butonu göster
       const _nextDoneJob = (nextEp && window.kuroDownload) ? window.kuroDownload.getDownloadedJob(contentId, nextEpNum) : null;
       const siteShortcut = _nextDoneJob
@@ -2766,20 +2796,6 @@
           '<span style="font-size:12px;font-weight:700;color:#00d4ff;background:#00d4ff1a;border:1px solid #00d4ff33;border-radius:20px;padding:2px 10px">' + seasonEps.length + ' Bölüm</span>' +
           '</div>'
         : '';
-      const syncBtnHtml = '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
-        '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>';
-
-      // ── Sezon ekleme formu ──
-      const addSeasonFormHtml = '<div id="ep-add-season-form" style="display:none;flex-direction:column;gap:6px;padding:10px;background:#16213e;border-radius:10px;border:1px solid #00d4ff2a;margin-bottom:8px">' +
-        '<div style="font-size:11px;color:#9090b0;margin-bottom:2px">Yeni sezon yükle (AniList ID ile)</div>' +
-        '<div style="display:flex;gap:6px">' +
-        '<input id="ep-new-season-num" type="number" min="1" value="' + (activeSeason + 1) + '" placeholder="Sezon No" ' +
-        'style="width:80px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:13px;text-align:center;padding:0 8px">' +
-        '<input id="ep-new-anilist-id" type="text" placeholder="AniList ID (opsiyonel)" ' +
-        'style="flex:1;height:36px;background:#0d0d1a;border:1px solid #ffffff1a;border-radius:8px;color:#e1e0ff;font-size:12px;padding:0 8px">' +
-        '<button id="ep-new-season-load" data-content-id="' + contentId + '" ' +
-        'style="height:36px;padding:0 14px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">Yükle</button>' +
-        '</div></div>';
 
       if (!seasonEps.length) {
         el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +

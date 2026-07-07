@@ -18,6 +18,7 @@ async def download_anime(
     quality: str = "720p",
     on_progress: Optional[Callable] = None,
     content_id: Optional[int] = None,
+    media_type: str = "anime",
 ) -> str:
     """yt-dlp ile anime/video indir. stream_finder ile gerçek URL tespit edilir."""
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -26,7 +27,7 @@ async def download_anime(
     # Gerçek stream URL'sini bul (embed player URL veya orijinal); etiketleri de yakala
     if on_progress:
         await on_progress(0)  # stream_finder basladi
-    actual_url, source_tags = await find_stream_url_with_tags(url)
+    actual_url, source_tags = await find_stream_url_with_tags(url, media_type)
     if on_progress:
         await on_progress(1)  # stream URL bulundu
 
