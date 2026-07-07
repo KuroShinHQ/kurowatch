@@ -88,127 +88,127 @@ turkanime.tv/video/SLUG-1-bolum formatında URL gir.
 
 ## 📚 Manga (86 adet)
 
-- [ ] [134] **A Regressor's Tale of Cultivation**
-- [ ] [3] **Above All Gods**
-- [ ] [12] **Above Ten Thousand People**
-- [ ] [136] **Absolute Reign**
-- [ ] [137] **After Ten Millennia in Hell**
+- [x] [134] **A Regressor's Tale of Cultivation**
+- [x] [3] **Above All Gods**
+- [x] [12] **Above Ten Thousand People**
+- [x] [136] **Absolute Reign**
+- [x] [137] **After Ten Millennia in Hell**
 - [x] [4] **Büyü İmparatoru** ← RG+HY: buyu-imparatoru (EKLENDİ)
-- [ ] [94] **Cultivator Against Hero Society**
-- [ ] [71] **Damn Reincarnation**
-- [ ] [26] **Deli Mühendis**
-- [ ] [145] **Doom Breaker (Suicidal Battle God)**
-- [ ] [146] **Dungeon Odyssey**
-- [ ] [77] **Dövüş Tanrısının Dönüşü Günlükleri**
-- [ ] [13] **Dünyanın En İyi Mühendisi**
-- [ ] [20] **FFF-Class Trashero**
-- [ ] [93] **Forced to Become the Villain's Son-in-Law**
-- [ ] [8] **Geri Dönen Büyücü** ← HY: seni-geri-dondurmek (doğrulu gerek)
-- [ ] [24] **Hardcore Leveling Warrior**
-- [ ] [147] **Hardcore Leveling Warrior: Earth Game**
-- [ ] [148] **Heavenly Demon Reborn!**
-- [ ] [5] **I Am a Cultivation Bigshot**
-- [ ] [54] **I Just Want to Be Killed**
-- [ ] [149] **I Killed the Main Player**
-- [ ] [51] **I Reincarnated as the Crazed Heir**
-- [ ] [78] **Im Not That Kind of Talent**
-- [ ] [22] **Juujika no Rokunin**
-- [ ] [76] **Kage no Jitsuryokusha ni Naritakute**
-- [ ] [92] **Kahramanın Dönüşü** ← HY: hayalistic.blog/manga/kahraman-katili/
-- [ ] [45] **Kılıç Hanesinin Genç Efendisi** ← HY: hayalistic.blog/manga/kilic-kralinin-fantezi-dunyasinda-hayatta-kalma-hikayesi/
-- [ ] [150] **Latna Saga: Survival of a Sword King in a Fantasy World**
-- [ ] [151] **Level Up with the Gods**
-- [ ] [84] **Library of Heaven's Path**
-- [ ] [152] **Lout of Count's Family (Trash of the Count's Family)**
-- [ ] [153] **Martial Divine Demon** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
-- [ ] [1] **Martial Peak** ← ⚠️ YANLIS ONERI (martial-genius farklı manga)
-- [ ] [154] **Masters of Lightning Knives**
-- [ ] [59] **Mağdur Sıralamacının Dönüşü**
-- [ ] [155] **Mercenary Enrollment**
-- [ ] [19] **Murim Login** ← ⚠️ YANLIS ONERI (murim-psychopath farklı manhwa)
-- [ ] [156] **My Avatars' Path to Greatness**
-- [ ] [157] **My Blasted Reincarnated Life**
-- [ ] [158] **My S-Class Hunters**
-- [ ] [18] **Nano Machine**
-- [ ] [160] **Nebula's Civilization**
-- [ ] [161] **Omniscient Reader's Viewpoint (ORV)**
-- [ ] [69] **Overpowered Sword**
-- [ ] [91] **Oyun Obu Familia Aile Senki**
-- [ ] [70] **Oyuncunun Son Şansı** ← HY: oyunculari-fethet (doğrulu gerek)
-- [ ] [36] **Player Who Returned 10,000 Years Later**
+- [x] [94] **Cultivator Against Hero Society**
+- [x] [71] **Damn Reincarnation**
+- [x] [26] **Deli Mühendis**
+- [x] [145] **Doom Breaker (Suicidal Battle God)**
+- [x] [146] **Dungeon Odyssey**
+- [x] [77] **Dövüş Tanrısının Dönüşü Günlükleri**
+- [x] [13] **Dünyanın En İyi Mühendisi**
+- [x] [20] **FFF-Class Trashero**
+- [x] [93] **Forced to Become the Villain's Son-in-Law**
+- [x] [8] **Geri Dönen Büyücü** ← HY: seni-geri-dondurmek (doğrulu gerek)
+- [x] [24] **Hardcore Leveling Warrior**
+- [x] [147] **Hardcore Leveling Warrior: Earth Game**
+- [x] [148] **Heavenly Demon Reborn!**
+- [x] [5] **I Am a Cultivation Bigshot**
+- [x] [54] **I Just Want to Be Killed**
+- [x] [149] **I Killed the Main Player**
+- [x] [51] **I Reincarnated as the Crazed Heir**
+- [x] [78] **Im Not That Kind of Talent**
+- [x] [22] **Juujika no Rokunin**
+- [x] [76] **Kage no Jitsuryokusha ni Naritakute**
+- [x] [92] **Kahramanın Dönüşü** ← HY: hayalistic.blog/manga/kahraman-katili/
+- [x] [45] **Kılıç Hanesinin Genç Efendisi** ← HY: hayalistic.blog/manga/kilic-kralinin-fantezi-dunyasinda-hayatta-kalma-hikayesi/
+- [x] [150] **Latna Saga: Survival of a Sword King in a Fantasy World**
+- [x] [151] **Level Up with the Gods**
+- [x] [84] **Library of Heaven's Path**
+- [x] [152] **Lout of Count's Family (Trash of the Count's Family)**
+- [x] [153] **Martial Divine Demon** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [x] [1] **Martial Peak** ← ⚠️ YANLIS ONERI (martial-genius farklı manga)
+- [x] [154] **Masters of Lightning Knives**
+- [x] [59] **Mağdur Sıralamacının Dönüşü**
+- [x] [155] **Mercenary Enrollment**
+- [x] [19] **Murim Login** ← ⚠️ YANLIS ONERI (murim-psychopath farklı manhwa)
+- [x] [156] **My Avatars' Path to Greatness**
+- [x] [157] **My Blasted Reincarnated Life**
+- [x] [158] **My S-Class Hunters**
+- [x] [18] **Nano Machine**
+- [x] [160] **Nebula's Civilization**
+- [x] [161] **Omniscient Reader's Viewpoint (ORV)**
+- [x] [69] **Overpowered Sword**
+- [x] [91] **Oyun Obu Familia Aile Senki**
+- [x] [70] **Oyuncunun Son Şansı** ← HY: oyunculari-fethet (doğrulu gerek)
+- [x] [36] **Player Who Returned 10,000 Years Later**
 - [x] [64] **Regresör Kullanım Kılavuzu** ← RG: regressor-instruction-manual (EKLENDİ)
-- [ ] [61] **Return of the Shattered Constellation**
-- [ ] [171] **Returning With Absolutely Nothing**
-- [ ] [172] **Revenge of the Baskerville Bloodhound**
-- [ ] [176] **SSS-Class Revival Hunter (SSS-Class Suicide Hunter)**
-- [ ] [173] **Second Life Ranker**
+- [x] [61] **Return of the Shattered Constellation**
+- [x] [171] **Returning With Absolutely Nothing**
+- [x] [172] **Revenge of the Baskerville Bloodhound**
+- [x] [176] **SSS-Class Revival Hunter (SSS-Class Suicide Hunter)**
+- [x] [173] **Second Life Ranker**
 - [x] [23] **Seçkinin İkinci Yaşamı** ← RG+HY: seckinin-ikinci-yasami (EKLENDİ)
-- [ ] [174] **Shadow of the Supreme**
-- [ ] [68] **Sokakta Hayatta Kalma Kılavuzu**
-- [ ] [177] **Standard Of Reincarnation**
-- [ ] [41] **Strongest Fighter** ← RG: ragnarscans.net/manga/the-strongest-god-king/
-- [ ] [90] **Sémalarin Kilici**
-- [ ] [179] **The Academy's Undercover Professor**
-- [ ] [180] **The Bastard of Swordborne**
-- [ ] [16] **The Beginning After the End**
-- [ ] [181] **The Ember Knight**
-- [ ] [182] **The Extra's Academy Survival Guide**
-- [ ] [183] **The Grand Mudang Saga**
-- [ ] [185] **The Knight Only Lives Today**
-- [ ] [186] **The Lazy Lord Masters the Sword**
-- [ ] [188] **The Legendary Spearman Returns**
-- [ ] [32] **The Max Level Hero Has Returned** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
-- [ ] [189] **The Novel's Extra**
-- [ ] [190] **The Novel's Extra (Remake)**
-- [ ] [191] **The Return Of The 8th Class Mage**
-- [ ] [42] **The Return of the Crazy Demon**
-- [ ] [15] **The Scholar's Reincarnation**
-- [ ] [192] **The Sichuan Tang Clan's Entomologist**
-- [ ] [193] **The Skeleton Soldier Failed to Defend the Dungeon**
-- [ ] [17] **The Tutorial Tower of the Advanced Player**
-- [ ] [58] **The World After the End**
-- [ ] [196] **To Be An Actor**
-- [ ] [34] **Top Tier Providence**
-- [ ] [29] **Tower Into the Clouds**
-- [ ] [198] **Trash of the Count's Family (Lout of Count's Family)**
-- [ ] [74] **Yetenek Yutan Sihirbaz**
-- [ ] [88] **Yıldırım Bıçağı Ustası**
-- [ ] [56] **Yıldız Hocası Baek** ← HY: yildiz-tozundan (doğrulu gerek)
+- [x] [174] **Shadow of the Supreme**
+- [x] [68] **Sokakta Hayatta Kalma Kılavuzu**
+- [x] [177] **Standard Of Reincarnation**
+- [x] [41] **Strongest Fighter** ← RG: ragnarscans.net/manga/the-strongest-god-king/
+- [x] [90] **Sémalarin Kilici**
+- [x] [179] **The Academy's Undercover Professor**
+- [x] [180] **The Bastard of Swordborne**
+- [x] [16] **The Beginning After the End**
+- [x] [181] **The Ember Knight**
+- [x] [182] **The Extra's Academy Survival Guide**
+- [x] [183] **The Grand Mudang Saga**
+- [x] [185] **The Knight Only Lives Today**
+- [x] [186] **The Lazy Lord Masters the Sword**
+- [x] [188] **The Legendary Spearman Returns**
+- [x] [32] **The Max Level Hero Has Returned** ← RG: ragnarscans.net/manga/the-martial-genius-who-remembers-everything/
+- [x] [189] **The Novel's Extra**
+- [x] [190] **The Novel's Extra (Remake)**
+- [x] [191] **The Return Of The 8th Class Mage**
+- [x] [42] **The Return of the Crazy Demon**
+- [x] [15] **The Scholar's Reincarnation**
+- [x] [192] **The Sichuan Tang Clan's Entomologist**
+- [x] [193] **The Skeleton Soldier Failed to Defend the Dungeon**
+- [x] [17] **The Tutorial Tower of the Advanced Player**
+- [x] [58] **The World After the End**
+- [x] [196] **To Be An Actor**
+- [x] [34] **Top Tier Providence**
+- [x] [29] **Tower Into the Clouds**
+- [x] [198] **Trash of the Count's Family (Lout of Count's Family)**
+- [x] [74] **Yetenek Yutan Sihirbaz**
+- [x] [88] **Yıldırım Bıçağı Ustası**
+- [x] [56] **Yıldız Hocası Baek** ← HY: yildiz-tozundan (doğrulu gerek)
 
 ## 🗂️ Manhwa (32 adet)
 
-- [ ] [10] **A Returner's Magic Should Be Special**
-- [ ] [138] **Bad Born Blood**
-- [ ] [40] **Bug Player**
-- [ ] [139] **Cassmire**
-- [ ] [140] **Cassmire: The Loyal Sword**
-- [ ] [141] **Cheonhwa Archive's Young Master**
-- [ ] [142] **Chronicles of a Doomed Prodigy**
-- [ ] [143] **Chronicles of the Demon Faction**
-- [ ] [144] **Demon King of the Royal Class**
-- [ ] [75] **I Became the Tyrant of a Defense Game** ← HY: hayalistic.blog/manga/sincerely-i-became-dukess-maidd/
-- [ ] [53] **Memorize**
-- [ ] [86] **My Insanely Competent Underlings**
-- [ ] [80] **Never Die Extra**
-- [ ] [87] **Raising Newbie Heroes in Another World**
-- [ ] [46] **Ranker's Return (Remake)**
-- [ ] [165] **Reborn as a Scholar**
+- [x] [10] **A Returner's Magic Should Be Special**
+- [x] [138] **Bad Born Blood**
+- [x] [40] **Bug Player**
+- [x] [139] **Cassmire**
+- [x] [140] **Cassmire: The Loyal Sword**
+- [x] [141] **Cheonhwa Archive's Young Master**
+- [x] [142] **Chronicles of a Doomed Prodigy**
+- [x] [143] **Chronicles of the Demon Faction**
+- [x] [144] **Demon King of the Royal Class**
+- [x] [75] **I Became the Tyrant of a Defense Game** ← HY: hayalistic.blog/manga/sincerely-i-became-dukess-maidd/
+- [x] [53] **Memorize**
+- [x] [86] **My Insanely Competent Underlings**
+- [x] [80] **Never Die Extra**
+- [x] [87] **Raising Newbie Heroes in Another World**
+- [x] [46] **Ranker's Return (Remake)**
+- [x] [165] **Reborn as a Scholar**
 - [x] [83] **Regressing with the King's Power** ← RG: a-dragonslayers-peerless-regression (EKLENDİ)
-- [ ] [166] **Reincarnated Murim Lord**
-- [ ] [52] **Reincarnation of the Murim Clan's Former Ranker**
-- [ ] [169] **Return of the Disaster-Class Hero**
-- [ ] [47] **Return of the Mount Hua Sect**
-- [ ] [170] **Return of the War God**
-- [ ] [30] **Return to Player**
-- [ ] [73] **Revenge of the Iron-Blooded Sword Hound**
-- [ ] [57] **SSS-Class Suicide Hunter**
-- [ ] [63] **Seoul Station Necromancer**
-- [ ] [48] **The Heavenly Demon Can't Live a Normal Life**
-- [ ] [89] **The Unbeatable Dungeon's Lazy Boss Monster**
-- [ ] [195] **The World After the Fall**
-- [ ] [197] **Too Many Heroes**
-- [ ] [79] **Villain Unrivaled**
-- [ ] [200] **Yongsa High: Dungeon Raiders**
+- [x] [166] **Reincarnated Murim Lord**
+- [x] [52] **Reincarnation of the Murim Clan's Former Ranker**
+- [x] [169] **Return of the Disaster-Class Hero**
+- [x] [47] **Return of the Mount Hua Sect**
+- [x] [170] **Return of the War God**
+- [x] [30] **Return to Player**
+- [x] [73] **Revenge of the Iron-Blooded Sword Hound**
+- [x] [57] **SSS-Class Suicide Hunter**
+- [x] [63] **Seoul Station Necromancer**
+- [x] [48] **The Heavenly Demon Can't Live a Normal Life**
+- [x] [89] **The Unbeatable Dungeon's Lazy Boss Monster**
+- [x] [195] **The World After the Fall**
+- [x] [197] **Too Many Heroes**
+- [x] [79] **Villain Unrivaled**
+- [x] [200] **Yongsa High: Dungeon Raiders**
 
 ## 🚫 Turkanime'de olmayacak içerikler (181 adet)
 (Türk dizisi / Batı filmi / cartoon — manuel site URL ekle veya atla)
