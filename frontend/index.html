@@ -445,6 +445,21 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
       <span id="detail-game-publisher" class="before:content-['·'] before:mr-2 before:text-[#3c494e]"></span>
     </div>
   </div>
+  <!-- Game Download Sources -->
+  <div id="detail-game-downloads" class="hidden px-4 pb-3 pt-2 flex flex-col gap-2">
+    <div class="flex items-center justify-between">
+      <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">İndirme Kaynakları</span>
+      <button id="detail-game-dl-search" class="text-[11px] font-bold text-[#4ade80] flex items-center gap-1" style="display:none">
+        <span class="material-symbols-outlined" style="font-size:14px">search</span> FitGirl'de Ara
+      </button>
+    </div>
+    <div id="detail-game-dl-loading" class="hidden text-[12px] text-[#9090b0] flex items-center gap-2 py-2">
+      <span class="material-symbols-outlined animate-spin" style="font-size:16px">progress_activity</span> FitGirl taranıyor...
+    </div>
+    <div id="detail-game-dl-error" class="hidden text-[12px] text-[#ff6b6b] py-2"></div>
+    <div id="detail-game-dl-results" class="flex flex-col gap-2"></div>
+    <div id="detail-game-dl-empty" class="hidden text-[12px] text-[#9090b0] py-2 text-center">Henüz indirme kaynağı eklenmemiş.</div>
+  </div>
   <!-- Tags -->
   <div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
   <!-- Tabs v7 -->

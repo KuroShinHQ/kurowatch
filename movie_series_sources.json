@@ -63,5 +63,17 @@
     "cookies_file": null,
     "play_selectors": [".player-area iframe", "#player iframe", ".video-js", "iframe[src*='embed']", ".play-button", ".film-player iframe"],
     "notes": "Film sitesi. /film/XXXX slug pattern. fullhdfilmizlesene.life aktif."
+  },
+  "fitgirl": {
+    "label": "FitGirl Repacks",
+    "type": "game",
+    "domains": [
+      "fitgirl-repacks.site"
+    ],
+    "parser": "fitgirl",
+    "cf_protected": true,
+    "cookies_file": null,
+    "play_selectors": [],
+    "notes": "Oyun indirme kaynagi. httpx search + magnet/torrent parsing. CF korumali."
   }
 }
