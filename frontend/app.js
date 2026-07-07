@@ -3359,6 +3359,8 @@
     if (!list) return;
     let tags;
     try { tags = await apiGet('/api/tags'); } catch (e) { return; }
+    const badge = document.getElementById('tag-count-badge');
+    if (badge) badge.textContent = String(tags.length);
     if (tags.length === 0) {
       list.innerHTML = '<div class="px-4 py-4 text-[13px] text-[#9090b0]">Henüz etiket yok — Yeni butonu ile oluştur</div>';
       return;
@@ -4064,6 +4066,18 @@
       const tid = parseInt(pickerItem.dataset.tagId, 10);
       const assigned = pickerItem.dataset.assigned === 'true';
       toggleTagOnContent(cid, tid, assigned);
+      return;
+    }
+    // Etiket listesi aç/kapat (collapsible)
+    if (e.target.closest('#tag-settings-toggle')) {
+      const list = document.getElementById('tag-list-settings');
+      const chevron = document.getElementById('tag-chevron');
+      if (!list) return;
+      const hidden = list.classList.contains('hidden');
+      list.classList.toggle('hidden', !hidden);
+      list.classList.toggle('flex', hidden);
+      if (chevron) chevron.style.transform = hidden ? 'rotate(180deg)' : '';
+      if (hidden) renderTagSettings();
       return;
     }
     // Yeni etiket formu aç/kapat

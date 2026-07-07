@@ -9,6 +9,7 @@ IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
 VIDEO_EXTS = {".mp4", ".mkv", ".webm", ".avi", ".mov", ".m4v"}
 MIN_IMAGE_BYTES = 256
 MIN_VIDEO_BYTES = 64 * 1024
+MIN_MANGA_PAGE_BYTES = 50 * 1024
 
 _FFPROBE_BIN = shutil.which("ffprobe") or shutil.which("ffprobe.exe")
 _WSL_FFPROFE_CACHE: dict | None = None
@@ -59,6 +60,13 @@ def validate_image_file(path: str) -> int:
     return size
 
 
+def validate_manga_page(path: str) -> int:
+    """Manga sayfası için minimum boyut kontrolü (UI icon/reklam filtreleme)."""
+    size = ensure_regular_file(path, MIN_MANGA_PAGE_BYTES, "manga page")
+    validate_image_file(path)
+    return size
+
+
 def validate_manga_files(files: list[str]) -> int:
     if not files:
         raise DownloadIntegrityError("manga: no page image files were downloaded")
@@ -67,7 +75,7 @@ def validate_manga_files(files: list[str]) -> int:
     bad: list[str] = []
     for path in files:
         try:
-            total += validate_image_file(path)
+            total += validate_manga_page(path)
         except DownloadIntegrityError as exc:
             bad.append(str(exc))
 

@@ -6,7 +6,7 @@ from urllib.parse import urlparse
 
 import httpx
 
-from backend.downloader.integrity import validate_image_file, validate_manga_files
+from backend.downloader.integrity import validate_image_file, validate_manga_files, MIN_MANGA_PAGE_BYTES
 from backend.scraper.tag_extractor import extract_manga_source_tags
 
 _MADARA_DOMAINS = [
@@ -35,6 +35,10 @@ _CF_BLOCKED = {
 # Tarayıcı gerekmez, tek httpx GET + regex yeterli
 _NEXTJS_DOMAINS = {
     "monomanga.com.tr",
+}
+
+_IMC_DOMAINS = {
+    "merlintoon.com",
 }
 
 # DNS fail / offline siteler — anında hata döndür
@@ -140,13 +144,16 @@ def _extract_img_urls_from_section(section: str, seen: set) -> list:
     return urls
 
 
-def _save_image_response(resp: httpx.Response, dest: str, img_url: str) -> None:
+def _save_image_response(resp: httpx.Response, dest: str, img_url: str, min_bytes: int = 0) -> bool:
+    """Görseli diske kaydet. min_bytes altındaysa False döner (skip)."""
     resp.raise_for_status()
     content_type = (resp.headers.get("content-type") or "").lower()
     if "text/html" in content_type or "application/json" in content_type:
         raise RuntimeError(f"Görsel yerine {content_type or 'bilinmeyen'} döndü: {img_url}")
     if not resp.content:
         raise RuntimeError(f"Boş görsel cevabı: {img_url}")
+    if min_bytes > 0 and len(resp.content) < min_bytes:
+        return False
     with open(dest, "wb") as fh:
         fh.write(resp.content)
     try:
@@ -157,6 +164,7 @@ def _save_image_response(resp: httpx.Response, dest: str, img_url: str) -> None:
         except OSError:
             pass
         raise
+    return True
 
 
 def _is_madara(url: str) -> bool:
@@ -185,6 +193,8 @@ async def download_manga_chapter(
         return await _mangadex_chapter(url, output_dir, on_progress)
     elif any(host.endswith(d) for d in _NEXTJS_DOMAINS):
         return await _nextjs_chapter(url, output_dir, on_progress)
+    elif any(host.endswith(d) for d in _IMC_DOMAINS):
+        return await _imc_chapter(url, output_dir, on_progress)
     elif host.endswith("uzaymanga.com"):
         return await _uzaymanga_chapter(url, output_dir, on_progress)
     elif _is_madara(url):
@@ -315,6 +325,96 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
         return r.text, str(r.url)
 
 
+async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:
+    """IMC (InitMangaEncryptedChapter) sitelerinden Playwright ile bölüm indir.
+    merlintoon.com gibi siteler görselleri JS ile şifreler — Playwright şart."""
+    from playwright.async_api import async_playwright
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
+        )
+        ctx = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/131.0.0.0 Safari/537.36",
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(ctx)
+        except Exception:
+            pass
+
+        page = await ctx.new_page()
+        await page.goto(url, timeout=45000, wait_until="domcontentloaded")
+
+        await page.wait_for_selector("#chapter-content img", timeout=20000)
+
+        prev_count = 0
+        for _ in range(30):
+            count = await page.evaluate(
+                "() => document.querySelectorAll('#chapter-content img').length"
+            )
+            if count == prev_count and count > 0:
+                break
+            prev_count = count
+            await page.evaluate("window.scrollBy(0, 1500)")
+            await asyncio.sleep(1)
+
+        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+        await asyncio.sleep(2)
+
+        img_urls = await page.evaluate("""
+            () => {
+                const imgs = document.querySelectorAll('#chapter-content img');
+                const urls = [];
+                imgs.forEach(img => {
+                    let src = img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || '';
+                    if (src.startsWith('//')) src = 'https:' + src;
+                    if (src.startsWith('http')) urls.push(src);
+                });
+                return [...new Set(urls)];
+            }
+        """)
+
+        await browser.close()
+
+    if not img_urls:
+        raise RuntimeError(f"IMC: şifreli içerikten görsel bulunamadı — {url}")
+
+    total = len(img_urls)
+    files: list[str] = []
+    skipped = 0
+
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=_HEADERS) as client:
+        for i, img_url in enumerate(img_urls):
+            ext = re.search(r'\.(jpg|jpeg|png|webp|avif)', img_url, re.IGNORECASE)
+            ext_str = "." + (ext.group(1).lower() if ext else "jpg")
+            dest = os.path.join(output_dir, f"{len(files) + 1:04d}{ext_str}")
+            try:
+                img_r = await client.get(img_url, headers=_image_headers(url))
+                saved = _save_image_response(img_r, dest, img_url, min_bytes=MIN_MANGA_PAGE_BYTES)
+                if saved:
+                    files.append(dest)
+                else:
+                    skipped += 1
+            except Exception:
+                skipped += 1
+            if on_progress:
+                await on_progress(i + 1, total)
+
+    if skipped > 0:
+        import logging
+        logging.getLogger(__name__).info("IMC: %d küçük/hatalı görsel atıldı", skipped)
+    if not files:
+        raise RuntimeError(f"IMC: hiç sayfa indirilemedi ({skipped} atıldı) — {url}")
+    validate_manga_files(files)
+    return files
+
+
 async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     """Madara WordPress tema sitelerinden manga bölümü indir (?style=list ile)."""
     list_url = url.rstrip("/") + "/?style=list"
@@ -394,20 +494,27 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
 
     total = len(chapter_imgs)
     files: list[str] = []
+    skipped = 0
 
     async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=_HEADERS) as client:
         for i, img_url in enumerate(chapter_imgs):
             ext = re.search(r'\.(jpg|jpeg|png|webp)', img_url, re.IGNORECASE)
             ext_str = "." + (ext.group(1).lower() if ext else "jpg")
-            dest = os.path.join(output_dir, f"{i + 1:04d}{ext_str}")
+            dest = os.path.join(output_dir, f"{len(files) + 1:04d}{ext_str}")
             img_r = await client.get(img_url, headers=_image_headers(list_url))
-            _save_image_response(img_r, dest, img_url)
-            files.append(dest)
+            saved = _save_image_response(img_r, dest, img_url, min_bytes=MIN_MANGA_PAGE_BYTES)
+            if saved:
+                files.append(dest)
+            else:
+                skipped += 1
             if on_progress:
                 await on_progress(i + 1, total)
 
+    if skipped > 0:
+        import logging
+        logging.getLogger(__name__).info("Madara: %d küçük görsel atlandı (< %d bytes)", skipped, MIN_MANGA_PAGE_BYTES)
     if not files:
-        raise RuntimeError(f"Madara: hiç sayfa indirilemedi — {url}")
+        raise RuntimeError(f"Madara: hiç sayfa indirilemedi ({skipped} küçük görsel atıldı) — {url}")
     validate_manga_files(files)
     return files
 

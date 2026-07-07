@@ -18,7 +18,7 @@ query ($search: String, $type: MediaType, $countryOfOrigin: CountryCode, $genre:
       seasonYear
       genres
       countryOfOrigin
-      coverImage { extraLarge }
+          coverImage { extraLarge large }
     }
   }
 }
@@ -38,7 +38,7 @@ query ($id: Int) {
     seasonYear
     genres
     countryOfOrigin
-    coverImage { large }
+    coverImage { extraLarge large }
     description
     nextAiringEpisode { episode airingAt }
     streamingEpisodes { title url thumbnail }
@@ -73,7 +73,7 @@ query ($id: Int) {
           format
           episodes
           status
-          coverImage { extraLarge }
+      coverImage { extraLarge large }
           seasonYear
         }
       }
@@ -144,7 +144,7 @@ async def get_relations(external_id: str) -> list:
                     "title": node["title"].get("english") or node["title"].get("romaji") or "",
                     "episodes": node.get("episodes"),
                     "status": node.get("status"),
-                    "cover_url": (node.get("coverImage") or {}).get("large"),
+                    "cover_url": (node.get("coverImage") or {}).get("extraLarge") or (node.get("coverImage") or {}).get("large"),
                     "year": node.get("seasonYear"),
                 })
         return result
@@ -177,7 +177,7 @@ def _format(m: dict) -> dict:
         "external_id": str(m["id"]),
         "title": title,
         "type": ctype,
-        "cover_url": (m.get("coverImage") or {}).get("large"),
+        "cover_url": (m.get("coverImage") or {}).get("extraLarge") or (m.get("coverImage") or {}).get("large"),
         "total_episodes": m.get("episodes"),
         "total_chapters": m.get("chapters"),
         "status": m.get("status", ""),

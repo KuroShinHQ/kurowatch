@@ -1209,28 +1209,35 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
     </section>
 
     <!-- ── Etiketler ────────────────────────────────────────────── -->
-    <section class="space-y-2">
-      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Etiketler</h2>
-      <div class="glass-card rounded-xl overflow-hidden">
-        <div class="px-4 py-3 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.06)">
-          <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Etiketler</span>
-          <button id="tag-create-toggle" class="h-8 px-3 rounded-lg text-[11px] font-medium flex items-center gap-1 transition-colors" style="border:1px solid rgba(0,212,255,0.4);color:#00d4ff">
-            <span class="material-symbols-outlined" style="font-size:14px">add</span> Yeni
-          </button>
-        </div>
-        <div id="tag-create-form" class="hidden px-4 py-3 flex-col gap-3" style="border-bottom:1px solid rgba(255,255,255,0.06)">
-          <input id="tag-name-input" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none transition-colors placeholder:text-[#9090b0]" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Etiket adı..." type="text"/>
-          <div class="flex items-center gap-3">
-            <span class="text-[12px] text-[#9090b0]">Renk:</span>
-            <div class="flex gap-2" id="tag-color-picker"></div>
-          </div>
-          <button id="tag-save-btn" class="h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Oluştur</button>
-        </div>
-        <div id="tag-list-settings" class="flex flex-col divide-y divide-white/5">
-          <div class="px-4 py-4 text-[13px] text-[#9090b0]">Yükleniyor...</div>
-        </div>
+<section class="space-y-2">
+  <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Etiketler</h2>
+  <div class="glass-card rounded-xl overflow-hidden">
+    <div id="tag-settings-toggle" class="px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-[#9090b0]" style="font-size:18px">label</span>
+        <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Etiketler</span>
+        <span id="tag-count-badge" class="text-[9px] px-1.5 py-0.5 rounded-full bg-[#00d4ff]/10 text-[#00d4ff] font-bold">0</span>
       </div>
-    </section>
+      <div class="flex items-center gap-2">
+        <button id="tag-create-toggle" class="h-8 px-3 rounded-lg text-[11px] font-medium flex items-center gap-1 transition-colors" style="border:1px solid rgba(0,212,255,0.4);color:#00d4ff">
+          <span class="material-symbols-outlined" style="font-size:14px">add</span> Yeni
+        </button>
+        <span id="tag-chevron" class="material-symbols-outlined text-[#9090b0] transition-transform" style="font-size:18px">expand_more</span>
+      </div>
+    </div>
+    <div id="tag-create-form" class="hidden px-4 py-3 flex-col gap-3" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+      <input id="tag-name-input" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none transition-colors placeholder:text-[#9090b0]" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="Etiket adı..." type="text"/>
+      <div class="flex items-center gap-3">
+        <span class="text-[12px] text-[#9090b0]">Renk:</span>
+        <div class="flex gap-2" id="tag-color-picker"></div>
+      </div>
+      <button id="tag-save-btn" class="h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Oluştur</button>
+    </div>
+    <div id="tag-list-settings" class="hidden flex-col divide-y divide-white/5 max-h-[300px] overflow-y-auto">
+      <div class="px-4 py-4 text-[13px] text-[#9090b0]">Yükleniyor...</div>
+    </div>
+  </div>
+</section>
 
     <!-- ── Site Cookies ─────────────────────────────────────────── -->
     <section class="space-y-2">
@@ -2114,11 +2121,6 @@ document.addEventListener('DOMContentLoaded', function() {
           <button id="reader-lang-original" class="px-3 py-1.5 font-bold transition-colors" style="background:rgba(0,212,255,0.2);color:#00d4ff">JP</button>
           <button id="reader-lang-tr" class="px-3 py-1.5 text-[#9090b0] hover:text-white transition-colors">TR</button>
         </div>
-        <!-- Translate status button (FAZ-5, GPU gerekli) -->
-        <button id="reader-translate-btn" class="hidden items-center gap-1 text-[10px] px-3 py-1.5 rounded-xl transition-all min-h-[36px]"
-          style="background:rgba(26,33,35,0.5);border:1px solid rgba(255,255,255,0.1);color:#9090b0">
-          🌐 <span id="reader-translate-label">Çevir</span>
-        </button>
         <!-- Fix button (FAZ-5, TR modda) -->
         <button id="reader-fix-btn" class="hidden items-center gap-1 text-[10px] px-3 py-1.5 rounded-xl transition-all min-h-[36px]"
           style="border:1px solid rgba(255,217,161,0.3);color:#ffd9a1">
@@ -2129,9 +2131,10 @@ document.addEventListener('DOMContentLoaded', function() {
           <span class="material-symbols-outlined text-xl">fullscreen</span>
         </button>
         <!-- Kuro Translate panel aç -->
-        <button id="reader-kuro-translate-btn" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all" style="color:#00d4ff" title="Kuro Translate">
-          <span class="material-symbols-outlined">translate</span>
-        </button>
+<button id="reader-kuro-translate-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-xl hover:bg-white/10 transition-all min-h-[36px]" style="color:#00d4ff;border:1px solid rgba(0,212,255,0.3)" title="Çevir">
+  <span class="material-symbols-outlined" style="font-size:18px">translate</span>
+  <span class="text-[10px] font-bold">Çevir</span>
+</button>
       </div>
     </div>
   </header>
