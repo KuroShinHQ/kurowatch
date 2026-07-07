@@ -28,7 +28,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from backend.downloader.integrity import validate_manga_dir, validate_video_file
+from backend.downloader.integrity import (
+    probe_video_codec,
+    validate_manga_dir,
+    validate_video_file_playable,
+)
 from backend.downloader.manga import download_manga_chapter
 from backend.downloader.stream_finder import find_stream_url
 
@@ -50,7 +54,7 @@ def host_path(path: str | None) -> Path:
     if not path:
         return Path("")
     normalized = path.replace("\\", "/")
-    if normalized.startswith("/mnt/") and len(normalized) > 6 and normalized[5] == "/":
+    if normalized.startswith("/mnt/") and len(normalized) > 6 and normalized[6] == "/":
         drive = normalized[5].upper()
         rest = normalized[7:]
         return Path(f"{drive}:/{rest}")
@@ -338,8 +342,16 @@ def api_video_download_check(client: httpx.Client, candidate: dict, timeout_s: i
     if job.get("status") != "done":
         fail(f"Video download job did not complete: {job}")
     disk_path = host_path(job.get("file_path"))
-    size = validate_video_file(str(disk_path))
-    log(f"API video disk PASS: job_id={job_id}, bytes={size}, path={disk_path}")
+    size = validate_video_file_playable(str(disk_path))
+    codec_info = probe_video_codec(str(disk_path))
+    codec_name = codec_info.get("codec_name", "unknown") if codec_info else "ffprobe-unavailable"
+    resolution = ""
+    if codec_info and codec_info.get("width") and codec_info.get("height"):
+        resolution = f"{codec_info['width']}x{codec_info['height']}"
+    log(
+        f"API video disk PASS: job_id={job_id}, bytes={size}, "
+        f"codec={codec_name}, res={resolution or 'n/a'}, path={disk_path}"
+    )
     serve_r = client.get(f"/api/download/serve/{job_id}", headers={"Range": "bytes=0-65535"})
     log(f"GET /api/download/serve/{job_id} -> HTTP {serve_r.status_code}, bytes={len(serve_r.content)}")
     if serve_r.status_code not in (200, 206) or len(serve_r.content) == 0:

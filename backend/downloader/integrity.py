@@ -1,12 +1,23 @@
 import glob
+import json
 import os
 import shutil
+import subprocess
 
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
 VIDEO_EXTS = {".mp4", ".mkv", ".webm", ".avi", ".mov", ".m4v"}
 MIN_IMAGE_BYTES = 256
 MIN_VIDEO_BYTES = 64 * 1024
+
+_FFPROBE_BIN = shutil.which("ffprobe") or shutil.which("ffprobe.exe")
+_WSL_FFPROFE_CACHE: dict | None = None
+
+_KNOWN_VIDEO_CODECS = frozenset({
+    "h264", "h265", "hevc", "vp9", "vp8", "av1",
+    "mpeg4", "msmpeg4v2", "msmpeg4v3", "wmv1", "wmv2", "wmv3",
+    "mpeg2video", "theora", "flv1", "vp6", "vp7",
+})
 
 
 class DownloadIntegrityError(RuntimeError):
@@ -88,6 +99,78 @@ def validate_video_file(path: str) -> int:
     if ext == ".avi" and not (header.startswith(b"RIFF") and header[8:12] == b"AVI "):
         raise DownloadIntegrityError(f"video: invalid AVI header: {path}")
 
+    return size
+
+
+def _to_wsl_path(win_path: str) -> str:
+    p = win_path.replace("\\", "/")
+    if len(p) >= 2 and p[1] == ":":
+        return f"/mnt/{p[0].lower()}{p[2:]}"
+    return p
+
+
+def _resolve_ffprobe_cmd(target_path: str) -> list[str] | None:
+    if _FFPROBE_BIN:
+        return [
+            _FFPROBE_BIN, "-v", "error", "-print_format", "json",
+            "-show_streams", "-select_streams", "v:0", target_path,
+        ]
+    if os.name == "nt":
+        global _WSL_FFPROFE_CACHE
+        if _WSL_FFPROFE_CACHE is None:
+            wsl_exe = shutil.which("wsl") or shutil.which("wsl.exe")
+            _WSL_FFPROFE_CACHE = {"exe": wsl_exe} if wsl_exe else {"exe": None}
+        wsl_exe = _WSL_FFPROFE_CACHE.get("exe")
+        if not wsl_exe:
+            return None
+        return [
+            wsl_exe, "--", "ffprobe", "-v", "error", "-print_format", "json",
+            "-show_streams", "-select_streams", "v:0", _to_wsl_path(target_path),
+        ]
+    return None
+
+
+def probe_video_codec(path: str) -> dict | None:
+    cmd = _resolve_ffprobe_cmd(path)
+    if not cmd:
+        return None
+    try:
+        proc = subprocess.run(cmd, capture_output=True, timeout=20)
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        return None
+    if proc.returncode != 0:
+        return {}
+    try:
+        data = json.loads(proc.stdout.decode("utf-8", errors="replace"))
+    except (ValueError, json.JSONDecodeError):
+        return {}
+    streams = data.get("streams") or []
+    if not streams:
+        return {}
+    v = streams[0]
+    return {
+        "codec_name": (v.get("codec_name") or "").lower(),
+        "codec_long_name": v.get("codec_long_name", ""),
+        "width": v.get("width"),
+        "height": v.get("height"),
+        "duration": v.get("duration"),
+    }
+
+
+def validate_video_file_playable(path: str) -> int:
+    size = validate_video_file(path)
+    probe = probe_video_codec(path)
+    if probe is None:
+        return size
+    if not probe:
+        raise DownloadIntegrityError(
+            f"video: ffprobe found no valid video stream: {path}"
+        )
+    codec = probe.get("codec_name", "")
+    if codec and codec not in _KNOWN_VIDEO_CODECS:
+        raise DownloadIntegrityError(
+            f"video: unsupported codec '{codec}': {path}"
+        )
     return size
 
 
