@@ -445,21 +445,6 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
       <span id="detail-game-publisher" class="before:content-['·'] before:mr-2 before:text-[#3c494e]"></span>
     </div>
   </div>
-  <!-- Game Download Sources -->
-  <div id="detail-game-downloads" class="hidden px-4 pb-3 pt-2 flex flex-col gap-2">
-    <div class="flex items-center justify-between">
-      <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">İndirme Kaynakları</span>
-      <button id="detail-game-dl-search" class="text-[11px] font-bold text-[#4ade80] flex items-center gap-1" style="display:none">
-        <span class="material-symbols-outlined" style="font-size:14px">search</span> FitGirl'de Ara
-      </button>
-    </div>
-    <div id="detail-game-dl-loading" class="hidden text-[12px] text-[#9090b0] flex items-center gap-2 py-2">
-      <span class="material-symbols-outlined animate-spin" style="font-size:16px">progress_activity</span> FitGirl taranıyor...
-    </div>
-    <div id="detail-game-dl-error" class="hidden text-[12px] text-[#ff6b6b] py-2"></div>
-    <div id="detail-game-dl-results" class="flex flex-col gap-2"></div>
-    <div id="detail-game-dl-empty" class="hidden text-[12px] text-[#9090b0] py-2 text-center">Henüz indirme kaynağı eklenmemiş.</div>
-  </div>
   <!-- Tags -->
   <div id="detail-tags-row" class="flex items-center gap-2 flex-wrap px-4 py-2 border-b border-white/5 min-h-[44px]"></div>
   <!-- Tabs v7 -->
@@ -471,11 +456,33 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
   </div>
   <!-- Tab Content -->
   <div class="p-gutter pb-[80px] relative">
-    <!-- Bölümler Tab -->
+    <!-- Bölümler / İndirme Tab (game → İndirme, others → Bölümler) -->
     <div class="flex flex-col gap-2" id="detail-tab-episodes">
-      <div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">
-        <div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm 86</span><span class="font-body-md text-body-md text-[#9090b0]">The Awakening</span></div>
-        <div class="min-w-[44px] min-h-[44px] flex items-center justify-end"><div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50"><span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div>
+      <div id="detail-tab-episodes-default">
+        <div class="flex items-center justify-between px-3 h-[56px] rounded-lg bg-[#16213e]/50 border border-white/5 opacity-50">
+          <div class="flex flex-col"><span class="font-body-lg text-body-lg text-[#e1e0ff] line-through">Bölüm 86</span><span class="font-body-md text-body-md text-[#9090b0]">The Awakening</span></div>
+          <div class="min-w-[44px] min-h-[44px] flex items-center justify-end"><div class="w-6 h-6 rounded bg-[#00d4ff]/20 flex items-center justify-center border border-[#00d4ff]/50"><span class="material-symbols-outlined text-[16px] text-[#00d4ff]">check</span></div></div>
+        </div>
+      </div>
+      <!-- Game download sources (rendered in detail-tab-episodes for game type) -->
+      <div id="detail-tab-game-downloads" class="hidden flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <span class="text-[13px] font-bold text-[#e1e0ff]">İndirme Kaynakları</span>
+          <button id="detail-game-dl-search" class="text-[11px] font-bold text-[#4ade80] flex items-center gap-1" style="display:none">
+            <span class="material-symbols-outlined" style="font-size:14px">search</span> FitGirl'de Ara
+          </button>
+        </div>
+        <div id="detail-game-dl-loading" class="hidden text-[12px] text-[#9090b0] flex items-center gap-2 py-2">
+          <span class="material-symbols-outlined animate-spin" style="font-size:16px">progress_activity</span> FitGirl taranıyor...
+        </div>
+        <div id="detail-game-dl-error" class="hidden text-[12px] text-[#ff6b6b] py-2"></div>
+        <div id="detail-game-dl-results" class="flex flex-col gap-2"></div>
+        <div id="detail-game-dl-empty" class="hidden text-[12px] text-[#9090b0] py-4 text-center">Henüz indirme kaynağı eklenmemiş. FitGirl'de aramak için yukarıdaki butonu kullan.</div>
+        <!-- Kaydedilmiş download linkleri -->
+        <div class="border-t border-white/5 pt-3">
+          <span class="text-[11px] uppercase font-bold tracking-wider text-[#9090b0]">Kayıtlı Linkler</span>
+          <div id="detail-game-dl-saved" class="flex flex-col gap-2 mt-2"></div>
+        </div>
       </div>
     </div>
     <!-- Karakterler Tab (v7) -->
