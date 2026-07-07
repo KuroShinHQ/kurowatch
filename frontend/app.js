@@ -515,6 +515,57 @@
     }
   }
 
+  async function _renderSavedDownloads(contentId, item) {
+    const savedEl = document.getElementById('detail-game-dl-saved');
+    if (!savedEl) return;
+    try {
+      var data = await apiGet('/api/game/' + contentId + '/downloads');
+      var downloads = data.downloads || [];
+      if (downloads.length) {
+        savedEl.innerHTML = downloads.map(function(d, i) {
+          var title = escapeHtml(d.title || 'İndirme');
+          var size = d.repack_size ? '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(d.repack_size) + '</span>' : '';
+          var magnetBtn = d.magnet ? '<a href="' + escapeHtml(d.magnet) + '" class="dl-magnet-btn px-3 py-1.5 rounded-lg text-[12px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all flex items-center gap-1" data-magnet="' + escapeHtml(d.magnet) + '"><span class="material-symbols-outlined" style="font-size:14px">link</span> Magnet</a>' : '';
+          var torrentBtn = d.torrent_url && d.torrent_url.indexOf('magnet:') !== 0 ? '<a href="' + escapeHtml(d.torrent_url) + '" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg text-[12px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 hover:brightness-110 transition-all flex items-center gap-1"><span class="material-symbols-outlined" style="font-size:14px">download</span> Torrent</a>' : '';
+          return '<div class="bg-[#16213e] rounded-xl p-3 border border-white/5 flex flex-col gap-2">' +
+            '<div class="flex items-center justify-between">' +
+            '<span class="text-[13px] font-bold text-[#e1e0ff] truncate flex items-center gap-2">' +
+            '<span class="material-symbols-outlined text-[#4ade80]" style="font-size:16px">download</span>' + title + '</span>' +
+            '<button class="text-[11px] text-[#ff6b6b] font-semibold flex items-center gap-0.5" data-dl-remove="' + i + '"><span class="material-symbols-outlined" style="font-size:14px">delete</span> Kaldır</button>' +
+            '</div>' +
+            (size ? '<div class="flex items-center gap-1 text-[12px] text-[#9090b0]"><span class="material-symbols-outlined" style="font-size:14px">storage</span> ' + size + '</div>' : '') +
+            '<div class="flex gap-2 flex-wrap">' + magnetBtn + torrentBtn + '</div>' +
+            '</div>';
+        }).join('');
+        // Magnet click → protocol trigger
+        savedEl.querySelectorAll('.dl-magnet-btn').forEach(function(btn) {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var magnet = this.dataset.magnet;
+            if (magnet) window.location.href = magnet;
+          });
+        });
+        // Remove handler
+        savedEl.querySelectorAll('[data-dl-remove]').forEach(function(btn) {
+          btn.addEventListener('click', async function() {
+            var idx = parseInt(this.dataset.dlRemove, 10);
+            try {
+              await apiDelete('/api/game/' + contentId + '/downloads/' + idx);
+              _renderSavedDownloads(contentId, item);
+              showToast('Link kaldırıldı', 'success');
+            } catch (e) {
+              showToast('Silinemedi: ' + e.message, 'error');
+            }
+          });
+        });
+      } else {
+        savedEl.innerHTML = '<div class="text-[12px] text-[#9090b0] py-2 text-center">Kayıtlı link yok.</div>';
+      }
+    } catch (e) {
+      savedEl.innerHTML = '<div class="text-[12px] text-[#ff6b6b] py-2">Yükleme hatası: ' + escapeHtml(e.message) + '</div>';
+    }
+  }
+
   function _addDragScroll(el) {
     let isDown = false, startX = 0, scrollLeft = 0;
     el.addEventListener('mousedown', function(e) {
@@ -955,9 +1006,31 @@
       });
     }
 
-    // Bölümler tab
+    // Bölümler / İndirme tab
     const epsTabEl = document.getElementById('detail-tab-episodes');
-    if (epsTabEl) renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || [], item.my_progress || 0);
+    if (epsTabEl) {
+      if (item.type === 'game') {
+        // Game: show download panel
+        epsTabEl.querySelectorAll('#detail-tab-episodes-default').forEach(function(e) { e.classList.add('hidden'); });
+        const gameDlTab = document.getElementById('detail-tab-game-downloads');
+        if (gameDlTab) {
+          gameDlTab.classList.remove('hidden');
+          _fitgirlSearch(id, item.title);
+          // Load saved downloads
+          _renderSavedDownloads(id, item);
+          // Update tab label
+          var epTabBtn = document.querySelector('#screen-detail .sticky.top-0 button:first-child');
+          if (epTabBtn) epTabBtn.textContent = 'İndirme';
+        }
+      } else {
+        epsTabEl.querySelectorAll('#detail-tab-episodes-default').forEach(function(e) { e.classList.remove('hidden'); });
+        var gameDlTab2 = document.getElementById('detail-tab-game-downloads');
+        if (gameDlTab2) gameDlTab2.classList.add('hidden');
+        renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || [], item.my_progress || 0);
+        var epTabBtn2 = document.querySelector('#screen-detail .sticky.top-0 button:first-child');
+        if (epTabBtn2) epTabBtn2.textContent = 'Bölümler';
+      }
+    }
 
     // Siteler tab
     const sitesTabEl = document.getElementById('detail-tab-sites');
@@ -1266,17 +1339,30 @@
     const matchMap = { episodes:'böl', characters:'karak', sites:'site', notes:'not' };
     const buttons = document.querySelectorAll('#screen-detail .sticky.top-0 button');
     buttons.forEach(function(btn) {
-      const isActive = btn.textContent.toLowerCase().includes(matchMap[tabId] || tabId);
-      btn.classList.toggle('text-[#00d4ff]', isActive);
-      btn.classList.toggle('border-[#00d4ff]', isActive);
-      btn.classList.toggle('text-[#9090b0]', !isActive);
-      btn.classList.toggle('border-transparent', !isActive);
+      const txt = btn.textContent.toLowerCase();
+      var match = false;
+      if (tabId === 'episodes') {
+        match = txt === 'bölümler' || txt === 'i̇ndirme';
+      } else {
+        match = txt.includes(matchMap[tabId] || tabId);
+      }
+      btn.classList.toggle('text-[#00d4ff]', match);
+      btn.classList.toggle('border-[#00d4ff]', match);
+      btn.classList.toggle('text-[#9090b0]', !match);
+      btn.classList.toggle('border-transparent', !match);
     });
     tabs.forEach(function(t) {
-      const el = document.getElementById('detail-tab-' + t);
-      if (!el) return;
-      if (t === tabId) { el.classList.remove('hidden'); el.classList.add('flex'); }
-      else { el.classList.add('hidden'); el.classList.remove('flex'); }
+      var el;
+      if (t === 'episodes') {
+        el = document.getElementById('detail-tab-episodes');
+        if (el) { el.classList.remove('hidden'); el.classList.add('flex'); }
+      } else {
+        el = document.getElementById('detail-tab-' + t);
+        if (el) {
+          if (t === tabId) { el.classList.remove('hidden'); el.classList.add('flex'); }
+          else { el.classList.add('hidden'); el.classList.remove('flex'); }
+        }
+      }
     });
   }
   window.detailSwitchTab = detailSwitchTab;
