@@ -44,6 +44,13 @@ _CF_SITES = {
     "dizibox.live",
     "dizibox.so",
     "hdfilmcehennemi.nl",
+    "hdfilmcehennemi.art",
+    "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com",
+    "dizigom.info",
+    "dizigom.com",
+    "dizigom.vip",
+    "dizigom.net",
     "tranimeizle.co",
     "tranimeizle.io",
     "tranimaci.com",
@@ -93,6 +100,13 @@ _SITE_COOKIES = {
     "dizibox.live":       "dizibox_cookies.txt",
     "dizibox.so":         "dizibox_cookies.txt",
     "hdfilmcehennemi.nl": "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.art": "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.tv":  "hdfilmcehennemi_cookies.txt",
+    "hdfilmcehennemi.com": "hdfilmcehennemi_cookies.txt",
+    "dizigom.info":  "dizigom_cookies.txt",
+    "dizigom.com":   "dizigom_cookies.txt",
+    "dizigom.vip":   "dizigom_cookies.txt",
+    "dizigom.net":   "dizigom_cookies.txt",
 }
 
 # Bu domainler iframe olarak bulunsa bile atlanır (lisanslı oynatıcılar, reklam ağları)
@@ -106,6 +120,13 @@ _FORCE_PLAYWRIGHT = {
     "dizibox.live",
     "dizibox.so",
     "hdfilmcehennemi.nl",
+    "hdfilmcehennemi.art",
+    "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com",
+    "dizigom.info",
+    "dizigom.com",
+    "dizigom.vip",
+    "dizigom.net",
     "turkanime.tv",
 }
 
@@ -124,6 +145,13 @@ _PLAY_BUTTON_SELECTORS = {
     "dizibox.live":       [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
     "dizibox.so":         [".play-btn", "#play-btn", "[data-action='play']", "button.btn-play"],
     "hdfilmcehennemi.nl": [".play-that-video", "[aria-label='Play video']", ".play-button", "#play", ".jw-icon-playback"],
+    "hdfilmcehennemi.art": [".play-that-video", ".play-button", "#play"],
+    "hdfilmcehennemi.tv":  [".play-that-video", ".play-button", "#play"],
+    "hdfilmcehennemi.com": [".play-that-video", ".play-button", "#play"],
+    "dizigom.info":  [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
+    "dizigom.com":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
+    "dizigom.vip":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
+    "dizigom.net":   [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
     # IndexIcerik AJAX → iframe inject eder; ilk sunucu butonunu tıkla
     "turkanime.tv":       ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
     "tranimeizle.co":     [

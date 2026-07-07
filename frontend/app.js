@@ -1913,6 +1913,28 @@
       };
     }
 
+    // ── TMDB key ────────────────────────────────────────────────────
+    const tmdbKey  = document.getElementById('settings-tmdb-key');
+    const tmdbSave = document.getElementById('settings-tmdb-save');
+    const tmdbTest = document.getElementById('settings-tmdb-test');
+    if (tmdbKey) tmdbKey.value = cfg.tmdb_api_key || '';
+    if (tmdbSave) {
+      tmdbSave.onclick = async function() {
+        try {
+          await apiPost('/api/settings', { tmdb_api_key: tmdbKey ? tmdbKey.value.trim() : '' });
+          this.textContent = 'Kaydedildi ✓';
+          setTimeout(() => { this.textContent = 'Kaydet'; }, 2000);
+        } catch(e) { alert('Kayıt hatası: ' + e.message); }
+      };
+    }
+    if (tmdbTest) {
+      tmdbTest.onclick = async function() {
+        const key = tmdbKey ? tmdbKey.value.trim() : '';
+        const res = await apiPost('/api/proxy/validate-key', { service: 'tmdb', key: key });
+        showToast((res.valid ? '✓ ' : '✗ ') + res.message, res.valid ? 'success' : 'error');
+      };
+    }
+
     // ── Kuro Translate sliders ──────────────────────────────────────
     const fontSlider    = document.getElementById('settings-translate-font');
     const fontVal       = document.getElementById('settings-translate-font-val');

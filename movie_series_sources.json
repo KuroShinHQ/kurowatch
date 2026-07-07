@@ -1,0 +1,32 @@
+{
+  "hdfilmcehennemi": {
+    "label": "HDFilmCehennemi",
+    "type": "movie",
+    "domains": [
+      "hdfilmcehennemi.nl",
+      "hdfilmcehennemi.art",
+      "hdfilmcehennemi.tv",
+      "hdfilmcehennemi.com"
+    ],
+    "parser": "hdfilmcehennemi",
+    "cf_protected": true,
+    "cookies_file": "hdfilmcehennemi_cookies.txt",
+    "play_selectors": [".play-that-video", ".play-button", "#play"],
+    "notes": "Cloudflare korumali. Vidmoly/Streamtape embed. Domain sik degisir."
+  },
+  "dizigom": {
+    "label": "Dizigom",
+    "type": "series",
+    "domains": [
+      "dizigom.info",
+      "dizigom.com",
+      "dizigom.vip",
+      "dizigom.net"
+    ],
+    "parser": "dizigom",
+    "cf_protected": false,
+    "cookies_file": null,
+    "play_selectors": [".player-area iframe", ".video-js", "#player"],
+    "notes": "Genellikle CF yok. Vidmoly/Streamtape embed."
+  }
+}

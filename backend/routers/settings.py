@@ -35,6 +35,7 @@ _DEFAULTS = {
     "daisy_chain_trigger_pct": 50,
     "deepl_api_key": "",
     "translation_fallback": "google",
+    "tmdb_api_key": "",
 }
 
 
@@ -72,7 +73,7 @@ async def update_settings(body: dict):
 # ── Proxy: validate-key ──────────────────────────────────────────────
 
 class ValidateKeyBody(BaseModel):
-    service: str  # "anilist" | "mal" | "igdb" | "deepl"
+    service: str  # "anilist" | "mal" | "igdb" | "deepl" | "tmdb"
     key: str
 
 
@@ -122,6 +123,17 @@ async def validate_key(body: ValidateKeyBody):
                 if r.status_code == 200:
                     return {"valid": True, "message": "IGDB token geçerli"}
                 return {"valid": False, "message": f"IGDB yanıtı: {r.status_code}"}
+
+            elif svc == "tmdb":
+                r = await client.get(
+                    "https://api.themoviedb.org/3/configuration",
+                    params={"api_key": key},
+                )
+                if r.status_code == 200:
+                    return {"valid": True, "message": "TMDB API key geçerli"}
+                if r.status_code == 401:
+                    return {"valid": False, "message": "TMDB API key geçersiz"}
+                return {"valid": False, "message": f"TMDB yanıtı: {r.status_code}"}
 
             elif svc == "deepl":
                 url = "https://api-free.deepl.com/v2/usage" if key.endswith(":fx") else "https://api.deepl.com/v2/usage"
