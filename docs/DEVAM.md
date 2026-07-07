@@ -52,11 +52,21 @@ SOHBET-110 (Aşama 1+2) — TMDB API + Domain Pool + Scraper Altyapısı:
     - hdfilmcehennemi: .name, .gg, .ws, .now (canlı) + diğerleri
     - dizigom: .love, .tv (canlı) + diğerleri
 
-SIRADA (2 ölü manga + canlı test):
-    - #8 Geri Dönen Büyücü → websearch ile bul
-    - #92 Kahramanın Dönüşü → websearch ile bul
-    - Canlı video URL testi (WSL + Playwright gerekli)
+SIRADA:
+    Canlı video URL testi (WSL + Playwright gerekli)
 ```
+
+## ✅ TAMAMLANAN — 2 Ölü Manga Fix
+
+```
+#8 Geri Dönen Büyücü:
+  └ MangaGezgini (site#1116) → 404 → is_dead=1
+  └ ruyamanga2.com (site#1417) → 200 ✅ canlı
+
+#92 Kahramanın Dönüşü:
+  └ MangaGezgini (site#1127) → 404 → is_dead=1
+  └ ruyamanga2.com (site#1419) → YENİ eklendi → 200 ✅ canlı
+  └ merlintoon.com (site#1418) → 200 ✅ canlı
 ```
 
 ## ✅ TAMAMLANAN — SOHBET-109: Mimari Genişletme (Dizi + Film + Tag Sistemi)
@@ -88,17 +98,16 @@ SOHBET-109 — Content.type genişletme + Tag sistemi + Home layout:
 [10] Add modal: series/movie için "henüz keşif yok" uyarısı + manuel ekleme
 ```
 
-## 🔥 SIRADA — Dizi/Film Site Keşfi + 2 Ölü Manga
+## 🔥 SIRADA — Dizi/Film Site Keşfi + Canlı Test
 
 ```
 SIRADAKİ ADIMLAR:
-[1] Dizi/Film için site keşfi:
+[1] Canlı video URL testi (WSL + Playwright + yt-dlp gerekli)
+    - hdfilmcehennemi.name → PW parser ile .mp4 çıkarma
+    - dizigom.love → PW parser ile .m3u8 çıkarma
+[2] Dizi/Film için ek site keşfi:
     - Web search + sitemap taraması
-    - Çalışan Türk dizi/film siteleri
     - stream_finder.py genişletme (dizi/film iframe/embed)
-[2] KALAN 2 ÖLÜ MANGA:
-    - #8 Geri Dönen Büyücü → websearch ile bul
-    - #92 Kahramanın Dönüşü → websearch ile bul
 [3] Content type tag auto-assign: mevcut içeriklere toplu atama scripti
 ```
 
