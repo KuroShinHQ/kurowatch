@@ -407,6 +407,114 @@
     });
   }
 
+  async function _fitgirlSearch(contentId, title) {
+    const dlResults = document.getElementById('detail-game-dl-results');
+    const dlEmpty = document.getElementById('detail-game-dl-empty');
+    const dlLoading = document.getElementById('detail-game-dl-loading');
+    const dlError = document.getElementById('detail-game-dl-error');
+    const dlSearchBtn = document.getElementById('detail-game-dl-search');
+    if (!dlResults) return;
+    dlLoading && (dlLoading.style.display = '');
+    dlError && (dlError.classList.add('hidden'));
+    if (dlEmpty) dlEmpty.classList.add('hidden');
+    if (dlSearchBtn) dlSearchBtn.style.display = 'none';
+    try {
+      var data = await apiGet('/api/game/' + contentId + '/fitgirl/search?q=' + encodeURIComponent(title));
+      if (!data || !data.results || !data.results.length) {
+        dlLoading && (dlLoading.style.display = 'none');
+        dlResults.innerHTML = '<div class="text-[12px] text-[#9090b0] py-2 text-center">FitGirl\'de sonuç bulunamadı.</div>';
+        return;
+      }
+      // Fetch detail (magnet/torrent) for each result
+      dlResults.innerHTML = data.results.map(function(r) {
+        var title = escapeHtml(r.title);
+        var size = r.repack_size ? '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(r.repack_size) + '</span>' : '';
+        return '<div class="bg-[#16213e] rounded-lg p-3 border border-white/5 flex flex-col gap-1.5" data-fitgirl-url="' + escapeHtml(r.url) + '" data-fitgirl-title="' + title + '" data-fitgirl-size="' + escapeHtml(r.repack_size || '') + '">' +
+          '<div class="flex items-center justify-between">' +
+          '<span class="text-[12px] font-bold text-[#e1e0ff] truncate">' + title + '</span>' +
+          '<button class="fitgirl-detail-btn px-2 py-1 rounded text-[10px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all">Detay</button>' +
+          '</div>' +
+          (size ? '<div class="flex">' + size + '</div>' : '') +
+          '<div class="fitgirl-links flex gap-2" style="display:none"></div>' +
+          '<div class="fitgirl-loading text-[11px] text-[#9090b0]" style="display:none"><span class="material-symbols-outlined animate-spin" style="font-size:14px;vertical-align:middle">progress_activity</span> Magnet alınıyor...</div>' +
+          '</div>';
+      }).join('');
+
+      dlResults.querySelectorAll('.fitgirl-detail-btn').forEach(function(btn) {
+        btn.addEventListener('click', async function() {
+          var card = this.closest('[data-fitgirl-url]');
+          if (!card) return;
+          var url = card.dataset.fitgirlUrl;
+          var linksDiv = card.querySelector('.fitgirl-links');
+          var loadingDiv = card.querySelector('.fitgirl-loading');
+          var detailBtn = this;
+          if (linksDiv && linksDiv.style.display !== 'none') {
+            linksDiv.style.display = 'none';
+            detailBtn.textContent = 'Detay';
+            return;
+          }
+          loadingDiv && (loadingDiv.style.display = '');
+          detailBtn.textContent = 'Yükleniyor...';
+          detailBtn.disabled = true;
+          try {
+            var detail = await apiPost('/api/game/' + contentId + '/fitgirl/detail', { url: url });
+            loadingDiv && (loadingDiv.style.display = 'none');
+            if (linksDiv) {
+              var links = detail.downloads || [];
+              if (links.length) {
+                linksDiv.innerHTML = links.map(function(l) {
+                  if (l.type === 'magnet') return '<a href="' + escapeHtml(l.url) + '" class="px-2 py-1 rounded text-[10px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all">Magnet</a>';
+                  if (l.type === 'torrent') return '<a href="' + escapeHtml(l.url) + '" target="_blank" class="px-2 py-1 rounded text-[10px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 hover:brightness-110 transition-all">Torrent</a>';
+                  return '';
+                }).join('') +
+                '<button class="fitgirl-save-btn px-2 py-1 rounded text-[10px] font-bold bg-[#ffd9a1]/15 text-[#ffd9a1] border border-[#ffd9a1]/30 hover:brightness-110 transition-all">Kaydet</button>';
+                linksDiv.style.display = 'flex';
+                linksDiv.style.flexWrap = 'wrap';
+                detailBtn.textContent = 'Gizle';
+              } else {
+                linksDiv.innerHTML = '<span class="text-[11px] text-[#9090b0]">Magnet/Torrent bulunamadı</span>';
+                linksDiv.style.display = '';
+                detailBtn.textContent = 'Gizle';
+              }
+              // Save button
+              linksDiv.querySelectorAll('.fitgirl-save-btn').forEach(function(saveBtn) {
+                saveBtn.addEventListener('click', async function() {
+                  var magnetEl = linksDiv.querySelector('a[href^="magnet:"]');
+                  var torrentEl = linksDiv.querySelector('a[href$=".torrent"]');
+                  try {
+                    await apiPost('/api/game/' + contentId + '/fitgirl/link', {
+                      title: card.dataset.fitgirlTitle,
+                      repack_size: card.dataset.fitgirlSize || null,
+                      magnet: magnetEl ? magnetEl.getAttribute('href') : null,
+                      torrent_url: torrentEl ? torrentEl.getAttribute('href') : null,
+                      page_url: url
+                    });
+                    showToast('İndirme kaynağı eklendi!', 'success');
+                    renderDetail(contentId);
+                  } catch (e) {
+                    showToast('Kayıt hatası: ' + e.message, 'error');
+                  }
+                });
+              });
+            }
+          } catch (e) {
+            loadingDiv && (loadingDiv.style.display = 'none');
+            linksDiv && (linksDiv.innerHTML = '<span class="text-[11px] text-[#ff6b6b]">Hata: ' + escapeHtml(e.message) + '</span>');
+            linksDiv && (linksDiv.style.display = '');
+            detailBtn.textContent = 'Tekrar Dene';
+          }
+          detailBtn.disabled = false;
+        });
+      });
+    } catch (e) {
+      dlLoading && (dlLoading.style.display = 'none');
+      dlResults.innerHTML = '<div class="text-[12px] text-[#ff6b6b] py-2">FitGirl sorgusu başarısız: ' + escapeHtml(e.message) + '</div>';
+    } finally {
+      dlLoading && (dlLoading.style.display = 'none');
+      if (dlSearchBtn) dlSearchBtn.style.display = '';
+    }
+  }
+
   function _addDragScroll(el) {
     let isDown = false, startX = 0, scrollLeft = 0;
     el.addEventListener('mousedown', function(e) {
@@ -913,6 +1021,69 @@
         if (pubEl) pubEl.textContent = item.publisher ? 'Yayıncı: ' + escapeHtml(item.publisher) : '';
       } else {
         gameMeta.classList.add('hidden');
+      }
+    }
+
+    // Game download sources (FitGirl)
+    const dlSection = document.getElementById('detail-game-downloads');
+    if (dlSection) {
+      if (item.type === 'game') {
+        dlSection.classList.remove('hidden');
+        const dlResults = document.getElementById('detail-game-dl-results');
+        const dlEmpty = document.getElementById('detail-game-dl-empty');
+        const dlLoading = document.getElementById('detail-game-dl-loading');
+        const dlError = document.getElementById('detail-game-dl-error');
+        const dlSearchBtn = document.getElementById('detail-game-dl-search');
+        if (!dlResults) return;
+
+        // Show saved downloads first
+        var savedDls = (item.game_metadata && item.game_metadata.downloads) || [];
+        if (savedDls.length) {
+          dlResults.innerHTML = savedDls.map(function(d, i) {
+            var title = escapeHtml(d.title || 'İndirme');
+            var size = d.repack_size ? '<span class="text-[11px] text-[#9090b0]">' + escapeHtml(d.repack_size) + '</span>' : '';
+            var magnetBtn = d.magnet ? '<a href="' + escapeHtml(d.magnet) + '" class="px-2 py-1 rounded text-[10px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all">Magnet</a>' : '';
+            var torrentBtn = d.torrent_url ? '<a href="' + escapeHtml(d.torrent_url) + '" target="_blank" class="px-2 py-1 rounded text-[10px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 hover:brightness-110 transition-all">Torrent</a>' : '';
+            return '<div class="bg-[#16213e] rounded-lg p-3 border border-white/5 flex flex-col gap-1.5">' +
+              '<div class="flex items-center justify-between">' +
+              '<span class="text-[12px] font-bold text-[#e1e0ff] truncate">' + title + '</span>' +
+              '<button class="text-[#ff6b6b] text-[10px] font-bold flex-shrink-0" data-dl-remove="' + i + '">Kaldır</button>' +
+              '</div>' +
+              (size ? '<div class="flex">' + size + '</div>' : '') +
+              '<div class="flex gap-2">' + magnetBtn + torrentBtn + '</div>' +
+              '</div>';
+          }).join('');
+          if (dlEmpty) dlEmpty.classList.add('hidden');
+        } else {
+          dlResults.innerHTML = '';
+          if (dlEmpty) dlEmpty.classList.remove('hidden');
+        }
+
+        // Auto-search FitGirl
+        if (dlSearchBtn) {
+          dlSearchBtn.style.display = '';
+          dlSearchBtn.onclick = function() { _fitgirlSearch(id, item.title); };
+        }
+        // Auto-trigger search on first open (debounced)
+        if (!dlSection.dataset.searched) {
+          dlSection.dataset.searched = '1';
+          setTimeout(function() { _fitgirlSearch(id, item.title); }, 500);
+        }
+
+        // Remove link handler
+        dlResults.querySelectorAll('[data-dl-remove]').forEach(function(btn) {
+          btn.addEventListener('click', async function() {
+            var idx = parseInt(this.dataset.dlRemove, 10);
+            try {
+              await apiDelete('/api/game/' + id + '/downloads/' + idx);
+              renderDetail(id);
+            } catch (e) {
+              showToast('Silinemedi: ' + e.message, 'error');
+            }
+          });
+        });
+      } else {
+        dlSection.classList.add('hidden');
       }
     }
 

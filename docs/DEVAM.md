@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-113) · **Aktif sürüm:** v1.6.0 · **Son commit:** `SOHBET-113`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-114) · **Aktif sürüm:** v1.7.0 · **Son commit:** `SOHBET-114`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -171,6 +171,56 @@ TEST PLAN:
   [ ] isGame→isPctType: game progress slider ReferenceError düzeltmesi
   [ ] Eski game tag: seed calisinca #ffb4ab → #4ade80 update
   [ ] Manual game add: developer/publisher bos (nullable) sorunsuz
+```
+
+## ✅ TAMAMLANAN — SOHBET-114: FitGirl Repack Scraper Entegrasyonu
+```
+SOHBET-114 — FitGirl Repack scraper (lightweight HTTP, no Playwright) + oyun indirme link sistemi:
+
+[1] movie_series_sources.json:
+    - "fitgirl" entry eklendi: type=game, domains=[fitgirl-repacks.site], parser=fitgirl
+    - CF korumali olarak isaretlendi
+
+[2] backend/scraper/fitgirl.py:
+    - Pure httpx AsyncClient (no Playwright, no curl_cffi)
+    - _fetch(): browser-like headers, CF challenge detection, 20-25s timeout
+    - _parse_search_results(): lxml.html structured parsing with regex fallback
+    - _parse_detail_page(): magnet: URI + .torrent URL extraction
+    - _sanitize_text(): HTML entity decode, control char removal
+    - _sanitize_url(): magnet: validation, IP-block, absolutize, .torrent param strip
+    - search(query) → list of {title, url, repack_size, year}
+    - get_detail(url) → {magnet, torrent_url, repack_size, title, downloads[]}
+
+[3] backend/routers/game_download.py:
+    - GET  /api/game/{id}/fitgirl/search?q=... → FitGirl search
+    - POST /api/game/{id}/fitgirl/detail → {url} → magnet/torrent extraction
+    - POST /api/game/{id}/fitgirl/link → save to game_metadata.downloads[]
+    - GET  /api/game/{id}/downloads → list saved download links
+    - DELETE /api/game/{id}/downloads/{idx} → remove link
+    - Duplicate detection (by page_url or magnet)
+
+[4] Frontend (app.js + index.html):
+    - #detail-game-downloads section (auto-shown for game type)
+    - Auto-search FitGirl on game detail open (debounced)
+    - Saved downloads rendered as cards with Magnet/Torrent buttons
+    - FitGirl search results as expandable cards: click "Detay" → fetch detail → show links
+    - "Kaydet" button to persist links to game_metadata.downloads
+    - "Kaldir" button to remove saved links
+    - Loading/error/empty states
+
+[5] Security:
+    - lxml.html structured parsing (no regex-on-raw-HTML for extraction)
+    - URL validation: magnet URI schema, IP-based URL block, protocol restrict
+    - Text sanitization: HTML entity decode, control char strip
+    - No eval/exec on extracted data
+    - httpx timeout protection (20s/25s)
+    - CF challenge detection (title "Just a moment", HTML length threshold)
+
+[6] CANLI TEST (Elden Ring):
+    - FitGirl search "Elden Ring": 10 results ✅
+    - Detail fetch: magnet:?xt=urn:btih:ddc2e... ✅
+    - Repack size: 26.1 GB (Nightreign), 66.4 GB (Shadow of Erdtree) ✅
+    - CF bypass: basarili (standard httpx + browser headers, no PW) ✅
 ```
 
 ```
@@ -566,14 +616,12 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (7 Temmuz 2026 - sohbet-113):
+MEVCUT DURUM (7 Temmuz 2026 - sohbet-114):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - DB: developer/publisher/game_metadata kolonlari eklendi
-  - Game tag rengi: #ffb4ab → #4ade80 (yesil)
-  - IGDB scraper: involved_companies ile developer/publisher cikarimi
-  - isGame→isPctType ReferenceError fix (slider input/change/quick-edit)
-  - Home game card: yil badge + platform badge
-  - Detail view: platform badges + developer/publisher bilgisi
+  - FitGirl Repack scraper: httpx + lxml (no PW), CF bypass basarili
+  - game_download router: search/detail/save/list/delete endpoints
+  - Frontend: FitGirl auto-search, magnet/torrent buttons, save/kaldir
+  - CANLI KANIT: Elden Ring → 10 results, magnet+torrent+size ✅
   - SIRADAKI: yt-dlp rapidvid.net embed cozumu, HLS segment test
 ```
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)

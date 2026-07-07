@@ -14,7 +14,7 @@ _BUILD_TS = int(time.time())
 _VERSIONED_HTML: str | None = None
 
 from backend.database import init_db, seed_content_type_tags
-from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, mal_sync, stream
+from backend.routers import content, episodes, sites, tags, settings, sync, download, push, analyze, translate, extension, game, game_download, mal_sync, stream
 
 _FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 _CONFIG_PATH  = os.path.join(os.path.dirname(__file__), "config.json")
@@ -99,6 +99,7 @@ app.include_router(analyze.router,   prefix="/api", tags=["analyze"])
 app.include_router(translate.router,   prefix="/api", tags=["translate"])
 app.include_router(extension.router,  prefix="/api", tags=["extension"])
 app.include_router(game.router,       prefix="/api", tags=["game"])
+app.include_router(game_download.router, prefix="/api", tags=["game_download"])
 app.include_router(mal_sync.router,   prefix="/api", tags=["mal_sync"])
 app.include_router(stream.router,     prefix="/api", tags=["stream"])
 
