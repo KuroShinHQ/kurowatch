@@ -16,7 +16,6 @@ _MADARA_DOMAINS = [
     "ragnarscans.com", "ragnarscans.net",
     "merlintoon.com",
     "mangadenizi.com",
-    "manhwahentai.me",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
     "manga-sehri.net", "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
@@ -26,7 +25,6 @@ _MADARA_DOMAINS = [
 # CF turnstile siteler — curl_cffi impersonate ile aşılır
 _CF_BLOCKED = {
     "ragnarscans.com", "ragnarscans.net",
-    "manhwahentai.me",
     "hayalistic.com.tr",
     "mangasehri.net", "mangasehri.com",
 }
@@ -46,7 +44,7 @@ _IMC_DOMAINS = {
 _OFFLINE = {
     "majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com",
     "mangagezgini.com",
-    "mangagezgini.com",  # HTTP 525 SSL handshake failed (5 Tem 2026)
+    "manhwahentai.me",
 }
 
 # uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
@@ -349,9 +347,35 @@ async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             pass
 
         page = await ctx.new_page()
-        await page.goto(url, timeout=45000, wait_until="domcontentloaded")
+        await page.goto(url, timeout=60000, wait_until="domcontentloaded")
 
-        await page.wait_for_selector("#chapter-content img", timeout=20000)
+        try:
+            await page.wait_for_selector("#chapter-content", timeout=30000, state="attached")
+        except Exception:
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await asyncio.sleep(3)
+            await page.wait_for_selector("#chapter-content", timeout=20000, state="attached")
+
+        has_encrypted = False
+        try:
+            has_encrypted = await page.evaluate(
+                "() => typeof InitMangaEncryptedChapter !== 'undefined'"
+            )
+        except Exception:
+            pass
+        if has_encrypted:
+            for _ in range(90):
+                img_count = await page.evaluate(
+                    "() => document.querySelectorAll('#chapter-content img').length"
+                )
+                if img_count > 0:
+                    break
+                await asyncio.sleep(1)
+            else:
+                img_count = 0
+
+        if not has_encrypted or not img_count:
+            await page.wait_for_selector("#chapter-content img", timeout=30000, state="attached")
 
         prev_count = 0
         for _ in range(30):
