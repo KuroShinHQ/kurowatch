@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-109) · **Aktif sürüm:** v1.5.0 · **Son commit:** `deac068`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-110) · **Aktif sürüm:** v1.5.0 · **Son commit:** `1401cbf`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
