@@ -1,11 +1,58 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-122) · **Aktif sürüm:** v1.10.0 · **Son commit:** `SOHBET-122` Keşif motoru, arayüz evrimi, manhwa bütünlüğü
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-123) · **Aktif sürüm:** v1.11.0 · **Son commit:** `SOHBET-123` DB hijyeni + dinamik domain sniffer
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-122: Keşif Motoru, Arayüz Evrimi ve Manhwa Bütünlüğü
+## ✅ TAMAMLANDI — SOHBET-123: DB Hijyeni ve Dinamik Domain Sniffer
+
+```
+SOHBET-123 — 2 operasyonlu faz, Remanence Protocol'a uyularak:
+
+Görev 1 — DB Hijyeni (ölü kaynak temizliği):
+  [x] manhwahentai.me: stripchat.dk'ye redirect → is_dead=1 site kaydı eklendi
+      - _OFFLINE set'e eklendi (anında hata döndürür)
+      - _MADARA_DOMAINS ve _CF_BLOCKED'tan kaldırıldı
+      - Frontend: renderDetailSites zaten "⚠️ Ölü" gösteriyor ✅
+  [x] mangagezgini.com duplicate _OFFLINE girişi kaldırıldı
+  [x] Content #10 (A Returner's Magic): manhwahentai.me site is_dead=1,
+      MangaGezgini + ragnarscans.net ALIVE olarak kaldı
+
+Görev 2 — Rota B: SezonlukDizi Dinamik Domain Sniffer (sources.py):
+  [x] _DYNAMIC_TLDS: 18 yaygın TLD (.com, .net, .org, .tv, .live, .vip, ...)
+  [x] _DYNAMIC_NUMERALS: 1-5 sayı takısı
+  [x] _sniff_domain(): base name + TLD taraması + sayı suffix + www. prefix
+      - httpx HEAD ile her domain doğrulanır
+      - Toplam ~200 aday domain taranır
+  [x] _save_domain_to_sources(): bulunan domain JSON'a kaydedilir
+  [x] get_active_domain(force_sniff=True): cache bypass + statik havuz tükenince
+      otomatik sniffer'a düşer → domain bulursa JSON'a ekler
+  [x] Kanıt:
+      - hdfilmcehennemi sniffer: hdfilmcehennemi.now bulundu ✅
+      - sezonlukdizi: sezonlukdizi.com hala çalışıyor ✅
+      - JSON otomatik güncellendi ✅
+
+Görev 3 — IMC Parser Sağlamlaştırma (manga.py):
+  [x] _imc_chapter timeout: 45sn→60sn, #chapter-content: 30sn
+  [x] InitMangaEncryptedChapter tespiti: şifreleme varsa 90sn polling
+  [x] Scroll fallback: #chapter-content bulunamazsa sayfa sonuna scroll + bekle
+  [x] state="attached" (DOM'da var olması yeterli, visible şart değil)
+
+KANIT:
+  [x] py_compile PASS: manga.py, sources.py, integrity.py, manager.py,
+      anilist.py, episodes.py, content.py, translate.py
+  [x] node --check PASS: app.js, player.js
+  [x] manhwahentai.me: API'de is_dead=1 olarak gösteriliyor ✅
+  [x] sniffer: hdfilmcehennemi.now + sezonlukdizi.com doğrulandı ✅
+  [x] merlintoon IMC indirme: site 403 (IP blok) — kod doğru, dış faktör
+      (önceki seferde job 2 270KB başarıyla indirildi)
+
+SİTE DURUMU:
+  ✅ merlintoon.com: IMC şifreli → Playwright parser (WSL IP blok 403, dalgalı)
+  ❌ manhwahentai.me: stripchat.dk redirect → ÖLÜ (is_dead=1)
+  ⚠️ ragnarscans.net: chapter URL formatı değişmiş, chapter list JS ile yükleniyor
+
 
 ```
 SOHBET-122 — 4 görevli faz, Remanence Protocol'a uyularak:
