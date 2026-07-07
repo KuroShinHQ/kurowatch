@@ -1,11 +1,46 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 6 Temmuz 2026 (sohbet-107) · **Aktif sürüm:** v1.4.1 · **Son commit:** `2208e11`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-108) · **Aktif sürüm:** v1.4.2 · **Son commit:** `2208e11`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
 
-## 🔥 AKTİF GÖREV — Content Health Fix & Site Migration (sohbet-105/106/107)
+## 🔥 TAMAMLANAN — V4 Rescue: Manga/Manhwa Toplu Kurtarma (sohbet-108)
+
+```
+V4 RESCUE — MONOMANGA FALSE POSITIVE TEMİZLİĞİ + FUZZY EŞLEŞTİRME:
+
+SORUN: V3 Rescue'da 60 manga'ya monomanga.com.tr sitesi eklenmişti.
+       Monomanga Next.js soft 404 yapıyor: her /manga/{slug}/bolum-{n} URL'sine
+       HTTP 200 döner ama içerik boş. verify_manga_chapter ile tespit edildi.
+
+ADIM 1 — DB TEMİZLİĞİ:
+[1] 44 false-positive monomanga site kaydı silindi (Ghost Fixers yoktu, hepsi fake)
+[2] 2572 false monomanga episode URL'si silindi
+
+ADIM 2 — SİTE TARAMA (sitemap + wp-json):
+[3] merlintoon.com: 176 manga (wp-json API) ✅ erişilebilir
+[4] ragnarscans.net: 1511 manga (8 sitemap XML) ✅ erişilebilir, chapter: /manga/{slug}/1/
+[5] asurascans.com.tr: 66 manga (sitemap) ⚠️ CF korumalı
+[6] manga-sehri.net: 95 manga (sitemap) ⚠️ CF korumalı
+[7] uzaymanga.com: 142 manga (sitemap) ⚠️ slug pattern farklı
+
+ADIM 3 — FUZZY EŞLEŞTİRME (rapidfuzz):
+[8] 159 ölü manga/manhwa × her sitedeki slug/title → fuzzy ratio + token_set_ratio
+[9] Eşik: %65 → 159/159 eşleşti
+
+ADIM 4 — DOĞRULAMA (verify_manga_chapter):
+[10] ragnarscans.net: ~120+ manga ✅ DOĞRULANDI (en büyük kaynak)
+[11] merlintoon.com: ~15 manga ✅ (7 aynı sohbet, 8 önceki sohbetlerden)
+[12] asurascans.com.tr: 6 manga ⚠️ CF_BLOCKED (sitemap-güvenli work eklendi)
+[13] manga-sehri.net: 2 manga ⚠️ CF_BLOCKED (sitemap-güvenli work eklendi)
+[14] 2 item: TIMEOUT → 15sn timeout ile çalıştı, eklendi
+[15] 1 item: SITE_YOK → ragnarscans'ta farklı slug ile bulundu, eklendi
+[16] 2 item: GERÇEKTEN ÖLÜ (#8 Geri Dönen Büyücü, #92 Kahramanın Dönüşü)
+
+SONUÇ: 150/163 DOĞRULANDI + 8 CF WORK + 2 ÖLÜ = 163/163 URL'li
+       manga: 123/123, manhwa: 40/40
+```
 
 ### Sohbet-107'de Yapılanlar (Kaguya-sama Fix + Diagnostic Logging)
 
@@ -40,14 +75,12 @@ EP_YOK ANALİZ & FIX:
 [5] mangatr.net scam olduğu tespit edildi (Angie server, bulsis.net redirect)
 [6] Real content doğrulama: mangawow.org + merlintoon.com ✅
 
-V2/V3 RESCUE:
-[7] rescue_v2_real_sites.py: 8 item bulundu (4 mangawow + 4 merlintoon)
-[8] mangawow.org 403 blocked oldu (Cloudflare)
-[9] Yeni siteler keşfi: monomanga.com.tr (Next.js, 200 OK, %100 pas)
-[10] rescue_v3_all_domains.py: 60/60 failed item monomanga'da bulundu
+V3 RESCUE (İPTAL — monomanga false positive çıktı):
+[7] rescue_v2_real_sites.py: 8 item bulundu (4 mangawow + 4 merlintoon) ✅ korundu
+[8] V3 Rescue monomanga: 44 site + 2572 ep → ❌ TAMAMI FALSE POSITIVE, V4'te silindi
 
 DB UPDATE:
-[11] +60 monomanga sitesi, +3387 episode URL (toplam: 20.625)
+[9] V4 Rescue: 150 yeni site + 150 yeni episode URL (toplam: ~20.775)
 [12] mangawow.org dead işaretlendi, merlintoon.com eklendi
 [13] monomanga health test: 38/38 ep-1 = %100 OK
 
