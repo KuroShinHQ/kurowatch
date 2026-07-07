@@ -1,9 +1,42 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-108) · **Aktif sürüm:** v1.4.2 · **Son commit:** `2208e11`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-108) · **Aktif sürüm:** v1.4.3 · **Son commit:** `688764c`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
 ---
+
+## 🔥 SIRADA — Mimari Genişletme: Dizi + Film + Tag Sistemi (sohbet-109)
+
+```
+SOHBET-109 HEDEF: KuroWatch içerik türlerini genişletmek.
+
+PROBLEM: Şu an sadece anime/manga/manhwa/game var. Oysa Home ekranı
+         TRENDS → ANIMES → MANWHAS → MANGAS → SERIES → MOVIES → GAMES
+         şeklinde katmanlı olmalı.
+
+YAPILACAKLAR:
+[1] Content.type enum'una 'series' (dizi) + 'movie' (film) ekle
+    - Mevcut DB migration: type kolonuna yeni değerler
+    - Frontend: yeni türler için filtre/badge/renk
+[2] Tag sistemi: content_type_tag
+    - anime, manga, manhwa, series, movie, game
+    - Aynı tag birden çok türe atanabilir (manga=manhwa)
+[3] Home ekranı layout güncellemesi:
+    TRENDS (tüm türler)
+    ANIMES
+    MANWHAS
+    MANGAS
+    SERIES (diziler)
+    MOVIES (filmler)
+    GAMES
+[4] Dizi/Film için site keşfi:
+    - Web search + sitemap taraması
+    - Çalışan Türk dizi/film siteleri
+    - stream_finder.py genişletme (dizi/film iframe/embed)
+[5] KALAN 2 ÖLÜ MANGA:
+    - #8 Geri Dönen Büyücü → websearch ile bul
+    - #92 Kahramanın Dönüşü → websearch ile bul
+```
 
 ## 🔥 TAMAMLANAN — V4 Rescue: Manga/Manhwa Toplu Kurtarma (sohbet-108)
 
