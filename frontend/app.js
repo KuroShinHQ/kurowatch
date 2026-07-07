@@ -2429,6 +2429,12 @@
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '"' +
           (isDownloaded ? ' data-downloaded="1"' : '') + '>' +
           '<span class="material-symbols-outlined" style="font-size:18px">' + (isDownloaded ? 'file_download_done' : 'download') + '</span></button>' : '') +
+        (openUrl && contentType !== 'manga' && contentType !== 'manhwa'
+          ? '<button class="ep-stream-btn" title="İzle (stream)" style="color:#00d4ff;background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
+            'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
+            'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +
+            '<span class="material-symbols-outlined" style="font-size:18px">play_arrow</span></button>'
+          : '') +
         '<button class="ep-watch-btn" data-ep-id="' + e.id + '" data-content-id="' + contentId + '" style="min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer">' +
         '<div style="width:22px;height:22px;border-radius:4px;background:#31324d;border:1px solid rgba(255,255,255,0.1)"></div></button>' +
         '</div></div>';
@@ -2553,6 +2559,33 @@
           dlBtn.dataset.contentType, epNum,
           dlBtn.dataset.epUrl, '720p'
         );
+      }
+
+      // ── Stream button ────────────────────────────────────────────
+      const streamBtn = evt.target.closest('.ep-stream-btn');
+      if (streamBtn) {
+        const cid = parseInt(streamBtn.dataset.contentId, 10);
+        const epNum = parseInt(streamBtn.dataset.epNum, 10);
+        const epUrl = streamBtn.dataset.epUrl;
+        const title = streamBtn.dataset.contentTitle || 'Bölüm ' + epNum;
+        if (!window.kuroPlayer) { showToast('Video oynatıcı yüklenmedi', 'error'); return; }
+        if (window.kuroDownload) {
+          const doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
+          if (doneJob) {
+            window.kuroPlayer.openVideo(doneJob.id, title);
+            return;
+          }
+        }
+        try {
+          const r = await fetch(API + '/api/stream/url?content_id=' + cid + '&episode_number=' + epNum + '&url=' + encodeURIComponent(epUrl));
+          if (!r.ok) { showToast('Stream URL alınamadı', 'error'); return; }
+          const data = await r.json();
+          if (!data.ok || !data.proxy_url) { showToast('Stream URL alınamadı', 'error'); return; }
+          window.kuroPlayer.openStream(data.proxy_url, title, cid, epNum, data.is_hls, data.subtitle_url);
+        } catch (e) {
+          showToast('Stream hatası: ' + e.message, 'error');
+        }
+        return;
       }
     });
   }

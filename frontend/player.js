@@ -532,6 +532,51 @@
     } catch {}
   }
 
+  async function _loadStreamSubtitle(subtitleUrl) {
+    const track = document.getElementById('subtitle-track');
+    if (!track || !subtitleUrl) return;
+    track.src = '';
+    try {
+      const r = await fetch(subtitleUrl);
+      if (!r.ok) return;
+      const blob = await r.blob();
+      track.src = URL.createObjectURL(blob);
+      track.mode = 'hidden';
+    } catch {}
+  }
+
+  // ── HLS.js ────────────────────────────────────────────────────────
+  let _hlsInstance = null;
+
+  function _destroyHls() {
+    if (_hlsInstance) {
+      _hlsInstance.destroy();
+      _hlsInstance = null;
+    }
+  }
+
+  function _initHls(video, url) {
+    _destroyHls();
+    if (!window.Hls) {
+      if (window.showToast) window.showToast('HLS oynatici yuklenemedi', 'error');
+      return false;
+    }
+    if (window.Hls.isSupported()) {
+      _hlsInstance = new window.Hls();
+      _hlsInstance.loadSource(url);
+      _hlsInstance.attachMedia(video);
+      _hlsInstance.on(window.Hls.Events.MANIFEST_PARSED, function () {
+        video.play().catch(function () {});
+      });
+      return true;
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = url;
+      return true;
+    }
+    if (window.showToast) window.showToast('HLS bu tarayicida desteklenmiyor', 'error');
+    return false;
+  }
+
   function _toggleCC() {
     const video = document.getElementById('player-video');
     const btn   = document.getElementById('player-cc-btn');
@@ -884,13 +929,45 @@
   // ── Video Player ─────────────────────────────────────────────────
   const _player = {
     open: function (jobId, title, contentId, episodeNumber) {
-      const modal = document.getElementById('modal-player');
+      _destroyHls();
+      this._openCommon(title, contentId, episodeNumber);
       const video = document.getElementById('player-video');
       const src   = document.getElementById('player-source');
-      const ttl   = document.getElementById('player-title');
-      if (!modal || !video || !src) return;
+      src.src = API + '/api/download/serve/' + jobId;
+      video.load();
+      video.dataset.jobId = jobId;
+      _loadSubtitles(jobId);
+    },
 
-      // Event handler'ları ÖNCE ayarla, sonra load() çağır (race condition önleme)
+    openStream: function (proxyUrl, title, contentId, episodeNumber, isHls, subtitleUrl) {
+      _destroyHls();
+      this._openCommon(title, contentId, episodeNumber);
+      const video = document.getElementById('player-video');
+      const src   = document.getElementById('player-source');
+      var fullUrl = proxyUrl.indexOf('http') === 0 ? proxyUrl : API + proxyUrl;
+      if (isHls) {
+        src.src = '';
+        video.src = '';
+        video.load();
+        _initHls(video, fullUrl);
+      } else {
+        src.src = fullUrl;
+        video.load();
+      }
+      video.dataset.proxyUrl = proxyUrl;
+      if (subtitleUrl) {
+        _loadStreamSubtitle(API + subtitleUrl);
+      } else {
+        _loadStreamSubtitle(null);
+      }
+    },
+
+    _openCommon: function (title, contentId, episodeNumber) {
+      const modal = document.getElementById('modal-player');
+      const video = document.getElementById('player-video');
+      const ttl   = document.getElementById('player-title');
+      if (!modal || !video) return;
+
       video.oncanplay = function () {
         video.play().catch(function () {});
         _controls.setPlaying(true);
@@ -901,15 +978,10 @@
         video.onerror = null;
       };
 
-      src.src = API + '/api/download/serve/' + jobId;
-      video.load();
       if (ttl) ttl.textContent = title || '';
-
-      // Bölüm etiketi (örn: "Bölüm 3")
       const epLabel = document.getElementById('player-ep-label');
       if (epLabel) epLabel.textContent = episodeNumber ? 'Bölüm ' + episodeNumber : '';
 
-      // Mini/theater sıfırla
       modal.classList.remove('player-mini', 'player-theater');
       _miniActive    = false;
       _theaterActive = false;
@@ -917,13 +989,10 @@
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
 
-      video.dataset.jobId         = jobId;
       video.dataset.contentId     = contentId || '';
       video.dataset.episodeNumber = episodeNumber || '';
-      video.dataset.quality       = (_jobs[jobId] && _jobs[jobId].quality) || '720p';
       video._daisyTriggered       = false;
 
-      // Controls v7 başlat
       _controls.reset();
       _controls.show();
       _lock.reset();
@@ -931,12 +1000,10 @@
       _panelQuality.close();
       _panelSubtitle.close();
 
-      // Hız göstergesini sıfırla
       video.playbackRate = 1;
       const speedEl = document.getElementById('player-speed-display');
       if (speedEl) speedEl.textContent = '1×';
 
-      // Timeline sıfırla
       const progress = document.getElementById('timeline-progress');
       if (progress) progress.style.width = '0%';
       const buffer = document.getElementById('timeline-buffer');
@@ -947,13 +1014,13 @@
       _intro.load(contentId, episodeNumber);
       _outro.load(contentId, episodeNumber);
       _autoNext.reset();
-      _loadSubtitles(jobId);
       _ccActive = false;
       const ccBtn = document.getElementById('player-cc-btn');
       if (ccBtn) ccBtn.classList.remove('text-[#00d4ff]');
     },
 
     close: function () {
+      _destroyHls();
       const modal = document.getElementById('modal-player');
       const video = document.getElementById('player-video');
       if (video) { video.pause(); video.src = ''; video.oncanplay = null; video.onerror = null; }
