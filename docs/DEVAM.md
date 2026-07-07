@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-114) · **Aktif sürüm:** v1.7.0 · **Son commit:** `SOHBET-114`
+**Son güncelleme:** 7 Temmuz 2026 (sohbet-116) · **Aktif sürüm:** v1.8.0 · **Son commit:** `SOHBET-116`
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -247,6 +247,50 @@ DÜZELTMELER:
   - parsers.py: resolve_embed_with_ytdlp() timeout Python 3.10 fix
   - parsers.py: _is_target() .m3u + /m3u/ pattern eklendi
   - parsers.py: spidypro _KNOWN_HOSTS'a eklendi
+```
+
+## ✅ TAMAMLANAN — SOHBET-116: Download Client Abstraction + Live Torrent Paneli
+
+```
+SOHBET-116 — Download client abstraction (qBittorrent/Aria2) + SSE live torrent status + frontend panel:
+
+[1] backend/services/download_client.py (YENİ):
+    - TorrentInfo: name, size, progress (0-100), speed, eta, state, hash_id
+    - DownloadClient(ABC): add_torrent/get_status/pause/resume/remove
+    - QBittorrentClient: httpx AsyncClient, SID cookie login, qB WebUI API v2
+    - Aria2Client: JSON-RPC 2.0, aria2.addUri/tellActive/tellWaiting/tellStopped
+    - create_client(cfg): factory — tip'e göre client veya None
+
+[2] backend/routers/settings.py:
+    - Defaults: download_client_type, qb_url/username/password, aria2_url/token
+
+[3] backend/routers/download.py:
+    - POST /api/download/add → client.add_torrent(magnet)
+    - GET /api/download/torrent/status → client.get_status()
+    - POST /api/download/torrent/{pause,resume,remove} → client.{pause,resume,remove}
+    - GET /api/download/stream → SSE endpoint (1sn interval, torrent listesi)
+
+[4] frontend/index.html:
+    - İndirme İstemcisi Ayarları: qBittorrent/Aria2/Kapalı tip seçici, URL/kullanıcı/şifre/token inputları, Kaydet butonu
+    - Canlı Torrent Paneli (SSE): #torrent-live-panel, close butonu,
+      #torrent-list (max-h-[320px] scroll), #torrent-empty placeholder
+
+[5] frontend/app.js — kuroDownloadClient modülü:
+    - initDownloadClient(): panel göster + SSE başlat
+    - destroyDownloadClient(): SSE kapat + panel gizle
+    - _startSSE(): EventSource → /api/download/stream, 3sn reconnect
+    - _renderTorrentPanel(): progress bar, state icon, speed/ETA/size, pause/resume/remove butonları
+    - addTorrent(magnet): POST /api/download/add, success/error toast
+    - Torrent action click handler (delegasyon): pause/resume/remove
+    - showScreen override: screen-downloads → initDownloadClient()
+    - Magnet buton wiring: kuroDownloadClient.addTorrent() öncelikli
+
+[6] CANLI TEST:
+    - ✅ Backend import OK (download_client.py)
+    - ✅ Backend ayakta (HTTP 200)
+    - ✅ GET /api/download/torrent/status → {"torrents":[]} (kapalı mod)
+    - ✅ POST /api/download/add → 400 "Hiçbir indirme istemcisi yapılandırılmamış"
+    - 🔲 qBittorrent/Aria2 WSL bağlantı testi (WSL'de servis gerektirir)
 ```
 
 ## ✅ TAMAMLANAN — 2 Ölü Manga Fix
@@ -616,24 +660,14 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (7 Temmuz 2026 - sohbet-114):
+MEVCUT DURUM (7 Temmuz 2026 - sohbet-116):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - FitGirl Repack scraper: httpx + lxml (no PW), CF bypass basarili
-  - game_download router: search/detail/save/list/delete endpoints
-  - Frontend: FitGirl auto-search, magnet/torrent buttons, save/kaldir
-  - CANLI KANIT: Elden Ring → 10 results, magnet+torrent+size ✅
-  - SIRADAKI: yt-dlp rapidvid.net embed cozumu, HLS segment test
+  - SOHBET-113: IGDB developer/publisher/game_metadata kolonları, tag color #ffb4ab→#4ade80, isGame→isPctType ReferenceError fix
+  - SOHBET-114: FitGirl scraper (httpx+lxml), game_download router (search/detail/save/list/delete), CANLI KANIT Elden Ring ✅
+  - SOHBET-115: Download UI polish, tab değişimi, magnet protocol trigger, saved downloads display
+  - SOHBET-116: ✅ TAMAMLANDI — Download client abstraction + SSE live torrent panel + frontend UI
+  - SIRADAKI: qBittorrent/Aria2 WSL bağlantı testi (WSL'de download servisi gerektirir)
 ```
-  - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
-  - FAZ-V7: ✅ TAMAMLANDI (12/12)
-  - DB: 20.625 episode kaydı, 1239 site kaydı
-  - monomanga.com.tr ✅ yeni manga kaynağı (60 item, %100 ping)
-  - merlintoon.com ✅ çalışıyor (8 item)
-  - mangawow.org ❌ 403 blocked (dead işaretlendi)
-  - tranimaci.com ⚠️ 202 CHALLENGE (CF JS PoW) — eski anime URL'leri risk altında
-  - SONRAKİ ADIM: tranimaci.com CF bypass çözümü veya yeni anime kaynağı bulma
-
-SOHBET-105/106 — EP_YOK FIX + V3 RESCUE (monomanga.com.tr):
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
   [x] mangatr.net scam tespiti (Angie server, bulsis.net redirect)
@@ -963,3 +997,4 @@ C:\Kuroshin\kurowatch\
 | `4a8d40f` | stream_finder: networkidle + JS iframe + 15s + playwright-stealth |
 | `acc5467` | title_tr: DB migration + Edit modal + kart/detay gösterimi |
 | `1dd682a` | turkanime.tv: Playwright header capture + CF bypass (885MB test OK) |
+| `SOHBET-116` | Download client abstraction (qBittorrent+Aria2) + SSE live torrent panel |

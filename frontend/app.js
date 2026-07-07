@@ -537,12 +537,16 @@
             '<div class="flex gap-2 flex-wrap">' + magnetBtn + torrentBtn + '</div>' +
             '</div>';
         }).join('');
-        // Magnet click → protocol trigger
+        // Magnet click → download client
         savedEl.querySelectorAll('.dl-magnet-btn').forEach(function(btn) {
           btn.addEventListener('click', function(e) {
             e.preventDefault();
             var magnet = this.dataset.magnet;
-            if (magnet) window.location.href = magnet;
+            if (magnet && window.kuroDownloadClient) {
+              window.kuroDownloadClient.addTorrent(magnet);
+            } else if (magnet) {
+              window.location.href = magnet;
+            }
           });
         });
         // Remove handler
@@ -2308,6 +2312,67 @@
       };
     }
 
+    // ── İndirme İstemcisi Ayarları ──────────────────────────────────
+    function _setDlcType(type) {
+      document.querySelectorAll('.dlc-type-btn').forEach(function(b) {
+        var active = b.id === 'dlc-type-' + type;
+        b.style.background = active ? 'rgba(0,212,255,0.08)' : 'rgba(255,255,255,0.04)';
+        b.style.border = active ? '1px solid rgba(0,212,255,0.3)' : '1px solid rgba(255,255,255,0.1)';
+        b.style.color = active ? '#00d4ff' : '#9090b0';
+      });
+      var qbEl = document.getElementById('dlc-qb-fields');
+      var aria2El = document.getElementById('dlc-aria2-fields');
+      if (qbEl) qbEl.classList.toggle('hidden', type !== 'qb');
+      if (aria2El) aria2El.classList.toggle('hidden', type !== 'aria2');
+    }
+    var dlcType = cfg.download_client_type || '';
+    _setDlcType(dlcType === 'aria2' ? 'aria2' : (dlcType === 'qbittorrent' ? 'qb' : 'off'));
+    var qbUrl = document.getElementById('dlc-qb-url');
+    var qbUser = document.getElementById('dlc-qb-user');
+    var qbPass = document.getElementById('dlc-qb-pass');
+    var aria2Url = document.getElementById('dlc-aria2-url');
+    var aria2Token = document.getElementById('dlc-aria2-token');
+    if (qbUrl) qbUrl.value = cfg.qb_url || '';
+    if (qbUser) qbUser.value = cfg.qb_username || '';
+    if (qbPass) qbPass.value = cfg.qb_password || '';
+    if (aria2Url) aria2Url.value = cfg.aria2_url || '';
+    if (aria2Token) aria2Token.value = cfg.aria2_token || '';
+
+    document.querySelectorAll('.dlc-type-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var type = this.id.replace('dlc-type-', '');
+        var typeMap = { qb: 'qbittorrent', aria2: 'aria2', off: '' };
+        _setDlcType(type);
+        cfg.download_client_type = typeMap[type];
+        // Auto-save type change
+        apiPost('/api/settings', { download_client_type: cfg.download_client_type }).catch(function(){});
+      });
+    });
+
+    var dlcSaveBtn = document.getElementById('dlc-save-btn');
+    if (dlcSaveBtn) {
+      dlcSaveBtn.addEventListener('click', async function() {
+        var typeMap = { qb: 'qbittorrent', aria2: 'aria2', off: '' };
+        var activeBtn = document.querySelector('.dlc-type-btn[style*="rgba(0,212,255,0.08)"]');
+        var type = activeBtn ? typeMap[activeBtn.id.replace('dlc-type-', '')] || '' : '';
+        try {
+          await apiPost('/api/settings', {
+            download_client_type: type,
+            qb_url: qbUrl ? qbUrl.value.trim() : '',
+            qb_username: qbUser ? qbUser.value.trim() : '',
+            qb_password: qbPass ? qbPass.value.trim() : '',
+            aria2_url: aria2Url ? aria2Url.value.trim() : '',
+            aria2_token: aria2Token ? aria2Token.value.trim() : '',
+          });
+          this.textContent = 'Kaydedildi ✓';
+          setTimeout(function() { dlcSaveBtn.textContent = 'Kaydet'; }, 2000);
+          showToast('İndirme istemcisi ayarları kaydedildi', 'success');
+        } catch(e) {
+          showToast('Kayıt hatası: ' + e.message, 'error');
+        }
+      });
+    }
+
     // ── Opening / Ending toggles ────────────────────────────────────
     const openingToggleEl = document.getElementById('settings-opening-toggle');
     if (openingToggleEl) {
@@ -4052,6 +4117,173 @@
     if (window.kuroI18n && typeof window.kuroI18n.apply === 'function') {
       window.kuroI18n.apply();
     }
+
+    // ── Download Client Module (SSE + magnet add) ─────────────────
+    (function() {
+      var _eventSource = null;
+      var _torrents = [];
+
+      window.kuroDownloadClient = {
+        init: initDownloadClient,
+        addTorrent: addTorrent,
+        destroy: destroyDownloadClient,
+      };
+
+      function initDownloadClient() {
+        var panel = document.getElementById('torrent-live-panel');
+        if (!panel) return;
+        panel.style.display = '';
+        _startSSE();
+      }
+
+      function destroyDownloadClient() {
+        if (_eventSource) { _eventSource.close(); _eventSource = null; }
+        var panel = document.getElementById('torrent-live-panel');
+        if (panel) panel.style.display = 'none';
+      }
+
+      function _startSSE() {
+        if (_eventSource) _eventSource.close();
+        _eventSource = new EventSource(API_BASE + '/api/download/stream');
+        _eventSource.onmessage = function(e) {
+          try {
+            var data = JSON.parse(e.data);
+            _torrents = data.torrents || [];
+            _renderTorrentPanel();
+          } catch(err) { /* ignore parse errors */ }
+        };
+        _eventSource.onerror = function() {
+          // Reconnect after 3s
+          setTimeout(function() {
+            if (_eventSource) { _eventSource.close(); _eventSource = null; }
+            _startSSE();
+          }, 3000);
+        };
+      }
+
+      function _renderTorrentPanel() {
+        var list = document.getElementById('torrent-list');
+        var empty = document.getElementById('torrent-empty');
+        if (!list) return;
+        if (!_torrents.length) {
+          list.innerHTML = '';
+          if (empty) empty.style.display = '';
+          return;
+        }
+        if (empty) empty.style.display = 'none';
+        list.innerHTML = _torrents.map(function(t) {
+          var pct = t.progress || 0;
+          var size = _formatBytes(t.size || 0);
+          var speed = _formatSpeed(t.speed || 0);
+          var eta = _formatEta(t.eta || 0);
+          var stateIcon = t.state === 'downloading' ? 'downloading' : (t.state === 'paused' ? 'pause_circle' : (t.state === 'completed' ? 'check_circle' : 'error'));
+          var stateColor = t.state === 'downloading' ? '#00d4ff' : (t.state === 'completed' ? '#4ade80' : (t.state === 'paused' ? '#ffd9a1' : '#ff6b6b'));
+          var name = escapeHtml(t.name || 'İsimsiz');
+          return '<div class="bg-[#16213e] rounded-xl p-3 border border-white/5 flex flex-col gap-2 torrent-row" data-hash="' + escapeHtml(t.hash || '') + '">' +
+            '<div class="flex items-center justify-between">' +
+              '<div class="flex items-center gap-2 min-w-0 flex-1">' +
+                '<span class="material-symbols-outlined" style="font-size:18px;color:' + stateColor + ';font-variation-settings:\'FILL\' 1">' + stateIcon + '</span>' +
+                '<span class="text-[12px] font-bold text-[#e1e0ff] truncate">' + name + '</span>' +
+              '</div>' +
+              '<div class="flex items-center gap-1 flex-shrink-0">' +
+                '<button class="torrent-action-btn w-7 h-7 rounded flex items-center justify-center hover:bg-white/10 text-[#9090b0] transition-colors" data-action="pause" title="Duraklat"><span class="material-symbols-outlined" style="font-size:14px">pause</span></button>' +
+                '<button class="torrent-action-btn w-7 h-7 rounded flex items-center justify-center hover:bg-white/10 text-[#9090b0] transition-colors" data-action="resume" title="Devam"><span class="material-symbols-outlined" style="font-size:14px">play_arrow</span></button>' +
+                '<button class="torrent-action-btn w-7 h-7 rounded flex items-center justify-center hover:bg-red-500/20 text-[#ff6b6b] transition-colors" data-action="remove" title="Sil"><span class="material-symbols-outlined" style="font-size:14px">delete</span></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="flex items-center gap-3">' +
+              '<div class="flex-1 h-1.5 bg-[#31324d] rounded-full overflow-hidden">' +
+                '<div class="h-full rounded-full transition-all duration-500" style="background:' + stateColor + ';width:' + pct + '%"></div>' +
+              '</div>' +
+              '<span class="text-[10px] font-bold text-[#9090b0] whitespace-nowrap">' + pct.toFixed(1) + '%</span>' +
+            '</div>' +
+            (t.state === 'downloading' ? '<div class="flex items-center justify-between text-[10px] text-[#9090b0]">' +
+              '<span>' + speed + '</span>' +
+              '<span>' + size + '</span>' +
+              (eta ? '<span>' + eta + '</span>' : '') +
+            '</div>' : '') +
+            (t.state === 'completed' ? '<div class="text-[10px] text-[#4ade80] font-semibold">Tamamlandı</div>' : '') +
+          '</div>';
+        }).join('');
+      }
+
+      async function addTorrent(magnet) {
+        if (!magnet) return;
+        try {
+          var res = await apiPost('/api/download/add', { magnet: magnet });
+          if (res.ok) {
+            showToast('Torrent eklendi', 'success');
+            _startSSE();
+          } else {
+            showToast('Torrent eklenemedi', 'error');
+          }
+        } catch(e) {
+          showToast('Hata: ' + e.message, 'error');
+        }
+      }
+
+      function _formatBytes(b) {
+        if (!b) return '0 B';
+        var u = ['B','KB','MB','GB','TB'];
+        var i = 0;
+        while (b >= 1024 && i < u.length - 1) { b /= 1024; i++; }
+        return b.toFixed(1) + ' ' + u[i];
+      }
+
+      function _formatSpeed(bps) {
+        if (!bps) return '—';
+        return _formatBytes(bps) + '/s';
+      }
+
+      function _formatEta(s) {
+        if (!s || s <= 0) return '';
+        if (s < 60) return s + 'sn';
+        if (s < 3600) return Math.floor(s / 60) + 'dk ' + (s % 60) + 'sn';
+        var h = Math.floor(s / 3600);
+        var m = Math.floor((s % 3600) / 60);
+        return h + 's ' + m + 'dk';
+      }
+
+      // Torrent action click handler
+      document.addEventListener('click', async function(e) {
+        var btn = e.target.closest('.torrent-action-btn');
+        if (!btn) return;
+        var row = btn.closest('.torrent-row');
+        if (!row) return;
+        var hash = row.dataset.hash;
+        var action = btn.dataset.action;
+        if (!hash) return;
+        try {
+          if (action === 'pause') {
+            await apiPost('/api/download/torrent/pause', { hash: hash });
+          } else if (action === 'resume') {
+            await apiPost('/api/download/torrent/resume', { hash: hash });
+          } else if (action === 'remove') {
+            await apiPost('/api/download/torrent/remove', { hash: hash });
+          }
+        } catch(err) {
+          showToast('İşlem hatası: ' + err.message, 'error');
+        }
+      });
+
+      // Torrent panel close
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('#torrent-panel-close')) {
+          destroyDownloadClient();
+        }
+      });
+
+      // Screen download show: init SSE
+      var _origShowScreen = showScreen;
+      showScreen = function(id) {
+        _origShowScreen(id);
+        if (id === 'screen-downloads') {
+          initDownloadClient();
+        } else {
+          // Don't destroy on every nav, let it persist in background
+        }
+      };
+    })();
 
     // ── Read Overlay: event wiring ──────────────────────────────────
     var _readOverlayClose = document.getElementById('read-overlay-close');

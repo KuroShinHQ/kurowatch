@@ -36,6 +36,12 @@ _DEFAULTS = {
     "deepl_api_key": "",
     "translation_fallback": "google",
     "tmdb_api_key": "",
+    "download_client_type": "",
+    "qb_url": "http://localhost:8080",
+    "qb_username": "",
+    "qb_password": "",
+    "aria2_url": "http://localhost:6800/jsonrpc",
+    "aria2_token": "",
 }
 
 

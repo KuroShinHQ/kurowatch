@@ -1108,6 +1108,35 @@ body { min-height: 100dvh; overscroll-behavior: contain; background-color: var(-
       </div>
     </section>
 
+    <!-- ── İndirme İstemcisi Ayarları ───────────────────────────── -->
+    <section class="space-y-3">
+      <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">İndirme İstemcisi</h2>
+      <div class="glass-card rounded-xl p-4 space-y-4">
+        <div class="flex gap-2">
+          <button id="dlc-type-qb" class="dlc-type-btn flex-1 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">qBittorrent</button>
+          <button id="dlc-type-aria2" class="dlc-type-btn flex-1 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#9090b0">Aria2</button>
+          <button id="dlc-type-off" class="dlc-type-btn flex-1 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#9090b0">Kapalı</button>
+        </div>
+        <div id="dlc-qb-fields" class="space-y-3">
+          <div><label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">qBittorrent WebUI URL</label>
+            <input id="dlc-qb-url" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors mt-1" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="http://localhost:8080" type="text"/></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">Kullanıcı Adı</label>
+              <input id="dlc-qb-user" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none transition-colors mt-1" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="admin" type="text"/></div>
+            <div><label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">Şifre</label>
+              <input id="dlc-qb-pass" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] focus:outline-none transition-colors mt-1" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="••••" type="password"/></div>
+          </div>
+        </div>
+        <div id="dlc-aria2-fields" class="hidden space-y-3">
+          <div><label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">Aria2 JSON-RPC URL</label>
+            <input id="dlc-aria2-url" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors mt-1" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="http://localhost:6800/jsonrpc" type="text"/></div>
+          <div><label class="text-[10px] font-bold uppercase tracking-wider text-[#9090b0]">RPC Secret Token</label>
+            <input id="dlc-aria2-token" class="w-full h-11 px-3 rounded-lg text-[13px] text-[#e1e0ff] font-mono focus:outline-none transition-colors mt-1" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.08)" placeholder="token:" type="password"/></div>
+        </div>
+        <button id="dlc-save-btn" class="w-full h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider active:scale-95 transition-all" style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.3);color:#00d4ff">Kaydet</button>
+      </div>
+    </section>
+
     <!-- ── Video Ayarları ───────────────────────────────────────── -->
     <section class="space-y-3">
       <h2 class="text-[10px] font-bold uppercase tracking-widest text-[#00d4ff] pl-1">Video Ayarları</h2>
@@ -1770,6 +1799,19 @@ document.addEventListener('DOMContentLoaded', function() {
     <h1 class="text-[20px] font-bold text-[#e1e0ff]">İndirmeler</h1>
     <!-- İndirme Listesi — player.js tarafından doldurulur (gruplama: İndiriliyor / Tamamlandı / Hata) -->
     <div id="downloads-list" class="space-y-6"></div>
+    <!-- Canlı Torrent Paneli (SSE) -->
+    <div id="torrent-live-panel" class="glass-card rounded-xl p-4 space-y-3" style="display:none">
+      <div class="flex items-center justify-between">
+        <span class="text-[11px] font-bold uppercase tracking-wider text-[#00d4ff] flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#00d4ff] animate-pulse"></span> Canlı Torrent
+        </span>
+        <button id="torrent-panel-close" class="text-[#9090b0] hover:text-[#e1e0ff] transition-colors">
+          <span class="material-symbols-outlined" style="font-size:18px">close</span>
+        </button>
+      </div>
+      <div id="torrent-list" class="flex flex-col gap-2 max-h-[320px] overflow-y-auto"></div>
+      <div id="torrent-empty" class="text-[12px] text-[#9090b0] text-center py-4">Aktif indirme yok</div>
+    </div>
     <!-- CİHAZ DEPOLAMA -->
     <div class="glass-card rounded-xl p-4 mt-4">
       <div class="flex justify-between items-center mb-2">
