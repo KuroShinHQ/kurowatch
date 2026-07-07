@@ -55,7 +55,7 @@ def load_jobs():
             if job.get("status") == "done":
                 path = job.get("file_path")
                 try:
-                    if job.get("media_type") == "anime":
+                    if job.get("media_type") in ("anime", "series", "movie", "cartoon"):
                         job["file_size_bytes"] = validate_video_file(path)
                     elif job.get("media_type") in ("manga", "manhwa"):
                         _, total_bytes = validate_manga_dir(path)
@@ -150,7 +150,7 @@ def _save_jobs():
 
 
 def _job_dir(job: dict) -> str:
-    if job["media_type"] == "anime":
+    if job["media_type"] in ("anime", "series", "movie", "cartoon"):
         return os.path.join(_DOWNLOADS_ROOT, "anime", str(job["content_id"]))
     return os.path.join(_DOWNLOADS_ROOT, "manga", str(job["content_id"]),
                         f"ch{job['episode_number']:04d}")
@@ -247,7 +247,7 @@ def remove_done_job(job_id: int) -> bool:
         path = job.get("file_path")
         try:
             if path and os.path.exists(path):
-                if job.get("media_type") == "anime":
+                if job.get("media_type") in ("anime", "series", "movie", "cartoon"):
                     remove_video_artifacts(path)
                 else:
                     remove_path(path)
@@ -270,7 +270,7 @@ def delete_job_file(job_id: int) -> dict:
     path = job.get("file_path")
     try:
         if path and os.path.exists(path):
-            if job.get("media_type") == "anime":
+            if job.get("media_type") in ("anime", "series", "movie", "cartoon"):
                 remove_video_artifacts(path)
             else:
                 remove_path(path)
@@ -329,7 +329,7 @@ async def _run_job(job: dict):
     cleanup_base: str | None = None
 
     try:
-        if job["media_type"] == "anime":
+        if job["media_type"] in ("anime", "series", "movie", "cartoon"):
             await _broadcast({"event": "progress", "job_id": job["id"], "pct": 0,
                               "msg": "Stream URL araştırılıyor..."})
             out_dir = _job_dir(job)

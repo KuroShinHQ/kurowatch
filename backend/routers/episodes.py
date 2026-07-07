@@ -155,8 +155,15 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
     elif ext.startswith("mal:") or not has_anilist_id:
         # AniList ID yok → sadece site URL'den bölüm sayısını çıkar
         total = site_current_ep or (c.total_episodes if c.type == "anime" else c.total_chapters) or 0
+        if not total and site_base_url:
+            total = max(site_current_ep or 0, 1)
         if not total:
-            raise HTTPException(400, "Bölüm sayısı bilinmiyor — site URL'sinde bölüm numarası bulunamadı. Lütfen manuel olarak site URL'sini ekleyin.")
+            return {
+                "synced": 0,
+                "season": season,
+                "episodes": [],
+                "message": "Bölüm sayısı bilinmiyor. Detay sayfasından site URL'si ekleyin veya manuel bölüm sayısı girin.",
+            }
 
     elif c.type == "anime":
         detail = await anilist.get_detail(ext)
