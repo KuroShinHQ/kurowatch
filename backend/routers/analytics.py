@@ -11,8 +11,8 @@ from backend.models import Content, Episode, GameSession
 router = APIRouter()
 
 TYPE_LABELS = {"anime": "Anime", "manga": "Manga", "manhwa": "Manhwa",
-               "series": "Dizi", "movie": "Film", "game": "Oyun"}
-TYPE_ORDER = ["anime", "manga", "manhwa", "series", "movie", "game"]
+               "series": "Dizi", "movie": "Film", "game": "Oyun", "cartoon": "Çizgi Dizi"}
+TYPE_ORDER = ["anime", "manga", "manhwa", "series", "movie", "game", "cartoon"]
 
 
 @router.get("/analytics/summary")
@@ -58,6 +58,15 @@ async def analytics_summary(db: AsyncSession = Depends(get_db)):
             Content.my_progress * func.coalesce(Content.runtime_minutes, 45)
         ), 0))
         .where(Content.type == "series")
+    )
+    total_minutes += r.scalar() or 0
+
+    # Cartoon: my_progress * runtime_minutes (fallback 22dk)
+    r = await db.execute(
+        select(func.coalesce(func.sum(
+            Content.my_progress * func.coalesce(Content.runtime_minutes, 22)
+        ), 0))
+        .where(Content.type == "cartoon")
     )
     total_minutes += r.scalar() or 0
 

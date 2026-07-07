@@ -751,7 +751,8 @@ MEVCUT DURUM (7 Temmuz 2026 - sohbet-119):
   - SOHBET-119-A: ✅ VERİ TEMİZLİĞİ — 259 type düzeltmesi (movie/cartoon/series/manhwa)
     * ham_compare.py: hamjsondata.md vs DB safe-matching (startswith engellendi, paren-respecting split)
     * 90 film, 50 çizgi dizi, 40 dizi, 70 manhwa → doğru type'a
-  - SIRADAKI (SOHBET-119-B): Dockerization, Backup endpoint, Cache-Control, E2E test
+  - SOHBET-119-B: ✅ Dockerization (Dockerfile + compose), ✅ Backup endpoint (/api/system/backup), ✅ Cache-Control middleware, ✅ E2E smoke test (70/72 PASS)
+  - SIRADAKI: Production hardening, mobil test, Docker deploy
 ```
   [x] 198 EP_YOK analiz + 173 item fix + 6759 episode INSERT
   [x] Mass ping test: 688 URL, %90 pass
@@ -1086,3 +1087,4 @@ C:\Kuroshin\kurowatch\
 | `SOHBET-117` | WSL Aria2 headless RPC test + uçtan uca magnet + aksiyon butonları + fix'ler |
 | `SOHBET-118` | Backend analytics endpoint + real weekly bars + renderStats() v8 refactor |
 | `SOHBET-119-A` | 259 type düzeltmesi (movie/cartoon/series/manhwa) + ham_compare.py safe-matching |
+| `SOHBET-119-B` | Dockerization (Dockerfile+compose), /api/system/backup, Cache-Control, E2E 70/72 |
