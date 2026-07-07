@@ -5,6 +5,40 @@
 
 ---
 
+## ✅ TAMAMLANAN — SOHBET-110 Aşama 1+2: TMDB + Domain Pool + Stream Finder
+
+```
+SOHBET-110 (Aşama 1+2) — TMDB API + Domain Pool + Scraper Altyapısı:
+
+[1] backend/scraper/tmdb.py:
+    - search_movie / search_tv — TMDB'de film/dizi arama
+    - get_movie_details / get_tv_details — full metadata + cast
+    - get_tv_season — bölüm listesi
+    - Normalize edilmiş response (discover ile uyumlu)
+[2] movie_series_sources.json:
+    - hdfilmcehennemi (movie, 4 domain, CF korumalı)
+    - dizigom (series, 4 domain, CF yok)
+    - Base yapı: site_name → domains, parser, cookies, play_selectors
+[3] backend/scraper/sources.py:
+    - get_active_domain(site_name) — HTTP HEAD ile canlı domain otomatik seç
+    - get_source_config(site_name) — site config döndür
+    - In-memory cache (force_refresh ile sıfırlanabilir)
+[4] content.py / discover:
+    - type=series/movie → TMDB search (api_key config'den)
+    - GET /api/content/{id}/anilist → tmdb: external_id için TMDB detay
+[5] Settings UI: TMDB API Key input + Kaydet + Test butonu
+    - POST /api/proxy/validate-key → service: "tmdb"
+[6] stream_finder.py: hdfilmcehennemi.* + dizigom.* domainleri
+    - _CF_SITES, _FORCE_PLAYWRIGHT, _SITE_COOKIES, _PLAY_BUTTON_SELECTORS
+    - Tüm domain varyantları eklendi
+[7] Config defaults: tmdb_api_key eklendi (main.py + settings.py)
+
+SIRADA (SOHBET-110 Aşama 3):
+    - hdfilmcehennemi + dizigom için özel parser (iframe/embed extract)
+    - stream_finder.py entegrasyonu (video host resolver)
+    - Canlı test + 2 ölü manga fix
+```
+
 ## ✅ TAMAMLANAN — SOHBET-109: Mimari Genişletme (Dizi + Film + Tag Sistemi)
 
 ```

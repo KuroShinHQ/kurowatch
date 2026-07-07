@@ -18,7 +18,7 @@ from backend.config import get_config
 from backend.database import get_db
 from backend.models import Content, ContentTag, Tag
 from backend.scraper import anilist
-from backend.scraper import igdb, mal
+from backend.scraper import igdb, mal, tmdb
 
 router = APIRouter()
 
@@ -279,6 +279,14 @@ async def get_content_anilist(content_id: int, db: AsyncSession = Depends(get_db
         detail = await mangadex.get_detail(ext[4:])
     elif ext.startswith("mal:"):
         detail = await mal.get_detail(ext[4:], c.type, cfg.get("mal_client_id", ""))
+    elif ext.startswith("tmdb:"):
+        tmdb_id = int(ext[5:])
+        from backend.scraper import tmdb as tmdb_mod
+        api_key = cfg.get("tmdb_api_key", "")
+        if c.type == "movie":
+            detail = await tmdb_mod.get_movie_details(tmdb_id, api_key)
+        else:
+            detail = await tmdb_mod.get_tv_details(tmdb_id, api_key)
     elif c.type == "game":
         detail = await igdb.get_detail(ext, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""))
     else:
@@ -467,9 +475,13 @@ async def discover(
         cfg = get_config()
         return await igdb.search(q, cfg.get("igdb_client_id", ""), cfg.get("igdb_client_secret", ""), page)
 
-    # series/movie: henüz keşif yok (manuel ekleme)
+    # series/movie → TMDB
     if type in ("series", "movie"):
-        return []
+        cfg = get_config()
+        api_key = cfg.get("tmdb_api_key", "")
+        if not api_key:
+            return []
+        return await tmdb.search_all(q, type, page, api_key)
 
     if not q and not genre:
         raise HTTPException(400, "q veya genre parametresi gerekli")

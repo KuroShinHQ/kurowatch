@@ -31,6 +31,7 @@ _DEFAULTS = {
     "default_quality": "720p", "max_concurrent_downloads": 2,
     "auto_delete_after_watch": False, "daisy_chain_trigger_pct": 50,
     "deepl_api_key": "", "translation_fallback": "google",
+    "tmdb_api_key": "",
 }
 
 
