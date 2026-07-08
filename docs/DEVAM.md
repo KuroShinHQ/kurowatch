@@ -1,5 +1,49 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 8 Temmuz 2026 (sohbet-127) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-127` 4 KANIT: manga-sehri.com + anime type fix + setfilmizle.uk + FitGirl qBittorrent
+**Son güncelleme:** 8 Temmuz 2026 (sohbet-128) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128` Canlı E2E test: 6 tür (anime/manga/manhwa/dizi/film/oyun) tamamlandı
+
+---
+
+## 🔴 SOHBET-128 — Canlı 6 Tür E2E Test
+
+```
+SOHBET-128 — 6 tür canlı frontend test, her tür için buton/indirme/kanıt:
+
+[1] ANIME: Attack on Titan (id=233) ✅
+    - Buton: VAR (turkanime.tv, 2 site) ✅
+    - İndirme: BAŞLADI (job_id=21, kuyruğa eklendi) ✅
+
+[2] MANGA: Above All Gods (id=3) ✅
+    - Buton: VAR (MangaSehri dahil 5 site) ✅
+    - İndirme: 5 sayfa indirildi, 700px genişlik, avg 155KB/sayfa
+    - KANIT: 700x1188, 700x1045, 700x1356 ... uniform 700px
+
+[3] MANHWA: The Beginning After the End (id=16) ✅
+    - Buton: VAR (MangaSehri slug 'nihayetin-ardindaki-baslangicc' 6 site) ✅
+    - İndirme: 6 sayfa indirildi, WEBTOON (uzun dikey şerit)
+    - KANIT: 700x13230, 700x13479, 700x13818, 700x15792 (max 15.792px!)
+    - avg 672KB/sayfa → gerçek webtoon formatı doğrulandı
+
+[4] DİZİ: Dexter (id=287) + Hannibal (id=346) ✅
+    - İkisi de 0 site → "Site eklenmemiş" uyarısı (beklenen)
+    - Dexter S01E01 setfilmizle.uk AJAX + HLS hâlâ çalışıyor ✅
+    - Multi-CDN: srv.bahcelievler/beyoglu/esenler/esenyurt/pendik/sancaktepe.cfd
+
+[5] FİLM: 3 Idiots (id=203) + Fight Club (id=311) ✅
+    - İkisi de 0 site → "Site eklenmemiş" uyarısı (beklenen)
+
+[6] OYUN: Cult of the Lamb (id=128) ⚠️
+    - Buton: VAR (FitGirl search UI) ✅
+    - FitGirl API: HTTP 200, search çalışıyor
+    - fitgirl-repacks.site bu ağdan timeout (VPN/ortam gerekiyor)
+    - Frontend'de "İndir" butonu görünür, addTorrent() yolu hazır
+
+KRİTİK BULGU:
+    - Eski backend (port 8099): MangaSehri kayıtları görünmüyordu
+      (stale connection pool) → yeni backend (port 8100) ile düzeldi
+    - Port 8099 svchost tarafından işgal edilmiş (başka servis)
+    - Tüm manga/manhwa siteleri Cloudflare korumalı (403/timeout)
+    - Manga-sehri.com hariç (CF yok, hâlâ HTTP 200 ile çalışıyor)
+```
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
