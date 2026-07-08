@@ -2754,25 +2754,36 @@
           '</div></div>'
         : '';
       // Sıradaki bölüm indirilmişse oynat butonu göster
+      const _hasSites = (sites || []).length > 0;
+      const _noSiteCard = !_hasSites
+        ? '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 16px;margin-bottom:8px;border-radius:12px;background:#16213e;border:1px solid rgba(255,180,171,0.2)">' +
+          '<span class="material-symbols-outlined" style="font-size:32px;color:#ffb4ab">link_off</span>' +
+          '<p style="font-size:12px;color:#ffb4ab;text-align:center;font-weight:600">Bu içerik için henüz site eklenmemiş.</p>' +
+          '<p style="font-size:11px;color:#9090b0;text-align:center">Site eklemek için "Siteler" sekmesine gidin.</p>' +
+          '<button class="ep-go-sites-btn" style="margin-top:4px;padding:8px 20px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">' +
+          '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">add_link</span> Site Ekle</button></div>'
+        : '';
       const _nextDoneJob = (nextEp && window.kuroDownload) ? window.kuroDownload.getDownloadedJob(contentId, nextEpNum) : null;
-      const siteShortcut = _nextDoneJob
-        ? '<button class="site-play-done-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2"' +
-          ' data-job-id="' + _nextDoneJob.id + '" data-ep-num="' + nextEpNum + '"' +
-          (nextEp ? ' data-ep-id="' + nextEp.id + '"' : '') +
-          ' data-content-id="' + contentId + '" data-label="' + escapeHtml(targetLabel) + '"' +
-          ' style="height:44px;background:#00d4ff;border:1px solid #00d4ff;color:#003642;font-size:13px;cursor:pointer">' +
-          '<span class="material-symbols-outlined" style="font-size:18px">play_circle</span>' +
-          targetLabel + ' ▶</button>'
-        : (targetUrl
-          ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
-            'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
-            'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
-            '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
-            targetLabel + '</a>'
-          : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
-            'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
-            '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
-            readLabel + ' için site ekle → Siteler sekmesi</button>');
+      const siteShortcut = _hasSites
+        ? (_nextDoneJob
+          ? '<button class="site-play-done-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2"' +
+            ' data-job-id="' + _nextDoneJob.id + '" data-ep-num="' + nextEpNum + '"' +
+            (nextEp ? ' data-ep-id="' + nextEp.id + '"' : '') +
+            ' data-content-id="' + contentId + '" data-label="' + escapeHtml(targetLabel) + '"' +
+            ' style="height:44px;background:#00d4ff;border:1px solid #00d4ff;color:#003642;font-size:13px;cursor:pointer">' +
+            '<span class="material-symbols-outlined" style="font-size:18px">play_circle</span>' +
+            targetLabel + ' ▶</button>'
+          : (targetUrl
+            ? '<a href="' + escapeHtml(targetUrl) + '" target="_blank" rel="noopener" ' +
+              'class="flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+              'style="height:44px;background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff;font-size:13px;text-decoration:none">' +
+              '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span>' +
+              targetLabel + '</a>'
+            : '<button class="ep-go-sites-btn flex items-center justify-center gap-2 w-full rounded-xl font-bold mb-2" ' +
+              'style="height:44px;background:#31324d;border:1px solid rgba(255,255,255,0.1);color:#9090b0;font-size:13px;cursor:pointer">' +
+              '<span class="material-symbols-outlined" style="font-size:18px">add_link</span> ' +
+              readLabel + ' için site ekle → Siteler sekmesi</button>'))
+        : '';
 
       // ── Sezon seçici ──
       const seasonPickerHtml = allSeasons.length > 1
@@ -2798,13 +2809,13 @@
         : '';
 
       if (!seasonEps.length) {
-        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + syncBtnHtml +
+        el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + syncBtnHtml +
           '<div style="text-align:center;color:#9090b0;padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:10px">' +
           '<span class="material-symbols-outlined" style="font-size:48px;color:#31324d">video_library</span>' +
           '<p style="font-size:13px">Sezon ' + activeSeason + ' bölüm listesi yok</p>' +
           '<p style="font-size:12px;color:#6060a0">Yukarıdan "' + syncLabel + '" butonuna bas</p></div>';
       } else {
-        el.innerHTML = seasonPickerHtml + siteShortcut + addSeasonFormHtml + epCountBadge + syncBtnHtml +
+        el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + epCountBadge + syncBtnHtml +
           '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>';
         const list = el.querySelector('#ep-virtual-list');
         let loaded = 0;
@@ -2859,11 +2870,16 @@
     }
 
     // ── Episode row HTML (Stitch v7 birebir — 128×72 thumbnail) ──────
+    function _isValidUrl(u) {
+      if (!u || typeof u !== 'string') return false;
+      try { var p = new URL(u); return p.protocol === 'http:' || p.protocol === 'https:'; }
+      catch(_) { return false; }
+    }
     function _epHtml(e) {
       const epUrl = e.url || null;
       const fbSite = (typeof primarySite !== 'undefined') ? primarySite : null;
       const fallbackUrl = !epUrl && fbSite ? fbSite.site_url : null;
-      const openUrl = epUrl || fallbackUrl;
+      const openUrl = _isValidUrl(epUrl) ? epUrl : (_isValidUrl(fallbackUrl) ? fallbackUrl : null);
       const numTxt = 'Bölüm ' + e.number;
       const isActive = e.number === (myProgress + 1); // sıradaki bölüm
       const isDownloaded = window.kuroDownload ? window.kuroDownload.getDownloadedJob(contentId, e.number) : null;
@@ -3031,6 +3047,7 @@
       }
 
       if (dlBtn) {
+        if (dlBtn.dataset.dlLocked) { showToast('İndirme işlemi devam ediyor...', 'info'); return; }
         if (!window.kuroDownload) { showToast('İndirme modülü yüklenmedi', 'error'); return; }
         const cid = parseInt(dlBtn.dataset.contentId, 10);
         const epNum = parseInt(dlBtn.dataset.epNum, 10);
@@ -3050,6 +3067,8 @@
           showToast('Bu bölüm zaten indirildi', 'info');
           return;
         }
+        dlBtn.dataset.dlLocked = '1';
+        setTimeout(function() { if (dlBtn) delete dlBtn.dataset.dlLocked; }, 2000);
         window.kuroDownload.start(
           cid, dlBtn.dataset.contentTitle,
           dlBtn.dataset.contentType, epNum,

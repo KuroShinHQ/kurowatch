@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 8 Temmuz 2026 (sohbet-125) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-125` v1.0-STABLE: Remanence Protocol Freeze
+**Son güncelleme:** 8 Temmuz 2026 (sohbet-126) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-126` v1.0-STABLE Fix: download debounce, no-site info card, URL guard
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -43,6 +43,46 @@ KANIT:
     - series + tranimaci URL: RuntimeError fırlatmıyor, "diğer site denenmeli" mesajı
     - series + hdfilmcehennemi URL: indirme başlatıldı, media filter çökmedi
       (sonrası embed bulunamadı — site içeriği sorunu, kod sorunu değil)
+```
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-126 (sohbet-125'e ek): 5 Acil Fix
+
+```
+SOHBET-126 — v1.0-STABLE Fix Batch: debounce, no-site card, URL guard
+
+Fix 1 — Download butonu debounce (app.js:3033):
+  [x] data-dl-locked attribute: ilk tıklamada set edilir, 2sn lock
+  [x] Spam tıklamada "İndirme işlemi devam ediyor..." toast
+  [x] node --check app.js PASS
+
+Fix 2/4 — No-sites info card (app.js:renderDetailEpisodes):
+  [x] sites.length === 0 tespiti → _noSiteCard HTML
+  [x] "link_off" ikonu + "Bu içerik için henüz site eklenmemiş" mesajı
+  [x] "Site Ekle" butonu → kullanıcıyı Siteler sekmesine yönlendirir
+  [x] Sezon seçici altında, siteShortcut yerine gösterilir
+
+Fix 3 — URL doğrulama (app.js:_epHtml):
+  [x] _isValidUrl(u) fonksiyonu: new URL() + http/https kontrol
+  [x] openUrl = _isValidUrl(epUrl) ? epUrl : _isValidUrl(fallbackUrl) ? fallbackUrl : null
+  [x] DB taraması: truncate edilmiş "man" URL bulunamadı (0 adet)
+  [x] Manga/manhwa tamamen siteli (manga=66/66, manhwa=96/96)
+
+Fix 5 — API test (curl ile tüm türler):
+  [x] anime id=14 → 0 site ✅
+  [x] manga id=1 → 3 site ✅
+  [x] manhwa id=10 → 4 site ✅
+  [x] series id=112 → 1 site ✅
+  [x] movie id=203 → 0 site ✅
+  [x] game id=115 → 0 site ✅
+  [x] py_compile tüm backend .py dosyaları PASS
+
+KANIT:
+  - node --check app.js + py_compile *.py PASS
+  - API /api/content/{id} tüm türlerde 200 döndü
+  - DB'de truncate edilmiş URL bulunamadı (güvenlik önlemi eklendi)
+  - Screenshot: CLI'den alınamaz, kullanıcının manuel kontrolü gerekir
 ```
 
 ---
