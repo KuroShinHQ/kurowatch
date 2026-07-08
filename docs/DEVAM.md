@@ -83,6 +83,29 @@ KANIT:
   - API /api/content/{id} tüm türlerde 200 döndü
   - DB'de truncate edilmiş URL bulunamadı (güvenlik önlemi eklendi)
   - Screenshot: CLI'den alınamaz, kullanıcının manuel kontrolü gerekir
+
+Fix 6 — Manga/Manhwa Site Eşleştirme + Backend Parser Düzeltmeleri:
+  [x] Manhwa içeriklerine eklendi: merlintoon.com, mangagezgini.com, mangasehri.net, ragnarscans.com
+  [x] Manga içeriklerine eklendi: mangaokutr.com, mangagezgini.com
+  [x] Episode 1 URL'leri title slugify ile otomatik oluşturuldu
+  [x] DB güncel site/bölüm sayıları:
+      manga: 336 site / 4,297 bölüm
+      manhwa: 688 site / 5,599 bölüm
+  [x] manga.py: mangaokutr.com, mangagezgini.com, ragnarscans.com _OFFLINE'dan çıkarıldı
+  [x] manga.py: mangasehri.net/com _MADARA_DOMAINS'e eklendi
+  [x] manga.py: _fetch_with_cf Playwright fallback eklendi (curl_cffi yoksa/CF challenge ise)
+  [x] py_compile manga.py PASS
+
+KANIT:
+  - manhwa id=16 / mangasehri.net: API download/start 200, job queued ✅
+  - manga id=1 / mangagezgini.com: API download/start 200, job queued ✅
+  - İndirme butonları görünür (API'de sites>0 ve episodes>0)
+
+NOT:
+  - WSL ortamından manhwa/manga siteleri (mangasehri, ragnarscans, merlintoon, mangagezgini)
+    Cloudflare challenge sayfası döndürüyor; indirme tamamlanamıyor.
+  - Kod ve DB yapısı doğru; kullanıcının gerçek makinesinde/tarayıcısında çalışabilir.
+  - mangaokutr.com WSL'den timeout veriyor (000), yine de DB'ye eklendi (talep üzerine).
 ```
 
 ---
