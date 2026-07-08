@@ -5,42 +5,44 @@
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-125: v1.0-STABLE Freeze (Remanence Protocol)
+## ✅ TAMAMLANDI — SOHBET-125: KuroWatch Stabilizasyon (Unfreeze + DB Hijyeni)
 
 ```
-SOHBET-125 — v1.0-STABLE: Remanence Protocol ile üretim kararlılığı
+SOHBET-125 — v1.0-STABLE: Korkak dondurma kaldırıldı, çapraz tip temizlendi
 
-[1] Safe-Guarding (Frontend):
-    - app.js: manga/manhwa/series/movie/cartoon için download butonları pasif
-      → yerine construction ikonu + opacity:0.5 gösterilir
-    - "Kaynaklardan Güncelle" (series/movie) butonu pasif
-      → yerine "⚠️ Servis Sağlayıcı Bakımda" banner'ı
-    - anime dışı tüm stream butonları pasif
-    - Sadece ANIME indirme/stream/sync aktif kaldı
+[1] Veritabanı Temizliği (DB):
+    - Test siteleri silindi: example-pw-test.com, example.com (8 site)
+    - Çapraz tip site kayıtları silindi:
+      - series/movie/cartoon içeriklerden anime siteleri (tranimaci/turkanime vb.) kaldırıldı: 170 site
+      - anime içeriklerden manga/manhwa siteleri kaldırıldı: 6 site
+    - Çapraz tip bölüm URL'leri silindi:
+      - anime: 202 uyumsuz bölüm
+      - series/movie/cartoon: 3,117 uyumsuz bölüm (hepsi tranimaci.com'du)
+    - Kalan site/bölüm sayıları:
+        anime: 575 site / 5,563 bölüm
+        manga: 229 site / 4,243 bölüm
+        manhwa: 378 site / 5,318 bölüm
+        series: 2 site / 0 bölüm
+        movie: 0 site / 1 bölüm
+        cartoon: 1 site / 0 bölüm
+    - Çapraz eşleşme kalmadı: site=0, episode=0 (tüm türler)
 
-[2] renderDetail Crash Koruma:
-    - renderDetail async try/catch ile sarıldı
-    - "Beklenmeyen ağ/işlem hatası" → "Detay sayfası yüklenirken hata oluştu"
-    - Eski: unhandledrejection ile kullanıcıya ham hata
-    - Yeni: yakalanan hata, log + toast, sayfa çökmez
-
-[3] Graceful Exception Handling (Backend):
-    - main.py: @app.exception_handler(Exception) — global seviye
-      → HTTP 500 + JSON {ok:false, error:"Beklenmeyen sunucu hatası: ..."}
-      → traceback loglanır, sunucu ayakta kalır
-    - Tüm mevcut HTTPException'lar korundu (404/400/502/503)
-
-[4] Statik Kontroller:
+[2] Frontend Sahte Kilidi Kaldırıldı (app.js):
+    - _IS_FROZEN değişkeni ve bağlı mantık tamamen silindi
+    - "⚠️ Servis Sağlayıcı Bakımda" banner'ı kaldırıldı
+    - manga/manhwa/series/movie/cartoon için indirme butonları aktif
+    - anime dışı stream butonları aktif
     - node --check app.js ✅ PASS
-    - node --check player.js ✅ PASS
-    - py_compile (tüm backend/*.py) ✅ PASS
 
-KİLİTLİ MODÜLLER (etkilenmez):
-    - Anime indirme (yt-dlp + callback)
-    - Video oynatıcı (HLS.js + native)
-    - Altyazı/çeviri yönetimi
-    - Keşif (Discovery) bandı
-    - SQLite veritabanı operasyonları
+[3] Backend Filtre Yumuşatıldı:
+    - stream_finder.py: media tipi uyuşmazlığında RuntimeError → uyarı log + return ("", [])
+    - anime.py: boş stream URL'de anlamlı hata mesajı, çökme yok
+    - py_compile (anime.py, stream_finder.py) ✅ PASS
+
+KANIT:
+    - series + tranimaci URL: RuntimeError fırlatmıyor, "diğer site denenmeli" mesajı
+    - series + hdfilmcehennemi URL: indirme başlatıldı, media filter çökmedi
+      (sonrası embed bulunamadı — site içeriği sorunu, kod sorunu değil)
 ```
 
 ---
