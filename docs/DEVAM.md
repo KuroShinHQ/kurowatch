@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 8 Temmuz 2026 (sohbet-126) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-126` v1.0-STABLE Fix: download debounce, no-site info card, URL guard
+**Son güncelleme:** 8 Temmuz 2026 (sohbet-127) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-127` 4 KANIT: manga-sehri.com + anime type fix + setfilmizle.uk + FitGirl qBittorrent
 
 > Yeni Claude'a tek-sayfa devamlılık.
 
@@ -1417,6 +1417,57 @@ C:\Kuroshin\kurowatch\
 ### Test sırası
 - Önce `wsl` ile direkt Python scripti test et (venv'le), sonra API üzerinden test et — böylece hangi katmanda hata olduğu netleşir
 - Job "downloading" durumuna geçtiyse başarı; `/downloads/` klasörüne `.part` dosyası büyüyorsa gerçekten iniyor
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-127: 4 KANIT (manga-sehri.com + anime type fix + setfilmizle.uk + FitGirl qBittorrent)
+
+```
+SOHBET-127 — 4 kanıt maddesi, tüm içerik türleri için çalışan kaynaklar:
+
+MADDE 1 — manga-sehri.com DB entegrasyonu (KANIT 1):
+  [x] Site erişimi: HTTP 200, 152KB, Madara WP, CF yok
+  [x] 285 manhwa + 119 manga serisi kataloglandı (sitemap'ten 572 slug)
+  [x] 9 manga'ya MangaSehri site kaydı INSERT edildi (Martial Peak, Above All Gods, World's Apocalypse Online vb.)
+  [x] 3 seriden bölüm indirildi:
+      - Martial Peak bölüm 1: 800x1132, 117-147KB JPG (16 img)
+      - Seçkinin İkinci Yaşamı bölüm 1: 720x9882, 583-741KB JPG (8 img)
+      - Oyuncunun Son Şansı bölüm 1: 800x15789, 234-1673KB JPG (24 img)
+  [x] CDN: cdn.mangasehri.xyz, URL pattern: /manga/{slug}/bolum-{num}/
+
+MADDE 2 — 9 sitesiz anime fix (KANIT 2):
+  [x] 8 yanlış type düzeltildi: Fast & Furious→movie, Fight Club→movie, Hababam Sınıfı→movie,
+      Komedi Dükkanı→series, Kurtlar Vadisi→series, Monsters At Work→series,
+      Maze Runner→movie, Çok Güzel Hareketler→series
+  [x] Solo Leveling: tranimeizle.xyz'de bulunamadı (popüler lisanslı seri, Cloudflare JS site)
+  [x] Diğer 247 slug tranimeizle.xyz'de çalışıyor (20/20 test)
+
+MADDE 3 — Dexter S01E01 → setfilmizle.uk HLS video (KANIT 3):
+  [x] setfilmizle.uk: HTTP 200, 125KB, WP altyapı
+  [x] AJAX keşfi: action=get_video_url, nonce=7f581deca8, post_id=81
+  [x] 4 video URL bulundu:
+      - FastPlay Dublaj:  https://fastplay.mom/manifests/42c55H2C8v-t/master.txt
+      - SetPlay Dublaj:    JW Player 8.12 (devtools korumalı)
+      - FastPlay Altyazı:  https://fastplay.mom/manifests/97jnkbsvQDkZ/master.txt
+      - SetPlay Altyazı:   JW Player 8.12
+  [x] HLS segment indirildi: 2.89MB TS (20sn, ~1.1 Mbps)
+  [x] Video segment PNG maskeli (anti-DMCA): srv.bahcelievler.cfd/dizi/Dexter.S01B01/000.png
+  [x] hdfilmcehennemi.now NONCE'da takıldı → terk edildi
+
+MADDE 4 — FitGirl + qBittorrent (KANIT 4):
+  [x] Altyapı zaten %100 hazır: QBittorrentClient + Aria2Client (download_client.py),
+      POST /api/download/add, SSE canlı torrent paneli
+  [x] Frontend'e "İndir" butonu eklendi (FitGirl sonuç kartındaki magnet yanına)
+  [x] Buton → window.kuroDownloadClient.addTorrent(magnet) → POST /api/download/add
+  [x] config.json'a qBittorrent ayarları eklendi
+  [x] Kullanıcı Ayarlar → İndirme İstemcisi'nden yapılandırabilir
+
+KANIT DOSYALARI:
+  kanit1_martial-peak_bolum1_sayfa1-3.jpg
+  kanit1_seckinin-ikinci-yasamii_bolum1_sayfa1-3.jpg
+  kanit1_oyuncunun-son-sansi_bolum1_sayfa1-3.jpg
+  kanit3_dexter_segment.ts (2.89MB)
+```
 
 ---
 
