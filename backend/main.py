@@ -75,8 +75,21 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(_startup_check_bg())
     yield
 
-
 app = FastAPI(title="KuroWatch API", version="0.1.0", lifespan=lifespan)
+
+
+# ── Global Exception Handler (v1.0-STABLE) ─────────────────────────────
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    print(f"[KuroWatch] UNHANDLED EXCEPTION: {request.method} {request.url.path}")
+    traceback.print_exc()
+    from fastapi.responses import JSONResponse
+    return JSONResponse(
+        status_code=500,
+        content={"ok": False, "error": f"Beklenmeyen sunucu hatası: {type(exc).__name__}"},
+    )
+
 
 app.add_middleware(
     CORSMiddleware,

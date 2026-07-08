@@ -1,7 +1,47 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 7 Temmuz 2026 (sohbet-123) · **Aktif sürüm:** v1.11.0 · **Son commit:** `SOHBET-123` DB hijyeni + dinamik domain sniffer
+**Son güncelleme:** 8 Temmuz 2026 (sohbet-125) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-125` v1.0-STABLE: Remanence Protocol Freeze
 
 > Yeni Claude'a tek-sayfa devamlılık.
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-125: v1.0-STABLE Freeze (Remanence Protocol)
+
+```
+SOHBET-125 — v1.0-STABLE: Remanence Protocol ile üretim kararlılığı
+
+[1] Safe-Guarding (Frontend):
+    - app.js: manga/manhwa/series/movie/cartoon için download butonları pasif
+      → yerine construction ikonu + opacity:0.5 gösterilir
+    - "Kaynaklardan Güncelle" (series/movie) butonu pasif
+      → yerine "⚠️ Servis Sağlayıcı Bakımda" banner'ı
+    - anime dışı tüm stream butonları pasif
+    - Sadece ANIME indirme/stream/sync aktif kaldı
+
+[2] renderDetail Crash Koruma:
+    - renderDetail async try/catch ile sarıldı
+    - "Beklenmeyen ağ/işlem hatası" → "Detay sayfası yüklenirken hata oluştu"
+    - Eski: unhandledrejection ile kullanıcıya ham hata
+    - Yeni: yakalanan hata, log + toast, sayfa çökmez
+
+[3] Graceful Exception Handling (Backend):
+    - main.py: @app.exception_handler(Exception) — global seviye
+      → HTTP 500 + JSON {ok:false, error:"Beklenmeyen sunucu hatası: ..."}
+      → traceback loglanır, sunucu ayakta kalır
+    - Tüm mevcut HTTPException'lar korundu (404/400/502/503)
+
+[4] Statik Kontroller:
+    - node --check app.js ✅ PASS
+    - node --check player.js ✅ PASS
+    - py_compile (tüm backend/*.py) ✅ PASS
+
+KİLİTLİ MODÜLLER (etkilenmez):
+    - Anime indirme (yt-dlp + callback)
+    - Video oynatıcı (HLS.js + native)
+    - Altyazı/çeviri yönetimi
+    - Keşif (Discovery) bandı
+    - SQLite veritabanı operasyonları
+```
 
 ---
 
