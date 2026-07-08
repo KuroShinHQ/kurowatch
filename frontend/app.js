@@ -560,7 +560,13 @@
               var links = detail.downloads || [];
               if (links.length) {
                 linksDiv.innerHTML = links.map(function(l) {
-                  if (l.type === 'magnet') return '<a href="' + escapeHtml(l.url) + '" class="px-2 py-1 rounded text-[10px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all">Magnet</a>';
+                  if (l.type === 'magnet') {
+                    var encoded = escapeHtml(l.url);
+                    return '<span class="flex gap-1">' +
+                      '<a href="' + encoded + '" class="px-2 py-1 rounded text-[10px] font-bold bg-[#4ade80]/15 text-[#4ade80] border border-[#4ade80]/30 hover:brightness-110 transition-all">Magnet</a>' +
+                      '<button class="fitgirl-dl-btn px-2 py-1 rounded text-[10px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 hover:brightness-110 transition-all" data-magnet="' + encoded + '">İndir</button>' +
+                      '</span>';
+                  }
                   if (l.type === 'torrent') return '<a href="' + escapeHtml(l.url) + '" target="_blank" class="px-2 py-1 rounded text-[10px] font-bold bg-[#00d4ff]/15 text-[#00d4ff] border border-[#00d4ff]/30 hover:brightness-110 transition-all">Torrent</a>';
                   return '';
                 }).join('') +
@@ -573,6 +579,19 @@
                 linksDiv.style.display = '';
                 detailBtn.textContent = 'Gizle';
               }
+              // Download button → qBittorrent
+              linksDiv.querySelectorAll('.fitgirl-dl-btn').forEach(function(dlBtn) {
+                dlBtn.addEventListener('click', function() {
+                  var magnet = this.dataset.magnet;
+                  if (magnet) {
+                    if (window.kuroDownloadClient) {
+                      window.kuroDownloadClient.addTorrent(magnet);
+                    } else {
+                      window.location.href = magnet;
+                    }
+                  }
+                });
+              });
               // Save button
               linksDiv.querySelectorAll('.fitgirl-save-btn').forEach(function(saveBtn) {
                 saveBtn.addEventListener('click', async function() {
