@@ -2709,12 +2709,7 @@
     const readIcon  = isAnime ? 'play_circle' : 'menu_book';
     const isAnimeOrManga = contentType === 'anime' || contentType === 'manga' || contentType === 'manhwa';
     const isSeriesOrMovie = contentType === 'series' || contentType === 'movie' || contentType === 'cartoon';
-    const _IS_FROZEN = contentType === 'manga' || contentType === 'manhwa' || isSeriesOrMovie;
-    const syncLabel = isAnimeOrManga ? 'AniList\'ten Yükle' : (isSeriesOrMovie ? '⚠️ Servis Sağlayıcı Bakımda' : '');
-    const syncBtnHtml = !_IS_FROZEN && syncLabel
-      ? '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
-        '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
-      : '';
+    const syncLabel = isAnimeOrManga ? 'AniList\'ten Yükle' : (isSeriesOrMovie ? 'Sezon Ekle' : '');
 
     // ── Sezon yönetimi ──
     const allSeasons = episodes.length
@@ -2737,10 +2732,8 @@
 
       // ── Sync butonu (içerik tipine göre) ──
       const syncBtnHtml = syncLabel
-        ? (_IS_FROZEN
-          ? '<div style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#ffb4ab1a;border:1px solid #ffb4ab33;color:#ffb4ab;font-size:11px;font-weight:600"><span class="material-symbols-outlined" style="font-size:16px">construction</span> ⚠️ Servis Sağlayıcı Bakımda</div>'
-          : '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
-            '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>')
+        ? '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
+          '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
         : '';
 
       // ── Sezon ekleme formu (AniList sadece anime/manga/mahnwa için) ──
@@ -2927,12 +2920,12 @@
             (epUrl ? 'background:#00d4ff1a;border:1px solid #00d4ff4d;color:#00d4ff">' : 'background:#31324d;border:1px solid rgba(255,255,255,0.08);color:#9090b0">' ) +
             '<span class="material-symbols-outlined" style="font-size:18px">' + readIcon + '</span></button>'
           : '') +
-        (openUrl && !_IS_FROZEN ? '<button class="ep-dl-btn" title="' + (isDownloaded ? 'Yerel dosyadan aç' : 'İndir') + '" style="color:' + (isDownloaded ? '#4caf50' : '#9090b0') + ';background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
+        (openUrl ? '<button class="ep-dl-btn" title="' + (isDownloaded ? 'Yerel dosyadan aç' : 'İndir') + '" style="color:' + (isDownloaded ? '#4caf50' : '#9090b0') + ';background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
           'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
           'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '"' +
           (isDownloaded ? ' data-downloaded="1"' : '') + '>' +
-          '<span class="material-symbols-outlined" style="font-size:18px">' + (isDownloaded ? 'file_download_done' : 'download') + '</span></button>' : (openUrl && _IS_FROZEN ? '<span title="Servis Sağlayıcı Bakımda" style="color:#ffb4ab;width:36px;height:36px;display:flex;align-items:center;justify-content:center;opacity:0.5"><span class="material-symbols-outlined" style="font-size:16px">construction</span></span>' : '')) +
-        (openUrl && contentType !== 'manga' && contentType !== 'manhwa' && !_IS_FROZEN
+          '<span class="material-symbols-outlined" style="font-size:18px">' + (isDownloaded ? 'file_download_done' : 'download') + '</span></button>' : '') +
+        (openUrl && contentType !== 'manga' && contentType !== 'manhwa'
           ? '<button class="ep-stream-btn" title="İzle (stream)" style="color:#00d4ff;background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center" ' +
             'data-ep-num="' + e.number + '" data-ep-url="' + escapeHtml(openUrl) + '" ' +
             'data-content-id="' + contentId + '" data-content-type="' + escapeHtml(contentType || '') + '" data-content-title="' + escapeHtml(contentTitle || '') + '">' +

@@ -28,6 +28,11 @@ async def download_anime(
     if on_progress:
         await on_progress(0)  # stream_finder basladi
     actual_url, source_tags = await find_stream_url_with_tags(url, media_type)
+    if not actual_url:
+        raise RuntimeError(
+            f"{urlparse(url).netloc} bu medya türü ({media_type}) için uygun bir stream sunmuyor; "
+            f"diğer bir site denenmeli."
+        )
     if on_progress:
         await on_progress(1)  # stream URL bulundu
 
