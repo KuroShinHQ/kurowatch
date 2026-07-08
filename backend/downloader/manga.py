@@ -17,6 +17,7 @@ _MADARA_DOMAINS = [
     "golgebahcesi.com",
     "merlintoon.com",
     "mangadenizi.com",
+    "mangasehri.net", "mangasehri.com",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
     "manga-sehri.net", "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
@@ -41,12 +42,9 @@ _IMC_DOMAINS = {
 }
 
 # DNS fail / offline siteler — anında hata döndür
-# 5 Tem 2026: mangagezgini.com HTTP 525 SSL handshake failed
 _OFFLINE = {
-    "majorscans.com", "majorscans.net", "mangatr.net", "mangaokutr.com",
-    "mangagezgini.com",
+    "majorscans.com", "majorscans.net", "mangatr.net",
     "manhwahentai.me",
-    "ragnarscans.com", "ragnarscans.net",
 }
 
 # uzaymanga.com eski URL pattern: /manga/{num}/{slug}/{manga_id}/{ch}-bolum
@@ -307,8 +305,38 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     return files
 
 
+async def _playwright_get_html(url: str, wait_secs: int = 12) -> Optional[str]:
+    """Playwright ile CF/JS-render sayfa HTML'i al."""
+    from playwright.async_api import async_playwright
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-blink-features=AutomationControlled"],
+        )
+        ctx = await browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                       "AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/131.0.0.0 Safari/537.36",
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(ctx)
+        except Exception:
+            pass
+        page = await ctx.new_page()
+        try:
+            await page.goto(url, timeout=60000, wait_until="domcontentloaded")
+            await asyncio.sleep(wait_secs)
+            html = await page.content()
+            return html
+        finally:
+            await browser.close()
+
+
 async def _fetch_with_cf(url: str) -> tuple[str, str]:
-    """curl_cffi impersonate ile CF korumalı sayfa getir; httpx fallback."""
+    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright fallback."""
     try:
         from curl_cffi.requests import AsyncSession
         async with AsyncSession(impersonate="chrome131") as s:
@@ -319,8 +347,14 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
                     return text, resp.url
     except Exception as exc:
         import logging
-        logging.getLogger(__name__).warning("curl_cffi hatası, httpx fallback: %s", exc)
+        logging.getLogger(__name__).warning("curl_cffi hatası, Playwright fallback: %s", exc)
 
+    # curl_cffi yoksa/CF challenge ise Playwright ile gerçek tarayıcıdan çek
+    html = await _playwright_get_html(url, wait_secs=12)
+    if html and len(html) > 500 and "Just a moment" not in html[:1000]:
+        return html, url
+
+    # Son çare: httpx düz istek
     async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
         r = await client.get(url)
         r.raise_for_status()
