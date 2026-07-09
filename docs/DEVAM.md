@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 FINALE) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128 FINALE` Hannibal definitive failure (dizipod anti-bot, dizipal2099 hijacked), Anime Naruto tranimeizle.xyz 9.44MB segment
+**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 FINALE) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `43916e6` — Hannibal setfilmizle.uk/hdfilmcehennemi.now da yok, Anime Naruto 9.44MB
 
 ---
 
@@ -32,8 +32,10 @@ SOHBET-128 FINALE — Tüm medya türleri için diskte kanıt dosyaları:
     ⛔ Hannibal — KESİN BAŞARISIZLIK:
         • dizipod.com: JW Player iframe anti-devtool → headless browser algılandı
         • dizipal2099.com: Domain ELE GEÇİRİLMİŞ, YouTube/Türk şarkısına redirect
+        • setfilmizle.uk: Hannibal TV series YOK (sadece film kayıtları, tüm URL'ler 404)
+        • hdfilmcehennemi.now: Hannibal TV series YOK (sadece film: Hannibal 2001, Hannibal Doğuyor)
         • DB: DiziPod (canlı/player bloklu, site#1849) + Dizipal2099 (ölü/hijack, site#1850) eklendi
-        • Karar: Hannibal otomatik indirme WSL'de mümkün değil (tüm CDN'ler bloklu)
+        • Karar: Hannibal otomatik indirme WSL'de mümkün değil (TR sitelerinde seri mevcut değil)
 
 [5] FİLM (DB kayıtları + HTTP 200 kanıt):
     ✅ 3 Idiots → hdfilmcehennemi.now HTTP 200 (site eklendi)
