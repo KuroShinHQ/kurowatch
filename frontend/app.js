@@ -136,6 +136,18 @@
     'rewatching': 'Tekrar İzliyor'
   };
 
+  const STATUS_COLOR = {
+    'watching': '#00d4ff',
+    'completed': '#4ade80',
+    'on_hold': '#fbbf24',
+    'plan_to_watch': '#c084fc',
+    'planning': '#c084fc',
+    'dropped': '#ff6b6b',
+    'rewatching': '#00d4ff'
+  };
+
+  function statusColor(s) { return STATUS_COLOR[s] || '#9090b0'; }
+
   const TAG_COLORS = ['#00d4ff', '#bbc5eb', '#ffd9a1', '#4ade80', '#ffb4ab', '#90e090', '#ff9a3c'];
   let _selectedTagColor = TAG_COLORS[0];
   let _tagPickerEl = null;
@@ -367,8 +379,12 @@
       const col = (tc[hero.type]||tc.anime).color;
       if (heroMet) heroMet.textContent = (hero.type||'').toUpperCase() + (hero.my_score ? ' · ★' + hero.my_score.toFixed(1) : '');
       if (heroSyn) { heroSyn.textContent = hero.note_text || ''; heroSyn.classList.toggle('hidden', !hero.note_text); }
-      const statusMap = {watching:'● İZLİYORUM',completed:'● TAMAMLANDI',on_hold:'● ASKIDA',dropped:'● BIRAKTIM',plan_to_watch:'● PLANLANDI'};
-      if (heroBadge) heroBadge.textContent = statusMap[hero.status] || '● —';
+      const statusMap = {watching:'İZLİYORUM',completed:'TAMAMLANDI',on_hold:'ASKIDA',dropped:'BIRAKTIM',plan_to_watch:'PLANLANDI',planning:'PLANLI'};
+      if (heroBadge) {
+        heroBadge.textContent = '● ' + (statusMap[hero.status] || '—');
+        var hc = statusColor(hero.status);
+        heroBadge.style.cssText = 'background:' + hc + '22;border:1px solid ' + hc + '55;color:' + hc;
+      }
       if (heroCont) heroCont.onclick = () => window.openDetail(hero.id);
       if (heroDetail) heroDetail.onclick = () => window.openDetail(hero.id);
     }
@@ -805,11 +821,16 @@
         ? `${initialsHtml}<img src="${escapeHtml(it.cover_url)}" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.style.display='none'"/>`
         : initialsHtml;
 
+      var sColor = statusColor(it.status);
       return `
-        <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] border border-white/5 hover:border-[#00d4ff]/50 hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" data-content-id="${it.id}">
+        <div class="interactive-card relative group aspect-[2/3] rounded-card overflow-hidden bg-[#1c1d37] hover:scale-[1.02] transition-all duration-300 cursor-pointer inner-glow" style="border:1px solid transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.05),0 2px 12px rgba(0,0,0,0.3);" data-content-id="${it.id}">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:${sColor};border-radius:0 3px 3px 0;box-shadow:0 0 12px ${sColor}66;z-index:10"></div>
           ${coverBg}
           <div class="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent"></div>
-          ${myScoreBadge}
+          <div style="position:absolute;top:8px;right:8px;z-index:10;display:flex;gap:4px;align-items:center">
+            <span style="display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:999px;font-size:9px;font-weight:700;text-transform:uppercase;background:${sColor}22;border:1px solid ${sColor}55;color:${sColor}">${STATUS_LABEL[it.status] || it.status}</span>
+            ${myScoreBadge}
+          </div>
           ${starsHtml}
           <div class="absolute bottom-0 w-full p-3 flex flex-col gap-1.5">
             <span class="text-[10px] font-bold w-fit px-1.5 py-0.5 rounded uppercase leading-none" style="${tcStyle(tc).badge}">${tc.label}</span>
@@ -941,7 +962,9 @@
     typeBadgeEl.style.cssText = tcStyle(tc).badge;
     document.getElementById('detail-progress-bar').style.background = tc.color;
     const statusIcon = item.type==='game' ? 'sports_esports' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime' ? 'play_circle' : 'menu_book'));
+    var sColor = statusColor(item.status);
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
+    document.getElementById('detail-status-badge').style.cssText = `background:${sColor}22;border:1px solid ${sColor}55;color:${sColor};border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px`;
     document.getElementById('detail-progress-current').textContent = isPctType ? cur + '%' : cur;
     document.getElementById('detail-progress-total').textContent = isPctType ? 'tamamlandı' : ('/ ' + (total || '?'));
     document.getElementById('detail-progress-pct').textContent = pct + '%';
@@ -962,8 +985,17 @@
         markBtn.style.display = 'none';
       } else {
         markBtn.style.display = '';
-        const isEpType = item.type === 'anime' || item.type === 'series';
-        markBtn.querySelector('span.font-bold').textContent = isEpType ? 'Sonraki Bölümü İşaretle' : 'Sonraki Chapter\'ı İşaretle';
+        var markLabel, markIcon;
+        if (item.type === 'anime' || item.type === 'series' || item.type === 'cartoon') {
+          markLabel = 'Sonraki Bölümü İşaretle'; markIcon = 'play_circle';
+        } else if (item.type === 'manga' || item.type === 'manhwa') {
+          markLabel = "Sonraki Chapter'ı İşaretle"; markIcon = 'menu_book';
+        } else if (item.type === 'movie') {
+          markLabel = 'Tamamlandı İşaretle'; markIcon = 'movie';
+        } else {
+          markLabel = 'Sonraki Bölümü İşaretle'; markIcon = 'play_circle';
+        }
+        markBtn.querySelector('span.font-bold').textContent = markLabel;
       }
     }
 
@@ -975,8 +1007,17 @@
       contBtn.classList.toggle('hidden', !showCont);
       if (showCont && contLabel) {
         const nextEp = cur + 1;
-        const unitWord = (item.type==='series'||item.type==='anime') ? 'Bölüm' : 'Chapter';
-        contLabel.textContent = 'DEVAM ET — ' + unitWord + ' ' + nextEp;
+        var unitWord, iconName;
+        if (item.type === 'series' || item.type === 'anime' || item.type === 'cartoon') {
+          unitWord = 'Bölüm'; iconName = 'play_circle';
+        } else if (item.type === 'manga' || item.type === 'manhwa') {
+          unitWord = 'Chapter'; iconName = 'menu_book';
+        } else if (item.type === 'movie') {
+          unitWord = 'Film'; iconName = 'movie';
+        } else {
+          unitWord = 'Bölüm'; iconName = 'play_circle';
+        }
+        contLabel.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px">' + iconName + '</span> DEVAM ET — ' + unitWord + ' ' + nextEp;
       }
       if (showCont && markBtn) {
         const nextEp = cur + 1;
@@ -2723,9 +2764,10 @@
   // ── Detail Tab Yardımcıları ──────────────────────────────────────
 
   function renderDetailEpisodes(el, episodes, contentId, contentType, contentTitle, sites, myProgress) {
-    const isAnime = contentType === 'anime';
-    const readLabel = isAnime ? 'İzle' : 'Oku';
-    const readIcon  = isAnime ? 'play_circle' : 'menu_book';
+    const isWatchType = contentType === 'anime' || contentType === 'series' || contentType === 'cartoon' || contentType === 'movie';
+    const isReadType = contentType === 'manga' || contentType === 'manhwa';
+    const readLabel = isWatchType ? 'İzle' : 'Oku';
+    const readIcon  = isWatchType ? 'play_circle' : 'menu_book';
     const isAnimeOrManga = contentType === 'anime' || contentType === 'manga' || contentType === 'manhwa';
     const isSeriesOrMovie = contentType === 'series' || contentType === 'movie' || contentType === 'cartoon';
     const syncLabel = isAnimeOrManga ? 'AniList\'ten Yükle' : (isSeriesOrMovie ? 'Sezon Ekle' : '');

@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-129-İYİLEŞTİRME) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `697ef29` — SOHBET-129-İYİLEŞTİRME: %13.4 → %85.7 (612/714 OK)
+**Son güncelleme:** 9 Temmuz 2026 (SOHBET-130) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `90bbbd3` — SOHBET-130: Kullanıcı deneyimi iyileştirme — status göstergesi, tip bazlı ikonlar
 
 ---
 
@@ -32,6 +32,16 @@ ADIM 6: Son test
   Tür bazı: anime %96.2, cartoon %98.1, movie %100, series %100, game %100, manhwa %58.3, manga %25.8
   KALAN (101/714): 53 DEAD, 34 CF_BLOCKED (script limiti), 11 MARKED_DEAD, 4 ERROR
   KANIT: _kanit_sohbet129/rapor/SOHBET-129_RAPORU.md
+
+SOHBET-130 — KULLANICI DENEYİMİ İYİLEŞTİRME:
+  [x] Kartlarda status göstergesi: renkli sol çizgi + sağ üst badge (watching=cyan, completed=green, planning=purple, dropped=red)
+  [x] Detay status badge rengi: artık statüye göre dinamik
+  [x] Hero kartı status badge: renkli
+  [x] "Devam Et" butonu: tipine göre play_circle/menu_book/movie ikonu + Bölüm/Chapter/Film
+  [x] "İşaretle" butonu: tipine göre ikon/etiket
+  [x] Cartoon ve Movie tipi "İzle" grubunda
+  KANIT: docs/SOHBET-130_COZUM_PLANI.md
+  SIRADA: Türk site scraper (series.py), game metadata IGDB, test script CF bypass
 ```
 
 ## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 75 Dosya, 41.3MB
