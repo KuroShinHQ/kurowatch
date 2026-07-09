@@ -1,5 +1,27 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-130) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `90bbbd3` — SOHBET-130: Kullanıcı deneyimi iyileştirme — status göstergesi, tip bazlı ikonlar
+**Son güncelleme:** 9 Temmuz 2026 (SOHBET-132) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `071e7d7` — SOHBET-132.1: AniList enrichment (genres 523→601)
+
+---
+
+## ⏳ DEVAM EDİYOR — SOHBET-132: DB Temizlik & Zenginleştirme
+
+```
+SOHBET-132 — Veritabanı sütun zenginleştirme + gereksiz kolon temizliği:
+
+SOHBET-132.1 — AniList enrichment (KISMİ TAMAMLANDI):
+  [x] external_id format tespiti: "mal:12345" (AniList idMal mapping ile çözüldü)
+  [x] 78 içerik zenginleştirildi: genres 523→601 (+78), yıl 39, synopsis 98, runtime 33
+  [x] Kanıt: _kanit_sohbet132/step1_enrich.json + sohbet132_raporu.json
+
+  KALAN (113 genres null): 18 steam (IGDB), 14 tmdb (TMDB API), 81 no-external-id
+
+SIRADA:
+  [ ] 132.2: TMDB API ile tmdb:XXXX entries enrichment
+  [ ] 132.3: IGDB API ile oyun entry'leri enrichment
+  [ ] 132.4: Gereksiz kolon temizliği (title_tr, note_text, my_progress_pct)
+  [ ] 132.5: Tag sistemi aktivasyonu
+  [ ] 132.6: intro/outro test
+```
 
 ---
 
@@ -43,6 +65,8 @@ SOHBET-130 — KULLANICI DENEYİMİ İYİLEŞTİRME:
   KANIT: docs/SOHBET-130_COZUM_PLANI.md
   SIRADA: Türk site scraper (series.py), game metadata IGDB, test script CF bypass
 ```
+
+---
 
 ## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 75 Dosya, 41.3MB
 
