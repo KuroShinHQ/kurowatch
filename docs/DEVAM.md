@@ -1,16 +1,17 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 finale) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128` Kanıt dosyaları (+Solo Leveling MangaDex, Hannibal DiziPod, 3 Idiots/Fight Club, Cult of the Lamb FitGirl timeout=60s)
+**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 FINALE) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128 FINALE` Hannibal definitive failure (dizipod anti-bot, dizipal2099 hijacked), Anime Naruto tranimeizle.xyz 9.44MB segment
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 74 Dosya, 31.9MB
+## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 75 Dosya, 41.3MB
 
 ```
 SOHBET-128 FINALE — Tüm medya türleri için diskte kanıt dosyaları:
 
-[1] ANIME (1 dosya, 2.2MB):
+[1] ANIME (2 dosya, 11.6MB):
     ✅ Attack on Titan segment.ts (2,199,600 bytes) — yt-dlp denendi, Cloudflare
-    ⛔ Tüm anime siteleri (tranimaci, turkanime) Cloudflare — bypass yok
+    ✅ Naruto S01E01 → tranimeizle.xyz Playwright anizmplayer.com HLS (9,444,932 bytes, 1080p) ✅✅
+    ⛔ tranimaci.com/turkanime.tv Cloudflare — bypass yok
 
 [2] MANGA (28 dosya, 8.8MB):
     ✅ Above All Gods: 700px uniform, 8 sayfa, 1.1MB
@@ -26,10 +27,13 @@ SOHBET-128 FINALE — Tüm medya türleri için diskte kanıt dosyaları:
     ⛔ Solo Leveling chapter 0 sayfasız (sadece chapter metadata)
     ⛔ TBATE manga-sehri slug: series sayfası verdi, chapter resimleri yok
 
-[4] DİZİ (3 dosya):
+[4] DİZİ (2 dosya):
     ✅ Dexter S01E01: setfilmizle.uk AJAX + HLS, 2.9MB MPEG-TS ✅
-    ✅ Hannibal: DiziPod embed HTTP 200 (site_id=1850 DB'ye eklendi)
-    ⛔ Hannibal CDN: victor.storage.tyuopix.com DNS çözülemedi (geo-block)
+    ⛔ Hannibal — KESİN BAŞARISIZLIK:
+        • dizipod.com: JW Player iframe anti-devtool → headless browser algılandı
+        • dizipal2099.com: Domain ELE GEÇİRİLMİŞ, YouTube/Türk şarkısına redirect
+        • DB: DiziPod (canlı/player bloklu, site#1849) + Dizipal2099 (ölü/hijack, site#1850) eklendi
+        • Karar: Hannibal otomatik indirme WSL'de mümkün değil (tüm CDN'ler bloklu)
 
 [5] FİLM (DB kayıtları + HTTP 200 kanıt):
     ✅ 3 Idiots → hdfilmcehennemi.now HTTP 200 (site eklendi)
@@ -43,7 +47,7 @@ KRİTİK BULGU:
     - Eski backend (port 8099): MangaSehri kayıtları görünmüyordu
       (stale connection pool) → yeni backend (port 8100) ile düzeldi
     - Port 8099 svchost tarafından işgal edilmiş (başka servis)
-    - Tüm anime siteleri Cloudflare korumalı (403/timeout)
+    - tranimeizle.xyz: Cloudflare yok, Playwright + anizmplayer.com HLS ile çalışıyor ✅
     - Manga-sehri.com CF yok, hâlâ HTTP 200 ile çalışıyor
     - MangaDex API: "MangaDexApi/1.0" UA gerekli, browser UA HTML döndürüyor
     - hdfilmcehennemi.now: 3 idiots = "3-aptal-2009", fight club = "dovus-kulubu-1999"
