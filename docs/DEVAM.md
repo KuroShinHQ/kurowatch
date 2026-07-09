@@ -1,7 +1,44 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 FINALE) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `43916e6` — Hannibal setfilmizle.uk/hdfilmcehennemi.now da yok, Anime Naruto 9.44MB
+**Son güncelleme:** 9 Temmuz 2026 (sohbet-129) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `da3b2e0` — SOHBET-129 Tüm medya kanıtlı durum raporu: 714 içerik test edildi, 96/714 başarılı (%13.4)
 
 ---
+
+## ✅ TAMAMLANDI — SOHBET-129: TÜM MEDYA KANITLI DURUM RAPORU (714 içerik, 43 domain test)
+```
+SOHBET-129 — 714 içerik, 43 unique domain curl_cffi ile test edildi:
+
+BAŞARILI: 96 (%13.4)
+  anime: 77/318 (%24.2) — tranimaci.com, turkanime.com.tr, tranimeizle.top
+  manhwa: 11/96 (%11.5) — manga-sehri.com, ragnarscans.net, mangawow.com/org
+  manga: 4/66 (%6.1) — manga-sehri.com, tempestfansub.com, mangawow.com
+  movie: 2/113 (%1.8) — hdfilmcehennemi.now
+  series: 2/49 (%4.1) — setfilmizle.uk, dizipod.com
+  cartoon: 0/53 (%0) — hiç site yok
+  game: 0/19 (%0) — hiç site yok
+
+BAŞARISIZ: 618 (%86.6)
+  NO_SITE: 228 (%31.9) — 111 movie, 52 cartoon, 47 series, 19 game
+  MARKED_DEAD: 307 (%43.0) — site HTTP 200 ama DB'de is_dead=1
+  DEAD: 45 (%6.3) — DNS/404/522
+  CF_BLOCKED: 34 (%4.8) — Cloudflare 403
+  EMPTY: 4 (%0.6) — majorscans.com boş sayfa
+
+ÇALIŞAN DOMAİNLER (20/43):
+  Anime: tranimaci.com ✅, turkanime.com.tr ✅, tranimeizle.top ✅
+  Manga/Manhwa: ragnarscans.net ✅, manga-sehri.com ✅, mangawow.com/org ✅,
+                 mangadex.org ✅, mangatr.net ✅, tempestfansub.com ✅,
+                 monomanga.com.tr ✅, ruyamanga2.com ✅, mangakoleji.com ✅
+  Movie: hdfilmcehennemi.now ✅
+  Series: setfilmizle.uk ✅, dizipod.com ✅, dizibox.so ✅
+
+BAŞARISIZ DOMAİNLER (23/43):
+  CF_BLOCKED: asurascans.com.tr, hayalistic.blog, merlintoon.com,
+              manga-sehri.net, mangasehri.net, ragnarscans.com, ruyamanga.net
+  DEAD: turkanime.tv, mangaokutr.com, mangagezgini.com, uzaymanga.com,
+        arcanescans.com, mangatepesi.com, yabancidizi.pro
+
+İYİLEŞTİRME PLANI GEREKLİ (başarı %13.4 < %80)
+```
 
 ## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 75 Dosya, 41.3MB
 
