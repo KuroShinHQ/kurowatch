@@ -1,0 +1,16 @@
+{
+  "meta_updated": 4,
+  "ep_created": 220,
+  "errors": 0,
+  "tmdb_skipped": 12,
+  "total_episodes_db": 16086,
+  "null_episodes": {
+    "anime": 21,
+    "cartoon": 1,
+    "movie": 1
+  },
+  "null_chapters": {
+    "manga": 22,
+    "manhwa": 61
+  }
+}

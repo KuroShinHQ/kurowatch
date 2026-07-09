@@ -952,6 +952,7 @@
     const tc = TYPE_COLOR[item.type] || TYPE_COLOR.anime;
     const isPctType = item.type === 'game' || item.type === 'movie';
     const total = isPctType ? 100 : (item.type==='series'||item.type==='anime' ? (item.total_episodes || 0) : (item.total_chapters || 0)) || 0;
+    const totalKnown = total > 0;
     const cur = isPctType ? (item.my_progress_pct || 0) : (item.my_progress || 0);
     const pct = isPctType ? cur : (total > 0 ? Math.round(cur / total * 100) : 0);
 
@@ -965,14 +966,14 @@
     var sColor = statusColor(item.status);
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
     document.getElementById('detail-status-badge').style.cssText = `background:${sColor}22;border:1px solid ${sColor}55;color:${sColor};border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px`;
-    document.getElementById('detail-progress-current').textContent = isPctType ? cur + '%' : cur;
-    document.getElementById('detail-progress-total').textContent = isPctType ? 'tamamlandı' : ('/ ' + (total || '?'));
-    document.getElementById('detail-progress-pct').textContent = pct + '%';
-    document.getElementById('detail-progress-bar').style.width = pct + '%';
+    document.getElementById('detail-progress-current').textContent = isPctType ? cur + '%' : (totalKnown ? cur : '?');
+    document.getElementById('detail-progress-total').textContent = isPctType ? 'tamamlandı' : (totalKnown ? '/ ' + total : '/ ?');
+    document.getElementById('detail-progress-pct').textContent = isPctType ? Math.round(pct) + '%' : (totalKnown ? pct + '%' : '?%');
+    document.getElementById('detail-progress-bar').style.width = (totalKnown ? pct : 0) + '%';
     const slider = document.getElementById('detail-progress-slider');
     slider.max = isPctType ? 100 : (total || 999);
     slider.value = cur;
-    document.getElementById('detail-slider-max').textContent = isPctType ? '100%' : (total || '?');
+    document.getElementById('detail-slider-max').textContent = isPctType ? '100%' : (totalKnown ? total : '?');
 
     // Progress bölüm etiketi
     const progressLabel = document.querySelector('#screen-detail .font-label-caps.uppercase');
@@ -2797,23 +2798,7 @@
           '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
         : '';
 
-      // ── Sezon ekleme formu (AniList sadece anime/manga/mahnwa için) ──
-      const seasonFormLabel = isAnimeOrManga ? 'Yeni sezon yükle (AniList ID ile)' : (isSeriesOrMovie ? 'Yeni sezon ekle (sezon numarası)' : '');
-      const seasonFormAnilistPlaceholder = isAnimeOrManga ? 'AniList ID (opsiyonel)' : '';
-      const addSeasonFormHtml = (isAnimeOrManga || isSeriesOrMovie)
-        ? '<div id="ep-add-season-form" style="display:none;flex-direction:column;gap:6px;padding:10px;background:#16213e;border-radius:10px;border:1px solid #00d4ff2a;margin-bottom:8px">' +
-          '<div style="font-size:11px;color:#9090b0;margin-bottom:2px">' + seasonFormLabel + '</div>' +
-          '<div style="display:flex;gap:6px">' +
-          '<input id="ep-new-season-num" type="number" min="1" value="' + (activeSeason + 1) + '" placeholder="Sezon No" ' +
-          'style="width:80px;height:36px;background:#0d0d1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:13px;text-align:center;padding:0 8px">' +
-          (isAnimeOrManga
-            ? '<input id="ep-new-anilist-id" type="text" placeholder="' + seasonFormAnilistPlaceholder + '" ' +
-              'style="flex:1;height:36px;background:#0d0d1a;border:1px solid #ffffff1a;border-radius:8px;color:#e1e0ff;font-size:12px;padding:0 8px">'
-            : '') +
-          '<button id="ep-new-season-load" data-content-id="' + contentId + '" ' +
-          'style="height:36px;padding:0 14px;background:#00d4ff1a;border:1px solid #00d4ff4d;border-radius:8px;color:#00d4ff;font-size:12px;font-weight:700;cursor:pointer">Yükle</button>' +
-          '</div></div>'
-        : '';
+      const addSeasonFormHtml = '';
       // Sıradaki bölüm indirilmişse oynat butonu göster
       const _hasSites = (sites || []).length > 0;
       const _noSiteCard = !_hasSites
@@ -2857,10 +2842,8 @@
               'color:' + (active ? '#0d0d1a' : '#9090b0') + ';' +
               'border:1px solid ' + (active ? '#00d4ff' : 'rgba(255,255,255,0.1)') + '">Sezon ' + s + '</button>';
           }).join('') +
-          '<button class="ep-add-season-btn" style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;background:#31324d;color:#00d4ff;border:1px solid #00d4ff4d">+ Sezon Ekle</button>' +
           '</div>'
-        : '<div style="display:flex;justify-content:flex-end;margin-bottom:6px">' +
-          '<button class="ep-add-season-btn" style="font-size:11px;color:#9090b0;background:none;border:none;cursor:pointer">+ Sezon Ekle</button></div>';
+        : '';
 
       const epCountBadge = seasonEps.length > 0
         ? '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
@@ -2911,19 +2894,7 @@
           _buildEpisodeView();
         });
       });
-      const addSeasonBtn = el.querySelector('.ep-add-season-btn');
-      if (addSeasonBtn) addSeasonBtn.addEventListener('click', function() {
-        const form = document.getElementById('ep-add-season-form');
-        if (form) form.style.display = form.style.display === 'none' ? 'flex' : 'none';
-      });
-      const loadNewSeasonBtn = el.querySelector('#ep-new-season-load');
-      if (loadNewSeasonBtn) loadNewSeasonBtn.addEventListener('click', async function() {
-        const seasonNum = parseInt(document.getElementById('ep-new-season-num').value, 10) || (activeSeason + 1);
-        const anilistId = (document.getElementById('ep-new-anilist-id').value || '').trim() || null;
-        const fakeEvt = { currentTarget: this, target: this };
-        this.dataset.season = String(seasonNum);
-        await syncEpisodesFromAniList(fakeEvt, seasonNum, anilistId);
-      });
+      // (manual season add form removed — episodes are auto-synced)
       const syncBtn2 = el.querySelector('.ep-anilist-sync-btn');
       if (syncBtn2) syncBtn2.addEventListener('click', syncEpisodesFromAniList);
       const goSitesBtn = el.querySelector('.ep-go-sites-btn');
