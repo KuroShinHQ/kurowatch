@@ -45,6 +45,53 @@ SOHBET-128 FINALE — Tüm medya türleri için diskte kanıt dosyaları:
     ✅ Cult of the Lamb: FitGirl timeout=60s başarılı → 2 magnet link
     ✅ Magnet URI: magnet.txt dosyasına kaydedildi
 
+## 📋 Çalışan ve Çalışmayan Siteler (SOHBET-128)
+
+### 1. ANİME
+
+| Site | Durum | Açıklama |
+|------|-------|----------|
+| **tranimeizle.xyz** | ✅ ÇALIŞIYOR | Naruto S01E01 1080p HLS segment indirildi (9.44 MB). Playwright + anizmplayer.com HLS zinciri çalışıyor. |
+| **tranimaci.com** | ❌ ÇALIŞMIYOR | Cloudflare JS challenge — WSL otomatik çekime kapalı. |
+| **turkanime.tv** | ❌ ÇALIŞMIYOR | Cloudflare / erişim engeli — WSL otomatik çekime kapalı. |
+
+### 2. MANGA / MANHWA
+
+| Site | Durum | Açıklama |
+|------|-------|----------|
+| **manga-sehri.com** | ✅ ÇALIŞIYOR | Above All Gods, Martial Peak, Seçkinin İkinci Yaşamı, FFF-Class Trashero için 8-10 sayfa indirildi (700-800px genişlik). CF yok. |
+| **mangaokutr.com** | ❌ ÇALIŞMIYOR | DNS çözülemedi / timeout — site offline. |
+| **mangagezgini.com** | ❌ ÇALIŞMIYOR | Cloudflare 403 — WSL otomatik çekime kapalı. |
+| **merlintoon.com** | ❌ ÇALIŞMIYOR | Cloudflare 403 — WSL IP bloklu. |
+| **MangaDex API** | ✅ ÇALIŞIYOR | Solo Leveling ve FFF-Class Trashero için yedek kaynak. 8 webp sayfa indirildi. "MangaDexApi/1.0" UA gerekli. |
+
+### 3. DİZİ
+
+| Site | Durum | Açıklama |
+|------|-------|----------|
+| **setfilmizle.uk** | ⚠️ KISMEN | Dexter S01E01 için HLS segment indirildi (2.76 MB), site DB'ye eklendi. Hannibal TV series için arama sonucu 0 (tüm URL'ler 404). |
+| **hdfilmcehennemi.now** | ⚠️ KISMEN | Sadece film Hannibal (2001) ve Hannibal Doğuyor (2007) var. TV series yok. Film siteleri olarak çalışıyor. |
+| **dizipod.com** | ❌ ÇALIŞMIYOR | Hannibal sayfası var ama JW Player anti-devtool nedeniyle headless browser algılandı, otomatik çekim başarısız. |
+| **dizipal2099.com** | ❌ ÇALIŞMIYOR | Domain ele geçirilmiş, YouTube/Türk şarkısına redirect (Hızır Acil). |
+
+### 4. FİLM
+
+| Site | Durum | Açıklama |
+|------|-------|----------|
+| **hdfilmcehennemi.now** | ✅ ÇALIŞIYOR | 3 Idiots / Fight Club için site kaydı DB'ye eklendi, sayfa HTTP 200, indirme test edilebilir. |
+
+### 5. OYUN
+
+| Site | Durum | Açıklama |
+|------|-------|----------|
+| **fitgirl-repacks.site** | ✅ ÇALIŞIYOR | timeout=60s ile Cult of the Lamb magnet linki alındı. qBittorrent entegrasyonu hazır. |
+| **qBittorrent Web API** | 🔧 ENTEGRE | POST /api/download/add ile magnet gönderimi çalışıyor. Kullanıcı kendi config yapmalı. |
+
+### 6. GENEL NOTLAR
+
+- Cloudflare engelli siteler WSL ortamında otomatik çekime kapalıdır. Kullanıcı kendi tarayıcısından manuel olarak erişebilir.
+- Hannibal TV series Türk dizi sitelerinde (setfilmizle, hdfilmcehennemi, dizipod, dizipal) mevcut değildir veya otomatik çekime kapalıdır. Bu nedenle SOHBET-128 kapsamında başarısız olarak işaretlenmiştir.
+
 KRİTİK BULGU:
     - Eski backend (port 8099): MangaSehri kayıtları görünmüyordu
       (stale connection pool) → yeni backend (port 8100) ile düzeldi
