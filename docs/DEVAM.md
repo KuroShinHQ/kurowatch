@@ -1,26 +1,32 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-132) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `071e7d7` — SOHBET-132.1: AniList enrichment (genres 523→601)
+**Son güncelleme:** 9 Temmuz 2026 (SOHBET-134) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `1bd42f4` — SOHBET-132.1: AniList enrichment
 
 ---
 
-## ⏳ DEVAM EDİYOR — SOHBET-132: DB Temizlik & Zenginleştirme
+## ✅ TAMAMLANDI — SOHBET-134: Tüm Türler İçin Detay Sayfası Düzeltme
 
 ```
-SOHBET-132 — Veritabanı sütun zenginleştirme + gereksiz kolon temizliği:
+SOHBET-134 — 4 sorun + tür bazlı tüm içerik düzeltmesi:
 
-SOHBET-132.1 — AniList enrichment (KISMİ TAMAMLANDI):
-  [x] external_id format tespiti: "mal:12345" (AniList idMal mapping ile çözüldü)
-  [x] 78 içerik zenginleştirildi: genres 523→601 (+78), yıl 39, synopsis 98, runtime 33
-  [x] Kanıt: _kanit_sohbet132/step1_enrich.json + sohbet132_raporu.json
+[1] Toplam bölüm/chapter "0/?" fix (app.js renderDetail):
+    total_episodes/chapters NULL/0 ise "?" gösterilir (totalKnown flag)
+    progress bar, slider max, yüzde hepsi totalKnown'a bağlı
 
-  KALAN (113 genres null): 18 steam (IGDB), 14 tmdb (TMDB API), 81 no-external-id
+[2] Oyunlarda "Bölüm" mantığı kaldırma (app.js):
+    Game tipi kendi download panelini gösterir (mevcut kod korundu)
+    Bölüm listesi game için render edilmez
 
-SIRADA:
-  [ ] 132.2: TMDB API ile tmdb:XXXX entries enrichment
-  [ ] 132.3: IGDB API ile oyun entry'leri enrichment
-  [ ] 132.4: Gereksiz kolon temizliği (title_tr, note_text, my_progress_pct)
-  [ ] 132.5: Tag sistemi aktivasyonu
-  [ ] 132.6: intro/outro test
+[3] Toplu metadata sync (backend script):
+    concurrent AniList sync: 102 içerik tarandı
+    4 metadata güncellendi, 220 yeni episode/chapter eklendi
+    12 tmdb:XXXX içerik skip (API key yok)
+    Kalan NULL: 21 anime ep, 83 manga/manhwa ch (AniList'te yok)
+    Kanıt: _kanit_sohbet134/sohbet134_raporu.json
+
+[4] "Sezon Ekle" butonu kaldırıldı (app.js):
+    ep-add-season-btn HTML çıkarıldı
+    ep-add-season-form boş string yapıldı
+    loadNewSeasonBtn listener kaldırıldı
 ```
 
 ---
@@ -63,7 +69,6 @@ SOHBET-130 — KULLANICI DENEYİMİ İYİLEŞTİRME:
   [x] "İşaretle" butonu: tipine göre ikon/etiket
   [x] Cartoon ve Movie tipi "İzle" grubunda
   KANIT: docs/SOHBET-130_COZUM_PLANI.md
-  SIRADA: Türk site scraper (series.py), game metadata IGDB, test script CF bypass
 ```
 
 ---
