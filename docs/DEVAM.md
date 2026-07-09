@@ -1,48 +1,52 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 8 Temmuz 2026 (sohbet-128) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128` Canlı E2E test: 6 tür (anime/manga/manhwa/dizi/film/oyun) tamamlandı
+**Son güncelleme:** 9 Temmuz 2026 (sohbet-128 finale) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-128` Kanıt dosyaları (+Solo Leveling MangaDex, Hannibal DiziPod, 3 Idiots/Fight Club, Cult of the Lamb FitGirl timeout=60s)
 
 ---
 
-## 🔴 SOHBET-128 — Canlı 6 Tür E2E Test
+## ✅ TAMAMLANDI — SOHBET-128 FINALE: 6 Tür E2E Kanıt — 74 Dosya, 31.9MB
 
 ```
-SOHBET-128 — 6 tür canlı frontend test, her tür için buton/indirme/kanıt:
+SOHBET-128 FINALE — Tüm medya türleri için diskte kanıt dosyaları:
 
-[1] ANIME: Attack on Titan (id=233) ✅
-    - Buton: VAR (turkanime.tv, 2 site) ✅
-    - İndirme: BAŞLADI (job_id=21, kuyruğa eklendi) ✅
+[1] ANIME (1 dosya, 2.2MB):
+    ✅ Attack on Titan segment.ts (2,199,600 bytes) — yt-dlp denendi, Cloudflare
+    ⛔ Tüm anime siteleri (tranimaci, turkanime) Cloudflare — bypass yok
 
-[2] MANGA: Above All Gods (id=3) ✅
-    - Buton: VAR (MangaSehri dahil 5 site) ✅
-    - İndirme: 5 sayfa indirildi, 700px genişlik, avg 155KB/sayfa
-    - KANIT: 700x1188, 700x1045, 700x1356 ... uniform 700px
+[2] MANGA (28 dosya, 8.8MB):
+    ✅ Above All Gods: 700px uniform, 8 sayfa, 1.1MB
+    ✅ Martial Peak: 800x1132 uniform, 8 sayfa, 1.3MB
+    ✅ Seçkinin İkinci Yaşamı: 720px WEBTOON, 8 sayfa, 5.8MB
+    ✅ manga-sehri.com: CF yok, HTTP 200, doğrudan CDN
 
-[3] MANHWA: The Beginning After the End (id=16) ✅
-    - Buton: VAR (MangaSehri slug 'nihayetin-ardindaki-baslangicc' 6 site) ✅
-    - İndirme: 6 sayfa indirildi, WEBTOON (uzun dikey şerit)
-    - KANIT: 700x13230, 700x13479, 700x13818, 700x15792 (max 15.792px!)
-    - avg 672KB/sayfa → gerçek webtoon formatı doğrulandı
+[3] MANHWA (40 dosya, 12.2MB):
+    ✅ TBATE: 700x15792 WEBTOON, 8 sayfa (max 15,792px!)
+    ✅ FFF-Class Trashero: 8 sayfa manga-sehri + 8 sayfa MangaDex
+    ✅ Solo Leveling: 8 webp (MangaDex API, 1.77MB)
+    ✅ MangaDex API: non-browser UA ile çalışıyor, chapter 1 sayfaları
+    ⛔ Solo Leveling chapter 0 sayfasız (sadece chapter metadata)
+    ⛔ TBATE manga-sehri slug: series sayfası verdi, chapter resimleri yok
 
-[4] DİZİ: Dexter (id=287) + Hannibal (id=346) ✅
-    - İkisi de 0 site → "Site eklenmemiş" uyarısı (beklenen)
-    - Dexter S01E01 setfilmizle.uk AJAX + HLS hâlâ çalışıyor ✅
-    - Multi-CDN: srv.bahcelievler/beyoglu/esenler/esenyurt/pendik/sancaktepe.cfd
+[4] DİZİ (3 dosya):
+    ✅ Dexter S01E01: setfilmizle.uk AJAX + HLS, 2.9MB MPEG-TS ✅
+    ✅ Hannibal: DiziPod embed HTTP 200 (site_id=1850 DB'ye eklendi)
+    ⛔ Hannibal CDN: victor.storage.tyuopix.com DNS çözülemedi (geo-block)
 
-[5] FİLM: 3 Idiots (id=203) + Fight Club (id=311) ✅
-    - İkisi de 0 site → "Site eklenmemiş" uyarısı (beklenen)
+[5] FİLM (DB kayıtları + HTTP 200 kanıt):
+    ✅ 3 Idiots → hdfilmcehennemi.now HTTP 200 (site eklendi)
+    ✅ Fight Club → hdfilmcehennemi.now HTTP 200 (site eklendi)
 
-[6] OYUN: Cult of the Lamb (id=128) ⚠️
-    - Buton: VAR (FitGirl search UI) ✅
-    - FitGirl API: HTTP 200, search çalışıyor
-    - fitgirl-repacks.site bu ağdan timeout (VPN/ortam gerekiyor)
-    - Frontend'de "İndir" butonu görünür, addTorrent() yolu hazır
+[6] OYUN (magnet + DB):
+    ✅ Cult of the Lamb: FitGirl timeout=60s başarılı → 2 magnet link
+    ✅ Magnet URI: magnet.txt dosyasına kaydedildi
 
 KRİTİK BULGU:
     - Eski backend (port 8099): MangaSehri kayıtları görünmüyordu
       (stale connection pool) → yeni backend (port 8100) ile düzeldi
     - Port 8099 svchost tarafından işgal edilmiş (başka servis)
-    - Tüm manga/manhwa siteleri Cloudflare korumalı (403/timeout)
-    - Manga-sehri.com hariç (CF yok, hâlâ HTTP 200 ile çalışıyor)
+    - Tüm anime siteleri Cloudflare korumalı (403/timeout)
+    - Manga-sehri.com CF yok, hâlâ HTTP 200 ile çalışıyor
+    - MangaDex API: "MangaDexApi/1.0" UA gerekli, browser UA HTML döndürüyor
+    - hdfilmcehennemi.now: 3 idiots = "3-aptal-2009", fight club = "dovus-kulubu-1999"
 ```
 
 > Yeni Claude'a tek-sayfa devamlılık.
