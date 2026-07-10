@@ -1,0 +1,2158 @@
+{
+  "started_at": "2026-07-10T00:23:11.524056+00:00",
+  "total": 714,
+  "updated": 166,
+  "skipped": 451,
+  "episodes_added": 3178,
+  "failed": [
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 112,
+      "title": "Dexter (S8)",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 248,
+      "title": "Black Mirror",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 346,
+      "title": "Hannibal",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 386,
+      "title": "Johnny Bravo",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 413,
+      "title": "Kung Fu Panda",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 423,
+      "title": "Limitless",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 505,
+      "title": "Rick and Morty",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "reason": "AniList returned no data"
+    },
+    {
+      "id": 661,
+      "title": "You",
+      "reason": "AniList returned no data"
+    }
+  ],
+  "details": [
+    {
+      "id": 109,
+      "title": "Shangri-La Frontier (S2)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 50
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 100227,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 204,
+      "title": "300 (300 Spartalı)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 112608,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 205,
+      "title": "300 Spartalı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1426,
+      "episodes_added": 50,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 209,
+      "title": "A Beautiful Mind (Akıl Oyunları)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 486,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 210,
+      "title": "A.R.O.G",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 11757,
+      "episodes_added": 25,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 211,
+      "title": "Abimm",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21544,
+      "episodes_added": 4,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 215,
+      "title": "Akıl Oyunları",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 19603,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 217,
+      "title": "Alvin ve Sincaplar",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 99725,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 219,
+      "title": "American Psycho (Amerikan Sapığı)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20513,
+      "episodes_added": 22,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 220,
+      "title": "Amerikan Sapığı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2938,
+      "episodes_added": 51,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 226,
+      "title": "Arka Sokaklar",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 227,
+      "title": "Asena ve Oniriks",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 110811,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 230,
+      "title": "Assassination Classroom (Ansatsu Kyoushitsu)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 22
+    },
+    {
+      "id": 231,
+      "title": "Assessment Assassin",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 22
+    },
+    {
+      "id": 232,
+      "title": "Asteriks ve Oniriks",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21131,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 234,
+      "title": "Attack on Titan (Shingeki no Kyojin)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 25
+    },
+    {
+      "id": 235,
+      "title": "Avatar",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 98861,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 236,
+      "title": "Avengers",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 108815,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 239,
+      "title": "Baki Serisi (Tüm Sezonlar)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 25
+    },
+    {
+      "id": 241,
+      "title": "Batman Serisi (Kara Şövalye ve Tüm Filmler)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 100248,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 242,
+      "title": "Behzat Ç.",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 250,
+      "episodes_added": 104,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 243,
+      "title": "Behzat Ç. Bir Ankara Polisiyesi",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 1148,
+      "episodes_added": 4,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 244,
+      "title": "Ben 10",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 10396,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 252,
+      "title": "Breaking Bad",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 20627,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 254,
+      "title": "Broken Karaoke",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "tmdb_seasons": 3,
+      "episodes_added": 18,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 255,
+      "title": "Captain America",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 256,
+      "title": "Cars",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 2,
+      "episodes_added": 23,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 257,
+      "title": "Cem Yılmaz Fundamentals",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20663,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 258,
+      "title": "Chainsaw Man",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 259,
+      "title": "Charlotte",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 13
+    },
+    {
+      "id": 260,
+      "title": "Chihiro Gidişi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 199,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 262,
+      "title": "Clarence",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "tmdb_seasons": 4,
+      "episodes_added": 129,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 267,
+      "title": "Corpse Bride",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 273,
+      "title": "Dark",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 3393,
+      "episodes_added": 2,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 274,
+      "title": "Dark (2017)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 4,
+      "episodes_added": 16,
+      "existing_eps_before": 25
+    },
+    {
+      "id": 275,
+      "title": "Dark Gathering",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 25
+    },
+    {
+      "id": 276,
+      "title": "Dark Healer",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 277,
+      "title": "Dawn of the Witch",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 278,
+      "title": "Dead Mount",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 279,
+      "title": "Dead Mount Death Play",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 12,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 280,
+      "title": "Deadpool",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 281,
+      "title": "Death March",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 282,
+      "title": "Death March kara Hajimaru Isekai Kyousoukyoku",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 283,
+      "title": "Death Note",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 37
+    },
+    {
+      "id": 284,
+      "title": "Demon Lord 2099",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 285,
+      "title": "Demon Slayer",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 13
+    },
+    {
+      "id": 287,
+      "title": "Dexter",
+      "type": "series",
+      "prefix": "tmdb",
+      "tmdb_seasons": 9,
+      "episodes_added": 96,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 288,
+      "title": "Dexter's Laboratory",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "tmdb_seasons": 5,
+      "episodes_added": 220,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 289,
+      "title": "Diriliş",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 290,
+      "title": "Disney Broken Karaoke",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 6772,
+      "episodes_added": 6,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 292,
+      "title": "Doctor Who",
+      "type": "series",
+      "prefix": "tmdb",
+      "tmdb_seasons": 14,
+      "episodes_added": 153,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 293,
+      "title": "Doktorlar",
+      "type": "series",
+      "prefix": "tmdb",
+      "tmdb_seasons": 4,
+      "episodes_added": 97,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 296,
+      "title": "DreamWorks Dragons (Ejderha Binicileri)",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "tmdb_seasons": 2,
+      "episodes_added": 40,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 297,
+      "title": "Düğün Dernek",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 298,
+      "title": "Ed, Edd n Eddy",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "tmdb_seasons": 7,
+      "episodes_added": 126,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 299,
+      "title": "Edge of Tomorrow (Yarının Sınırında)",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 300,
+      "title": "Elfen Lied",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 13
+    },
+    {
+      "id": 301,
+      "title": "Esaretin Bedeli",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 302,
+      "title": "Failure Frame",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 303,
+      "title": "Faraway Paladin",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 3,
+      "episodes_added": 12,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 306,
+      "title": "Fast & Furious",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2014,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 309,
+      "title": "Fate Serisi (Stay Night, Zero, Unlimited Blade Works)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 310,
+      "title": "Fetih 1453",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 102389,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 313,
+      "title": "Filistin",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 94,
+      "episodes_added": 50,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 314,
+      "title": "Finding Nemo",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 116242,
+      "episodes_added": 24,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 316,
+      "title": "Frieren: Beyond Journey's End (Sousou no Frieren)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 28
+    },
+    {
+      "id": 318,
+      "title": "Full Dive RPG",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 320,
+      "title": "Fury",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 111932,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 322,
+      "title": "Galip Derviş",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 11013,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 323,
+      "title": "Game of Thrones",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 6633,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 324,
+      "title": "Generator Rex",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 21407,
+      "episodes_added": 25,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 326,
+      "title": "Geniş Aile",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 20941,
+      "episodes_added": 10,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 328,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 329,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki (How a Realist Hero Rebuilt the Kingdom)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 25,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 331,
+      "title": "Ghost Rider (Hayalet Sürücü)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 19195,
+      "episodes_added": 4,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 333,
+      "title": "Gladiator",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2655,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 334,
+      "title": "Gladio",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 335,
+      "title": "Gladyatör",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1415,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 336,
+      "title": "Gokudols",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 10
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 341,
+      "title": "Hababam Sınıfı (Yeni Nesil)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20590,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 344,
+      "title": "Hacivat Karagöz Neden Öldürüldü?",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 5630,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 345,
+      "title": "Hancock",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20553,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 348,
+      "title": "Hazurewaku no \"Joutai Ijou Skill\" de Saikyou ni Natta Ore ga Subete wo Juurin suru made (Failure Frame)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 354,
+      "title": "Howl's Moving Castle (Yürüyen Şato)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 358,
+      "title": "I Am Legend (Ben Efsaneyim)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20990,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 360,
+      "title": "Ice Age (Buz Devri Serisi)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 362,
+      "title": "In Time (Zamana Karşı)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 119675,
+      "episodes_added": 52,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 363,
+      "title": "Inception",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 101609,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 365,
+      "title": "Iron Man",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 6875,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 369,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 373,
+      "title": "Isekai Ojisan (Uncle from Another World)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 24
+    },
+    {
+      "id": 375,
+      "title": "Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 377,
+      "title": "Isekai Shoukan wa Nidome desu (Summoned to Another World for a Second Time)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 381,
+      "title": "İhtiyarlara Yer Yok",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 5355,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 385,
+      "title": "John Wick",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1107,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 387,
+      "title": "JoJo Serisi",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 25
+    },
+    {
+      "id": 390,
+      "title": "Joker (2019)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20818,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 391,
+      "title": "Justice League",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 12671,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 392,
+      "title": "Justice League Unlimited",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 20758,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 397,
+      "title": "Kaiko sareta Ankoku Heishi (30-dai) no Slow Life (Chillin' in My 30s after Getting Fired)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 2,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 400,
+      "title": "Kardeş Payı",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 2593,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 402,
+      "title": "Kim Possible",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 10163,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 407,
+      "title": "Koleksiyoncu",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 97886,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 408,
+      "title": "Kolpaçino",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 102822,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 409,
+      "title": "Komedi Dükkanı",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 20668,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 410,
+      "title": "Komedi Dükkanı (Tolga Çevik)",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 416,
+      "title": "Kurtlar Vadisi (Pusu dönemi)",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 13391,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 417,
+      "title": "Kurtlar Vadisi (Pusu)",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 418,
+      "title": "Kurtlar Vadisi Irak",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 419,
+      "title": "Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 420,
+      "title": "La Casa de Papel",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 125426,
+      "episodes_added": 5,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 425,
+      "title": "Lion King",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1448,
+      "episodes_added": 52,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "prefix": "mal",
+      "existing_eps_before": 0
+    },
+    {
+      "id": 429,
+      "title": "Love, Death & Robots",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 99629,
+      "episodes_added": 16,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 432,
+      "title": "Léon: The Professional (Sevginin Gücü)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1760,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 433,
+      "title": "Madagaskar",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 99734,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 435,
+      "title": "Maleficent (Malefiz)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 104253,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 436,
+      "title": "Malefiz",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2924,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 441,
+      "title": "Maskeli Beşler",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1974,
+      "episodes_added": 51,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 442,
+      "title": "Matrix Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1303,
+      "episodes_added": 9,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 443,
+      "title": "Max Steel",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 18893,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 444,
+      "title": "Megas XLR",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 100298,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 447,
+      "title": "Mickey Mouse",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 145840,
+      "episodes_added": 14,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 454,
+      "title": "Monster Musume no Oishasan",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 458,
+      "title": "Mr. White)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 459,
+      "title": "Muhteşem Yüzyıl",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 125867,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 462,
+      "title": "My Neighbor Totoro (Tonari no Totoro)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 464,
+      "title": "Mynoghra 4X",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 472,
+      "title": "New York'ta Beş Minare",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 5781,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 474,
+      "title": "No Country for Old Men (İhtiyarlara Yer Yok)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 976,
+      "episodes_added": 2,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 482,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu (Trapped in a Dating Sim)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 483,
+      "title": "Over the Garden Wall (Bahçe Duvarının Ötesinde)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 5205,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 485,
+      "title": "Pacific Rim (Pasifik Savaşı Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 5013,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 486,
+      "title": "Para Avcısı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 6637,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 487,
+      "title": "Percy Jackson Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21132,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 489,
+      "title": "Phineas and Ferb (Fineas ve Förb)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 110277,
+      "episodes_added": 25,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 490,
+      "title": "Pirates of the Caribbean (Karayip Korsanları Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 8917,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 491,
+      "title": "Pis Yedili",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 10884,
+      "episodes_added": 17,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 492,
+      "title": "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 953,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 494,
+      "title": "Powerpuff Girls",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 1221,
+      "episodes_added": 52,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 498,
+      "title": "Real Steel (Çelik Yumruk)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 499,
+      "title": "Recep İvedik Üçlemesi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1250,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 502,
+      "title": "Regular Show (Sürekli Dizi)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 20458,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 504,
+      "title": "Resident Evil Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 9544,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 509,
+      "title": "Saikin Yatotta Maid ga Ayashii (The Maid I Hired Recently Is Mysterious)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 10,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 510,
+      "title": "Saikyou no Shienshoku \"Wajutsushi\" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru (The Most Notorious Talker)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 515,
+      "title": "Samurai Jack",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 419,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 517,
+      "title": "Scooby-Doo",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 20830,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 522,
+      "title": "Seksenler",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 100093,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 523,
+      "title": "Selena",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 20615,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 525,
+      "title": "Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 528,
+      "title": "Sevginin Gücü",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21320,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 529,
+      "title": "Shark Tale",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2772,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 530,
+      "title": "Sherlock",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 103638,
+      "episodes_added": 25,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 531,
+      "title": "Sherlock Holmes Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1972,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 535,
+      "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 3,
+      "episodes_added": 13,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 539,
+      "title": "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
+      "type": "anime",
+      "prefix": "tmdb",
+      "existing_eps_before": 12
+    },
+    {
+      "id": 540,
+      "title": "Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 (Gift Mugen Gacha)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 543,
+      "title": "Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 1,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 545,
+      "title": "Shrek",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 237,
+      "episodes_added": 50,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 546,
+      "title": "Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 548,
+      "title": "Sihirli Annem",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 21238,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 552,
+      "title": "Sonic Serileri",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 20455,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 553,
+      "title": "Sonic X",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 1816,
+      "episodes_added": 52,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 554,
+      "title": "Space Goofs (Uzay Çılgınları)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 20057,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 555,
+      "title": "Spider-Man (Tobey Maguire Üçlemesi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 103632,
+      "episodes_added": 24,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 556,
+      "title": "Spider-Man Serileri",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 24
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 558,
+      "title": "Split (Parçalanmış)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 114888,
+      "episodes_added": 11,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 559,
+      "title": "Squid Game",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 8557,
+      "episodes_added": 16,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 560,
+      "title": "Star Wars: The Clone Wars",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 113936,
+      "episodes_added": 16,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 562,
+      "title": "Steven Universe",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 99426,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 566,
+      "title": "Tales of Zestiria the Cross",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 567,
+      "title": "Taşıyıcı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 13333,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 568,
+      "title": "Teach You a Lesson",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 260,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 570,
+      "title": "Teletubbies",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 572,
+      "title": "Tensai Ouji no Akaji Kokka Saisei Jutsu (The Genius Prince's Guide to Raising a Nation Out of Debt)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 2,
+      "episodes_added": 11,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 576,
+      "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+      "type": "anime",
+      "prefix": "tmdb",
+      "tmdb_seasons": 2,
+      "episodes_added": 23,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 577,
+      "title": "Tensei shitara Ken deshita",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 579,
+      "title": "Terminator Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21500,
+      "episodes_added": 27,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 582,
+      "title": "The Amazing World of Gumball",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 104284,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 583,
+      "title": "The Collector (Koleksiyoncu)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 99940,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 585,
+      "title": "The Daily Life of the Immortal King (Xian Wang de Richang)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 15
+    },
+    {
+      "id": 590,
+      "title": "The Emperor's New School (Şaşkın İmparator'un Okulu)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 116006,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 591,
+      "title": "The Faraway Paladin",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 592,
+      "title": "The Faraway Paladin (Saihate no Paladin)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 593,
+      "title": "The Godfather",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 759,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 594,
+      "title": "The Green Mile (Yeşil Yol)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 133,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 596,
+      "title": "The Hunger Games (Açlık Oyunları Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 103766,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 597,
+      "title": "The Incredibles",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 2330,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 602,
+      "title": "The Maze Runner (Labirent Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 100168,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 603,
+      "title": "The Maze Runner (Labirent: Ölümcül Kaçış Serisi)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 1
+    },
+    {
+      "id": 604,
+      "title": "The Mentalist",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 605,
+      "title": "The Mummy",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 99390,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 606,
+      "title": "The Revenant (Diriliş)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21857,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 607,
+      "title": "The Scorpion King Serisi",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 608,
+      "title": "The Scorpion King Serisi (Mumya ve Akrepler Kralı)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 25
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 611,
+      "title": "The Shawshank Redemption (Esaretin Bedeli)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 1722,
+      "episodes_added": 26,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 612,
+      "title": "The Walking Dead",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 21791,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 613,
+      "title": "The Witcher",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 116673,
+      "episodes_added": 3,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 615,
+      "title": "The Yogi Bear Show",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 8115,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 616,
+      "title": "Thor",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 6610,
+      "episodes_added": 2,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 622,
+      "title": "Tomo-chan wa Onnanoko!",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 627,
+      "title": "Total Drama Island (Drama Adası)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 107880,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 628,
+      "title": "Totally Spies! (Ajanlar)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 11021,
+      "episodes_added": 27,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 631,
+      "title": "Toy Story",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20946,
+      "episodes_added": 24,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 632,
+      "title": "Transformers Prime",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 1675,
+      "episodes_added": 52,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 633,
+      "title": "Transformers Serisi",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 635,
+      "title": "Tsuki ga Michibiku",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 637,
+      "title": "Twilight (Alacakaranlık Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 101382,
+      "episodes_added": 12,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 638,
+      "title": "Uncle from Another World",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 13
+    },
+    {
+      "id": 639,
+      "title": "Uncle Grandpa",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 100922,
+      "episodes_added": 5,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 641,
+      "title": "Undisputed (Yenilmez Serisi)",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 642,
+      "title": "Up",
+      "type": "movie",
+      "prefix": "tmdb",
+      "movie_metadata": true,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 644,
+      "title": "V for Vendetta",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 21464,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 645,
+      "title": "Venom",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 347,
+      "episodes_added": 22,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 648,
+      "title": "WALL-E",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 98249,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 649,
+      "title": "We Bare Bears (Kafadan Ayılar)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 12815,
+      "episodes_added": 50,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 650,
+      "title": "What If...?",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 2897,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 651,
+      "title": "Winnie the Pooh",
+      "type": "cartoon",
+      "prefix": "mal",
+      "anilist_id": 102498,
+      "episodes_added": 6,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 653,
+      "title": "World War Z",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 114308,
+      "episodes_added": 25,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 655,
+      "title": "Yahşi Batı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 20719,
+      "episodes_added": 13,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 656,
+      "title": "Yahşi Cazibe",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 3323,
+      "episodes_added": 2,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 657,
+      "title": "Yaprak Dökümü",
+      "type": "series",
+      "prefix": "mal",
+      "anilist_id": 20665,
+      "episodes_added": 22,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 659,
+      "title": "Yeşil Yol",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 187892,
+      "episodes_added": 1,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 667,
+      "title": "Yuusha, Yamemasu (I'm Quitting Heroing)",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 672,
+      "title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 12
+    },
+    {
+      "id": 673,
+      "title": "Çocuklar Duymasın",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 674,
+      "title": "Çok Güzel Hareketler Bunlar",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 675,
+      "title": "Çok Güzel Hareketler Bunlar (1. Kuşak)",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 24
+    },
+    {
+      "id": 676,
+      "title": "Ölüm Yarışı",
+      "type": "movie",
+      "prefix": "mal",
+      "anilist_id": 7596,
+      "episodes_added": 9,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 677,
+      "title": "Öyle Bir Geçer Zaman ki",
+      "type": "series",
+      "prefix": null,
+      "existing_eps_before": 0
+    },
+    {
+      "id": 678,
+      "title": "Baki's Path 2. Kısım",
+      "type": "anime",
+      "prefix": null,
+      "existing_eps_before": 1
+    }
+  ],
+  "finished_at": "2026-07-10T00:29:38.824744+00:00",
+  "failed_count": 11,
+  "success_count": 166,
+  "skipped_count": 451
+}

@@ -2853,11 +2853,17 @@
         : '';
 
       if (!seasonEps.length) {
-        el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + syncBtnHtml +
+        var _trulyEmpty = episodes.length === 0;
+        el.innerHTML = seasonPickerHtml + (_trulyEmpty ? '' : _noSiteCard) + (_trulyEmpty ? '' : siteShortcut) + addSeasonFormHtml + syncBtnHtml +
           '<div style="text-align:center;color:#9090b0;padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:10px">' +
-          '<span class="material-symbols-outlined" style="font-size:48px;color:#31324d">video_library</span>' +
-          '<p style="font-size:13px">Sezon ' + activeSeason + ' bölüm listesi yok</p>' +
-          '<p style="font-size:12px;color:#6060a0">Yukarıdan "' + syncLabel + '" butonuna bas</p></div>';
+          '<span class="material-symbols-outlined" style="font-size:48px;color:#31324d">' + (_trulyEmpty ? 'playlist_remove' : 'video_library') + '</span>' +
+          (_trulyEmpty
+            ? '<p style="font-size:13px">Henüz bölüm eklenmemiş</p>'
+            : '<p style="font-size:13px">Sezon ' + activeSeason + ' bölüm listesi yok</p>') +
+          (_trulyEmpty
+            ? '<p style="font-size:12px;color:#6060a0">"' + syncLabel + '" butonuna basarak otomatik ekleyin</p>'
+            : '<p style="font-size:12px;color:#6060a0">Yukarıdan "' + syncLabel + '" butonuna bas</p>') +
+          '</div>';
       } else {
         el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + epCountBadge + syncBtnHtml +
           '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>';
