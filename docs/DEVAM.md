@@ -1,5 +1,28 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-135) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `75a7a01` — SOHBET-134: frontend fixes
+**Son güncelleme:** 9 Temmuz 2026 (SOHBET-136) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `75a7a01` — SOHBET-134: frontend fixes
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-136: Oyun Detay Sayfası + Kalan 52 Episode Sync
+
+```
+SOHBET-136 — 19 game fix + 52 non-game episode sync:
+
+[1] Oyun Detay Sayfası (frontend):
+    Progress card tamamen gizlendi (0/100 slider+% bar)
+    "Siteler" sekmesi game'lerde gizlendi (video link yanıltması)
+    Status ikon: download (sports_esports yerine)
+    Tab: "İndirme" (icon ile)
+    Tab butonlarına data-tab attribute
+
+[2] Kalan 52 İçerik Episode Sync:
+    14 içerik güncellendi, 145 episode eklendi
+    32 içerik external_id yok — skip
+    5 MAL API fail — rate limit/missing ID
+    Toplam episode: 19.409, içerik: 657/714 (%92)
+
+[3] Dexter Doğrulama: 8 sezon × 12 bölüm = 96 ✅
+```
 
 ---
 
