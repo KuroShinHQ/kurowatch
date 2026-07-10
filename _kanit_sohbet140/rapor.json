@@ -1,0 +1,66 @@
+{
+  "title": "SOHBET-140 — Gercek Indirme Testi",
+  "started": "2026-07-10T10:53:38.942480",
+  "results": {
+    "anime_naruto": {
+      "status": "failed",
+      "details": {
+        "message": "Failed: tranimaci.com sitesinde video embed bulunamadı. Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. Detay için backend log'una bakın (stream_finder PW: HTTP ...)."
+      }
+    },
+    "series_dexter": {
+      "status": "failed",
+      "details": {
+        "message": "Failed: www.setfilmizle.uk sitesinde video embed bulunamadı. Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. Detay için backend log'una bakın (stream_finder PW: HTTP ...)."
+      }
+    },
+    "movie_3idiots": {
+      "status": "failed",
+      "details": {
+        "message": "Failed: yt-dlp çıkış kodu 1: [SubtitlesConvertor] There aren't any subtitles to convert | ERROR: unable to download video data: HTTP Error 404: Not Found | [download] Finished downloading playlist: 3 Aptal - 3 Idiots izle | HDFilmcehennemi"
+      }
+    },
+    "manga_martial_peak": {
+      "status": "passed",
+      "details": {
+        "file_path": "/mnt/c/Kuroshin/kurowatch/downloads/manga/1/ch0001",
+        "file_exists": true,
+        "image_count": 19,
+        "size_bytes": 1965796,
+        "size_mb": 1.87,
+        "image_verified": true,
+        "image_dimensions": "800x1131"
+      }
+    },
+    "manhwa": {
+      "status": "passed",
+      "details": {
+        "file_path": "/mnt/c/Kuroshin/kurowatch/downloads/manga/10/ch0001",
+        "file_exists": true,
+        "image_count": 1,
+        "size_bytes": 168186,
+        "size_mb": 0.16,
+        "image_verified": true,
+        "image_dimensions": "1200x675"
+      }
+    },
+    "game": {
+      "status": "passed",
+      "details": {
+        "message": "Magnet link saved to disk",
+        "file_path": "/mnt/c/Kuroshin/kurowatch/downloads/sohbet140_kanit/cult_of_the_lamb_magnet.txt",
+        "file_exists": true,
+        "size_bytes": 254,
+        "size_mb": 0.0
+      }
+    }
+  },
+  "summary": {
+    "total": 6,
+    "passed": 3,
+    "failed": 3,
+    "skipped": 0
+  },
+  "ended": "2026-07-10T10:56:19.836118",
+  "success_rate": 50.0
+}

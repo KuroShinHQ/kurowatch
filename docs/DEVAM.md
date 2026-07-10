@@ -1,5 +1,61 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 10 Temmuz 2026 (SOHBET-139) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `c1b6201` — SOHBET-138: 5 kritik fix
+**Son güncelleme:** 10 Temmuz 2026 (SOHBET-140) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `13ebbca` — SOHBET-139: mangaokutr DNS fix + series/movie/cartoon download buttons
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-140: Gerçek İndirme Testi (Tüm Türler)
+
+```
+SOHBET-140 — 6 türde gerçek dosya indirme testi:
+
+[1] Anime — Naruto S01E01:
+     URL: tranimaci.com → ❌ BAŞARISIZ (CF JS challenge)
+     Kök neden: tranimaci.com Cloudflare korumalı, embed bulunamadı
+
+[2] Dizi — Dexter S08E01:
+     URL: setfilmizle.uk (site fallback) → ❌ BAŞARISIZ
+     Kök neden: Video embed AJAX/JS ile yükleniyor, stream_finder çözemiyor
+
+[3] Film — 3 Idiots:
+     URL: hdfilmcehennemi.now → ❌ BAŞARISIZ
+     Kök neden: yt-dlp HTTP 404 — video sayfası var ama video dosyası yok
+
+[4] Manga — Martial Peak Bölüm 1:
+     URL: mangadex.org → ✅ BAŞARILI (19 sayfa, 1.87MB, 800x1131)
+     İndirme: ~3sn, doğrulama: PIL ile açıldı
+
+[5] Manhwa — A Returner's Magic Bölüm 1:
+     URL: ragnarscans.net (dead manhwahentai.me fallback) → ✅ BAŞARILI
+     1 sayfa, 168KB, 1200x675, doğrulandı
+
+[6] Oyun — Cult of the Lamb:
+     Kaynak: FitGirl Repack → ✅ BAŞARILI
+     Magnet URI: 254 bytes, diske kaydedildi
+
+GENEL: 3/6 passed (%50)
+```
+
+ANALİZ:
+```
+Manga/Manhwa pipeline: ÇALIŞIYOR ✅
+  - MangaDex API: sorunsuz (19 sayfa)
+  - Madara parser (ragnarscans.net): çalışıyor
+  - Dead domain fallback: manhwahentai.me → ragnarscans.net otomatik
+
+Video pipeline: SINIRLI ❌
+  - tranimaci.com: Cloudflare (headless çözüm yok)
+  - setfilmizle.uk: AJAX embed (site-specific parser gerek)
+  - hdfilmcehennemi.now: video 404 (ölü kaynak)
+  - Not: SOHBET-128'de tranimeizle.xyz ile Naruto 1080p başarıyla indi
+
+Game pipeline: ÇALIŞIYOR ✅
+  - FitGirl search + detail: çalışıyor (cssselect eklendi)
+  - Magnet URI: başarıyla çekildi
+```
+
+Test script: tests/test_sohbet140_real_download.py
+Rapor: docs/SOHBET-140_RAPORU.md
+Kanıt: _kanit_sohbet140/rapor.json
 
 ---
 
