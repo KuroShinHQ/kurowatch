@@ -1,0 +1,6994 @@
+{
+  "started_at": "2026-07-10T00:20:20.645058+00:00",
+  "total": 714,
+  "updated": 412,
+  "skipped_steam": 18,
+  "failed": [
+    {
+      "id": 6,
+      "title": "Jujutsu Kaisen",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 9,
+      "title": "The Hunter",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 10,
+      "title": "A Returner's Magic Should Be Special",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 22,
+      "title": "Juujika no Rokunin",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 28,
+      "title": "Return of the Unrivaled Spear Knight",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 30,
+      "title": "Return to Player",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 44,
+      "title": "Doctor's Rebirth",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 46,
+      "title": "Ranker's Return (Remake)",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 47,
+      "title": "Return of the Mount Hua Sect",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 48,
+      "title": "The Heavenly Demon Can't Live a Normal Life",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 49,
+      "title": "Reverse Villain",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 50,
+      "title": "Heavenly Demon Instructor",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 52,
+      "title": "Reincarnation of the Murim Clan's Former Ranker",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 53,
+      "title": "Memorize",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 57,
+      "title": "SSS-Class Suicide Hunter",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 65,
+      "title": "O Gerçekten Bir Kahraman mı?",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 66,
+      "title": "The Dungeon Master",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 68,
+      "title": "Sokakta Hayatta Kalma Kılavuzu",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 69,
+      "title": "Overpowered Sword",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 72,
+      "title": "Fukushuu o Koinegau Saikyou Yuusha",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 73,
+      "title": "Revenge of the Iron-Blooded Sword Hound",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 75,
+      "title": "I Became the Tyrant of a Defense Game",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 76,
+      "title": "Kage no Jitsuryokusha ni Naritakute",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 79,
+      "title": "Villain Unrivaled",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 80,
+      "title": "Never Die Extra",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 83,
+      "title": "Regressing with the King's Power",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 86,
+      "title": "My Insanely Competent Underlings",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 87,
+      "title": "Raising Newbie Heroes in Another World",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 89,
+      "title": "The Unbeatable Dungeon's Lazy Boss Monster",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 92,
+      "title": "Kahramanın Dönüşü",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 93,
+      "title": "Forced to Become the Villain's Son-in-Law",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 96,
+      "title": "Dungeon Meshi",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 99,
+      "title": "The New Gate",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 103,
+      "title": "Magic Maker",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 104,
+      "title": "Shangri-La Frontier",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 107,
+      "title": "Hametsu no Oukoku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 108,
+      "title": "The Red Ranger Becomes an Adventurer in Another World",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 109,
+      "title": "Shangri-La Frontier (S2)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 111,
+      "title": "Ishura",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 132,
+      "title": "Grim Soul: Dark Fantasy Survival",
+      "type": "game",
+      "reason": "no data from API"
+    },
+    {
+      "id": 134,
+      "title": "A Regressor's Tale of Cultivation",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 137,
+      "title": "After Ten Millennia in Hell",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 138,
+      "title": "Bad Born Blood",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 139,
+      "title": "Cassmire",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 141,
+      "title": "Cheonhwa Archive's Young Master",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 142,
+      "title": "Chronicles of a Doomed Prodigy",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 143,
+      "title": "Chronicles of the Demon Faction",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 144,
+      "title": "Demon King of the Royal Class",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 147,
+      "title": "Hardcore Leveling Warrior: Earth Game",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 151,
+      "title": "Level Up with the Gods",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 153,
+      "title": "Martial Divine Demon",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 157,
+      "title": "My Blasted Reincarnated Life",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 165,
+      "title": "Reborn as a Scholar",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 166,
+      "title": "Reincarnated Murim Lord",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 167,
+      "title": "Reincarnation of the Fist King",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 168,
+      "title": "Reincarnation Of The Suicidal Battle God",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 169,
+      "title": "Return of the Disaster-Class Hero",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 170,
+      "title": "Return of the War God",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 190,
+      "title": "The Novel's Extra (Remake)",
+      "type": "manga",
+      "reason": "no data from API"
+    },
+    {
+      "id": 195,
+      "title": "The World After the Fall",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 196,
+      "title": "To Be An Actor",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 197,
+      "title": "Too Many Heroes",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 198,
+      "title": "Trash of the Count's Family (Lout of Count's Family)",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 200,
+      "title": "Yongsa High: Dungeon Raiders",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 221,
+      "title": "Animated",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 222,
+      "title": "Another",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 223,
+      "title": "Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 224,
+      "title": "Appraisal Skill",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 225,
+      "title": "Arifureta",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 226,
+      "title": "Arka Sokaklar",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 229,
+      "title": "Assassination Classroom",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 230,
+      "title": "Assassination Classroom (Ansatsu Kyoushitsu)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 231,
+      "title": "Assessment Assassin",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 234,
+      "title": "Attack on Titan (Shingeki no Kyojin)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 239,
+      "title": "Baki Serisi (Tüm Sezonlar)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 249,
+      "title": "Bleach",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 250,
+      "title": "Bocchi the Rock!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 251,
+      "title": "Bofuri",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 261,
+      "title": "Chuunibyou",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 263,
+      "title": "Classroom of the Elite",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 264,
+      "title": "Claymore",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 265,
+      "title": "Code Geass: Lelouch of the Rebellion",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 266,
+      "title": "Combatants Will Be Dispatched!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 268,
+      "title": "Cyberpunk: Edgerunners",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 270,
+      "title": "Dandadan",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 271,
+      "title": "DanMachi",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 272,
+      "title": "Danshi Koukousei",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 273,
+      "title": "Dark",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 291,
+      "title": "Doctor Strange",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 281,
+      "title": "Death March",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 294,
+      "title": "Dororo",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 295,
+      "title": "Dr. STONE",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 285,
+      "title": "Demon Slayer",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 278,
+      "title": "Dead Mount",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 309,
+      "title": "Fate Serisi (Stay Night, Zero, Unlimited Blade Works)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 316,
+      "title": "Frieren: Beyond Journey's End (Sousou no Frieren)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 318,
+      "title": "Full Dive RPG",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 328,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 334,
+      "title": "Gladio",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 336,
+      "title": "Gokudols",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 340,
+      "title": "Gurren Lagann",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 343,
+      "title": "Hachi-nan tte, Sore wa Nai deshou!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 348,
+      "title": "Hazurewaku no \"Joutai Ijou Skill\" de Saikyou ni Natta Ore ga Subete wo Juurin suru made (Failure Frame)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 349,
+      "title": "High School DxD",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 350,
+      "title": "Highschool of the Dead",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 354,
+      "title": "Howl's Moving Castle (Yürüyen Şato)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 357,
+      "title": "Hyakuren no Haou to Seiyaku no Valkyria",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 359,
+      "title": "I'm Quitting Heroing",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 360,
+      "title": "Ice Age (Buz Devri Serisi)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 361,
+      "title": "Immortal King",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 365,
+      "title": "Iron Man",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 366,
+      "title": "Isekai Cheat Magician",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 367,
+      "title": "Isekai de Cheat Skill",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 368,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 369,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 370,
+      "title": "Isekai Mokushiroku Mynoghra: Hametsu no Bunmei de Hajimeru Sekai Seifuku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 371,
+      "title": "Isekai no Seikishi Monogatari",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 373,
+      "title": "Isekai Ojisan (Uncle from Another World)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 376,
+      "title": "Isekai Shikkaku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 379,
+      "title": "Ishuzoku Reviewers",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 382,
+      "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou (Reborn as a Vending Machine)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 383,
+      "title": "Jigokuraku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 384,
+      "title": "Jitsu wa Ore, Saikyou deshita?",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 387,
+      "title": "JoJo Serisi",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 388,
+      "title": "JoJo's Bizarre Adventure",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 393,
+      "title": "Kabaneri",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 395,
+      "title": "Kaguya-sama: Love is War",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 398,
+      "title": "Kakegurui",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 399,
+      "title": "Kami-tachi ni Hirowareta Otoko",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 401,
+      "title": "Kekkai Sensen",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 404,
+      "title": "King's Avatar",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 410,
+      "title": "Komedi Dükkanı (Tolga Çevik)",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 411,
+      "title": "Komi-san",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 412,
+      "title": "KonoSuba: God's Blessing on This Wonderful World!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 414,
+      "title": "Kuroshitsuji",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 417,
+      "title": "Kurtlar Vadisi (Pusu)",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 418,
+      "title": "Kurtlar Vadisi Irak",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 421,
+      "title": "Last Boss",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 422,
+      "title": "Let This Grieving Soul Retire",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 423,
+      "title": "Limitless",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 425,
+      "title": "Lion King",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 437,
+      "title": "Maou Gakuin",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 438,
+      "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 439,
+      "title": "Maou-sama Retry!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 440,
+      "title": "Mashle",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 445,
+      "title": "Meikyuu Black Company",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 448,
+      "title": "Mirai Nikki",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 449,
+      "title": "Mo Dao Zu Shi",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 454,
+      "title": "Monster Musume no Oishasan",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 458,
+      "title": "Mr. White)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 462,
+      "title": "My Neighbor Totoro (Tonari no Totoro)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 464,
+      "title": "Mynoghra 4X",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 467,
+      "title": "Nagatoro-san",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 480,
+      "title": "Oregairu",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 481,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 482,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu (Trapped in a Dating Sim)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 484,
+      "title": "Overlord",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 488,
+      "title": "Peter Grill to Kenja no Jikan",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 493,
+      "title": "Plunderer",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 494,
+      "title": "Powerpuff Girls",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 497,
+      "title": "Rakudai Kishi no Cavalry",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 498,
+      "title": "Real Steel (Çelik Yumruk)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 500,
+      "title": "Record of Ragnarok",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 501,
+      "title": "Redo of Healer",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 503,
+      "title": "Reincarnated as a Sword",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 505,
+      "title": "Rick and Morty",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 507,
+      "title": "Rosario to Vampire",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 508,
+      "title": "Saihate no Paladin: Tetsusabi no Yama no Ou (The Faraway Paladin 2. Sezon)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 511,
+      "title": "Saikyou Onmyouji no Isekai Tenseiki",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 512,
+      "title": "Sakamoto Desu ga?",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 514,
+      "title": "Salaryman ga Isekai ni Ittara Shitennou ni Natta Hanashi",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 516,
+      "title": "School Days",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 518,
+      "title": "Seitokai",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 519,
+      "title": "Seitokai Yakuindomo",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 520,
+      "title": "Sekai Saikou no Ansatsusha",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 525,
+      "title": "Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 542,
+      "title": "Shinmai Maou no Testament",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 546,
+      "title": "Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 550,
+      "title": "Slime Tensei (Tensura)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 556,
+      "title": "Spider-Man Serileri",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 561,
+      "title": "Steins;Gate",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 563,
+      "title": "Sword Art Online",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 565,
+      "title": "Tales of Zestiria",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 566,
+      "title": "Tales of Zestiria the Cross",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 570,
+      "title": "Teletubbies",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 573,
+      "title": "Tensei Kenja no Isekai Life",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 575,
+      "title": "Tensei Oujo to Tensai Reijou",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 577,
+      "title": "Tensei shitara Ken deshita",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 585,
+      "title": "The Daily Life of the Immortal King (Xian Wang de Richang)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 586,
+      "title": "The Devil is a Part-Timer!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 591,
+      "title": "The Faraway Paladin",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 592,
+      "title": "The Faraway Paladin (Saihate no Paladin)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 603,
+      "title": "The Maze Runner (Labirent: Ölümcül Kaçış Serisi)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 604,
+      "title": "The Mentalist",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 607,
+      "title": "The Scorpion King Serisi",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 608,
+      "title": "The Scorpion King Serisi (Mumya ve Akrepler Kralı)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 610,
+      "title": "The Seven Deadly Sins",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 618,
+      "title": "To LOVE-Ru",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 619,
+      "title": "Tokyo Ghoul",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 621,
+      "title": "Tomo-chan",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 622,
+      "title": "Tomo-chan wa Onnanoko!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 623,
+      "title": "Tomodachi Game",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 624,
+      "title": "Tonari no Totoro",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 630,
+      "title": "Tower of God (Kami no Tou)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 633,
+      "title": "Transformers Serisi",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 635,
+      "title": "Tsuki ga Michibiku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 638,
+      "title": "Uncle from Another World",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 641,
+      "title": "Undisputed (Yenilmez Serisi)",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 645,
+      "title": "Venom",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 646,
+      "title": "Villager A",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 650,
+      "title": "What If...?",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 652,
+      "title": "Wolverine",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "reason": "no data from API"
+    },
+    {
+      "id": 661,
+      "title": "You",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 664,
+      "title": "Yu-Gi-Oh!",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 665,
+      "title": "Yuragi-sou no Yuuna-san",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 667,
+      "title": "Yuusha, Yamemasu (I'm Quitting Heroing)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 668,
+      "title": "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "reason": "no data from API"
+    },
+    {
+      "id": 671,
+      "title": "Zom 100",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 672,
+      "title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 673,
+      "title": "Çocuklar Duymasın",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 674,
+      "title": "Çok Güzel Hareketler Bunlar",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 675,
+      "title": "Çok Güzel Hareketler Bunlar (1. Kuşak)",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 677,
+      "title": "Öyle Bir Geçer Zaman ki",
+      "type": "series",
+      "reason": "no data from API"
+    },
+    {
+      "id": 678,
+      "title": "Baki's Path 2. Kısım",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 679,
+      "title": "5 Centimeters per Second",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 680,
+      "title": "The Greatest Estate Developer",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 681,
+      "title": "The Archmage Returns After 4000 Years",
+      "type": "manhwa",
+      "reason": "no data from API"
+    },
+    {
+      "id": 682,
+      "title": "The Rising of the Shield Hero",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 683,
+      "title": "SPY x FAMILY",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 684,
+      "title": "Dungeon Meshi 2nd Season",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 686,
+      "title": "ISHURA Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 687,
+      "title": "Another: The Other",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 688,
+      "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 689,
+      "title": "Assassination Classroom Second Season",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 690,
+      "title": "BLEACH: Thousand-Year Blood War",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 691,
+      "title": "Bocchi the Rock! 2nd Season",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 692,
+      "title": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 693,
+      "title": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 694,
+      "title": "Classroom of the Elite Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 695,
+      "title": "Code Geass: Lelouch of the Rebellion R2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 696,
+      "title": "DAN DA DAN Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 697,
+      "title": "Is It Wrong to Try to Pick Up Girls in a Dungeon? II",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 698,
+      "title": "High School DxD NEW",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 699,
+      "title": "High School of the Dead: Drifters of the Dead",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 700,
+      "title": "The Daily Life of the Immortal King Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 701,
+      "title": "Isekai Cheat Magician: Magicians and the Starry Night Festival",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 702,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 703,
+      "title": "Reborn as a Vending Machine, I Now Wander the Dungeon Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 704,
+      "title": "Hell’s Paradise Season 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 705,
+      "title": "JoJo's Bizarre Adventure (2000)",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 706,
+      "title": "Kabaneri of the Iron Fortress: The Battle of Unato",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 707,
+      "title": "Kaguya-sama: Love is War?",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 708,
+      "title": "Kakegurui xx",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 709,
+      "title": "By the Grace of the Gods 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 710,
+      "title": "Blood Blockade Battlefront & Beyond",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 711,
+      "title": "Quanzhi Gaoshou Specials",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 712,
+      "title": "The King's Avatar: For the Glory",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 713,
+      "title": "Komi Can't Communicate Part 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 714,
+      "title": "KONOSUBA -God's blessing on this wonderful world! 2",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 715,
+      "title": "Black Butler: Book of Murder",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 716,
+      "title": "Black Butler: Public School Arc",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 717,
+      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "type": "anime",
+      "reason": "no data from API"
+    },
+    {
+      "id": 718,
+      "title": "Let This Grieving Soul Retire Cour 2",
+      "type": "anime",
+      "reason": "no data from API"
+    }
+  ],
+  "details": [
+    {
+      "id": 15,
+      "title": "The Scholar's Reincarnation",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 17,
+      "title": "The Tutorial Tower of the Advanced Player",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Release That Witch",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Eskiden Zindan Patronuydum",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Above All Gods",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 1,
+      "title": "Martial Peak",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Geri Dönen Büyücü",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year"
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Nano Machine",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 21,
+      "title": "World's Apocalypse Online",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Seçkinin İkinci Yaşamı",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 20,
+      "title": "FFF-Class Trashero",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Bilge Okuyucunun Bakış Açısı",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "release_year"
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Hardcore Leveling Warrior",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Dünyanın En İyi Mühendisi",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Büyü İmparatoru",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year"
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Dungeon Reset",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "I Am a Cultivation Bigshot",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 27,
+      "title": "Kılıç Kralının Fantezi Dünyasında Hayatta Kalma Hikayesi",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Above Ten Thousand People",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 16,
+      "title": "The Beginning After the End",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 29,
+      "title": "Tower Into the Clouds",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Kill the Hero",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 32,
+      "title": "The Max Level Hero Has Returned",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 33,
+      "title": "Rise from the Rubble",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 35,
+      "title": "Kaderin Zirvesi",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 34,
+      "title": "Top Tier Providence",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Murim Login",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Player Who Returned 10,000 Years Later",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 37,
+      "title": "I Am the Fated Villain",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 38,
+      "title": "Soylu Ailenin İşe Yaramaz Oğlu",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 41,
+      "title": "Strongest Fighter",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 40,
+      "title": "Bug Player",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 39,
+      "title": "Back to Rule Again",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 42,
+      "title": "The Return of the Crazy Demon",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Deli Mühendis",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 55,
+      "title": "Gel Beni Al",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 58,
+      "title": "The World After the End",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 56,
+      "title": "Yıldız Hocası Baek",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 60,
+      "title": "Kahraman Döndü",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 61,
+      "title": "Return of the Shattered Constellation",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 59,
+      "title": "Mağdur Sıralamacının Dönüşü",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 62,
+      "title": "Reverend Insanity",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 63,
+      "title": "Seoul Station Necromancer",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 64,
+      "title": "Regresör Kullanım Kılavuzu",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 67,
+      "title": "Sonsuz Döngüde Hapsolan",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 43,
+      "title": "Şamanın Yolu",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 45,
+      "title": "Kılıç Hanesinin Genç Efendisi",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 51,
+      "title": "I Reincarnated as the Crazed Heir",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 71,
+      "title": "Damn Reincarnation",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 74,
+      "title": "Yetenek Yutan Sihirbaz",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 77,
+      "title": "Dövüş Tanrısının Dönüşü Günlükleri",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 78,
+      "title": "Im Not That Kind of Talent",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 81,
+      "title": "I Can Snatch 999 Types of Abilities",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 54,
+      "title": "I Just Want to Be Killed",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 82,
+      "title": "Tanrıçanın Kulu",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 84,
+      "title": "Library of Heaven's Path",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 85,
+      "title": "Şeytani Egemenin Halefi",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 88,
+      "title": "Yıldırım Bıçağı Ustası",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 70,
+      "title": "Oyuncunun Son Şansı",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 91,
+      "title": "Oyun Obu Familia Aile Senki",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 94,
+      "title": "Cultivator Against Hero Society",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 97,
+      "title": "Long Zu (Dragon Raja)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 100,
+      "title": "Maou Gakuin no Futekigousha (S2)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 95,
+      "title": "Tsuki ga Michibiku Isekai Douchuu (S2)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 105,
+      "title": "Tate no Yuusha no Nariagari (S3)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 102,
+      "title": "Isekai Shikkaku (No Longer Allowed in Another World)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 110,
+      "title": "Hataraku Maou-sama (S3)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 113,
+      "title": "Rick and Morty (S7)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 112,
+      "title": "Dexter (S8)",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 90,
+      "title": "Sémalarin Kilici",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 114,
+      "title": "Marvel's What If (S3)",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 136,
+      "title": "Absolute Reign",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 140,
+      "title": "Cassmire: The Loyal Sword",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 135,
+      "title": "Absolute Regression",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 145,
+      "title": "Doom Breaker (Suicidal Battle God)",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 148,
+      "title": "Heavenly Demon Reborn!",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 146,
+      "title": "Dungeon Odyssey",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 98,
+      "title": "Failure Frame (Hazurewaku)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 152,
+      "title": "Lout of Count's Family (Trash of the Count's Family)",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 150,
+      "title": "Latna Saga: Survival of a Sword King in a Fantasy World",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 154,
+      "title": "Masters of Lightning Knives",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 101,
+      "title": "KonoSuba (S3)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 106,
+      "title": "Spy x Family (S2)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 156,
+      "title": "My Avatars' Path to Greatness",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 158,
+      "title": "My S-Class Hunters",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 159,
+      "title": "Myst, Might, Mayhem",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 161,
+      "title": "Omniscient Reader's Viewpoint (ORV)",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 162,
+      "title": "Overgeared",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 163,
+      "title": "Pick Me Up! (Infinite Gacha)",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 164,
+      "title": "Player Who Returned After 10000 Years",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 173,
+      "title": "Second Life Ranker",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 171,
+      "title": "Returning With Absolutely Nothing",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 172,
+      "title": "Revenge of the Baskerville Bloodhound",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 176,
+      "title": "SSS-Class Revival Hunter (SSS-Class Suicide Hunter)",
+      "type": "manga",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 149,
+      "title": "I Killed the Main Player",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 177,
+      "title": "Standard Of Reincarnation",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 178,
+      "title": "Swordmaster's Youngest Son",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 179,
+      "title": "The Academy's Undercover Professor",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 181,
+      "title": "The Ember Knight",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 182,
+      "title": "The Extra's Academy Survival Guide",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 160,
+      "title": "Nebula's Civilization",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 155,
+      "title": "Mercenary Enrollment",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 180,
+      "title": "The Bastard of Swordborne",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 184,
+      "title": "The Infinite Mage",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 187,
+      "title": "The Legendary Moonlight Sculptor",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 183,
+      "title": "The Grand Mudang Saga",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 186,
+      "title": "The Lazy Lord Masters the Sword",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 188,
+      "title": "The Legendary Spearman Returns",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 185,
+      "title": "The Knight Only Lives Today",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 174,
+      "title": "Shadow of the Supreme",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 189,
+      "title": "The Novel's Extra",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 175,
+      "title": "SSS-Class Revival Hunter",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 191,
+      "title": "The Return Of The 8th Class Mage",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_chapters"
+      ]
+    },
+    {
+      "id": 192,
+      "title": "The Sichuan Tang Clan's Entomologist",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 194,
+      "title": "The Stellar Swordmaster",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 199,
+      "title": "Tyrant of the Tower Defense Game",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 193,
+      "title": "The Skeleton Soldier Failed to Defend the Dungeon",
+      "type": "manhwa",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score"
+      ]
+    },
+    {
+      "id": 202,
+      "title": "100-man no Inochi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 204,
+      "title": "300 (300 Spartalı)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 201,
+      "title": "1 Kadın 1 Erkek",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 205,
+      "title": "300 Spartalı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 206,
+      "title": "5 Centimeters",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 210,
+      "title": "A.R.O.G",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 209,
+      "title": "A Beautiful Mind (Akıl Oyunları)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 212,
+      "title": "Adanalı",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 211,
+      "title": "Abimm",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 214,
+      "title": "Akame ga Kill!",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 213,
+      "title": "Adventure Time",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 216,
+      "title": "Aladdin (Çizgi Dizi)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 219,
+      "title": "American Psycho (Amerikan Sapığı)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 220,
+      "title": "Amerikan Sapığı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 227,
+      "title": "Asena ve Oniriks",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 228,
+      "title": "Assassin Isekai",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 232,
+      "title": "Asteriks ve Oniriks",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 235,
+      "title": "Avatar",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 237,
+      "title": "Back Street Girls: Gokudols",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 236,
+      "title": "Avengers",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 238,
+      "title": "Baki Serisi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 241,
+      "title": "Batman Serisi (Kara Şövalye ve Tüm Filmler)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 240,
+      "title": "Bakugan Battle Brawlers",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 242,
+      "title": "Behzat Ç.",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 245,
+      "title": "Ben 10 (Klasik, Alien Force, Ultimate Alien, Omniverse)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 244,
+      "title": "Ben 10",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 243,
+      "title": "Behzat Ç. Bir Ankara Polisiyesi",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 246,
+      "title": "Berserk",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 255,
+      "title": "Captain America",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 254,
+      "title": "Broken Karaoke",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 256,
+      "title": "Cars",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 215,
+      "title": "Akıl Oyunları",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 247,
+      "title": "Beyblade",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 217,
+      "title": "Alvin ve Sincaplar",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 248,
+      "title": "Black Mirror",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 258,
+      "title": "Chainsaw Man",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 259,
+      "title": "Charlotte",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 252,
+      "title": "Breaking Bad",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 262,
+      "title": "Clarence",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 253,
+      "title": "Breaking Bad (Walter White",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 267,
+      "title": "Corpse Bride",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 233,
+      "title": "Attack on Titan",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 274,
+      "title": "Dark (2017)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 275,
+      "title": "Dark Gathering",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 257,
+      "title": "Cem Yılmaz Fundamentals",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 260,
+      "title": "Chihiro Gidişi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 280,
+      "title": "Deadpool",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 276,
+      "title": "Dark Healer",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 277,
+      "title": "Dawn of the Witch",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 282,
+      "title": "Death March kara Hajimaru Isekai Kyousoukyoku",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 287,
+      "title": "Dexter",
+      "type": "series",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 284,
+      "title": "Demon Lord 2099",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 288,
+      "title": "Dexter's Laboratory",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 279,
+      "title": "Dead Mount Death Play",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 283,
+      "title": "Death Note",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 293,
+      "title": "Doktorlar",
+      "type": "series",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 296,
+      "title": "DreamWorks Dragons (Ejderha Binicileri)",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 289,
+      "title": "Diriliş",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 297,
+      "title": "Düğün Dernek",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 286,
+      "title": "Demon Slayer (Kimetsu no Yaiba)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 292,
+      "title": "Doctor Who",
+      "type": "series",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 298,
+      "title": "Ed, Edd n Eddy",
+      "type": "cartoon",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 299,
+      "title": "Edge of Tomorrow (Yarının Sınırında)",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 300,
+      "title": "Elfen Lied",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 301,
+      "title": "Esaretin Bedeli",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 290,
+      "title": "Disney Broken Karaoke",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 302,
+      "title": "Failure Frame",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 303,
+      "title": "Faraway Paladin",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 304,
+      "title": "Faraway Paladin 2",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 305,
+      "title": "Farmer Skill",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 307,
+      "title": "Fast & Furious (Hızlı ve Öfke",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 306,
+      "title": "Fast & Furious",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 308,
+      "title": "Fate Serisi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 310,
+      "title": "Fetih 1453",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 312,
+      "title": "Fight Club (Dövüş Kulübü)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 313,
+      "title": "Filistin",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 314,
+      "title": "Finding Nemo",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 317,
+      "title": "Fuguushoku \"Kanteishi\" ga Jitsu wa Saikyou Datta",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 320,
+      "title": "Fury",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 315,
+      "title": "Frieren: Beyond Journey's End",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 319,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 322,
+      "title": "Galip Derviş",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 323,
+      "title": "Game of Thrones",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 324,
+      "title": "Generator Rex",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 325,
+      "title": "Genius Prince",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 329,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki (How a Realist Hero Rebuilt the Kingdom)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 330,
+      "title": "Ghost in the Shell",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 326,
+      "title": "Geniş Aile",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 327,
+      "title": "Genjitsu Shugi Yuusha",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 332,
+      "title": "Gintama",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 331,
+      "title": "Ghost Rider (Hayalet Sürücü)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 333,
+      "title": "Gladiator",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 335,
+      "title": "Gladyatör",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 337,
+      "title": "Gravity Falls (Esrarengiz Kasaba)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 341,
+      "title": "Hababam Sınıfı (Yeni Nesil)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 339,
+      "title": "Guimi Zhi Zhu: Xiaochou Pian (Lord of the Mysteries)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 344,
+      "title": "Hacivat Karagöz Neden Öldürüldü?",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 342,
+      "title": "Hababam Sınıfı (Yeni)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 345,
+      "title": "Hancock",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 346,
+      "title": "Hannibal",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 352,
+      "title": "House M.D.",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 351,
+      "title": "Highschool of the Dead (HOTD)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 355,
+      "title": "Hugo",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 375,
+      "title": "Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 358,
+      "title": "I Am Legend (Ben Efsaneyim)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 377,
+      "title": "Isekai Shoukan wa Nidome desu (Summoned to Another World for a Second Time)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 356,
+      "title": "Hunter x Hunter (2011)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 363,
+      "title": "Inception",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 364,
+      "title": "Infinite Gacha",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 374,
+      "title": "Isekai One Turn Kill Neesan",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 372,
+      "title": "Isekai Ojisan",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 378,
+      "title": "Isekai Yakkyoku (Isekai Eczanesi)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 386,
+      "title": "Johnny Bravo",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 381,
+      "title": "İhtiyarlara Yer Yok",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 385,
+      "title": "John Wick",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 397,
+      "title": "Kaiko sareta Ankoku Heishi (30-dai) no Slow Life (Chillin' in My 30s after Getting Fired)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 380,
+      "title": "Itai no wa Iya nanode Bougyoryoku (Bofuri)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 389,
+      "title": "JoJo's Bizarre Adventure Serisi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 390,
+      "title": "Joker (2019)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 391,
+      "title": "Justice League",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 392,
+      "title": "Justice League Unlimited",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 394,
+      "title": "Kabaneri of the Iron Fortress",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 396,
+      "title": "Kaifuku Jutsushi no Yarinaoshi (Redo of Healer)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 402,
+      "title": "Kim Possible",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 400,
+      "title": "Kardeş Payı",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 362,
+      "title": "In Time (Zamana Karşı)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 403,
+      "title": "Kimi to Boku no Saigo no Senjou",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 419,
+      "title": "Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 405,
+      "title": "Kinsou no Vermeil",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 409,
+      "title": "Komedi Dükkanı",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 406,
+      "title": "Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 407,
+      "title": "Koleksiyoncu",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 413,
+      "title": "Kung Fu Panda",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 415,
+      "title": "Kuroshitsuji (Black Butler)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 416,
+      "title": "Kurtlar Vadisi (Pusu dönemi)",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 420,
+      "title": "La Casa de Papel",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 408,
+      "title": "Kolpaçino",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 426,
+      "title": "Log Horizon",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 424,
+      "title": "Limitless (Film)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "release_year"
+      ]
+    },
+    {
+      "id": 429,
+      "title": "Love, Death & Robots",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 428,
+      "title": "Lord of the Mysteries",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 430,
+      "title": "Lv2 Cheat",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 431,
+      "title": "Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 432,
+      "title": "Léon: The Professional (Sevginin Gücü)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 433,
+      "title": "Madagaskar",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 436,
+      "title": "Malefiz",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 434,
+      "title": "Mahoutsukai Reimeiki (The Dawn of the Witch)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 441,
+      "title": "Maskeli Beşler",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 435,
+      "title": "Maleficent (Malefiz)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 443,
+      "title": "Max Steel",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 442,
+      "title": "Matrix Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 447,
+      "title": "Mickey Mouse",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 446,
+      "title": "Meikyuu Black Company (The Dungeon of Black Company)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 444,
+      "title": "Megas XLR",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 450,
+      "title": "Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 451,
+      "title": "Mob Psycho 100",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 452,
+      "title": "Monster",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 456,
+      "title": "Monsters At Work (Sevimli Canavarlar)",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 453,
+      "title": "Monster Musume",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 457,
+      "title": "Mr. Robot",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 459,
+      "title": "Muhteşem Yüzyıl",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 465,
+      "title": "Mysterious Maid",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 461,
+      "title": "My Neighbor Totoro",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 463,
+      "title": "Mynoghra",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 468,
+      "title": "Nageki no Bourei wa Intai shitai (Let This Grieving Soul Retire!)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 466,
+      "title": "Nagatoro",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 469,
+      "title": "Naruto",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 470,
+      "title": "Neon Genesis Evangelion",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 471,
+      "title": "Netoge no Yome",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 472,
+      "title": "New York'ta Beş Minare",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 473,
+      "title": "Ninjago: Masters of Spinjitzu",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 474,
+      "title": "No Country for Old Men (İhtiyarlara Yer Yok)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 477,
+      "title": "Noumin Kanren no Skill bakka Agetetara Nazeka Tsuyoku Natta.",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 476,
+      "title": "Noragami",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 475,
+      "title": "No Game No Life",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 485,
+      "title": "Pacific Rim (Pasifik Savaşı Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 478,
+      "title": "One Punch Man",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 479,
+      "title": "One Punch Man (OPM)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 483,
+      "title": "Over the Garden Wall (Bahçe Duvarının Ötesinde)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 486,
+      "title": "Para Avcısı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 490,
+      "title": "Pirates of the Caribbean (Karayip Korsanları Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 489,
+      "title": "Phineas and Ferb (Fineas ve Förb)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 491,
+      "title": "Pis Yedili",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 487,
+      "title": "Percy Jackson Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 492,
+      "title": "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 495,
+      "title": "Punishment Hero",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 496,
+      "title": "Quanzhi Gaoshou (The King's Avatar)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 509,
+      "title": "Saikin Yatotta Maid ga Ayashii (The Maid I Hired Recently Is Mysterious)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 499,
+      "title": "Recep İvedik Üçlemesi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 510,
+      "title": "Saikyou no Shienshoku \"Wajutsushi\" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru (The Most Notorious Talker)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 502,
+      "title": "Regular Show (Sürekli Dizi)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 506,
+      "title": "Rookie Older Adventurer",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 504,
+      "title": "Resident Evil Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 513,
+      "title": "Sakamoto Desu ga? (Haven't You Heard? I'm Sakamoto)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 517,
+      "title": "Scooby-Doo",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 515,
+      "title": "Samurai Jack",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 521,
+      "title": "Sekai Saikou no Ansatsusha (Suikastçı Isekai)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 523,
+      "title": "Selena",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 522,
+      "title": "Seksenler",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 524,
+      "title": "Sentouin, Haken shimasu!",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 526,
+      "title": "Seven Deadly Sins",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 529,
+      "title": "Shark Tale",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 535,
+      "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 527,
+      "title": "Seventh Prince",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 528,
+      "title": "Sevginin Gücü",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 533,
+      "title": "Shimoneta",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 531,
+      "title": "Sherlock Holmes Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 539,
+      "title": "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 530,
+      "title": "Sherlock",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 532,
+      "title": "Shijou Saikyou no Daimaou, Murabito A ni Tensei suru",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 540,
+      "title": "Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 (Gift Mugen Gacha)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 534,
+      "title": "Shin no Nakama",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 536,
+      "title": "Shin Shinka no Mi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 538,
+      "title": "Shinchou Yuusha",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 541,
+      "title": "Shinmai Maou",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 537,
+      "title": "Shin Shinka no Mi: Shiranai Uchi ni Kachigumi Jinsei",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 543,
+      "title": "Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 544,
+      "title": "Shinryaku! Ika Musume",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 549,
+      "title": "Slime Tensei",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 547,
+      "title": "Shuumatsu no Walküre (Record of Ragnarok)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 552,
+      "title": "Sonic Serileri",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 554,
+      "title": "Space Goofs (Uzay Çılgınları)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 553,
+      "title": "Sonic X",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 545,
+      "title": "Shrek",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 551,
+      "title": "Solo Leveling (Anime)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 548,
+      "title": "Sihirli Annem",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 555,
+      "title": "Spider-Man (Tobey Maguire Üçlemesi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 558,
+      "title": "Split (Parçalanmış)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 559,
+      "title": "Squid Game",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 560,
+      "title": "Star Wars: The Clone Wars",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 562,
+      "title": "Steven Universe",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 572,
+      "title": "Tensai Ouji no Akaji Kokka Saisei Jutsu (The Genius Prince's Guide to Raising a Nation Out of Debt)",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 576,
+      "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+      "type": "anime",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "release_year",
+        "total_episodes",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 564,
+      "title": "Sword Art Online (SAO)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 567,
+      "title": "Taşıyıcı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 568,
+      "title": "Teach You a Lesson",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 574,
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru (Asasyn Kantei Skill)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 579,
+      "title": "Terminator Serisi",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 571,
+      "title": "Tengen Toppa Gurren Lagann",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 578,
+      "title": "Tensei Shitara Ken Deshita (Reincarnated as a Sword)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 580,
+      "title": "Tetikci",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 582,
+      "title": "The Amazing World of Gumball",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 584,
+      "title": "The Daily Life of the Immortal King",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 587,
+      "title": "The Devil is a Part-Timer! (Hataraku Maou-sama!)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 590,
+      "title": "The Emperor's New School (Şaşkın İmparator'un Okulu)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 593,
+      "title": "The Godfather",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 589,
+      "title": "The Eminence in Shadow (Kage no Jitsuryokusha ni Naritakute!)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 583,
+      "title": "The Collector (Koleksiyoncu)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 594,
+      "title": "The Green Mile (Yeşil Yol)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 588,
+      "title": "The Eminence in Shadow",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 598,
+      "title": "The Kingdoms of Ruin (Hametsu no Oukoku)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 602,
+      "title": "The Maze Runner (Labirent Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 597,
+      "title": "The Incredibles",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 605,
+      "title": "The Mummy",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 596,
+      "title": "The Hunger Games (Açlık Oyunları Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 606,
+      "title": "The Revenant (Diriliş)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 611,
+      "title": "The Shawshank Redemption (Esaretin Bedeli)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 612,
+      "title": "The Walking Dead",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 613,
+      "title": "The Witcher",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 616,
+      "title": "Thor",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 625,
+      "title": "Tondemo Skill de Isekai Hourou Meshi",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 615,
+      "title": "The Yogi Bear Show",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 626,
+      "title": "Toradora!",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 627,
+      "title": "Total Drama Island (Drama Adası)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 628,
+      "title": "Totally Spies! (Ajanlar)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 631,
+      "title": "Toy Story",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 629,
+      "title": "Tower of God",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 632,
+      "title": "Transformers Prime",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 634,
+      "title": "Trapped in a Dating Sim",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 637,
+      "title": "Twilight (Alacakaranlık Serisi)",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 636,
+      "title": "Tsuki ga Michibiku Isekai",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis"
+      ]
+    },
+    {
+      "id": 639,
+      "title": "Uncle Grandpa",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 642,
+      "title": "Up",
+      "type": "movie",
+      "prefix": "tmdb",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "runtime_minutes",
+        "external_score"
+      ]
+    },
+    {
+      "id": 640,
+      "title": "Undead Unluck",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 647,
+      "title": "Wajutsushi (The Most Notorious Talker)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 643,
+      "title": "Uzaki-chan",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 644,
+      "title": "V for Vendetta",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 649,
+      "title": "We Bare Bears (Kafadan Ayılar)",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 648,
+      "title": "WALL-E",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 654,
+      "title": "Yahari Ore no Seishun (Oregairu)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 653,
+      "title": "World War Z",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 651,
+      "title": "Winnie the Pooh",
+      "type": "cartoon",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 657,
+      "title": "Yaprak Dökümü",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 656,
+      "title": "Yahşi Cazibe",
+      "type": "series",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 659,
+      "title": "Yeşil Yol",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 658,
+      "title": "Yasei no Last Boss ga Arawareta! (A Wild Last Boss Appeared!)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 655,
+      "title": "Yahşi Batı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 662,
+      "title": "You (Joe Goldberg)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 663,
+      "title": "Youjo Senki (The Saga of Tanya the Evil)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 669,
+      "title": "Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 676,
+      "title": "Ölüm Yarışı",
+      "type": "movie",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    },
+    {
+      "id": 666,
+      "title": "Yuusha, Yamemasu",
+      "type": "anime",
+      "prefix": "mal",
+      "updated_fields": [
+        "genres",
+        "synopsis",
+        "release_year",
+        "external_score",
+        "total_episodes"
+      ]
+    }
+  ],
+  "finished_at": "2026-07-10T00:20:29.736601+00:00",
+  "failed_count": 284,
+  "success_rate_pct": 59.2
+}

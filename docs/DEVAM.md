@@ -1,5 +1,39 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-134) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `1bd42f4` — SOHBET-132.1: AniList enrichment
+**Son güncelleme:** 9 Temmuz 2026 (SOHBET-135) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `75a7a01` — SOHBET-134: frontend fixes
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-135: Tüm İçerikler İçin Metadata & Episode Sync + Frontend
+
+```
+SOHBET-135 — 714 içerik için kapsamlı metadata/episode güncellemesi + frontend:
+
+[1] Metadata Güncelleme (bulk_enrich.py):
+    Kaynak: MAL API (birincil, 568 item) + TMDB API (46 item)
+    genres: ~523→680 (+157)
+    total_episodes: ~317→435 (+118)
+    total_chapters: ~83→89 (+6)
+    synopsis: ~98→482 (+384)
+    release_year: ~39→449 (+410)
+    external_score: ~0→399 (+399)
+    runtime_minutes: ~33→70 (+37)
+    Kalan boşluklar: 33 anime NULL genres, 20 manga+53 manhwa NULL chapters
+
+[2] Episode Sync (bulk_episode_sync.py):
+    Toplam episode: 16.086→19.264 (+3.178)
+    İçeriklerde episode var: 501/714→643/714 (+142)
+    cartoon: 6/53→41/53, movie: 6/113→86/113, series: 10/49→37/49
+
+[3] Frontend (app.js):
+    "Henüz bölüm eklenmemiş" mesajı (truly empty content)
+    Sezon boş ama başka sezonlar varsa ayrı mesaj
+    Gerçekten boş içeriklerde siteShortcut gizlendi
+
+[4] Scriptler:
+    backend/scripts/bulk_enrich.py — metadata enrichment
+    backend/scripts/reprocess_failed.py — 198 bare-number→mal: prefix fix
+    backend/scripts/bulk_episode_sync.py — episode sync
+```
 
 ---
 
