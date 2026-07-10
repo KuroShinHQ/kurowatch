@@ -2890,7 +2890,7 @@
           const frag = document.createDocumentFragment();
           slice.forEach(function(e) {
             const wrap = document.createElement('div');
-            wrap.innerHTML = _epHtml(e);
+            wrap.innerHTML = _epHtml(e, primarySite);
             frag.appendChild(wrap.firstElementChild);
           });
           list.appendChild(frag);
@@ -2927,9 +2927,9 @@
       try { var p = new URL(u); return p.protocol === 'http:' || p.protocol === 'https:'; }
       catch(_) { return false; }
     }
-    function _epHtml(e) {
+    function _epHtml(e, primarySite) {
       const epUrl = e.url || null;
-      const fbSite = (typeof primarySite !== 'undefined') ? primarySite : null;
+      const fbSite = primarySite || null;
       const fallbackUrl = !epUrl && fbSite ? fbSite.site_url : null;
       const openUrl = _isValidUrl(epUrl) ? epUrl : (_isValidUrl(fallbackUrl) ? fallbackUrl : null);
       const numTxt = 'Bölüm ' + e.number;
