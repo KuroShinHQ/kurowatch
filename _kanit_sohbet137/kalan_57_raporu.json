@@ -1,0 +1,412 @@
+{
+  "started_at": "2026-07-10T06:13:17.771223+00:00",
+  "total": 38,
+  "tmdb_found": 33,
+  "anilist_found": 0,
+  "episodes_added": 3045,
+  "not_found": 1,
+  "turkish_skip": 4,
+  "details": [
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 346,
+      "search_term": "American Dragon: Jake Long (Genç Ejder)",
+      "source": "tmdb",
+      "episodes_added": 55,
+      "tmdb_title": "Genç Ejder"
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 40351,
+      "search_term": "Green Lantern: The Animated Series",
+      "source": "tmdb",
+      "episodes_added": 26,
+      "tmdb_title": "Yeşil Fener: Animasyon Serisi"
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 90461,
+      "search_term": "Monsters At Work",
+      "source": "tmdb",
+      "episodes_added": 20,
+      "tmdb_title": "Sevimli Canavarlar İş Başında"
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 33765,
+      "search_term": "My Little Pony",
+      "source": "tmdb",
+      "episodes_added": 221,
+      "tmdb_title": "My Little Pony: Friendship Is Magic"
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 45140,
+      "search_term": "Teen Titans Go!",
+      "source": "tmdb",
+      "episodes_added": 453,
+      "tmdb_title": "Teen Titans Go!"
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "old_external_id": null,
+      "reason": "not found on TMDB or AniList"
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 6673,
+      "search_term": "The Marvelous Misadventures of Flapjack",
+      "source": "tmdb",
+      "episodes_added": 90,
+      "tmdb_title": "The Marvelous Misadventures of Flapjack"
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 14636,
+      "search_term": "The Secret Saturdays",
+      "source": "tmdb",
+      "episodes_added": 49,
+      "tmdb_title": "The Secret Saturdays"
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "old_external_id": null,
+      "tmdb_id": 30773,
+      "search_term": "Yogi Bear",
+      "source": "tmdb",
+      "episodes_added": 97,
+      "tmdb_title": "The Yogi Bear Show"
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "old_external_id": null,
+      "reason": "turkish content — no TMDB/AniList"
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 27275,
+      "search_term": "G.O.R.A",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "G.O.R.A."
+    },
+    {
+      "id": 334,
+      "title": "Gladio",
+      "type": "movie",
+      "old_external_id": null,
+      "reason": "turkish content — no TMDB/AniList"
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 675,
+      "search_term": "Harry Potter",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Harry Potter ve Zümrüdüanka Yoldaşlığı"
+    },
+    {
+      "id": 360,
+      "title": "Ice Age (Buz Devri Serisi)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 425,
+      "search_term": "Ice Age",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Buz Devri"
+    },
+    {
+      "id": 418,
+      "title": "Kurtlar Vadisi Irak",
+      "type": "movie",
+      "old_external_id": null,
+      "reason": "turkish content — no TMDB/AniList"
+    },
+    {
+      "id": 498,
+      "title": "Real Steel (Çelik Yumruk)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 39254,
+      "search_term": "Real Steel",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Çelik Yumruklar"
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 129,
+      "search_term": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Ruhların Kaçışı"
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 7485,
+      "search_term": "Tetikçi",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Tetikçi"
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 49051,
+      "search_term": "The Hobbit: An Unexpected Journey",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Hobbit: Beklenmedik Yolculuk"
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 1090869,
+      "search_term": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "The Lord of the Rings: The Hunt for Gollum"
+    },
+    {
+      "id": 607,
+      "title": "The Scorpion King Serisi",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 9334,
+      "search_term": "The Scorpion King",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Akrep Kral"
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 106646,
+      "search_term": "The Wolf of Wall Street (Para Avcısı)",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Para Avcısı"
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 597,
+      "search_term": "Titanic",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Titanik"
+    },
+    {
+      "id": 633,
+      "title": "Transformers Serisi",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 698687,
+      "search_term": "Transformers",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Transformers: Başlangıç"
+    },
+    {
+      "id": 641,
+      "title": "Undisputed (Yenilmez Serisi)",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 15070,
+      "search_term": "Undisputed",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Yenilmez"
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "old_external_id": null,
+      "tmdb_id": 49530,
+      "search_term": "Zamana Karşı",
+      "source": "tmdb",
+      "episodes_added": 1,
+      "tmdb_title": "Zamana Karşı"
+    },
+    {
+      "id": 226,
+      "title": "Arka Sokaklar",
+      "type": "series",
+      "old_external_id": null,
+      "reason": "turkish content — no TMDB/AniList"
+    },
+    {
+      "id": 570,
+      "title": "Teletubbies",
+      "type": "series",
+      "old_external_id": null,
+      "tmdb_id": 1682,
+      "search_term": "Teletubbies",
+      "source": "tmdb",
+      "episodes_added": 369,
+      "tmdb_title": "Teletubbies"
+    },
+    {
+      "id": 604,
+      "title": "The Mentalist",
+      "type": "series",
+      "old_external_id": null,
+      "tmdb_id": 5920,
+      "search_term": "The Mentalist",
+      "source": "tmdb",
+      "episodes_added": 151,
+      "tmdb_title": "The Mentalist"
+    },
+    {
+      "id": 673,
+      "title": "Çocuklar Duymasın",
+      "type": "series",
+      "old_external_id": null,
+      "tmdb_id": 82583,
+      "search_term": "Çocuklar Duymasın",
+      "source": "tmdb",
+      "episodes_added": 464,
+      "tmdb_title": "Çocuklar Duymasın"
+    },
+    {
+      "id": 674,
+      "title": "Çok Güzel Hareketler Bunlar",
+      "type": "series",
+      "old_external_id": null,
+      "tmdb_id": 48846,
+      "search_term": "Çok Güzel Hareketler Bunlar",
+      "source": "tmdb",
+      "episodes_added": 91,
+      "tmdb_title": "Çok Güzel Hareketler Bunlar"
+    },
+    {
+      "id": 677,
+      "title": "Öyle Bir Geçer Zaman ki",
+      "type": "series",
+      "old_external_id": null,
+      "tmdb_id": 39892,
+      "search_term": "Öyle Bir Geçer Zaman ki",
+      "source": "tmdb",
+      "episodes_added": 120,
+      "tmdb_title": "Öyle Bir Geçer Zaman Ki"
+    },
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "type": "anime",
+      "old_external_id": "mal:121496",
+      "tmdb_id": 127532,
+      "search_term": "Solo Leveling",
+      "source": "tmdb",
+      "episodes_added": 25,
+      "tmdb_title": "Solo Leveling"
+    },
+    {
+      "id": 423,
+      "title": "Limitless",
+      "type": "series",
+      "old_external_id": "mal:169017",
+      "tmdb_id": 62687,
+      "search_term": "Limitless",
+      "source": "tmdb",
+      "episodes_added": 22,
+      "tmdb_title": "Limitless"
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "old_external_id": "mal:64079",
+      "tmdb_id": 65763,
+      "search_term": "Looney Tunes",
+      "source": "tmdb",
+      "episodes_added": 312,
+      "tmdb_title": "New Looney Tunes"
+    },
+    {
+      "id": 505,
+      "title": "Rick and Morty",
+      "type": "series",
+      "old_external_id": "mal:137537",
+      "tmdb_id": 60625,
+      "search_term": "Rick and Morty",
+      "source": "tmdb",
+      "episodes_added": 91,
+      "tmdb_title": "Rick and Morty"
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "type": "cartoon",
+      "old_external_id": "mal:159454",
+      "tmdb_id": 47480,
+      "search_term": "Tom and Jerry",
+      "source": "tmdb",
+      "episodes_added": 325,
+      "tmdb_title": "Tom ve Jerry Show"
+    },
+    {
+      "id": 661,
+      "title": "You",
+      "type": "series",
+      "old_external_id": "mal:117574",
+      "tmdb_id": 78191,
+      "search_term": "You",
+      "source": "tmdb",
+      "episodes_added": 50,
+      "tmdb_title": "You"
+    }
+  ],
+  "finished_at": "2026-07-10T06:13:45.621175+00:00",
+  "total_found": 33,
+  "total_remaining": 1
+}
