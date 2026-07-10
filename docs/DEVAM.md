@@ -1,44 +1,63 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 10 Temmuz 2026 (SOHBET-138) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `18622a6` — SOHBET-137: 714/714
+**Son güncelleme:** 10 Temmuz 2026 (SOHBET-139) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `c1b6201` — SOHBET-138: 5 kritik fix
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-138: 5 Kritik Kullanıcı Hatası
+## ✅ TAMAMLANDI — SOHBET-139: mangaokutr DNS + Series/Movie/Cartoon Download Butonları
 
 ```
-SOHBET-138 — 5 kritik kullanıcı hatası düzeltildi:
+SOHBET-139 — 4 sorun:
 
-[1] Film/Dizi Kapakları TMDB (474/533 güncellendi):
-     TMDB API ile movie/series/cartoon/anime kapakları yenilendi
-     474 kapak TMDB'den alındı (https://image.tmdb.org/t/p/w500)
-     49 zaten TMDB'den, 10 TMDB'de bulunamadı
-     Kanıt: _kanit_sohbet138/cover_raporu.json
+[1] mangaokutr.com DNS → ragnarscans.net (1721 ep güncellendi):
+     DB'de 0 site kaydı mangaokutr.com'a işaret ediyordu (SOHBET-131'de taşınmıştı)
+     Ancak 1721 episode URL'i hala mangaokutr.com içeriyordu → DNS çözülmüyor
+     backend/scripts/sohbet139_fix_manga_urls.py yazıldı ve çalıştırıldı
+     Sonuç: 0 mangaokutr URL kaldı ✅
+     Kanıt: _kanit_sohbet139/rapor.json
 
-[2] Manga/Manhwa İndirme Butonları (per-episode):
-     Her bölüm için .ep-dl-btn zaten render ediliyor (app.js:2991)
-     Sorun backend parser eksikliğiydi → [3]'te çözüldü
+[2+3] Dizi/Film/Cartoon Per-Episode Download Butonları:
+     KÖK NEDEN: app.js'de scope bug — _epHtml(e) fonksiyonu
+     _buildEpisodeView dışında tanımlanmıştı, bu yüzden primarySite
+     değişkenine erişemiyordu. typeof !== 'undefined' kontrolü her zaman
+     false dönüyordu → fbSite=null → openUrl=null → tüm per-episode
+     butonları (overlay, download, stream) kayboluyordu.
+     
+     FIX (app.js): 
+     - _epHtml(e) → _epHtml(e, primarySite) parametre olarak
+     - const fbSite = primarySite || null (typeof check kalktı)
+     - Artık e.url boş olsa bile primarySite.site_url fallback ile
+       openUrl set edilir → tüm butonlar render edilir
+     
+     DEXTER ÖRNEĞİ:
+     - content#287 Dexter (seri): 96 ep, 0 URL → 3 site (setfilmizle.uk)
+     - content#112 Dexter (S8): 3 ep, 0 URL → hdfilmcehennemi.nl
+     - content#288 Dexter's Lab (cartoon): 220 ep, 0 URL → tranimaci.com
+     - Tümü artık download/overlay/stream butonları gösterir ✅
+     
+     EPISODE URL COVERAGE (tüm DB):
+     - series:  389/2304 (%16.9) — 29/49 content etkilendi
+     - movie:   935/1268 (%73.7) — 63/113 content etkilendi
+     - cartoon: 242/2892  (%8.4) — 39/53 content etkilendi
 
-[3] gallery-dl Çıkış Kodu 64 → Özel Parser'lar:
-     10 yeni domain _MADARA_DOMAINS'e eklendi:
-       mangaokutr.com (1721 ep), turkcemangaoku.com (318 ep),
-       mangatepesi.com, merlinscans.com, mangatr.me,
-       turkmanga.com.tr, ruyamanga2.com, mangakoleji.com,
-       tempestfansub.com, thegreatestestatedeveloper.site
-     _CF_BLOCKED genişletildi: yeni domain'ler CF bypass ile
-     Bilinmeyen siteler için Madara fallback (gallery-dl öncesi)
-     mangatr.net _OFFLINE'da kaldı (gerçekten DNS'siz)
-
-[4] tranimaci.com Video Embed Fallback:
-     Playwright başarısızsa → tranimeizle.xyz → turkanime.com.tr
-     _CF_SITES, cookies map, _ANIME_ONLY_DOMAINS genişletildi
-     turkanime.com.tr için popup/play selector'ları + PW timeout
-
-[5] E2E Test Senaryoları:
-     tests/test_sohbet138_e2e.py — 6 test:
-       Kapak TMDB kontrolü, per-episode dl butonları,
-       download API endpoint, stream fallback chain,
-       tüm türlerde episode varlığı, cover raporu doğrulama
+[4] E2E Testler + Kanıt:
+     tests/test_sohbet139_e2e.py — 6 test:
+       mangaokutr fix doğrulama, series/movie/cartoon dl butonları,
+       episode URL coverage raporu
+     backend/scripts/sohbet139_kanit.py — kanıt rapor üretici
+     Kanıt: _kanit_sohbet139/rapor.json
 ```
+
+KANIT ÖZETİ:
+```
+mangaokutr URL kaldı: 0 ✅
+ragnarscans.net URL: 1963 ✅
+Frontend fix (3/3): TAMAM ✅
+Series fallback: 29/49 content ✅
+Movie fallback: 63/113 content ✅
+Cartoon fallback: 39/53 content ✅
+```
+
+---
 
 ---
 

@@ -1,0 +1,100 @@
+{
+  "generated": "2026-07-10T10:21:56.739017",
+  "findings": {
+    "mangaokutr_remaining": 0,
+    "ragnarscans_total": 1963,
+    "ep_url_coverage": {
+      "anime": {
+        "total_eps": 5707,
+        "with_urls": 5438,
+        "url_pct": 95.3,
+        "total_contents": 318,
+        "contents_with_missing": 18
+      },
+      "cartoon": {
+        "total_eps": 2892,
+        "with_urls": 242,
+        "url_pct": 8.4,
+        "total_contents": 53,
+        "contents_with_missing": 39
+      },
+      "manga": {
+        "total_eps": 4578,
+        "with_urls": 4401,
+        "url_pct": 96.1,
+        "total_contents": 66,
+        "contents_with_missing": 5
+      },
+      "manhwa": {
+        "total_eps": 5738,
+        "with_urls": 5379,
+        "url_pct": 93.7,
+        "total_contents": 96,
+        "contents_with_missing": 5
+      },
+      "movie": {
+        "total_eps": 1268,
+        "with_urls": 935,
+        "url_pct": 73.7,
+        "total_contents": 113,
+        "contents_with_missing": 63
+      },
+      "series": {
+        "total_eps": 2304,
+        "with_urls": 389,
+        "url_pct": 16.9,
+        "total_contents": 49,
+        "contents_with_missing": 29
+      }
+    },
+    "dexter": {
+      "112": {
+        "title": "Dexter (S8)",
+        "type": "series",
+        "total_eps": 3,
+        "urls": 0,
+        "sites": [
+          {
+            "id": 121,
+            "site_url": "https://www.hdfilmcehennemi.nl/dizi/dexter-izle-91/sezon-8/bolum-7-hd19/",
+            "site_name": "İzle",
+            "is_dead": 0
+          }
+        ]
+      },
+      "287": {
+        "title": "Dexter",
+        "type": "series",
+        "total_eps": 96,
+        "urls": 0,
+        "sites": [
+          {
+            "id": 1849,
+            "site_url": "https://www.setfilmizle.uk/bolum/dexter-1-sezon-1-bolum/",
+            "site_name": "setfilmizle",
+            "is_dead": 0
+          }
+        ]
+      },
+      "288": {
+        "title": "Dexter's Laboratory",
+        "type": "cartoon",
+        "total_eps": 220,
+        "urls": 0,
+        "sites": [
+          {
+            "id": 1861,
+            "site_url": "https://www.tranimaci.com/dexters-laboratory/",
+            "site_name": "tranimaci",
+            "is_dead": 0
+          }
+        ]
+      }
+    },
+    "frontend_fix": {
+      "primarySite_param": true,
+      "primarySite_call": true,
+      "fbSite_simplified": true
+    }
+  }
+}
