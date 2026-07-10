@@ -1,0 +1,3681 @@
+{
+  "started_at": "2026-07-10T07:01:29.709874+00:00",
+  "total": 533,
+  "updated": 474,
+  "skipped_ok": 49,
+  "no_tmdb": 10,
+  "details": [
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/geCRueV3ElhRTr0xtJuEWJt6dJ1.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 95,
+      "title": "Tsuki ga Michibiku Isekai Douchuu (S2)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/exhONC020D4DGvt7XB4nq9AOMDU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 96,
+      "title": "Dungeon Meshi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/q8gN7dsgBVxYtX3fGqTTogckVnD.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 97,
+      "title": "Long Zu (Dragon Raja)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/4VLHu3LGgKJ6wcOtcbsYZJtWZr6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 98,
+      "title": "Failure Frame (Hazurewaku)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9kGH4vpzZMSONC8db29Tj7HySr1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 99,
+      "title": "The New Gate",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/c1JCYZ6anQCKHxSgBPCtUdNnWoB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 100,
+      "title": "Maou Gakuin no Futekigousha (S2)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6VjUfaGkt3DJPLlNmnm1ALEhSfv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 101,
+      "title": "KonoSuba (S3)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xcPT8KuiYAKvhCRaYa9SOtiEWSO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 102,
+      "title": "Isekai Shikkaku (No Longer Allowed in Another World)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pSmAmhQuvi1H4sPCY2krxpwP9Qs.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 103,
+      "title": "Magic Maker",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cCIfi6M0Y4OjQLAaikrUdcBiE3.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 104,
+      "title": "Shangri-La Frontier",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xPxirRd6oTzGGCREKNm1UvW3Y9k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 105,
+      "title": "Tate no Yuusha no Nariagari (S3)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yX0d6aTjHrE5Sjp6gZ1dkPWCmIF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 106,
+      "title": "Spy x Family (S2)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vaIREdPGZOnW9Jrs86mheVVlIQQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 107,
+      "title": "Hametsu no Oukoku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qdF4MnYEzXP0E9IrMP5IfopyOMO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 108,
+      "title": "The Red Ranger Becomes an Adventurer in Another World",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6Mh3iaUrL4ZPvpmbCJKBICBEbNi.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 109,
+      "title": "Shangri-La Frontier (S2)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xPxirRd6oTzGGCREKNm1UvW3Y9k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 110,
+      "title": "Hataraku Maou-sama (S3)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kmpTEICJQweI4RN0OHIxgaetKop.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 111,
+      "title": "Ishura",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xleVFCZ2FnFHZbZIhcZ4GRbABas.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 202,
+      "title": "100-man no Inochi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fbBY1UEW7Vx2alMrjg6xNNM3Pv9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 206,
+      "title": "5 Centimeters",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 214,
+      "title": "Akame ga Kill!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hDzm2VXxdeK5kztUN3RWTkBsBZg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 222,
+      "title": "Another",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6qGNb8onKau8LUAPdKSoRHpNc3s.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 223,
+      "title": "Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/s6WDifHpVESSQUbjGuHZAwShVld.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 224,
+      "title": "Appraisal Skill",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6Wmyefo83QKX0Bn4HE8H3EuMXIA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 225,
+      "title": "Arifureta",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3vwcB2MtQA1VZMCljCRSrDzNzdj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 228,
+      "title": "Assassin Isekai",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/v2VA99oXvEEuZNeqXSYRhq4uY2j.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 229,
+      "title": "Assassination Classroom",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fIOYLPOorKvP4wut9y0edpnWROz.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 230,
+      "title": "Assassination Classroom (Ansatsu Kyoushitsu)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fIOYLPOorKvP4wut9y0edpnWROz.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 231,
+      "title": "Assessment Assassin",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 233,
+      "title": "Attack on Titan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qlbcGr0EYKRICD0MTrIwnIztQna.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 234,
+      "title": "Attack on Titan (Shingeki no Kyojin)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qlbcGr0EYKRICD0MTrIwnIztQna.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 237,
+      "title": "Back Street Girls: Gokudols",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kEdDC69YO2Jdau9prfYmJIFFJJ9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 238,
+      "title": "Baki Serisi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/diySGgcj1xikHU7ACEugcvW88WQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 239,
+      "title": "Baki Serisi (Tüm Sezonlar)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/diySGgcj1xikHU7ACEugcvW88WQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 240,
+      "title": "Bakugan Battle Brawlers",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wAqs4kdvCUNlzF9NK4OEV7WheHP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 245,
+      "title": "Ben 10 (Klasik, Alien Force, Ultimate Alien, Omniverse)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eogRp6oAPK0SEvQmCrQ78LTlSdp.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 246,
+      "title": "Berserk",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7sRUwoaZnnXZFCZwu3DIoznpImg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 247,
+      "title": "Beyblade",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/66wkm14IWdrY5LaKZDAbkD2T9Jt.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 249,
+      "title": "Bleach",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/e0kKmeM8R7Kersh5N2PPzIRNRhr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 250,
+      "title": "Bocchi the Rock!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/se9xLGHlSqQwVgEzLw326CJjaRm.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 251,
+      "title": "Bofuri",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/33t9rt31ZKzi97VE9wjEd0whKHq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 253,
+      "title": "Breaking Bad (Walter White",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 256,
+      "title": "Cars",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8OOPqne7ZRupFxfSZlrsauPwhJl.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 258,
+      "title": "Chainsaw Man",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yVtx7Xn9UxNJqvG2BkvhCcmed9S.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 259,
+      "title": "Charlotte",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/udiCs1RBGfda1z52cBxu8j9JNmP.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 261,
+      "title": "Chuunibyou",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3K20upYT0fyGUEVbOPQgxN5FSFU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 263,
+      "title": "Classroom of the Elite",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mmhx3dImdsfYpcFm3J1tlQt5IRN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 264,
+      "title": "Claymore",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aIdsCf6XAzR2AmylK8PF22RUw1D.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 265,
+      "title": "Code Geass: Lelouch of the Rebellion",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rRZaSvgFK3NGC480RpA1kuBnc5Z.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 266,
+      "title": "Combatants Will Be Dispatched!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/67H5NuJtldqNfb6VsfZBwS7AwzA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 268,
+      "title": "Cyberpunk: Edgerunners",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lqcDVZ8pyk08AVftMBildDR3QUK.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 270,
+      "title": "Dandadan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dse3OM0apuA6HZt4gznRMmUirM3.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 271,
+      "title": "DanMachi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iKNeAEH3cmXCeQRnE09yBk8NDAM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 272,
+      "title": "Danshi Koukousei",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gLF5bdnf0oINep5FUcobqviv8U5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 274,
+      "title": "Dark (2017)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 275,
+      "title": "Dark Gathering",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/4fSzalgBWLC52TGPGn91tNBoO0m.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 276,
+      "title": "Dark Healer",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3RqQ6WNHaIyHJByEiRYTpbGCsms.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 277,
+      "title": "Dawn of the Witch",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lfBTEhNt6NBChu0rryz6WojsDMw.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 278,
+      "title": "Dead Mount",
+      "type": "anime",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 279,
+      "title": "Dead Mount Death Play",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oOlg3bPWOKBgy5kgOTVe8pJz4HI.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 281,
+      "title": "Death March",
+      "type": "anime",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 282,
+      "title": "Death March kara Hajimaru Isekai Kyousoukyoku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/s5TfCS6XfLNnQaCfBpQciP1UEEo.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 283,
+      "title": "Death Note",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tCZFfYTIwrR7n94J6G14Y4hAFU6.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 284,
+      "title": "Demon Lord 2099",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/jL4D4phOdEf6Ay0kdW25RiQTWBc.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 285,
+      "title": "Demon Slayer",
+      "type": "anime",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 286,
+      "title": "Demon Slayer (Kimetsu no Yaiba)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mszs7gapSnF7rw2xrg4WLQLVzZ9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 294,
+      "title": "Dororo",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6TX5aQHlJKdRZqV9nFPty3dOdfe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 295,
+      "title": "Dr. STONE",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dLlnzbDCblBXcJqFLXyvN43NIwp.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 300,
+      "title": "Elfen Lied",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gadB0EHZehVHy4dBGKYmjvuvPDz.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 302,
+      "title": "Failure Frame",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/jjpkWZ9LUXoUnh4F65qp7FuFawO.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 303,
+      "title": "Faraway Paladin",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rzrtmcYoz1A3LtcvZXSI0mTtXzJ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 304,
+      "title": "Faraway Paladin 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 305,
+      "title": "Farmer Skill",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 308,
+      "title": "Fate Serisi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hfTEDISVpFMqmp6uOGylsSakyXZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 309,
+      "title": "Fate Serisi (Stay Night, Zero, Unlimited Blade Works)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hfTEDISVpFMqmp6uOGylsSakyXZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 315,
+      "title": "Frieren: Beyond Journey's End",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dhzbCznEzU67RXWYb53fyPe9Keb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 316,
+      "title": "Frieren: Beyond Journey's End (Sousou no Frieren)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dhzbCznEzU67RXWYb53fyPe9Keb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 317,
+      "title": "Fuguushoku \"Kanteishi\" ga Jitsu wa Saikyou Datta",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iWQchD5iAc3Ou9zTQnPuNbLPsLB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 318,
+      "title": "Full Dive RPG",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cfcYACAPhL9fcPboZR1ctEqJrKQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 319,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vIkH7fUQf8Olo8Apq56FQLGDXOo.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 325,
+      "title": "Genius Prince",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pElst5GC9m6upAumih5MGyg0CeG.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 327,
+      "title": "Genjitsu Shugi Yuusha",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wwDOOqpgTJT9Sj4y57JgRfA3vio.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 328,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wwDOOqpgTJT9Sj4y57JgRfA3vio.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 329,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki (How a Realist Hero Rebuilt the Kingdom)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ymbGZbNjHK4uAy3l29jUBvqeXIX.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 330,
+      "title": "Ghost in the Shell",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/v6D7aBJynhY6opGugGJkofzknw6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 332,
+      "title": "Gintama",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cWD3BD0aQFypLGVOvd23hWdg5bP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 336,
+      "title": "Gokudols",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kEdDC69YO2Jdau9prfYmJIFFJJ9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 339,
+      "title": "Guimi Zhi Zhu: Xiaochou Pian (Lord of the Mysteries)",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 340,
+      "title": "Gurren Lagann",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/geFiRX5g4nHNaw0uvA9wHZfPWIS.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 343,
+      "title": "Hachi-nan tte, Sore wa Nai deshou!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/idf6ifG86UxmDy80JM3uzv0Hah2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 348,
+      "title": "Hazurewaku no \"Joutai Ijou Skill\" de Saikyou ni Natta Ore ga Subete wo Juurin suru made (Failure Frame)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9kGH4vpzZMSONC8db29Tj7HySr1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 349,
+      "title": "High School DxD",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yMYvz4vbKMIXb2IMYYi1GSlNaGx.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 350,
+      "title": "Highschool of the Dead",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bKRK0jDz9jccNcqus2LP5mIhA24.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 351,
+      "title": "Highschool of the Dead (HOTD)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bKRK0jDz9jccNcqus2LP5mIhA24.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 356,
+      "title": "Hunter x Hunter (2011)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9WxfAQquTun9ATkV6iAeFHMkqxv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 357,
+      "title": "Hyakuren no Haou to Seiyaku no Valkyria",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/53uJ1Fx5LwoSQFzZnTf2HNocLxt.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 359,
+      "title": "I'm Quitting Heroing",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oz5upj4Be6u0WVKFUOObEggNcJ5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 361,
+      "title": "Immortal King",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AqWoHl346Xw6KXi6qqbJqnfeU4B.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 364,
+      "title": "Infinite Gacha",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 366,
+      "title": "Isekai Cheat Magician",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7mhQDoelta3Gavm3FgMYVCkw1C1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 367,
+      "title": "Isekai de Cheat Skill",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/50OsbGp6AWw4za2aAM82vKburcg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 368,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/50OsbGp6AWw4za2aAM82vKburcg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 369,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/50OsbGp6AWw4za2aAM82vKburcg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 370,
+      "title": "Isekai Mokushiroku Mynoghra: Hametsu no Bunmei de Hajimeru Sekai Seifuku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nrd2DMbn39Usv9Lp5LpHh67yVAN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 371,
+      "title": "Isekai no Seikishi Monogatari",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tWq0Nbtq0ZbGSEyOwbOwNzycpNa.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 372,
+      "title": "Isekai Ojisan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fGXvKNhok7kAvi74HH1zmxSn5V7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 373,
+      "title": "Isekai Ojisan (Uncle from Another World)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fGXvKNhok7kAvi74HH1zmxSn5V7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 374,
+      "title": "Isekai One Turn Kill Neesan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/sysz1yNPpgwA7weihJ7lIgHnt1O.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 375,
+      "title": "Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hQEgYVrTUxV0yXqLxdwdXIaofGt.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 376,
+      "title": "Isekai Shikkaku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pSmAmhQuvi1H4sPCY2krxpwP9Qs.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 377,
+      "title": "Isekai Shoukan wa Nidome desu (Summoned to Another World for a Second Time)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/sRnUYGttSV1pAszU3BxhM7UOQxI.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 378,
+      "title": "Isekai Yakkyoku (Isekai Eczanesi)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oKrrx9khD5uwCzvC5HKp1ESHlvZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 379,
+      "title": "Ishuzoku Reviewers",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9enqv9UjBLF0Yz1XVgxaofh73FF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 380,
+      "title": "Itai no wa Iya nanode Bougyoryoku (Bofuri)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/33t9rt31ZKzi97VE9wjEd0whKHq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 382,
+      "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou (Reborn as a Vending Machine)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eSQrTyg8Zvz7Ymy5oXFkuYu5ZIr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 383,
+      "title": "Jigokuraku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fusvI9NECr7T97JpRwV50BKTk9p.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 384,
+      "title": "Jitsu wa Ore, Saikyou deshita?",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kG5Y53kksNy3f8BjOvhVBILUmNl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 387,
+      "title": "JoJo Serisi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ijy1DUYNlhkoLaaKUuilJnJopsq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 388,
+      "title": "JoJo's Bizarre Adventure",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oSH24anb0NVDe1jb12u5ITZa7V8.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 389,
+      "title": "JoJo's Bizarre Adventure Serisi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oSH24anb0NVDe1jb12u5ITZa7V8.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 393,
+      "title": "Kabaneri",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5Iw4PGoSxJCAoFqmOa3ZnPWS5jY.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 394,
+      "title": "Kabaneri of the Iron Fortress",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5Iw4PGoSxJCAoFqmOa3ZnPWS5jY.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 395,
+      "title": "Kaguya-sama: Love is War",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tvemh1UGxnDKWPFYj40Zs6IWN7y.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 396,
+      "title": "Kaifuku Jutsushi no Yarinaoshi (Redo of Healer)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tlnbk4FZKzxFV43EJ4BH6ZgGAwo.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 397,
+      "title": "Kaiko sareta Ankoku Heishi (30-dai) no Slow Life (Chillin' in My 30s after Getting Fired)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wt3y5uru1yaHRHl8KUZ68HqcaMv.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 398,
+      "title": "Kakegurui",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/h1MUwcwNjK3nkXFzeFowUqfy0Qw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 399,
+      "title": "Kami-tachi ni Hirowareta Otoko",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/436ZoVzOmKuWKRRKDsI6crc5Tuj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 401,
+      "title": "Kekkai Sensen",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uOUn6sBwkUjD72e9uf4F6nVfBRv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 403,
+      "title": "Kimi to Boku no Saigo no Senjou",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wCL3MkW9QNnBKpeFC9O3i0mpiIb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 404,
+      "title": "King's Avatar",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fTE3R82Jq7YBCt9A9rj39I24eYj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 405,
+      "title": "Kinsou no Vermeil",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qP7RkMd5WZPOOueY0Vv8g6oMv8j.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 406,
+      "title": "Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dC1rIfKScgrHjmZYdTpUgWpZF4h.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 411,
+      "title": "Komi-san",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dPaI9Ho4k4ZhNgPyRIkfEyiA2K7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 412,
+      "title": "KonoSuba: God's Blessing on This Wonderful World!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eQPEaAKXgT72FJWi1IlAHqSFMTE.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 414,
+      "title": "Kuroshitsuji",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tfjvfipG4FoKOeG3rpDuGWIvx4k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 415,
+      "title": "Kuroshitsuji (Black Butler)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tfjvfipG4FoKOeG3rpDuGWIvx4k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 419,
+      "title": "Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/k4dMicD0xtMXVYKqrb0lunPuvLr.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 421,
+      "title": "Last Boss",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uLkimDmIWb4VdgFUuiMlS8wGi5S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 422,
+      "title": "Let This Grieving Soul Retire",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lQRskaix2xnMRx5MrnqQ4iLVN3E.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 424,
+      "title": "Limitless (Film)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/l5BERaKn3ozRTLhoylIiNwMDvax.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 426,
+      "title": "Log Horizon",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/2LRsQWNzNSbHXFODidFBxIDQovv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 428,
+      "title": "Lord of the Mysteries",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/f1iAf6OEePX1xRbn80i4SPMwZrJ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 430,
+      "title": "Lv2 Cheat",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uU8JO4PsbgpuZmbkUMPjdpxEjBO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 431,
+      "title": "Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uU8JO4PsbgpuZmbkUMPjdpxEjBO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 434,
+      "title": "Mahoutsukai Reimeiki (The Dawn of the Witch)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pQw7WrP2iDFwxNz7t5gQd6hDk4q.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 437,
+      "title": "Maou Gakuin",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6VjUfaGkt3DJPLlNmnm1ALEhSfv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 438,
+      "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iW0iY5Fv0V6oHQ33Jk9iTsyV3Y6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 439,
+      "title": "Maou-sama Retry!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fJyzb38WxPvBelzk57RyokFc6OH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 440,
+      "title": "Mashle",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9rvbqwoEis7SZjbfiIYjzE2uWz3.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 445,
+      "title": "Meikyuu Black Company",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oI8GUl7CPzlEXwjtPJfjnudbsp4.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 446,
+      "title": "Meikyuu Black Company (The Dungeon of Black Company)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oI8GUl7CPzlEXwjtPJfjnudbsp4.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 448,
+      "title": "Mirai Nikki",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ziRrSbJ9419napyGU1zQWlsLQa6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 449,
+      "title": "Mo Dao Zu Shi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nH9HZrygttwBBSSfWOggUmcYfzj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 450,
+      "title": "Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nH9HZrygttwBBSSfWOggUmcYfzj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 451,
+      "title": "Mob Psycho 100",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aFcv9zeJtSbJHSYUlQCOQYV3Gio.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 452,
+      "title": "Monster",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7ZhHyA0IIQOyz1hzCXpTilXg4Q2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 453,
+      "title": "Monster Musume",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nZth7FJw4QWbRqwEzODe51N9ILC.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 454,
+      "title": "Monster Musume no Oishasan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/d2D80008oi4xYYUVSk34WcuosAF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 458,
+      "title": "Mr. White)",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 461,
+      "title": "My Neighbor Totoro",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 462,
+      "title": "My Neighbor Totoro (Tonari no Totoro)",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 463,
+      "title": "Mynoghra",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nrd2DMbn39Usv9Lp5LpHh67yVAN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 464,
+      "title": "Mynoghra 4X",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 465,
+      "title": "Mysterious Maid",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wO0R83ZezAnHNgoUxtn2N93wjyb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 466,
+      "title": "Nagatoro",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kbJoQBdl9PONnLfjGQFSwn6ZGbB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 467,
+      "title": "Nagatoro-san",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kbJoQBdl9PONnLfjGQFSwn6ZGbB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 468,
+      "title": "Nageki no Bourei wa Intai shitai (Let This Grieving Soul Retire!)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lQRskaix2xnMRx5MrnqQ4iLVN3E.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 469,
+      "title": "Naruto",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mErFfyQuQ9kkbsR30d8CkZf0Z6s.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 470,
+      "title": "Neon Genesis Evangelion",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AhtWPHqIT1cWdrKTZVDMZD4Ca4F.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 471,
+      "title": "Netoge no Yome",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/l12unnbaLLnm4bHpNRZ3K0EkTVt.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 475,
+      "title": "No Game No Life",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qpKGtHATF326zuC1jh7WCrY7u5g.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 476,
+      "title": "Noragami",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8yGBg40I36c98OeKMMjkJkCThkf.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 477,
+      "title": "Noumin Kanren no Skill bakka Agetetara Nazeka Tsuyoku Natta.",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mMytXFRCkC6Z2c9tyKb4LHW561Y.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 478,
+      "title": "One Punch Man",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/a8BknzvFVK5EZ83rKg1a83iwaj0.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 479,
+      "title": "One Punch Man (OPM)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/a8BknzvFVK5EZ83rKg1a83iwaj0.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 480,
+      "title": "Oregairu",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uLCcMQT9gBf81wI1sbHx2ICBiYH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 481,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9fJYueAX0XTqFIPokQxFAoapGvr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 482,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu (Trapped in a Dating Sim)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9fJYueAX0XTqFIPokQxFAoapGvr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 484,
+      "title": "Overlord",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7kOBPcfhmmfJxIXwJXSeuKM9BID.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 488,
+      "title": "Peter Grill to Kenja no Jikan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/k6fagonjajYZ9fLjSmlQnafHtUJ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 493,
+      "title": "Plunderer",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cp1iGqNNy5JRhWbpP3qoANgz1gV.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 495,
+      "title": "Punishment Hero",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/juGNOhRx7MXg3i2NuZ9lR6arVQw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 496,
+      "title": "Quanzhi Gaoshou (The King's Avatar)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fTE3R82Jq7YBCt9A9rj39I24eYj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 497,
+      "title": "Rakudai Kishi no Cavalry",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/d48gIgIwhOBBeOYCPZEa52V1YPl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 500,
+      "title": "Record of Ragnarok",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/m28Ey0LYoeqzx7mdJ25NVUqRueB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 501,
+      "title": "Redo of Healer",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tlnbk4FZKzxFV43EJ4BH6ZgGAwo.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 503,
+      "title": "Reincarnated as a Sword",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6WhRmP6Ro5WoG8p7apvjagLyGqw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 506,
+      "title": "Rookie Older Adventurer",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 507,
+      "title": "Rosario to Vampire",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yVoA47fQASCW18vToWeNPFAVAch.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 508,
+      "title": "Saihate no Paladin: Tetsusabi no Yama no Ou (The Faraway Paladin 2. Sezon)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7Dh4SnIwj016uyK9mkABtX9tgN1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 509,
+      "title": "Saikin Yatotta Maid ga Ayashii (The Maid I Hired Recently Is Mysterious)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rShHNMmuKJNIxD2XBoPOLX2OGHT.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 510,
+      "title": "Saikyou no Shienshoku \"Wajutsushi\" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru (The Most Notorious Talker)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yREym2Qanimi40OI1W75df6weNg.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 511,
+      "title": "Saikyou Onmyouji no Isekai Tenseiki",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/czPKN4hxAK1l3derOKEA0bKh8ac.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 512,
+      "title": "Sakamoto Desu ga?",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kN8zbPCwUK8PYDMXI7AUfsB97ac.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 513,
+      "title": "Sakamoto Desu ga? (Haven't You Heard? I'm Sakamoto)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kN8zbPCwUK8PYDMXI7AUfsB97ac.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 514,
+      "title": "Salaryman ga Isekai ni Ittara Shitennou ni Natta Hanashi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ruNn68lcGc7z6rqGelM0uMswZ3e.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 516,
+      "title": "School Days",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cBQEXNsxQrecTazuzwBIglWzKd6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 518,
+      "title": "Seitokai",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eSq2qnPuGwlouH87yYLn6vx3fAI.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 519,
+      "title": "Seitokai Yakuindomo",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fWZ05GUcRSlWX2Vu3tcl2CBilIp.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 520,
+      "title": "Sekai Saikou no Ansatsusha",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/v2VA99oXvEEuZNeqXSYRhq4uY2j.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 521,
+      "title": "Sekai Saikou no Ansatsusha (Suikastçı Isekai)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/v2VA99oXvEEuZNeqXSYRhq4uY2j.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 524,
+      "title": "Sentouin, Haken shimasu!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/67H5NuJtldqNfb6VsfZBwS7AwzA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 525,
+      "title": "Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/67H5NuJtldqNfb6VsfZBwS7AwzA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 526,
+      "title": "Seven Deadly Sins",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/knOEGRfSV8RTrBFbdd2eXF0w10q.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 527,
+      "title": "Seventh Prince",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 532,
+      "title": "Shijou Saikyou no Daimaou, Murabito A ni Tensei suru",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oDmhdUnR7tatB4s2NmmmwUrpv2e.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 533,
+      "title": "Shimoneta",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/y5ruAwzGx5oyFSpzmCbmIt5Zz8l.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 534,
+      "title": "Shin no Nakama",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mgYMsOsFrQ9Q5NjlQwKRWu0K3uM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 535,
+      "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hk5qqvJLRBDaPYBc8lKkSYQrR1c.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 536,
+      "title": "Shin Shinka no Mi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eSfh7eFwdgcdbHDKDv2jDAYS71A.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 537,
+      "title": "Shin Shinka no Mi: Shiranai Uchi ni Kachigumi Jinsei",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eSfh7eFwdgcdbHDKDv2jDAYS71A.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 538,
+      "title": "Shinchou Yuusha",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/leobb4kmAFpO1XUH739fkg6PEqH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 539,
+      "title": "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bbg1FMU7c3W06KUKrgIhIECFliZ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 540,
+      "title": "Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 (Gift Mugen Gacha)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8hhOcbDKJZvOD67N8GT0kdjNjd9.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 541,
+      "title": "Shinmai Maou",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rMghV11R38JaDKnmpPkc2LwXOWh.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 542,
+      "title": "Shinmai Maou no Testament",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rMghV11R38JaDKnmpPkc2LwXOWh.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 543,
+      "title": "Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dHxGWlygSNRb97wujSwtEts5snP.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 544,
+      "title": "Shinryaku! Ika Musume",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dZrxnMoeEn0VgNC0Cr8fMCA2cEe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 546,
+      "title": "Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 547,
+      "title": "Shuumatsu no Walküre (Record of Ragnarok)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/m28Ey0LYoeqzx7mdJ25NVUqRueB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 549,
+      "title": "Slime Tensei",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9YcNx1dnNkZ3PZzrMqc52WjCEcw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 550,
+      "title": "Slime Tensei (Tensura)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9YcNx1dnNkZ3PZzrMqc52WjCEcw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 551,
+      "title": "Solo Leveling (Anime)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eCD7WS9h4lCT8N4Xavc9u8R1IGk.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 556,
+      "title": "Spider-Man Serileri",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 561,
+      "title": "Steins;Gate",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6iysgZr6Upm5RlAlVFo5f4D9euu.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 563,
+      "title": "Sword Art Online",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/htNohqrYEwuz4fCa9ATVF90s58S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 564,
+      "title": "Sword Art Online (SAO)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/htNohqrYEwuz4fCa9ATVF90s58S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 565,
+      "title": "Tales of Zestiria",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8cvnUjctdbExvnRyo8AVDvo2KaT.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 566,
+      "title": "Tales of Zestiria the Cross",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8cvnUjctdbExvnRyo8AVDvo2KaT.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 571,
+      "title": "Tengen Toppa Gurren Lagann",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/geFiRX5g4nHNaw0uvA9wHZfPWIS.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 572,
+      "title": "Tensai Ouji no Akaji Kokka Saisei Jutsu (The Genius Prince's Guide to Raising a Nation Out of Debt)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/jZoU11wB8H02vKIsXtFXd9rjQ4W.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 573,
+      "title": "Tensei Kenja no Isekai Life",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dRIojNhIP6X3IKvJmMTUIEvdUby.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 574,
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru (Asasyn Kantei Skill)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6Wmyefo83QKX0Bn4HE8H3EuMXIA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 575,
+      "title": "Tensei Oujo to Tensai Reijou",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/jK42u0yTOw9qPWXUux63Btjnm0Z.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 576,
+      "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ruLkQB8i1yazHgO0QCWpyJRRTs9.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 577,
+      "title": "Tensei shitara Ken deshita",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6WhRmP6Ro5WoG8p7apvjagLyGqw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 578,
+      "title": "Tensei Shitara Ken Deshita (Reincarnated as a Sword)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6WhRmP6Ro5WoG8p7apvjagLyGqw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 580,
+      "title": "Tetikci",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vOPkstuOLbygNbUcbIMbD6bV5ad.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 584,
+      "title": "The Daily Life of the Immortal King",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AqWoHl346Xw6KXi6qqbJqnfeU4B.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 585,
+      "title": "The Daily Life of the Immortal King (Xian Wang de Richang)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AqWoHl346Xw6KXi6qqbJqnfeU4B.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 586,
+      "title": "The Devil is a Part-Timer!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kmpTEICJQweI4RN0OHIxgaetKop.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 587,
+      "title": "The Devil is a Part-Timer! (Hataraku Maou-sama!)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kmpTEICJQweI4RN0OHIxgaetKop.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 588,
+      "title": "The Eminence in Shadow",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/r3IHw82QFkLmggTG9QpBFpYArVM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 589,
+      "title": "The Eminence in Shadow (Kage no Jitsuryokusha ni Naritakute!)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/r3IHw82QFkLmggTG9QpBFpYArVM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 591,
+      "title": "The Faraway Paladin",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7Dh4SnIwj016uyK9mkABtX9tgN1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 592,
+      "title": "The Faraway Paladin (Saihate no Paladin)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7Dh4SnIwj016uyK9mkABtX9tgN1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 598,
+      "title": "The Kingdoms of Ruin (Hametsu no Oukoku)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qdF4MnYEzXP0E9IrMP5IfopyOMO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 608,
+      "title": "The Scorpion King Serisi (Mumya ve Akrepler Kralı)",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 610,
+      "title": "The Seven Deadly Sins",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/knOEGRfSV8RTrBFbdd2eXF0w10q.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 618,
+      "title": "To LOVE-Ru",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yGwIvVxGv1MRbNjn500GyPWu7ud.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 619,
+      "title": "Tokyo Ghoul",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5XBk7T4NsGeN9RG39y2nU6gRWQl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 621,
+      "title": "Tomo-chan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lG1lkL2V0PvXkJtwI0FoQTG8gnz.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 622,
+      "title": "Tomo-chan wa Onnanoko!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lG1lkL2V0PvXkJtwI0FoQTG8gnz.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 623,
+      "title": "Tomodachi Game",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ovl7OfWyHQQHsRu5xVeJjnaL7Mi.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 624,
+      "title": "Tonari no Totoro",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 625,
+      "title": "Tondemo Skill de Isekai Hourou Meshi",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6IZkTbgZEkzeVPKqfe644mSxbfF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 626,
+      "title": "Toradora!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gOG9zHfbhqvcKtzxjEtmpuw8WuU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 629,
+      "title": "Tower of God",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/h8Nx28MtC8LHtTXbaZ2HqpA3SUb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 630,
+      "title": "Tower of God (Kami no Tou)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/h8Nx28MtC8LHtTXbaZ2HqpA3SUb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 634,
+      "title": "Trapped in a Dating Sim",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9fJYueAX0XTqFIPokQxFAoapGvr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 635,
+      "title": "Tsuki ga Michibiku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/exhONC020D4DGvt7XB4nq9AOMDU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 636,
+      "title": "Tsuki ga Michibiku Isekai",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/exhONC020D4DGvt7XB4nq9AOMDU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 638,
+      "title": "Uncle from Another World",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fGXvKNhok7kAvi74HH1zmxSn5V7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 640,
+      "title": "Undead Unluck",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/62LKH8aho4EeZmcpYks9DvxyHxB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 643,
+      "title": "Uzaki-chan",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uUU2BTMXaX5g09lDP6pAbsN8EG5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 646,
+      "title": "Villager A",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/2vPTGMPS6ctlJtvMLyNi0InCWcl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 647,
+      "title": "Wajutsushi (The Most Notorious Talker)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/179Ea4uk878hK022jfxZVZ0jLX6.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 652,
+      "title": "Wolverine",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iv1b9LHi54A5fHm5xoz3NPvO0kd.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 654,
+      "title": "Yahari Ore no Seishun (Oregairu)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uLCcMQT9gBf81wI1sbHx2ICBiYH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 658,
+      "title": "Yasei no Last Boss ga Arawareta! (A Wild Last Boss Appeared!)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uLkimDmIWb4VdgFUuiMlS8wGi5S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 662,
+      "title": "You (Joe Goldberg)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oANi0vEE92nuijiZQgPZ88FSxqQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 663,
+      "title": "Youjo Senki (The Saga of Tanya the Evil)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/y0NcqaEx6Md4MPcDWHAr8e5CQfF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 664,
+      "title": "Yu-Gi-Oh!",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dJas6Y7lXzgPHgr4ro0qCOTgNiM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 665,
+      "title": "Yuragi-sou no Yuuna-san",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6laZ2HQ88bQXffVl0nSzm4gFcBH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 666,
+      "title": "Yuusha, Yamemasu",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oz5upj4Be6u0WVKFUOObEggNcJ5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 667,
+      "title": "Yuusha, Yamemasu (I'm Quitting Heroing)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oz5upj4Be6u0WVKFUOObEggNcJ5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 668,
+      "title": "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/juGNOhRx7MXg3i2NuZ9lR6arVQw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 669,
+      "title": "Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 671,
+      "title": "Zom 100",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nWX0UcQMj3kJyqBFBE65dd7y3Px.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 672,
+      "title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 678,
+      "title": "Baki's Path 2. Kısım",
+      "type": "anime",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 679,
+      "title": "5 Centimeters per Second",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 682,
+      "title": "The Rising of the Shield Hero",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yX0d6aTjHrE5Sjp6gZ1dkPWCmIF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 683,
+      "title": "SPY x FAMILY",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vaIREdPGZOnW9Jrs86mheVVlIQQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 684,
+      "title": "Dungeon Meshi 2nd Season",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 686,
+      "title": "ISHURA Season 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 687,
+      "title": "Another: The Other",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 688,
+      "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6Wmyefo83QKX0Bn4HE8H3EuMXIA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 689,
+      "title": "Assassination Classroom Second Season",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 690,
+      "title": "BLEACH: Thousand-Year Blood War",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/e0kKmeM8R7Kersh5N2PPzIRNRhr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 691,
+      "title": "Bocchi the Rock! 2nd Season",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 692,
+      "title": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. Season 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 693,
+      "title": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 694,
+      "title": "Classroom of the Elite Season 2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mmhx3dImdsfYpcFm3J1tlQt5IRN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 695,
+      "title": "Code Geass: Lelouch of the Rebellion R2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rRZaSvgFK3NGC480RpA1kuBnc5Z.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 696,
+      "title": "DAN DA DAN Season 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 697,
+      "title": "Is It Wrong to Try to Pick Up Girls in a Dungeon? II",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iKNeAEH3cmXCeQRnE09yBk8NDAM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 698,
+      "title": "High School DxD NEW",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yMYvz4vbKMIXb2IMYYi1GSlNaGx.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 699,
+      "title": "High School of the Dead: Drifters of the Dead",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bKRK0jDz9jccNcqus2LP5mIhA24.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 700,
+      "title": "The Daily Life of the Immortal King Season 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 701,
+      "title": "Isekai Cheat Magician: Magicians and the Starry Night Festival",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 702,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/50OsbGp6AWw4za2aAM82vKburcg.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 703,
+      "title": "Reborn as a Vending Machine, I Now Wander the Dungeon Season 2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eSQrTyg8Zvz7Ymy5oXFkuYu5ZIr.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 704,
+      "title": "Hell’s Paradise Season 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 705,
+      "title": "JoJo's Bizarre Adventure (2000)",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oSH24anb0NVDe1jb12u5ITZa7V8.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 706,
+      "title": "Kabaneri of the Iron Fortress: The Battle of Unato",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 707,
+      "title": "Kaguya-sama: Love is War?",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oupVZDCbLklEqV0wLdkRkOEVNWj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 708,
+      "title": "Kakegurui xx",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/h1MUwcwNjK3nkXFzeFowUqfy0Qw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 709,
+      "title": "By the Grace of the Gods 2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/436ZoVzOmKuWKRRKDsI6crc5Tuj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 710,
+      "title": "Blood Blockade Battlefront & Beyond",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uOUn6sBwkUjD72e9uf4F6nVfBRv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 711,
+      "title": "Quanzhi Gaoshou Specials",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 712,
+      "title": "The King's Avatar: For the Glory",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 713,
+      "title": "Komi Can't Communicate Part 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 714,
+      "title": "KONOSUBA -God's blessing on this wonderful world! 2",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eQPEaAKXgT72FJWi1IlAHqSFMTE.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 715,
+      "title": "Black Butler: Book of Murder",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tfjvfipG4FoKOeG3rpDuGWIvx4k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 716,
+      "title": "Black Butler: Public School Arc",
+      "type": "anime",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tfjvfipG4FoKOeG3rpDuGWIvx4k.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 717,
+      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 718,
+      "title": "Let This Grieving Soul Retire Cour 2",
+      "type": "anime",
+      "reason": "no better cover"
+    },
+    {
+      "id": 113,
+      "title": "Rick and Morty (S7)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/owhkU6KRqdXoUQpjV8uyZGPtX58.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 213,
+      "title": "Adventure Time",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qk3eQ8jW4opJ48gFWYUXWaMT4l.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 216,
+      "title": "Aladdin (Çizgi Dizi)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nlaiczW81kY46GBdfIcTrBIqr8I.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/sAgoJOdvuMa3DD0JDpos9bdaF9S.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 221,
+      "title": "Animated",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fulonGHOoYdRFEHUsIztoUVkr4U.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 244,
+      "title": "Ben 10",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eogRp6oAPK0SEvQmCrQ78LTlSdp.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 254,
+      "title": "Broken Karaoke",
+      "type": "cartoon",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 262,
+      "title": "Clarence",
+      "type": "cartoon",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 288,
+      "title": "Dexter's Laboratory",
+      "type": "cartoon",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 290,
+      "title": "Disney Broken Karaoke",
+      "type": "cartoon",
+      "reason": "no better cover"
+    },
+    {
+      "id": 296,
+      "title": "DreamWorks Dragons (Ejderha Binicileri)",
+      "type": "cartoon",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 298,
+      "title": "Ed, Edd n Eddy",
+      "type": "cartoon",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 324,
+      "title": "Generator Rex",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3F93j1Yuu9wtPO06BlPSVbLdxaP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 337,
+      "title": "Gravity Falls (Esrarengiz Kasaba)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6kWUl4Rfvomz9VBsjzDsuQ3ZvrG.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xJwEpFAoedQ6POM9dD83ijFk5ME.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 386,
+      "title": "Johnny Bravo",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/obbdeoOk8XSXzJrWGiBbaeMMSMl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 391,
+      "title": "Justice League",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/caIAQIoM9NLZofT8fz8t47W1gYe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 392,
+      "title": "Justice League Unlimited",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vRRvCUREeqqnp3hHdqep83eQjdP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 402,
+      "title": "Kim Possible",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qsDNX8DPwWydDn9oUIhe1WcTuUH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AdROLFTm3nSnqcmkhPabqdRuETZ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 443,
+      "title": "Max Steel",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/thDuNE7KmVowSK2U8JVAEa387sH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 444,
+      "title": "Megas XLR",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/d4Mc687WE8wFAk5nlmJJh4qNuIO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 447,
+      "title": "Mickey Mouse",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gHtEhlAZHxMawOiPq7JoKwkmETQ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/2gxgwhcuSmI5xtexb0t9zGj43FS.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/uvCchgn7uUUE2MJfhzg39M4RaZW.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 473,
+      "title": "Ninjago: Masters of Spinjitzu",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wz6ZqlyndVpdRayZi1gbYHWcqFi.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 483,
+      "title": "Over the Garden Wall (Bahçe Duvarının Ötesinde)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/m3lU8n7WxzMecxKZcqhq5y5ESy.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 489,
+      "title": "Phineas and Ferb (Fineas ve Förb)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/j61o7i0IDA67xZ8oxFfMQlPidKk.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 494,
+      "title": "Powerpuff Girls",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/468mmhMd21pY4Yx0S0woqeEcxtL.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 502,
+      "title": "Regular Show (Sürekli Dizi)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7MnzSQ7YV29EeqXFuGXpClfcRCc.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 515,
+      "title": "Samurai Jack",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ddZ7Q2WZ0xAHkVXYvcEgNGFgVkw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 517,
+      "title": "Scooby-Doo",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cmLkFBV9pYPH2k3PI1Q8U1jx63T.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 552,
+      "title": "Sonic Serileri",
+      "type": "cartoon",
+      "reason": "no better cover"
+    },
+    {
+      "id": 553,
+      "title": "Sonic X",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rZmLS9jb8BI3rZrd5jDTlVs8o8J.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 554,
+      "title": "Space Goofs (Uzay Çılgınları)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9qShvePeePP86huMzMxyRyoKPwm.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 560,
+      "title": "Star Wars: The Clone Wars",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/e1nWfnnCVqxS2LeTO3dwGyAsG2V.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 562,
+      "title": "Steven Universe",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8zRstOgaipruJPlsHK2diMx4lPy.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kPKAigYUlWRpnfo4Ptiwlz4FWXU.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 582,
+      "title": "The Amazing World of Gumball",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/VYnnyA2hyxi3VUPgCA71mMtt69.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 590,
+      "title": "The Emperor's New School (Şaşkın İmparator'un Okulu)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/g1TlTdWPcofNIklBdInaJFp7NkF.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "reason": "no tmdb match"
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8dpk0bjBgX93ZkQxEI1daNSj3OW.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/A6ulaU7kehrXmMOhuaBW98qx2aL.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 615,
+      "title": "The Yogi Bear Show",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/alDnwQ75JZu3V3aoa4F5w7LoyL7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/41EWXLXTZO4MLb2BL28mWZuydyq.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 627,
+      "title": "Total Drama Island (Drama Adası)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5H8n9dS2bypIAK4sUF3nCBk5tM7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 628,
+      "title": "Totally Spies! (Ajanlar)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/zvEit6c2zC2PosXROb85jZwb0gx.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 632,
+      "title": "Transformers Prime",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ilOKsGRHYc78R2tSMusAd3xGJWq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 639,
+      "title": "Uncle Grandpa",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/zLVOgigPMsd2hkwmcY5AqNhqgcn.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 649,
+      "title": "We Bare Bears (Kafadan Ayılar)",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3xWzlLZ0kAD6SkVZTekFM9lxZyP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 650,
+      "title": "What If...?",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFsAcW.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 651,
+      "title": "Winnie the Pooh",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iJFbF43bN1HX5EZl4OFAVmJDl1u.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "new_cover": "https://image.tmdb.org/t/p/w500/alDnwQ75JZu3V3aoa4F5w7LoyL7.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fcQJRYPlat8ZYpo0a0DPrfIHh62.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 204,
+      "title": "300 (300 Spartalı)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/i2XE3HrL7s01HwElCkvno86pU0Q.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 205,
+      "title": "300 Spartalı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/i2XE3HrL7s01HwElCkvno86pU0Q.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 209,
+      "title": "A Beautiful Mind (Akıl Oyunları)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iQNRCyDdb5wxOmmkou7t5kKKZaU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 210,
+      "title": "A.R.O.G",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5v3xYyHyJJKIyraRyR64szqCTkO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 211,
+      "title": "Abimm",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cfpMIQtczioH74CnyTL4Nx0J17u.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 215,
+      "title": "Akıl Oyunları",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iQNRCyDdb5wxOmmkou7t5kKKZaU.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 217,
+      "title": "Alvin ve Sincaplar",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AwBJTSrB3JrX7sPI3AxIduwgbjx.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 219,
+      "title": "American Psycho (Amerikan Sapığı)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fKZq9UdctmeTl5Gic5FeC3o6qSZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 220,
+      "title": "Amerikan Sapığı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fKZq9UdctmeTl5Gic5FeC3o6qSZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 227,
+      "title": "Asena ve Oniriks",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 232,
+      "title": "Asteriks ve Oniriks",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 235,
+      "title": "Avatar",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8kknNk7PbOcDUXynUZYZ7EHnKAA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 236,
+      "title": "Avengers",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7FQTJyrvhUp9oYDhHgujWRlxUES.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 241,
+      "title": "Batman Serisi (Kara Şövalye ve Tüm Filmler)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/f1pQPzFmBXyFaScnrqeSm8lvCH9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 255,
+      "title": "Captain America",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 257,
+      "title": "Cem Yılmaz Fundamentals",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 260,
+      "title": "Chihiro Gidişi",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 267,
+      "title": "Corpse Bride",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3RAoVTxUk1OzZClscAsynuu670p.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/j537aN6h9w06VipRHqFHnuFB1Ef.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 280,
+      "title": "Deadpool",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 289,
+      "title": "Diriliş",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/i45iPzF2ifMPBSfgwXNd12tH27c.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 291,
+      "title": "Doctor Strange",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nifqM5VkblSttwwqGXoDXmXwrHA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 297,
+      "title": "Düğün Dernek",
+      "type": "movie",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 299,
+      "title": "Edge of Tomorrow (Yarının Sınırında)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nBM9MMa2WCwvMG4IJ3eiGUdbPe6.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 301,
+      "title": "Esaretin Bedeli",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 306,
+      "title": "Fast & Furious",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/16Fj974zSVcKXxJq9fWsH7R8khe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 307,
+      "title": "Fast & Furious (Hızlı ve Öfke",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 310,
+      "title": "Fetih 1453",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/heoytIIcboUKfzUjbJchGXKWP6v.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yjMuqAyJUoQZGWsZ0vZuYj5inAR.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 312,
+      "title": "Fight Club (Dövüş Kulübü)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yjMuqAyJUoQZGWsZ0vZuYj5inAR.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 313,
+      "title": "Filistin",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5B9mXAFQoE6n25z6GXO3qKoHHLG.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 314,
+      "title": "Finding Nemo",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vz6BmebarfIsK1ZSzSXonZsuY3c.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 320,
+      "title": "Fury",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pfte7wdMobMF4CVHuOxyu6oqeeA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/k58f5o49jv3R9JXDTrGby53BLqf.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 331,
+      "title": "Ghost Rider (Hayalet Sürücü)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aUJxqFhCrwg7rKFQq0sfvmzI0eJ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 333,
+      "title": "Gladiator",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kRSCWiRPEVhUIleK1bZKMZ5uZ4p.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 334,
+      "title": "Gladio",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fBo2WoOMmQP0PTv63lDrOmzBLMW.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 335,
+      "title": "Gladyatör",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kRSCWiRPEVhUIleK1bZKMZ5uZ4p.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 341,
+      "title": "Hababam Sınıfı (Yeni Nesil)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5tIGirUEU44fqSZu9x6C5MizIc1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 342,
+      "title": "Hababam Sınıfı (Yeni)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5tIGirUEU44fqSZu9x6C5MizIc1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 344,
+      "title": "Hacivat Karagöz Neden Öldürüldü?",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vtBYs8Qy6SebElI5l4MPZlRKiOj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 345,
+      "title": "Hancock",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7DyuV2G0hLEqHeueDfOqhZ2DVut.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5aOyriWkPec0zUDxmHFP9qMmBaj.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 354,
+      "title": "Howl's Moving Castle (Yürüyen Şato)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/8rUEO5BjmWEQcGUm5SmO134NBC3.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 358,
+      "title": "I Am Legend (Ben Efsaneyim)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6aN0R1fmC4H5CeWWOm6WikyNgMP.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 360,
+      "title": "Ice Age (Buz Devri Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gLhHHZUzeseRXShoDyC4VqLgsNv.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 362,
+      "title": "In Time (Zamana Karşı)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/o7GxBv3bJRGJFmCK0WYGfWikZPw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 363,
+      "title": "Inception",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xn0Kcg4e6p0mLxVS3nAWhNmW2Ni.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 365,
+      "title": "Iron Man",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9qjZeIZ52CWgmZuEuVuBPaypChy.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 381,
+      "title": "İhtiyarlara Yer Yok",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/20SlBJZS0Hfjt4WeT6GTCMu7lzq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 385,
+      "title": "John Wick",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6jS780bEkQRPLEPWvZ0MGQ0EI4j.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 390,
+      "title": "Joker (2019)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3DeEAwO42j4VmRdI4KSSN1VloM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 407,
+      "title": "Koleksiyoncu",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kzgsinw5qo9HACk97yWAcpyo4VH.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 408,
+      "title": "Kolpaçino",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/nM2gv65hZbPWnnFp8q3AJiBuV3X.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 413,
+      "title": "Kung Fu Panda",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ni4z0DOBm6padSbnqbps4hVYehK.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 418,
+      "title": "Kurtlar Vadisi Irak",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6Z0pkbGdKrfZ37sY0WCsSHpi7mK.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 425,
+      "title": "Lion King",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/fevIusz4PyAwrlU8CmIfATVJf3K.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 432,
+      "title": "Léon: The Professional (Sevginin Gücü)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5wc5a1z0POdwMfDVrjbeTEhfygV.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 433,
+      "title": "Madagaskar",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/2yHiW0RRwoMXkuI2bYIIoxNH93P.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 435,
+      "title": "Maleficent (Malefiz)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7uyP5XIKFoESDx13736ioQ8ROWe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 436,
+      "title": "Malefiz",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7uyP5XIKFoESDx13736ioQ8ROWe.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 441,
+      "title": "Maskeli Beşler",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/c00A26utg1OZPHmme2e2bAxzKv7.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 442,
+      "title": "Matrix Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 472,
+      "title": "New York'ta Beş Minare",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tLaOGdXQAVuZo1kF7rG0x5gmF7S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 474,
+      "title": "No Country for Old Men (İhtiyarlara Yer Yok)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/20SlBJZS0Hfjt4WeT6GTCMu7lzq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 485,
+      "title": "Pacific Rim (Pasifik Savaşı Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hr0iQoEGLNt87TtES4dIPfJR5Hd.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 486,
+      "title": "Para Avcısı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ywn2c1sSfdNdJB5O9Hoy3ETfTY2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 487,
+      "title": "Percy Jackson Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hrp9DMqnlBNQZlwNMeRukyngirv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 490,
+      "title": "Pirates of the Caribbean (Karayip Korsanları Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/hGIDdwPMM8tusFMiobZiJ942O4c.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 492,
+      "title": "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/sAin4IuMKZkNLou2BKOgBxBrLT4.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 498,
+      "title": "Real Steel (Çelik Yumruk)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/4GIeI5K5YdDUkR3mNQBoScpSFEf.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 499,
+      "title": "Recep İvedik Üçlemesi",
+      "type": "movie",
+      "reason": "no better cover"
+    },
+    {
+      "id": 504,
+      "title": "Resident Evil Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yXs3qdcTxteZnZZH78xvm7Q6iK2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 528,
+      "title": "Sevginin Gücü",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5wc5a1z0POdwMfDVrjbeTEhfygV.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 529,
+      "title": "Shark Tale",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/88Y4ZHBNx5lpKtqfJ4mFGSx3Ila.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 531,
+      "title": "Sherlock Holmes Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/momkKuWburNTqKBF6ez7rvhYVhE.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 545,
+      "title": "Shrek",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/cVeJ2kQ9qZmpud57iSKsANyAsNp.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 555,
+      "title": "Spider-Man (Tobey Maguire Üçlemesi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5FyIHcUTLFNSk4D5rfsGRTkSwie.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 558,
+      "title": "Split (Parçalanmış)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/27oonhoCgaf0qKWIkNF3EkqsWON.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 567,
+      "title": "Taşıyıcı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/g7unUAXXZQf8nsLmKOItJbnUJVM.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 579,
+      "title": "Terminator Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/XgnjObKKM0QNfwDFI421NW65mv.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/2aWGxo1E5polpBjPvtBRkWp7qaS.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 583,
+      "title": "The Collector (Koleksiyoncu)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aC3ifQ8mIKlfeppDZaqqwfrPOF1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 593,
+      "title": "The Godfather",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vseIVRdN4xasYwStQIi6SI7DcEu.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 594,
+      "title": "The Green Mile (Yeşil Yol)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6ZNnKbdDRQm0ftkq3OKiDrwZkIN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yHA9Fc37VmpUA5UncTxxo3rTGVA.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 596,
+      "title": "The Hunger Games (Açlık Oyunları Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tSYjmaqkmlhRm6CJuutxcetalto.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 597,
+      "title": "The Incredibles",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lYO0iRJIqRcqO7lWS5jYDc8mvLo.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/gL7CybVuRKOVNr3UGYqroo4c8i0.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 602,
+      "title": "The Maze Runner (Labirent Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/guxVSOrqCkETy5fsLZGnedWSOr2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 603,
+      "title": "The Maze Runner (Labirent: Ölümcül Kaçış Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/guxVSOrqCkETy5fsLZGnedWSOr2.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 605,
+      "title": "The Mummy",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7m9WF2avkvPrUpU7S8nUzx9zb8b.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 606,
+      "title": "The Revenant (Diriliş)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/vpNOjiOZ9dSmj8COISLCQhWENnL.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 607,
+      "title": "The Scorpion King Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aITIsX20tACn6jgtyDcCYpRT216.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 611,
+      "title": "The Shawshank Redemption (Esaretin Bedeli)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7T2SDS5efuJiK45oyKoEzf9RKjw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kW9LmvYHAaS9iA0tHmZVq8hQYoq.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 616,
+      "title": "Thor",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mB3dAijbMu2JutrAjxMRGTXILyY.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 631,
+      "title": "Toy Story",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/4LHyUPK4obqICeCt4rjhpQDOhJt.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 633,
+      "title": "Transformers Serisi",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/iRCgqpdVE4wyLQvGYU3ZP7pAtUc.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 637,
+      "title": "Twilight (Alacakaranlık Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/daNvGuP0Vwl3RQl5xILSGwrTHv9.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 641,
+      "title": "Undisputed (Yenilmez Serisi)",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/q8smM97IBBEWmkaUCmkPqysh7k7.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 642,
+      "title": "Up",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/xwvJ3WzdJ1OCuDoY8LAxBUlQyig.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 644,
+      "title": "V for Vendetta",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/wpm0WskmVH5GCKiRSvWsTeqhMBm.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 645,
+      "title": "Venom",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bQK5C2mL7DJUpQSahoT2CYMtvkX.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 648,
+      "title": "WALL-E",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/qTLvb2OffmxL8zECq8cyVA2XAAO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 653,
+      "title": "World War Z",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/zfrtFsgX9xkgQuQBoBu92wP89VB.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 655,
+      "title": "Yahşi Batı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/mk1HYwHQnHWeiRQ2UqY7Frjub05.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 659,
+      "title": "Yeşil Yol",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/6ZNnKbdDRQm0ftkq3OKiDrwZkIN.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3Mwj2sIONQckOZP3YwsUXF7U5I4.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 676,
+      "title": "Ölüm Yarışı",
+      "type": "movie",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kSg73Mmpkde2FRz6EVQ8JC4h5vJ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 112,
+      "title": "Dexter (S8)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/q8dWfc4JwQuv3HayIZeO84jAXED.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 114,
+      "title": "Marvel's What If (S3)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lztz5XBMG1x6Y5ubz7CxfPFsAcW.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 201,
+      "title": "1 Kadın 1 Erkek",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/rqGxI6FTUyTiorjHajbnUwnEtbO.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 212,
+      "title": "Adanalı",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/48i4szV7zMAY4nASzXBv31Hw88J.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 226,
+      "title": "Arka Sokaklar",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/jEcUxk30fW7JWLacojjdO3YN51d.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 242,
+      "title": "Behzat Ç.",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aRqNQ5v2tvZ9ZRAXpYik0JamHkm.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 243,
+      "title": "Behzat Ç. Bir Ankara Polisiyesi",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aRqNQ5v2tvZ9ZRAXpYik0JamHkm.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 248,
+      "title": "Black Mirror",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/seN6rRfN0I6n8iDXjlSMk1QjNcq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 252,
+      "title": "Breaking Bad",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 273,
+      "title": "Dark",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/zAqWleNycZ86klkXJVY1OPpTdyA.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 287,
+      "title": "Dexter",
+      "type": "series",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 292,
+      "title": "Doctor Who",
+      "type": "series",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 293,
+      "title": "Doktorlar",
+      "type": "series",
+      "reason": "same or no poster"
+    },
+    {
+      "id": 322,
+      "title": "Galip Derviş",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/eFccmGugQt2Df0AQjSvR5ONFWBX.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 323,
+      "title": "Game of Thrones",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 326,
+      "title": "Geniş Aile",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/49LwfpVhAeaVdyce5kZPuznatrj.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 346,
+      "title": "Hannibal",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/pbV2eLnKSIm1epSZt473UYfqaeZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 352,
+      "title": "House M.D.",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3Cz7ySOQJmqiuTdrc6CY0r65yDI.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 355,
+      "title": "Hugo",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/3MdnyrdYJkLPcJNDize2rN1k3bt.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 400,
+      "title": "Kardeş Payı",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/5rsZr16V6yT4jyGB0QLkXi5yC5M.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 409,
+      "title": "Komedi Dükkanı",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/65RbCbj8xmvrBmNuux2Q9uRijyh.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 410,
+      "title": "Komedi Dükkanı (Tolga Çevik)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/65RbCbj8xmvrBmNuux2Q9uRijyh.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 416,
+      "title": "Kurtlar Vadisi (Pusu dönemi)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yX6JEIijuH6KNCgO8I2yLKu2Psb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 417,
+      "title": "Kurtlar Vadisi (Pusu)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yX6JEIijuH6KNCgO8I2yLKu2Psb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 420,
+      "title": "La Casa de Papel",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/z01Dc0Ly2GmCpLe6Scx4d3dPP1S.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 423,
+      "title": "Limitless",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/l5BERaKn3ozRTLhoylIiNwMDvax.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 429,
+      "title": "Love, Death & Robots",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yukmN2nkaqUcZ5Un6aprkC9Vh7P.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 456,
+      "title": "Monsters At Work (Sevimli Canavarlar)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/zzL6geggjQN3c8p9ml2FMCAIrMy.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 457,
+      "title": "Mr. Robot",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kv1nRqgebSsREnd7vdC2pSGjpLo.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 459,
+      "title": "Muhteşem Yüzyıl",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kryRPZTkCxtIc1bGMjIQgblnPe0.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 491,
+      "title": "Pis Yedili",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/k9XeHBKXdtCrGvRJoSLAfo7pEcc.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 505,
+      "title": "Rick and Morty",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/owhkU6KRqdXoUQpjV8uyZGPtX58.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 522,
+      "title": "Seksenler",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/lRFRmCUmD8UzLhG4MnbJptX8FTL.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 523,
+      "title": "Selena",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tN3LgXBh4JJ18lpXAkz44XeiVVX.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 530,
+      "title": "Sherlock",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 548,
+      "title": "Sihirli Annem",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/kSoW7WVBuFokt38rqngOPOvFnRa.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 559,
+      "title": "Squid Game",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/yACIAqAkSLkX4coHafpyLWAtQjw.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 568,
+      "title": "Teach You a Lesson",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/bUsdsCTUUrqd1l9MZFgiJRypQG1.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 570,
+      "title": "Teletubbies",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/sNaiGG5Wh8DBVep9fKb81fyAe7y.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 604,
+      "title": "The Mentalist",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/acYXu4KaDj1NIkMgObnhe4C4a0T.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 612,
+      "title": "The Walking Dead",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/aN29llVoCFtBTwDZFtqdD9d8dHb.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 613,
+      "title": "The Witcher",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/AoGsDM02UVt0npBA8OvpDcZbaMi.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 656,
+      "title": "Yahşi Cazibe",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oOt5Ac7AjIkheZiZhFMBd5v1E7J.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 657,
+      "title": "Yaprak Dökümü",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/saWjY37nt2eLWWGoG6w40C5u6Vk.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 661,
+      "title": "You",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/oANi0vEE92nuijiZQgPZ88FSxqQ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 673,
+      "title": "Çocuklar Duymasın",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/4Ctw5fPgMASHub8LtX16N8jjqQA.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 674,
+      "title": "Çok Güzel Hareketler Bunlar",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tqvyMqzqp8L6CXx2m6JQ6O69EaZ.jpg",
+      "source": "tmdb"
+    },
+    {
+      "id": 675,
+      "title": "Çok Güzel Hareketler Bunlar (1. Kuşak)",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/tqvyMqzqp8L6CXx2m6JQ6O69EaZ.jpg",
+      "source": "tmdb_search"
+    },
+    {
+      "id": 677,
+      "title": "Öyle Bir Geçer Zaman ki",
+      "type": "series",
+      "new_cover": "https://image.tmdb.org/t/p/w500/9EdummL201K7rYtcZ5z08yX8NKm.jpg",
+      "source": "tmdb"
+    }
+  ]
+}
