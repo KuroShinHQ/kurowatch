@@ -54,6 +54,7 @@ _CF_SITES = {
     "tranimeizle.co",
     "tranimeizle.io",
     "tranimaci.com",
+    "tranimeizle.xyz",
 }
 
 # nodriver Chromium binary yolu
@@ -93,8 +94,10 @@ _EMBED_PATTERNS = [
 _SITE_COOKIES = {
     "tranimeizle.co":     "tranimeizle_cookies.txt",
     "tranimeizle.io":     "tranimeizle_cookies.txt",
+    "tranimeizle.xyz":     "tranimeizle_cookies.txt",
     "turkanime.co":       "turkanime_cookies.txt",
     "turkanime.tv":       "turkanime_cookies.txt",
+    "turkanime.com.tr":   "turkanime_cookies.txt",
     "diziwatch.com":      "diziwatch_cookies.txt",
     "anizm.net":          "anizm_cookies.txt",
     "dizibox.live":       "dizibox_cookies.txt",
@@ -141,7 +144,8 @@ _NODRIVER_HTML_SITES = {
 
 # Site-spesifik popup kapatma selector'ları (play butonundan ÖNCE kapatılır)
 _POPUP_CLOSE_SELECTORS = {
-    "turkanime.tv": ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
+    "turkanime.tv":     ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
+    "turkanime.com.tr": ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
     "hdfilmcehennemi": [".modal-close", ".popup-close", "button.close", ".close-btn"],
     "dizigom": [".modal-close", ".popup-close", "button.close"],
 }
@@ -154,6 +158,7 @@ _PLAY_BUTTON_SELECTORS = {
     "dizigom": [".player-area iframe", ".video-js", "#player iframe", ".film-player iframe"],
     # IndexIcerik AJAX → iframe inject eder; ilk sunucu butonunu tıkla
     "turkanime.tv":       ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
+    "turkanime.com.tr":   ["button.btn.btn-sm.btn-default", ".btn-server:first-child", "[data-video]:first-child"],
     "tranimeizle.co":     [
         ".players a:first-child",
         ".eps-server:first-child a",
@@ -277,7 +282,7 @@ _SITE_PARSER_DOMAINS = {
     "fullhdfilmizlesene": "fullhdfilmizlesene",
 }
 
-_ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "turkanime.tv", "anizm.net"}
+_ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "tranimeizle.xyz", "turkanime.tv", "turkanime.com.tr", "anizm.net"}
 
 
 from backend.scraper.tag_extractor import extract_site_tags
@@ -404,7 +409,7 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
         logger.info("JS-render gerekli site (%s) — Playwright'a yönlendiriliyor", domain)
 
     # 4. Playwright: JS-render + ağ isteği izleme (fallback)
-    if "turkanime.tv" in domain:
+    if "turkanime.tv" in domain or "turkanime.com.tr" in domain:
         pw_timeout = 60000
     elif "tranimaci.com" in domain:
         pw_timeout = 45000
@@ -417,6 +422,29 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
             return embed, source_tags
     except Exception as exc:
         logger.warning("Playwright fallback başarısız: %s", exc)
+
+    # tranimaci.com başarısız → mirror siteleri dene
+    if "tranimaci.com" in domain:
+        for mirror in ("tranimeizle.xyz", "turkanime.com.tr"):
+            mirror_url = episode_url.replace("tranimaci.com", mirror)
+            if mirror_url != episode_url:
+                logger.info("tranimaci.com mirror deneniyor: %s", mirror)
+                mirror_domain = _domain(mirror_url)
+                try:
+                    if any(mirror_domain.endswith(d) for d in _CF_SITES):
+                        html = await _fetch_with_cf_bypass(mirror_url)
+                        if html:
+                            embed = _extract_mp4_from_html(html) or _extract_embed_from_html(html)
+                            if embed:
+                                logger.info("Mirror embed buldu (%s): %s", mirror, embed[:80])
+                                return embed, source_tags
+                    pw_timeout = 60000 if "turkanime" in mirror else 30000
+                    embed = await _playwright_find_embed(mirror_url, timeout_ms=pw_timeout)
+                    if embed:
+                        logger.info("Mirror PW embed buldu (%s): %s", mirror, embed[:80])
+                        return embed, source_tags
+                except Exception as exc:
+                    logger.warning("Mirror %s başarısız: %s", mirror, exc)
 
     logger.info("Embed bulunamadı, orijinal URL kullanılıyor: %s", episode_url[:60])
     return episode_url, source_tags
@@ -723,7 +751,7 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                     pass
 
             # Player yüklensin
-            if "turkanime.tv" in domain:
+            if "turkanime.tv" in domain or "turkanime.com.tr" in domain:
                 wait_secs = 32
             elif "tranimaci.com" in domain:
                 wait_secs = 30  # JS PoW challenge (~5sn) + player load (~15sn) + embed fetch

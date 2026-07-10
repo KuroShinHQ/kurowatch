@@ -18,10 +18,21 @@ _MADARA_DOMAINS = [
     "merlintoon.com",
     "mangadenizi.com",
     "mangasehri.net", "mangasehri.com",
+    "manga-sehri.net", "manga-sehri.com",
+    "mangaokutr.com",
+    "turkcemangaoku.com",
+    "mangatepesi.com",
+    "merlinscans.com",
+    "mangatr.me",
+    "turkmanga.com.tr",
+    "thegreatestestatedeveloper.site",
+    "tempestfansub.com",
+    "ruyamanga2.com",
+    "mangakoleji.com",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
-    "manga-sehri.net", "mangakeyf.com", "mangahost.net",
+    "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
-    "ruyamanga.com", "ruyamanga.net", "asurascans.com.tr",
+    "asurascans.com.tr",
 ]
 
 # CF turnstile siteler — curl_cffi impersonate ile aşılır
@@ -29,6 +40,12 @@ _CF_BLOCKED = {
     "ragnarscans.com", "ragnarscans.net",
     "hayalistic.com.tr",
     "mangasehri.net", "mangasehri.com",
+    "manga-sehri.net", "manga-sehri.com",
+    "mangaokutr.com",
+    "turkcemangaoku.com",
+    "merlinscans.com",
+    "mangatr.me",
+    "mangatepesi.com",
 }
 
 # Next.js App Router siteler — RSC payload'dan CDN görsel URL'leri çekilir
@@ -43,7 +60,8 @@ _IMC_DOMAINS = {
 
 # DNS fail / offline siteler — anında hata döndür
 _OFFLINE = {
-    "majorscans.com", "majorscans.net", "mangatr.net",
+    "majorscans.com", "majorscans.net",
+    "mangatr.net",
     "manhwahentai.me",
 }
 
@@ -200,6 +218,12 @@ async def download_manga_chapter(
     elif _is_madara(url):
         return await _madara_chapter(url, output_dir, on_progress)
     else:
+        # Bilinmeyen site: önce Madara dene (çoğu WordPress/Madara tema kullanır)
+        # gallery-dl son çare
+        try:
+            return await _madara_chapter(url, output_dir, on_progress)
+        except Exception:
+            pass
         return await _gallerydl_chapter(url, output_dir, on_progress)
 
 

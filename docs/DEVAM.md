@@ -1,25 +1,50 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 9 Temmuz 2026 (SOHBET-137) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `b753c24` — SOHBET-136: game detail
+**Son güncelleme:** 10 Temmuz 2026 (SOHBET-138) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `18622a6` — SOHBET-137: 714/714
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-138: 5 Kritik Kullanıcı Hatası
+
+```
+SOHBET-138 — 5 kritik kullanıcı hatası düzeltildi:
+
+[1] Film/Dizi Kapakları TMDB (474/533 güncellendi):
+     TMDB API ile movie/series/cartoon/anime kapakları yenilendi
+     474 kapak TMDB'den alındı (https://image.tmdb.org/t/p/w500)
+     49 zaten TMDB'den, 10 TMDB'de bulunamadı
+     Kanıt: _kanit_sohbet138/cover_raporu.json
+
+[2] Manga/Manhwa İndirme Butonları (per-episode):
+     Her bölüm için .ep-dl-btn zaten render ediliyor (app.js:2991)
+     Sorun backend parser eksikliğiydi → [3]'te çözüldü
+
+[3] gallery-dl Çıkış Kodu 64 → Özel Parser'lar:
+     10 yeni domain _MADARA_DOMAINS'e eklendi:
+       mangaokutr.com (1721 ep), turkcemangaoku.com (318 ep),
+       mangatepesi.com, merlinscans.com, mangatr.me,
+       turkmanga.com.tr, ruyamanga2.com, mangakoleji.com,
+       tempestfansub.com, thegreatestestatedeveloper.site
+     _CF_BLOCKED genişletildi: yeni domain'ler CF bypass ile
+     Bilinmeyen siteler için Madara fallback (gallery-dl öncesi)
+     mangatr.net _OFFLINE'da kaldı (gerçekten DNS'siz)
+
+[4] tranimaci.com Video Embed Fallback:
+     Playwright başarısızsa → tranimeizle.xyz → turkanime.com.tr
+     _CF_SITES, cookies map, _ANIME_ONLY_DOMAINS genişletildi
+     turkanime.com.tr için popup/play selector'ları + PW timeout
+
+[5] E2E Test Senaryoları:
+     tests/test_sohbet138_e2e.py — 6 test:
+       Kapak TMDB kontrolü, per-episode dl butonları,
+       download API endpoint, stream fallback chain,
+       tüm türlerde episode varlığı, cover raporu doğrulama
+```
 
 ---
 
 ## ✅ TAMAMLANDI — SOHBET-137: Kalan 38 İçeriğin Tamamlanması (714/714)
 
 ```
-SOHBET-137 — Son 38 içerik düzeltildi:
-
-[1] 32 external_id'siz içerik → TMDB title search:
-    28 içerik TMDB'de bulundu, 3.024 ep eklendi
-    4 Turkish content skip (Türkçe, TMDB'de yok)
-    1 not found (Winnie the Pooh)
-
-[2] 6 MAL failure → TMDB alternative API:
-    Solo Leveling (25), Looney Tunes (312), Tom and Jerry (325)
-    Limitless (22), Rick and Morty (91), You (50)
-
-[3] Son 5 Türkçe içerik → total_episodes'dan episode oluşturma:
-    Arka Sokaklar, Dabbe, Gladio, Kurtlar Vadisi Irak, Winnie the Pooh
-
 FINAL: 714/714 ✅ — Total episodes: 22.487
 ```
 
