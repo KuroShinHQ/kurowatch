@@ -962,7 +962,7 @@
     typeBadgeEl.textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
     typeBadgeEl.style.cssText = tcStyle(tc).badge;
     document.getElementById('detail-progress-bar').style.background = tc.color;
-    const statusIcon = item.type==='game' ? 'sports_esports' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime' ? 'play_circle' : 'menu_book'));
+    const statusIcon = item.type==='game' ? 'download' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime' ? 'play_circle' : 'menu_book'));
     var sColor = statusColor(item.status);
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
     document.getElementById('detail-status-badge').style.cssText = `background:${sColor}22;border:1px solid ${sColor}55;color:${sColor};border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px`;
@@ -978,6 +978,10 @@
     // Progress bölüm etiketi
     const progressLabel = document.querySelector('#screen-detail .font-label-caps.uppercase');
     if (progressLabel) progressLabel.textContent = isPctType ? 'TAMAMLANMA' : (item.type==='series'||item.type==='anime' ? 'BÖLÜM' : 'CHAPTER');
+
+    // Game: progress card'ı tamamen gizle
+    const progressCard = document.getElementById('detail-progress-card');
+    if (progressCard) progressCard.style.display = item.type === 'game' ? 'none' : '';
 
     // Mark butonu etiketi
     const markBtn = document.getElementById('detail-mark-btn');
@@ -1213,22 +1217,32 @@
           // Load saved downloads
           _renderSavedDownloads(id, item);
           // Update tab label
-          var epTabBtn = document.querySelector('#screen-detail .sticky.top-0 button:first-child');
-          if (epTabBtn) epTabBtn.textContent = 'İndirme';
+          var epTabBtn = document.querySelector('#screen-detail .sticky.top-0 [data-tab="episodes"]');
+          if (epTabBtn) epTabBtn.innerHTML = '<span class="material-symbols-outlined text-[14px] align-middle" style="font-size:14px">download</span> İndirme';
         }
       } else {
         epsTabEl.querySelectorAll('#detail-tab-episodes-default').forEach(function(e) { e.classList.remove('hidden'); });
         var gameDlTab2 = document.getElementById('detail-tab-game-downloads');
         if (gameDlTab2) gameDlTab2.classList.add('hidden');
         renderDetailEpisodes(epsTabEl, item.episodes || [], id, item.type, item.title, item.sites || [], item.my_progress || 0);
-        var epTabBtn2 = document.querySelector('#screen-detail .sticky.top-0 button:first-child');
-        if (epTabBtn2) epTabBtn2.textContent = 'Bölümler';
+        var epTabBtn2 = document.querySelector('#screen-detail .sticky.top-0 [data-tab="episodes"]');
+        if (epTabBtn2) epTabBtn2.innerHTML = 'Bölümler';
       }
     }
 
-    // Siteler tab
+    // Siteler tab — game'lerde gösterme (video site bağlantıları yanıltıcı)
     const sitesTabEl = document.getElementById('detail-tab-sites');
-    if (sitesTabEl) renderDetailSites(sitesTabEl, item.sites || [], id);
+    if (sitesTabEl) {
+      if (item.type === 'game') {
+        sitesTabEl.innerHTML = '<div class="flex flex-col items-center gap-3 py-6 text-[#9090b0]"><span class="material-symbols-outlined text-4xl">sports_esports</span><p class="text-[13px]">Oyunlar için site bağlantıları gösterilmez</p><p class="text-[12px]">İndirme kaynakları için "İndirme" sekmesini kullanın</p></div>';
+        var siteTabBtn = document.querySelector('#screen-detail .sticky.top-0 [data-tab="sites"]');
+        if (siteTabBtn) siteTabBtn.style.display = 'none';
+      } else {
+        renderDetailSites(sitesTabEl, item.sites || [], id);
+        var siteTabBtn2 = document.querySelector('#screen-detail .sticky.top-0 [data-tab="sites"]');
+        if (siteTabBtn2) siteTabBtn2.style.display = '';
+      }
+    }
 
     // Notlar tab
     const notesArea = document.getElementById('detail-notes-area');
