@@ -408,7 +408,7 @@ async def parse_url(site_name: str, url: str) -> Optional[str]:
         return await parse_hdfilmcehennemi(slug)
     elif site_name == "dizigom":
         return await parse_dizigom(slug)
-    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene"):
+    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene", "setfilmizle"):
         return await parse_generic(site_name, url)
     else:
         logger.warning("Bilinmeyen site parser: %s", site_name)
@@ -427,7 +427,7 @@ async def parse_url_with_tags(site_name: str, url: str) -> dict:
         embed, page_html = await _parse_hdfilmcehennemi_raw(slug)
     elif site_name == "dizigom":
         embed, page_html = await _parse_dizigom_raw(slug)
-    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene"):
+    elif site_name in ("sezonlukdizi", "fullhdfilmizlesene", "setfilmizle"):
         embed, page_html = await _parse_generic_raw(site_name, url)
     else:
         logger.warning("Bilinmeyen site parser (tags): %s", site_name)

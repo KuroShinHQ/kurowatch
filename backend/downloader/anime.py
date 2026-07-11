@@ -8,6 +8,7 @@ from backend.downloader.integrity import validate_video_file_playable
 from backend.downloader.stream_finder import (
     find_stream_url_with_tags,
     get_session_header_args,
+    get_session_cookies_arg,
     get_yt_dlp_cookies_arg,
 )
 
@@ -48,6 +49,9 @@ async def download_anime(
     # Playwright'ın MP4 isteğindeki header'lar (CF cookie dahil, alucard.click vb.)
     session_header_args = get_session_header_args(actual_url)
 
+    # Session cookie'leri (Playwright context'ten, embed domain için)
+    session_cookie_args = get_session_cookies_arg(actual_url, url)
+
     cmd = [
         "yt-dlp",
         "--no-playlist",
@@ -55,14 +59,19 @@ async def download_anime(
         "--merge-output-format", "mp4",
         "--newline",
         "--no-warnings",
+        "--ignore-errors",
         "--write-sub",
         "--write-auto-sub",
         "--sub-lang", "tr,tr-TR,en",
         "--convert-subs", "vtt",
         "--sub-format", "vtt",
+        "--extractor-retries", "10",
+        "--retries", "10",
+        "--throttled-rate", "100K",
         *cookies_args,
         *referer_args,
         *session_header_args,
+        *session_cookie_args,
         "-o", output_path + ".%(ext)s",
         actual_url,
     ]
@@ -112,6 +121,12 @@ async def download_anime(
         # [generic] = embed oynatıcısı yt-dlp tarafından desteklenmiyor
         if "[generic]" in err_tail:
             domain = urlparse(url).netloc
+            if actual_url != url:
+                raise RuntimeError(
+                    f"{domain} için video embed bulundu ({actual_url[:80]}) "
+                    f"fakat yt-dlp bu kaynaktan video çekemedi. "
+                    f"Site video sunucusu değiştirmiş veya engellenmiş olabilir."
+                )
             raise RuntimeError(
                 f"{domain} sitesinde video embed bulunamadı. "
                 "Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. "
