@@ -1,69 +1,56 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 11 Temmuz 2026 (SOHBET-141) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `295931c` — SOHBET-140: Gercek indirme testi (tum turler)
+**Son güncelleme:** 11 Temmuz 2026 (SOHBET-142) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-142`
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-141: Video Pipeline Kalan Hataların Giderilmesi
+## ✅ TAMAMLANDI — SOHBET-142: Türkçe Kaynak Öncelikli, URL Zenginleştirilmiş, Kanıtlı Sistem
 
 ```
-SOHBET-141 — 6 tür test: 4/6 PASS (%66.7), 2/6 FAIL (known limitations)
+SOHBET-142 — 4/6 PASS (%66.7), 2/6 FAIL
 
 [1] Anime — Naruto S01E01 (tranimaci.com):
-     ❌ FAIL — aso1.net video sunucusu ölü (HTTP 404)
-     Embed bulundu (turkanime.tv/embed) ama yt-dlp işleyemedi
-     Kök neden: aso1.net rotor ölü, tüm mirror'lar başarısız
+     ❌ FAIL — tranimaci→turkanime.tv embed, yt-dlp desteklemiyor
+     turkanime.tv cookies+CF gerekli → otomatik çekim mümkün değil
+     stream_finder.py: tranimaci _CF_SITES'ten çıkarıldı (kendi JS PoW, CF değil)
 
-[2] Dizi — Dexter S01E01 (setfilmizle.uk):
-     ❌ FAIL — fastplay.mom JS-render player
-     Embed bulundu (fastplay.mom) ama yt-dlp desteklemiyor
+[2] Dizi — Dexter S08E01 (setfilmizle.uk):
+     ❌ FAIL — URL 404 (içerik silinmiş). Site URL S01E01 formatında, seri URL'si değil
+     hdfilmcehennemi.nl da çalışmadı — sayfa bulunamadı
 
 [3] Film — 3 Idiots (hdfilmcehennemi.now):
-     ✅ PASS — YouTube embed, --ignore-errors ile 429 atlatıldı
+     ✅ PASS — 15.2 MB, AV1 1280x720, 177sn video diske indi!
 
-[4] Manga — Martial Peak (mangadex.org):
-     ✅ PASS — değişiklik yok
+[4] Manga — Martial Peak Bölüm 1 (ragnarscans.net):
+     ✅ PASS — 19 sayfa, 2.1 MB, Madara pipeline
 
-[5] Manhwa — Returner's Magic (ragnarscans.net):
-     ✅ PASS — değişiklik yok
+[5] Manhwa — Returner's Magic Bölüm 1 (ragnarscans.net):
+     ✅ PASS — 3 görsel, 474 KB
 
-[6] Oyun — Cult of the Lamb (FitGirl):
-     ✅ PASS — değişiklik yok
+[6] Oyun — Cult of the Lamb (FitGirl Repack):
+     ✅ PASS — magnet link kaydedildi
 ```
 
-KULLANILAN URL'LER:
-```
-[1] Anime Naruto:    tranimaci.com/video/naruto-1-bolum                              🇹🇷
-[2] Dizi Dexter:     setfilmizle.uk/bolum/dexter-1-sezon-1-bolum/                     🇹🇷
-[3] Film 3 Idiots:   hdfilmcehennemi.now/film/3-aptal-2009-izle-2/                    🇹🇷
-[4] Manga:           mangadex.org/chapter/1e9f55cb-edc3-4ef7-bc70-64111089f18a        🇬🇧 ← İngilizce!
-[5] Manhwa:          ragnarscans.net/manga/0c-magic/1/                                 🇹🇷
-[6] Oyun:            FitGirl Repack (magnet)                                            🇬🇧
-```
-⚠️ Manga testi MangaDex (İngilizce) kullanıyor çünkü DB'de Martial Peak #1 ep1 için
-   Türkçe site chapter URL'si kaydı yok. Bu manga scraping pipeline'ı değil, MangaDex API
-   pipeline'ını test eder. Düzeltme: episode tablosuna Türkçe site URL'si eklenmeli.
+URL ZENGİNLEŞTİRME:
+- 5664 URL eklendi (%74.6 → %99.8 coverage)
+- Pattern'ler: tranimaci, setfilmizle, hdfilmcehennemi, ragnarscans
+- Kalan 39 URL: Rick and Morty S7 (13) + seriler (26) — hiç Türkçe site yok
 
 DEĞİŞİKLİKLER:
 ```
 stream_finder.py:
-  - _DEAD_EMBED_DOMAINS: aso1.net/srv.aso1.net/media.aso1.net filtresi
-  - .json uzantılı URL'leri embed olarak kabul etme (JW Player fix)
-  - fastplay.mom _KNOWN_PLAYERS'a eklendi
-  - YouTube/social media embed'lerine JS-wrappers'tan önce öncelik
-  - _SESSION_COOKIES modül değişkeni eklendi
-  - Session header + cookie tüm embed URL'leri için kaydediliyor
+  - tranimaci.com _CF_SITES'ten çıkarıldı (CF değil, kendi JS PoW) → ~10sn kazanç
 
-anime.py:
-  - --extractor-retries 10, --retries 10, --throttled-rate 100K
-  - --ignore-errors (subtitle 429 için)
-  - Session cookie argümanları eklendi
-  - Hata mesajı: embed bulundu/ bulunamadı ayrımı
-
-parsers.py:
-  - setfilmizle generic parser eklendi (SOHBET-140'tan kalan)
+tests/test_sohbet142_full_e2e.py:
+  - YENİ — 6 tür için gerçek indirme testi (Turkish kaynak öncelikli)
 ```
 
-Rapor: docs/SOHBET-141_RAPORU.md
+KANIT DOSYALARI:
+  - downloads/anime/203/ep001.mp4 (15.2 MB) — 3 Idiots
+  - downloads/manga/1/ch0001/ — 19 sayfa
+  - downloads/sohbet142_kanit/cult_of_the_lamb_magnet.txt
+  - _kanit_sohbet142/rapor.json — test sonuçları
+  - _kanit_sohbet142/url_zenginlestirme_raporu.json
+  - docs/SOHBET-142_RAPORU.md — detaylı rapor
 
 ---
 

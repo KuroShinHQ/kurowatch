@@ -57,7 +57,6 @@ _CF_SITES = {
     "dizigom.love", "dizigom.tv", "dizigom1.com",
     "tranimeizle.co",
     "tranimeizle.io",
-    "tranimaci.com",
     "tranimeizle.xyz",
 }
 
