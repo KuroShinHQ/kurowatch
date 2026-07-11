@@ -212,13 +212,31 @@ def test_movie_3idiots(client):
     return logr("movie_3idiots", "passed" if ok else "failed", d)
 
 def test_manga_martial_peak(client):
-    print("\n=== MANGA: Martial Peak Bolum 1 via mangadex.org ===")
+    print("\n=== MANGA: Martial Peak Bolum 1 via Turkish site ===")
     r = client.get(f"{API}/api/content/1")
     if r.status_code != 200:
         return logr("manga_martial_peak", "skipped", {"message": "Martial Peak #1 not found"})
     c = r.json()
     print(f"  #{c['id']}: {c['title']} ({c.get('type','?')})")
-    ep1 = next((e for e in c.get("episodes", []) if e.get("number") == 1 and e.get("url")), None)
+    eps = c.get("episodes", [])
+    sites = c.get("sites", [])
+    # Turkish manga sitelerini tercih et, mangadex.org (İngilizce) atla
+    _EN_SITES = ("mangadex.org",)
+    ep1 = next(
+        (e for e in eps if e.get("number") == 1 and e.get("url") and not any(s in e["url"] for s in _EN_SITES)),
+        None
+    )
+    if not ep1:
+        # Episode tablosunda Türkçe site URL'si yoksa sites tablosundan dene
+        print("  Warning: No Turkish episode URL found, trying sites table...")
+        for s in sites:
+            su = s.get("site_url", "")
+            if any(skip in su for skip in _EN_SITES):
+                continue
+            ok, d = dl_start_wait(client, 1, "Martial Peak", 1, su, "manga", timeout=300)
+            return logr("manga_martial_peak", "passed" if ok else "failed", d)
+        # Hiç Türkçe site yoksa mangadex fallback
+        ep1 = next((e for e in eps if e.get("number") == 1 and e.get("url")), None)
     if not ep1:
         return logr("manga_martial_peak", "failed", {"message": "No ep1 with URL"})
     print(f"  URL: {ep1['url'][:100]}")

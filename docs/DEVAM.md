@@ -30,6 +30,19 @@ SOHBET-141 — 6 tür test: 4/6 PASS (%66.7), 2/6 FAIL (known limitations)
      ✅ PASS — değişiklik yok
 ```
 
+KULLANILAN URL'LER:
+```
+[1] Anime Naruto:    tranimaci.com/video/naruto-1-bolum                              🇹🇷
+[2] Dizi Dexter:     setfilmizle.uk/bolum/dexter-1-sezon-1-bolum/                     🇹🇷
+[3] Film 3 Idiots:   hdfilmcehennemi.now/film/3-aptal-2009-izle-2/                    🇹🇷
+[4] Manga:           mangadex.org/chapter/1e9f55cb-edc3-4ef7-bc70-64111089f18a        🇬🇧 ← İngilizce!
+[5] Manhwa:          ragnarscans.net/manga/0c-magic/1/                                 🇹🇷
+[6] Oyun:            FitGirl Repack (magnet)                                            🇬🇧
+```
+⚠️ Manga testi MangaDex (İngilizce) kullanıyor çünkü DB'de Martial Peak #1 ep1 için
+   Türkçe site chapter URL'si kaydı yok. Bu manga scraping pipeline'ı değil, MangaDex API
+   pipeline'ını test eder. Düzeltme: episode tablosuna Türkçe site URL'si eklenmeli.
+
 DEĞİŞİKLİKLER:
 ```
 stream_finder.py:

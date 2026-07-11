@@ -64,18 +64,19 @@ SOHBET-140'ta kalan 3 video indirme başarısızlığını gidermek:
 
 ---
 
-## Test Sonuçları
+## Test Detayı (Kullanılan URL'ler)
 
-| Test | Sonuç | Detay |
-|---|---|---|
-| Anime - Naruto (tranimaci.com) | ❌ FAIL | aso1.net video sunucusu ölü (HTTP 404). Embed bulundu ama yt-dlp işleyemedi |
-| Series - Dexter (setfilmizle.uk) | ❌ FAIL | fastplay.mom embed'i JS-render player, yt-dlp desteklemiyor |
-| Movie - 3 Idiots (hdfilmcehennemi.now) | ✅ PASS | YouTube 429 `--ignore-errors` ile atlatıldı |
-| Manga - Martial Peak (mangadex.org) | ✅ PASS | Değişiklik yok |
-| Manhwa - Returner's Magic (ragnarscans.net) | ✅ PASS | Değişiklik yok |
-| Game - Cult of the Lamb (FitGirl) | ✅ PASS | Değişiklik yok |
+| Test | URL (Dil) | Sonuç | Açıklama |
+|---|---|---|---|
+| Anime - Naruto | `tranimaci.com/video/naruto-1-bolum` 🇹🇷 | ❌ FAIL | aso1.net video sunucusu ölü. Embed bulundu ama yt-dlp çekemedi |
+| Series - Dexter | `setfilmizle.uk/bolum/dexter-1-sezon-1-bolum/` 🇹🇷 | ❌ FAIL | fastplay.mom JS-render player, yt-dlp desteklemiyor |
+| Movie - 3 Idiots | `hdfilmcehennemi.now/film/3-aptal-2009-izle-2/` 🇹🇷 | ✅ PASS | YouTube 429 `--ignore-errors` ile atlatıldı |
+| Manga - Martial Peak | `mangadex.org/chapter/...` 🇬🇧 **İngilizce** | ✅ PASS | ⚠️ DB'de ep1 için Türkçe site URL'si yok. Sadece MangaDex kaydı var. |
+| Manhwa - Returner's Magic | `ragnarscans.net/manga/0c-magic/1/` 🇹🇷 | ✅ PASS | Türkçe site, Madara scraping pipeline |
+| Game - Cult of the Lamb | FitGirl Repack (magnet) 🇬🇧 | ✅ PASS | FitGirl repack magnet kaydedildi |
 
-**Başarı: %66.7 (4/6)**
+**Başarı: %66.7 (4/6)**  
+⚠️ **Not:** Manga testi İngilizce site (MangaDex) kullanmıştır çünkü Martial Peak #1 ep1 için DB'de yalnızca MangaDex URL'si bulunmaktadır. DB'de manga-sehri.com, ragnarscans.net gibi Türkçe sitelerin kaydı var ama episode tablosunda chapter 1 URL'leri eksik. Bu, manga testimizin Türkçe manga scraping pipeline'ını değil, MangaDex API pipeline'ını test ettiği anlamına gelir. Gelecek testlerde episode tablosuna Türkçe site chapter URL'leri eklenmeli.
 
 ---
 
