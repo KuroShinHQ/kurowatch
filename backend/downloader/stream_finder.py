@@ -35,6 +35,10 @@ _COOKIES_DIR = Path(__file__).parent.parent.parent / "cookies"
 # anime.py yt-dlp çağrısında kullanır; her find_stream_url çağrısında sıfırlanır
 _SESSION_HEADERS: dict[str, str] = {}
 
+# Playwright session cookie'leri (yt-dlp --cookies için)
+# domain → "cookie1=val1; cookie2=val2" formatında
+_SESSION_COOKIES: dict[str, str] = {}
+
 # CF bypass: nodriver ile alınan cookie cache'i
 # domain → (cookies_dict, user_agent, timestamp)
 _cf_cache: dict[str, tuple[dict, str, float]] = {}
@@ -58,7 +62,11 @@ _CF_SITES = {
 }
 
 # nodriver Chromium binary yolu
-_CHROMIUM_BIN = "/usr/bin/chromium-browser"
+_CHROMIUM_BIN = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
+
+# Bu domainlerden dönen embed URL'leri ölü/çalışmıyor kabul edilir
+# (rotor URL'leri döndüren eski/virman siteler için)
+_DEAD_EMBED_DOMAINS = ("aso1.net", "srv.aso1.net", "media.aso1.net")
 
 
 def get_session_header_args(actual_url: str) -> list[str]:
@@ -135,6 +143,7 @@ _FORCE_PLAYWRIGHT = {
     "dizigom.info", "dizigom.com", "dizigom.vip", "dizigom.net",
     "dizigom.love", "dizigom.tv", "dizigom1.com",
     "turkanime.tv",
+    "setfilmizle.uk", "setfilmizle.com",
 }
 
 # Bu domainler Cloudflare Managed Challenge kullanır → nodriver (gerçek Chrome) gerekiyor
@@ -148,6 +157,7 @@ _POPUP_CLOSE_SELECTORS = {
     "turkanime.com.tr": ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"],
     "hdfilmcehennemi": [".modal-close", ".popup-close", "button.close", ".close-btn"],
     "dizigom": [".modal-close", ".popup-close", "button.close"],
+    "setfilmizle": [".modal-close", ".popup-close", ".auth-modal-close", "#login-modal .close", ".show-register-modal .close"],
 }
 
 # Site-spesifik play butonu CSS selector'ları (Playwright için)
@@ -176,6 +186,23 @@ _PLAY_BUTTON_SELECTORS = {
         "ul.server-list li:first-child a",
         "[data-source]:first-child",
         ".player-source:first-child",
+    ],
+    # setfilmizle.uk: #fimcnt_pb play butonu → AJAX → iframe yüklenir
+    "setfilmizle.uk": [
+        "#fimcnt_pb",
+        ".play-button",
+        ".playex",
+        ".idTabs.sourceslist li:first-child a",
+        ".player_sist .idTabs li:first-child a",
+        ".idTabs li:first-child a",
+    ],
+    "setfilmizle.com": [
+        "#fimcnt_pb",
+        ".play-button",
+        ".playex",
+        ".idTabs.sourceslist li:first-child a",
+        ".player_sist .idTabs li:first-child a",
+        ".idTabs li:first-child a",
     ],
 }
 
@@ -280,6 +307,7 @@ _SITE_PARSER_DOMAINS = {
     "dizigom": "dizigom",
     "sezonlukdizi": "sezonlukdizi",
     "fullhdfilmizlesene": "fullhdfilmizlesene",
+    "setfilmizle": "setfilmizle",
 }
 
 _ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "tranimeizle.xyz", "turkanime.tv", "turkanime.com.tr", "anizm.net"}
@@ -413,6 +441,8 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
         pw_timeout = 60000
     elif "tranimaci.com" in domain:
         pw_timeout = 45000
+    elif "setfilmizle.uk" in domain or "setfilmizle.com" in domain:
+        pw_timeout = 30000
     else:
         pw_timeout = 15000
     try:
@@ -425,7 +455,7 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
 
     # tranimaci.com başarısız → mirror siteleri dene
     if "tranimaci.com" in domain:
-        for mirror in ("tranimeizle.xyz", "turkanime.com.tr"):
+        for mirror in ("turkanime.tv", "tranimeizle.xyz", "turkanime.com.tr"):
             mirror_url = episode_url.replace("tranimaci.com", mirror)
             if mirror_url != episode_url:
                 logger.info("tranimaci.com mirror deneniyor: %s", mirror)
@@ -595,6 +625,19 @@ def get_yt_dlp_cookies_arg(episode_url: str) -> list[str]:
     return []
 
 
+def get_session_cookies_arg(embed_url: str, episode_url: str = "") -> list[str]:
+    """Playwright session cookie'lerini yt-dlp --add-header Cookie olarak döndür.
+    
+    embed_url: tespit edilen embed/video URL'si
+    episode_url: orijinal episode sayfası URL'si (cookie'ler bu domainden alınır)
+    """
+    domain = _domain(episode_url or embed_url)
+    cookie_str = _SESSION_COOKIES.get(domain)
+    if cookie_str:
+        return ["--add-header", f"Cookie:{cookie_str}"]
+    return []
+
+
 async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> Optional[str]:
     """
     Playwright headless chromium ile sayfayı JS-render et, embed/video URL çıkar.
@@ -617,12 +660,13 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         "dizigom",
         "pichive.online/iframe", "aso1.net",
         "anizmplayer.com", "media.aso",
+        "fastplay.mom",
     )
 
     def _is_embed(url: str) -> bool:
         # JS/CSS dosyaları ve analytics/tracking atla
         parsed_path = url.split("?")[0].split("#")[0].lower()
-        if parsed_path.endswith((".js", ".css", ".woff", ".woff2", ".png", ".ico", ".svg")):
+        if parsed_path.endswith((".js", ".css", ".woff", ".woff2", ".png", ".ico", ".svg", ".json")):
             return False
         if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd", ".mp4")):
             return True
@@ -673,15 +717,16 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             url = req.url
             if _is_embed(url) and url not in found_embed:
                 found_embed.append(url)
-                # CF korumalı direkt MP4: yt-dlp'ye geçirmek için header'ları sakla
-                if url.lower().split("?")[0].endswith(".mp4") and not _SESSION_HEADERS:
-                    try:
-                        h = dict(req.headers)
-                        h["_domain"] = _domain(url)
+                # yt-dlp'ye geçirmek için embed URL isteğinin header'larını sakla
+                # (CF cookie, Referer, Authorization vb. gerekebilir)
+                try:
+                    h = dict(req.headers)
+                    h["_domain"] = _domain(url)
+                    if not _SESSION_HEADERS:
                         _SESSION_HEADERS.update(h)
-                        logger.info("MP4 request header'ları yakalandı: %d adet", len(h) - 1)
-                    except Exception:
-                        pass
+                        logger.info("Embed request header'ları yakalandı: %d adet", len(h) - 1)
+                except Exception:
+                    pass
 
         page.on("request", on_request)
 
@@ -761,6 +806,8 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                 wait_secs = 15
             elif "tranimeizle" in domain:
                 wait_secs = 15
+            elif "setfilmizle" in domain:
+                wait_secs = 20  # AJAX-loaded iframe + networkidle bekle
             elif any(domain.endswith(d) for d in _FORCE_PLAYWRIGHT):
                 wait_secs = 12
             else:
@@ -812,6 +859,11 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                         if src not in found_embed and (_is_embed(src) or sel == "iframe"):
                             found_embed.append(src)
 
+            # Session cookie'lerini kaydet (yt-dlp --cookies için)
+            try:
+                await _save_session_cookies(ctx, episode_url)
+            except Exception:
+                pass
         finally:
             await browser.close()
 
@@ -825,7 +877,16 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         for u in found_embed:
             if u.lower().split("?")[0].endswith(".mp4"):
                 return u
-        return found_embed[0]
+        # YouTube/Social media embed'leri (yt-dlp native) — JS-render wrappers'tan önce
+        for u in found_embed:
+            if any(p in u for p in ("youtube.com/embed", "youtu.be", "youtube.com/watch", "vk.com/video", "ok.ru", "dailymotion")):
+                return u
+        # Ölü/rotor domainlerini atla
+        filtered = [u for u in found_embed if not any(d in u for d in _DEAD_EMBED_DOMAINS)]
+        if filtered:
+            return filtered[0]
+        logger.warning("Tüm embed URL'leri ölü domain (%s) — None döndürülüyor", _DEAD_EMBED_DOMAINS)
+        return None
 
     reason = f"HTTP {http_status}" if http_status else "no response"
     if http_status and http_status != 200:

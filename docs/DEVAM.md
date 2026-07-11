@@ -1,61 +1,56 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 10 Temmuz 2026 (SOHBET-140) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `13ebbca` — SOHBET-139: mangaokutr DNS fix + series/movie/cartoon download buttons
+**Son güncelleme:** 11 Temmuz 2026 (SOHBET-141) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `295931c` — SOHBET-140: Gercek indirme testi (tum turler)
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-140: Gerçek İndirme Testi (Tüm Türler)
+## ✅ TAMAMLANDI — SOHBET-141: Video Pipeline Kalan Hataların Giderilmesi
 
 ```
-SOHBET-140 — 6 türde gerçek dosya indirme testi:
+SOHBET-141 — 6 tür test: 4/6 PASS (%66.7), 2/6 FAIL (known limitations)
 
-[1] Anime — Naruto S01E01:
-     URL: tranimaci.com → ❌ BAŞARISIZ (CF JS challenge)
-     Kök neden: tranimaci.com Cloudflare korumalı, embed bulunamadı
+[1] Anime — Naruto S01E01 (tranimaci.com):
+     ❌ FAIL — aso1.net video sunucusu ölü (HTTP 404)
+     Embed bulundu (turkanime.tv/embed) ama yt-dlp işleyemedi
+     Kök neden: aso1.net rotor ölü, tüm mirror'lar başarısız
 
-[2] Dizi — Dexter S08E01:
-     URL: setfilmizle.uk (site fallback) → ❌ BAŞARISIZ
-     Kök neden: Video embed AJAX/JS ile yükleniyor, stream_finder çözemiyor
+[2] Dizi — Dexter S01E01 (setfilmizle.uk):
+     ❌ FAIL — fastplay.mom JS-render player
+     Embed bulundu (fastplay.mom) ama yt-dlp desteklemiyor
 
-[3] Film — 3 Idiots:
-     URL: hdfilmcehennemi.now → ❌ BAŞARISIZ
-     Kök neden: yt-dlp HTTP 404 — video sayfası var ama video dosyası yok
+[3] Film — 3 Idiots (hdfilmcehennemi.now):
+     ✅ PASS — YouTube embed, --ignore-errors ile 429 atlatıldı
 
-[4] Manga — Martial Peak Bölüm 1:
-     URL: mangadex.org → ✅ BAŞARILI (19 sayfa, 1.87MB, 800x1131)
-     İndirme: ~3sn, doğrulama: PIL ile açıldı
+[4] Manga — Martial Peak (mangadex.org):
+     ✅ PASS — değişiklik yok
 
-[5] Manhwa — A Returner's Magic Bölüm 1:
-     URL: ragnarscans.net (dead manhwahentai.me fallback) → ✅ BAŞARILI
-     1 sayfa, 168KB, 1200x675, doğrulandı
+[5] Manhwa — Returner's Magic (ragnarscans.net):
+     ✅ PASS — değişiklik yok
 
-[6] Oyun — Cult of the Lamb:
-     Kaynak: FitGirl Repack → ✅ BAŞARILI
-     Magnet URI: 254 bytes, diske kaydedildi
-
-GENEL: 3/6 passed (%50)
+[6] Oyun — Cult of the Lamb (FitGirl):
+     ✅ PASS — değişiklik yok
 ```
 
-ANALİZ:
+DEĞİŞİKLİKLER:
 ```
-Manga/Manhwa pipeline: ÇALIŞIYOR ✅
-  - MangaDex API: sorunsuz (19 sayfa)
-  - Madara parser (ragnarscans.net): çalışıyor
-  - Dead domain fallback: manhwahentai.me → ragnarscans.net otomatik
+stream_finder.py:
+  - _DEAD_EMBED_DOMAINS: aso1.net/srv.aso1.net/media.aso1.net filtresi
+  - .json uzantılı URL'leri embed olarak kabul etme (JW Player fix)
+  - fastplay.mom _KNOWN_PLAYERS'a eklendi
+  - YouTube/social media embed'lerine JS-wrappers'tan önce öncelik
+  - _SESSION_COOKIES modül değişkeni eklendi
+  - Session header + cookie tüm embed URL'leri için kaydediliyor
 
-Video pipeline: SINIRLI ❌
-  - tranimaci.com: Cloudflare (headless çözüm yok)
-  - setfilmizle.uk: AJAX embed (site-specific parser gerek)
-  - hdfilmcehennemi.now: video 404 (ölü kaynak)
-  - Not: SOHBET-128'de tranimeizle.xyz ile Naruto 1080p başarıyla indi
+anime.py:
+  - --extractor-retries 10, --retries 10, --throttled-rate 100K
+  - --ignore-errors (subtitle 429 için)
+  - Session cookie argümanları eklendi
+  - Hata mesajı: embed bulundu/ bulunamadı ayrımı
 
-Game pipeline: ÇALIŞIYOR ✅
-  - FitGirl search + detail: çalışıyor (cssselect eklendi)
-  - Magnet URI: başarıyla çekildi
+parsers.py:
+  - setfilmizle generic parser eklendi (SOHBET-140'tan kalan)
 ```
 
-Test script: tests/test_sohbet140_real_download.py
-Rapor: docs/SOHBET-140_RAPORU.md
-Kanıt: _kanit_sohbet140/rapor.json
+Rapor: docs/SOHBET-141_RAPORU.md
 
 ---
 
