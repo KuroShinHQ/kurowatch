@@ -65,6 +65,28 @@ async def _startup_check_bg():
         print(f"[KuroWatch] Startup check-updates hatası: {e}")
 
 
+async def _domain_health_bg():
+    """Periodic domain health check (runs every 24h via scheduler)."""
+    try:
+        from backend.database import AsyncSessionLocal
+        from backend.services.domain_health import get_all_domains, get_domain_sample_urls, check_single_url, update_dead_status, HealthResult
+        async with AsyncSessionLocal() as db:
+            domains = await get_all_domains(db)
+            if not domains:
+                return
+            results = {}
+            for domain in domains[:50]:
+                samples = await get_domain_sample_urls(db, domain)
+                if not samples:
+                    continue
+                r = await check_single_url(samples[0])
+                results[domain] = r
+            updated = await update_dead_status(db, results)
+            print(f"[KuroWatch] Domain health: {len(results)} checked, {updated} sites updated")
+    except Exception as e:
+        print(f"[KuroWatch] Domain health error: {e}")
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     from backend.downloader.manager import load_jobs, scan_downloaded_files
@@ -73,7 +95,18 @@ async def lifespan(app: FastAPI):
     await init_db()
     await seed_content_type_tags()
     asyncio.create_task(_startup_check_bg())
+    try:
+        from apscheduler.schedulers.asyncio import AsyncIOScheduler
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(_domain_health_bg, "interval", hours=24, id="domain_health")
+        scheduler.start()
+        print("[KuroWatch] Domain health scheduler started (24h interval)")
+        app.state.scheduler = scheduler
+    except Exception as e:
+        print(f"[KuroWatch] Scheduler init skipped: {e}")
     yield
+    if hasattr(app.state, "scheduler"):
+        app.state.scheduler.shutdown(wait=False)
 
 app = FastAPI(title="KuroWatch API", version="0.1.0", lifespan=lifespan)
 

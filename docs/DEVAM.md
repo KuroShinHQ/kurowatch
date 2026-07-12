@@ -1,5 +1,74 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 12 Temmuz 2026 (SOHBET-146) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-146`
+**Son güncelleme:** 12 Temmuz 2026 (SOHBET-147) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-147`
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-147: Otonom Domain Health Sistemi
+
+```
+SOHBET-147 — 5 servis + 7 API endpoint + scheduler
+
+[1] backend/services/domain_health.py — Async HTTP health checker:
+    - check_single_url(url): HEAD → GET fallback, Cloudflare detection
+    - check_domain_with_samples(domain, sample_urls): multi-sample test
+    - get_all_domains(db_session): unique domains from DB
+    - update_dead_status(db_session, results): site.is_dead güncelleme
+    - CLI: python -m backend.services.domain_health <url>
+
+[2] backend/services/domain_finder.py — Alternative domain search engine:
+    - DuckDuckGo HTML search (free, no API key)
+    - Google Custom Search (optional, API key varsa)
+    - KNOWN_ALTERNATIVES: 25+ site mapping (hardcoded fallback)
+    - TLD guess: .com/.net/.org/.io/.app/.co/.me/.live/.pw/.vip
+    - SITE_SEARCH_KEYWORDS: site-specific search terms ("yeni domain 2026")
+    - find_and_test_all_dead(): scans all dead domains in DB
+
+[3] backend/services/url_patterns.py — URL pattern generator:
+    - UrlPattern dataclass: path_template, slug style, ep/season flags
+    - CONTENT_TYPE_PATTERNS: anime/manga/manhwa/movie/series/game
+    - learn_pattern_from_urls(): reverse-engineer pattern from existing URLs
+    - apply_new_domain_to_url(): path adjustment for domain migration
+    - extract_slug() / normalize_domain() / find_slug_for_content()
+
+[4] backend/services/db_updater.py — DB mutation engine:
+    - add_new_site_entry(): idempotent site insert
+    - update_episode_urls(): REPLACE domain in episode URLs
+    - replace_domain_globally(): cross-table domain migration
+    - apply_alternative_domain(): full migration for a domain pair
+    - rollback_update(): revert on failure
+
+[5] backend/services/test_runner.py — Full URL test suite:
+    - test_url(): single URL test with status classification
+    - run_full_test(): all URLs → per-domain/per-type report
+    - test_domain_update(): verify new domain works
+    - print_report(): formatted output
+
+[6] backend/routers/system.py — 7 yeni endpoint:
+    - POST /system/domains/check — health check all domains
+    - GET /system/domains/status — is_dead status from DB
+    - POST /system/domains/find — find alternatives for dead domain
+    - POST /system/domains/apply — apply new domain to DB
+    - POST /system/domains/test — run URL test suite
+    - POST /system/domains/find-all-dead — find for ALL dead
+    - POST /system/domains/check-live — live check specific URLs
+
+[7] backend/main.py — APScheduler background job:
+    - _domain_health_bg(): 24h interval, checks top 50 domains
+    - AsyncIOScheduler with lifespan lifecycle
+
+[8] Canlı domain durumu (12 Tem 2026):
+    ✅ OK: setfilmizle.uk, ragnarscans.net, dizipod.com, asurascans.com.tr,
+           tranimaci.com, tranimeizle.top, ruyamanga.net, majorscans.com,
+           mangatr.app, hdfilmcehennemi.now
+    ❌ DEAD: mangasehri.net (404), hdfilmcehennemi.nl (403),
+             hayalistic.net (403), mangatepesi.com (526),
+             mangaokutr.net (DNS), ruyamanga.com (DNS),
+             setfilmizle.vip (DNS), setfilmizle.com (DNS)
+
+Kalan 124 hata domain ölümünden değil, URL yapısı değişikliğinden
+(setfilmizle.uk, ragnarscans chapter Cloudflare, niche film bulunamaması).
+Domain health sistemi bu kalan hataları çözmez — URL pattern çözümü gerekir.
+```
 
 ---
 
