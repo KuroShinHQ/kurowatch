@@ -1,11 +1,15 @@
 import asyncio
+import logging
 import os
 import re
 from typing import Callable, Coroutine, Optional
 from urllib.parse import urlparse
 
+logger = logging.getLogger(__name__)
+
 from backend.downloader.integrity import validate_video_file_playable
 from backend.downloader.stream_finder import (
+    download_hls_via_playwright,
     find_stream_url_with_tags,
     get_session_header_args,
     get_session_cookies_arg,
@@ -39,10 +43,11 @@ async def download_anime(
 
     cookies_args = get_yt_dlp_cookies_arg(url)
 
-    # Embed URL farklıysa orijinal sitenin domain'ini Referer olarak ekle
+    # Embed URL farklıysa Referer header'ını ekle.
+    # fastplay.mom gibi embed'lerde embed'in kendi domain'ini Referer yap (segment auth için)
     referer_args: list[str] = []
     if actual_url != url:
-        parsed = urlparse(url)
+        parsed = urlparse(actual_url)
         referer = f"{parsed.scheme}://{parsed.netloc}/"
         referer_args = ["--add-header", f"Referer:{referer}"]
 
@@ -69,9 +74,9 @@ async def download_anime(
         "--retries", "10",
         "--throttled-rate", "100K",
         *cookies_args,
-        *referer_args,
         *session_header_args,
         *session_cookie_args,
+        *referer_args,
         "-o", output_path + ".%(ext)s",
         actual_url,
     ]
@@ -110,7 +115,24 @@ async def download_anime(
             output_lines.append(line)
 
     await proc.wait()
-    if proc.returncode != 0:
+
+    yt_dlp_failed = proc.returncode != 0
+
+    def _find_output() -> str | None:
+        for ext in ("mp4", "mkv", "webm", "avi"):
+            p = f"{output_path}.{ext}"
+            if os.path.exists(p):
+                return p
+        return None
+
+    existing_file = _find_output()
+
+    # Dosya çok küçükse (ön izleme/kırpık indirme) da dene
+    if existing_file and os.path.getsize(existing_file) < 500_000:
+        logger.warning("yt-dlp çıktısı çok küçük (%d bytes), PW HLS fallback deneniyor", os.path.getsize(existing_file))
+        yt_dlp_failed = True
+
+    if yt_dlp_failed:
         err_tail = " | ".join(output_lines[-3:]) if output_lines else ""
         err_lower = err_tail.lower()
         if "crunchyroll" in err_lower or "?su=" in err_tail or "vrv.co" in err_lower:
@@ -118,7 +140,19 @@ async def download_anime(
                 "Bu bölüm Crunchyroll'a yönlendiriyor. "
                 "İndirmek için Ayarlar → Cookies bölümünden Crunchyroll cookies ekleyin."
             )
-        # [generic] = embed oynatıcısı yt-dlp tarafından desteklenmiyor
+
+        # Playwright HLS fallback — korumalı HLS akışları (fastplay.mom vb.)
+        logger.info("yt-dlp başarısız, PW HLS fallback deneniyor: %s", url[:80])
+        fallback_path = output_path + ".mp4"
+        pw_result = await download_hls_via_playwright(url, fallback_path)
+        if pw_result:
+            if on_progress:
+                await on_progress(100)
+            return pw_result
+
+        # Fallback da başarısız → orijinal yt-dlp hatası
+        if existing_file:
+            return existing_file  # küçük de olsa döndür
         if "[generic]" in err_tail:
             domain = urlparse(url).netloc
             if actual_url != url:
@@ -135,23 +169,20 @@ async def download_anime(
         raise RuntimeError(f"yt-dlp çıkış kodu {proc.returncode}" + (f": {err_tail}" if err_tail else ""))
 
     # Uzantı yt-dlp tarafından eklendi — bul
-    for ext in ("mp4", "mkv", "webm", "avi"):
-        p = f"{output_path}.{ext}"
-        if os.path.exists(p):
-            validate_video_file_playable(p)
-            if on_progress:
-                await on_progress(100)
-            # Otonom etiket senkronizasyonu: kaynak site etiketlerini DB'ye yansıt
-            if content_id and source_tags:
-                try:
-                    from backend.services import tag_sync
-                    site_key = urlparse(url).netloc.lstrip("www.")
-                    await tag_sync.sync_site_tags(content_id, site_key, source_tags)
-                    logger = __import__("logging").getLogger(__name__)
-                    logger.info("Otonom tag sync calisti: content_id=%s tags=%s", content_id, source_tags)
-                except Exception as exc:  # noqa: BLE001
-                    logger = __import__("logging").getLogger(__name__)
-                    logger.warning("Otonom tag sync basarisiz: %s", exc)
-            return p
+    p = _find_output()
+    if p:
+        validate_video_file_playable(p)
+        if on_progress:
+            await on_progress(100)
+        # Otonom etiket senkronizasyonu: kaynak site etiketlerini DB'ye yansıt
+        if content_id and source_tags:
+            try:
+                from backend.services import tag_sync
+                site_key = urlparse(url).netloc.lstrip("www.")
+                await tag_sync.sync_site_tags(content_id, site_key, source_tags)
+                logger.info("Otonom tag sync calisti: content_id=%s tags=%s", content_id, source_tags)
+            except Exception as exc:  # noqa: BLE001
+                logger.warning("Otonom tag sync basarisiz: %s", exc)
+        return p
 
     raise RuntimeError(f"Çıktı dosyası bulunamadı: {output_path}.*")

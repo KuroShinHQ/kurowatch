@@ -1,21 +1,21 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 11 Temmuz 2026 (SOHBET-142) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-142`
+**Son güncelleme:** 12 Temmuz 2026 (SOHBET-142) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-142-fix`
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-142: Türkçe Kaynak Öncelikli, URL Zenginleştirilmiş, Kanıtlı Sistem
+## ✅ TAMAMLANDI — SOHBET-142: Türkçe Kaynak Öncelikli, URL Zenginleştirilmiş, Kanıtlı Sistem (5/6)
 
 ```
-SOHBET-142 — 4/6 PASS (%66.7), 2/6 FAIL
+SOHBET-142 — 5/6 PASS (%83.3), 1/6 FAIL
 
 [1] Anime — Naruto S01E01 (tranimaci.com):
-     ❌ FAIL — tranimaci→turkanime.tv embed, yt-dlp desteklemiyor
-     turkanime.tv cookies+CF gerekli → otomatik çekim mümkün değil
-     stream_finder.py: tranimaci _CF_SITES'ten çıkarıldı (kendi JS PoW, CF değil)
+     ❌ FAIL — tranimaci.com sayfası oturum/üyelik gerektiriyor
+     Player div boş (Next.js auth wall), yt-dlp 0.2MB preview indiriyor
+     Çözüm için: farklı site/mirror veya auth bypass gerekiyor
 
 [2] Dizi — Dexter S08E01 (setfilmizle.uk):
-     ❌ FAIL — URL 404 (içerik silinmiş). Site URL S01E01 formatında, seri URL'si değil
-     hdfilmcehennemi.nl da çalışmadı — sayfa bulunamadı
+     ✅ PASS — 875 MB, fastplay.mom HLS segments intercepted via Playwright
+     yt-dlp önce 403 hatası alıyor, sonra Playwright HLS downloader devreye giriyor
 
 [3] Film — 3 Idiots (hdfilmcehennemi.now):
      ✅ PASS — 15.2 MB, AV1 1280x720, 177sn video diske indi!
@@ -30,21 +30,33 @@ SOHBET-142 — 4/6 PASS (%66.7), 2/6 FAIL
      ✅ PASS — magnet link kaydedildi
 ```
 
-URL ZENGİNLEŞTİRME:
-- 5664 URL eklendi (%74.6 → %99.8 coverage)
-- Pattern'ler: tranimaci, setfilmizle, hdfilmcehennemi, ragnarscans
-- Kalan 39 URL: Rick and Morty S7 (13) + seriler (26) — hiç Türkçe site yok
-
 DEĞİŞİKLİKLER:
 ```
 stream_finder.py:
-  - tranimaci.com _CF_SITES'ten çıkarıldı (CF değil, kendi JS PoW) → ~10sn kazanç
+  - _resolve_embed_with_playwright: M3U8/MP4 seçimi last-URL priority
+  - _is_embed / _is_video_target: "manifest" ve ".ts" eklendi
+  - Embed çözüm sırası: turkanime/fastplay önce, M3U8/MP4 sonra
+  - download_hls_via_playwright: YENİ — Playwright ile HLS segment interception
+    setfilmizle.uk → play button click → srv.*.cfd segment capture → concat
+  - _playwright_find_embed: turkanime.tv embed aynı PW session'da çözülür
+    (token/session expire engellemek için, yeni browser açılmadan)
+  - tranimaci.com wait_secs: 30→45 (PoW + player yüklenmesi için)
 
-tests/test_sohbet142_full_e2e.py:
-  - YENİ — 6 tür için gerçek indirme testi (Turkish kaynak öncelikli)
+anime.py:
+  - yt-dlp başarısız olursa → Playwright HLS fallback (download_hls_via_playwright)
+  - Çıktı < 500KB ise de fallback dene (önizleme/preview bypass)
+  - Module-level logger eklendi
+
+episodes.py:
+  - _derive_ep_url: setfilmizle için season-aware URL fix
+  - _extract_season_from_url: yeni helper
+  - sync_episodes: target_season parametresi eklendi
+  - is_anilist_id: tmdb:/steam: prefix fix
+  - total_episodes: series type için fix
 ```
 
 KANIT DOSYALARI:
+  - downloads/anime/287/ep001.mp4 (875 MB) — Dexter S08E01
   - downloads/anime/203/ep001.mp4 (15.2 MB) — 3 Idiots
   - downloads/manga/1/ch0001/ — 19 sayfa
   - downloads/sohbet142_kanit/cult_of_the_lamb_magnet.txt
