@@ -360,6 +360,7 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
     media_type: "anime", "series", "movie", "cartoon" — anime-only domain'leri filtreler.
     """
     _SESSION_HEADERS.clear()
+    _SESSION_COOKIES.clear()
     domain = _domain(episode_url)
     source_tags: list[str] = []
     is_anime_domain = any(domain.endswith(d) for d in _ANIME_ONLY_DOMAINS)
@@ -667,7 +668,9 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         parsed_path = url.split("?")[0].split("#")[0].lower()
         if parsed_path.endswith((".js", ".css", ".woff", ".woff2", ".png", ".ico", ".svg", ".json")):
             return False
-        if any(k in url for k in (".m3u8", "/hls/", "manifest.mpd", ".mp4")):
+        if any(k in url for k in (".m3u8", "/hls/", ".mp4", ".mpd")):
+            return True
+        if "manifest" in url:
             return True
         if "/iframe.php" in url or "/embed/" in url or "/player/" in url or "/ifr.html" in url:
             return True
@@ -798,7 +801,7 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             if "turkanime.tv" in domain or "turkanime.com.tr" in domain:
                 wait_secs = 32
             elif "tranimaci.com" in domain:
-                wait_secs = 30  # JS PoW challenge (~5sn) + player load (~15sn) + embed fetch
+                wait_secs = 45  # JS PoW challenge (~5-15sn) + player load (~15sn) + embed fetch
             elif "hdfilmcehennemi" in domain:
                 wait_secs = 20  # rplayer iframe lazy-load + CF geçişi
             elif "dizigom" in domain:
@@ -858,6 +861,41 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
                         if src not in found_embed and (_is_embed(src) or sel == "iframe"):
                             found_embed.append(src)
 
+            # turkanime.tv embed URL'leri hızlıca çözülmeli (aynı PW session'da)
+            # Aksi halde token/session expire olur ve embed -> 404.
+            for embed_url in list(found_embed):
+                if "turkanime.tv" in embed_url or "turkanime.com.tr" in embed_url:
+                    logger.info("turkanime.tv embed aynı PW session'da çözülüyor: %s", embed_url[:60])
+                    try:
+                        embed_page = await ctx.new_page()
+                        embed_video_urls: list[str] = []
+                        def _capture_video(req):
+                            url = req.url.lower()
+                            if any(k in url for k in (".m3u8", ".mp4", "/hls/", "manifest")):
+                                if url not in embed_video_urls:
+                                    embed_video_urls.append(req.url)
+                                    logger.info("turkanime.tv PW video URL: %s", req.url[:80])
+                        embed_page.on("request", _capture_video)
+                        embed_resp = await embed_page.goto(embed_url, timeout=30000, wait_until="domcontentloaded")
+                        if embed_resp and embed_resp.status == 404:
+                            logger.warning("turkanime.tv embed 404 (expired): %s", embed_url[:60])
+                        else:
+                            await asyncio.sleep(12)
+                            try:
+                                await embed_page.wait_for_load_state("networkidle", timeout=10000)
+                            except Exception:
+                                pass
+                            if embed_video_urls:
+                                logger.info("turkanime.tv PW: %d video URL yakalandı", len(embed_video_urls))
+                                found_embed = [embed_video_urls[-1]]  # sadece son video URL'yi kullan
+                    except Exception as exc:
+                        logger.warning("turkanime.tv PW embed çözüm hatası: %s", exc)
+                    finally:
+                        try:
+                            await embed_page.close()
+                        except Exception:
+                            pass
+
             # Session cookie'lerini kaydet (yt-dlp --cookies için)
             try:
                 await _save_session_cookies(ctx, episode_url)
@@ -868,12 +906,20 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
 
     if found_embed:
         logger.info("PW: %d embed bulundu — ilki döndürülüyor", len(found_embed))
-        # m3u8 varsa öncelik ver
+        # fastplay.mom embed'leri: Playwright ile iç video URL'sini bul
         for u in found_embed:
+            if "fastplay.mom" in u:
+                resolved = await _resolve_embed_with_playwright(u, referer=episode_url)
+                if resolved and resolved != u:
+                    logger.info("Embed PW ile çözüldü: %s -> %s", u[:60], resolved[:80])
+                    return resolved
+        # m3u8 varsa öncelik ver (ama embed çözümü başarısız olduysa)
+        # En son yakalanan URL'yi tercih et (ad/preview'dan sonra asıl video)
+        for u in reversed(found_embed):
             if ".m3u8" in u or "manifest.mpd" in u:
                 return u
         # Direkt mp4 URL varsa tercih et (rotor/wrapper sayfası yerine)
-        for u in found_embed:
+        for u in reversed(found_embed):
             if u.lower().split("?")[0].endswith(".mp4"):
                 return u
         # YouTube/Social media embed'leri (yt-dlp native) — JS-render wrappers'tan önce
@@ -887,12 +933,167 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
         logger.warning("Tüm embed URL'leri ölü domain (%s) — None döndürülüyor", _DEAD_EMBED_DOMAINS)
         return None
 
-    reason = f"HTTP {http_status}" if http_status else "no response"
     if http_status and http_status != 200:
         logger.warning("PW: embed bulunamadı — sayfa HTTP %d (site kapalı/içerik silinmiş)", http_status)
     else:
         logger.warning("PW: embed bulunamadı — sayfa HTTP %d fakat HTML'de player yok (len=%d)", http_status or 0, len(html))
     return _extract_embed_from_html(html)
+
+
+_KEEP_PLAY_EMBED_DOMAINS = {
+    "turkanime.tv", "turkanime.com.tr",
+    "fastplay.mom",
+    "anizmplayer.com",
+}
+
+async def _resolve_embed_with_playwright(embed_url: str, timeout_ms: int = 45000, *, referer: str | None = None) -> Optional[str]:
+    """
+    Playwright network interception ile embed URL'sinden gerçek video URL'sini bul.
+    turkanime.tv / fastplay.mom gibi yt-dlp'nin desteklemediği embed'ler için kullanılır.
+    referer: embed URL'sine giderken kullanılacak HTTP Referrer (bazı siteler zorunlu kılar).
+    """
+    from playwright.async_api import async_playwright
+
+    found_video: list[str] = []
+
+    def _is_video_target(url: str) -> bool:
+        lower = url.lower()
+        if any(lower.endswith(ext) for ext in (".js", ".css", ".png", ".ico", ".svg", ".woff", ".woff2", ".json", ".xml")):
+            return False
+        if ".m3u8" in lower or "/hls/" in lower or ".mp4" in lower or ".mpd" in lower:
+            return True
+        if "/m3u/" in lower or ".ts" in lower:
+            return True
+        if "manifest" in lower:
+            return True
+        return False
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox", "--disable-blink-features=AutomationControlled"])
+        extra_headers = {}
+        if referer:
+            extra_headers["Referer"] = referer
+        ctx = await browser.new_context(
+            extra_http_headers=extra_headers or None,
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(ctx)
+        except Exception:
+            pass
+
+        page = await ctx.new_page()
+
+        async def on_request(req):
+            url = req.url
+            if _is_video_target(url) and url not in found_video:
+                found_video.append(url)
+                logger.info("Embed PW video URL yakalandı: %s", url[:80])
+
+        page.on("request", on_request)
+
+        try:
+            resp = await page.goto(embed_url, timeout=timeout_ms, wait_until="domcontentloaded")
+            if resp and resp.status != 200:
+                logger.warning("Embed PW: HTTP %d - %s", resp.status, embed_url[:60])
+                if resp.status == 404:
+                    await browser.close()
+                    return None
+
+            await asyncio.sleep(5)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=15000)
+            except Exception:
+                pass
+
+            # turkanime.tv: popup kapat + play butonu bul
+            if "turkanime" in embed_url:
+                popup_sels = ["button.site-popup-close", ".popup-close", "#popup-close", ".modal-close"]
+                for sel in popup_sels:
+                    try:
+                        if await page.locator(sel).first.is_visible(timeout=1000):
+                            await page.locator(sel).first.click()
+                            await asyncio.sleep(0.5)
+                    except Exception:
+                        pass
+                play_sels = [".play-button", "#play", "video", "button.play", ".video-js", ".jw-player"]
+                for sel in play_sels:
+                    try:
+                        if await page.locator(sel).first.is_visible(timeout=3000):
+                            # If it's a video element, get its src
+                            tag = await page.locator(sel).first.evaluate("el => el.tagName")
+                            if tag == "VIDEO":
+                                src = await page.locator(sel).first.get_attribute("src") or ""
+                                if src and src not in found_video:
+                                    found_video.append(src)
+                                break
+                            await page.locator(sel).first.click(force=True)
+                            await asyncio.sleep(2)
+                            break
+                    except Exception:
+                        pass
+
+            # fastplay.mom: bekle + play butonuna bas + video src'yi kontrol et
+            if "fastplay.mom" in embed_url:
+                for sel in ("#playbtn", ".play-button", "button.play", "video", ".vjs-big-play-button", "[aria-label='Play']", "#player-play"):
+                    try:
+                        el = page.locator(sel).first
+                        if await el.is_visible(timeout=2000):
+                            await el.click(force=True)
+                            logger.info("fastplay.mom play butonuna basıldı: %s", sel)
+                            await asyncio.sleep(3)
+                            break
+                    except Exception:
+                        pass
+                await asyncio.sleep(10)
+
+            # Ek bekleme + network isteklerini topla
+            await asyncio.sleep(8)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=10000)
+            except Exception:
+                pass
+
+            # DOM'daki video/source elementlerinden URL topla
+            try:
+                for sel in ("video source", "video"):
+                    els = await page.query_selector_all(sel)
+                    for el in els:
+                        src = await el.get_attribute("src") or ""
+                        if not src:
+                            src = await el.get_attribute("data-src") or ""
+                        if src:
+                            if src.startswith("//"):
+                                src = "https:" + src
+                            if src.startswith("http") and src not in found_video:
+                                if _is_video_target(src) or any(k in src for k in (".m3u8", ".mp4")):
+                                    found_video.append(src)
+            except Exception:
+                pass
+
+        except Exception as e:
+            logger.warning("Embed PW navigation hatası: %s", e)
+        finally:
+            await browser.close()
+
+    if found_video:
+        logger.info("Embed PW: %d video URL yakalandı — sonuncu döndürülüyor", len(found_video))
+        # En son yakalanan M3U8/MP4 döndür (genelde ad/preview'dan sonraki asıl video)
+        for u in reversed(found_video):
+            if ".m3u8" in u or "/hls/" in u or "manifest.mpd" in u:
+                return u
+        for u in reversed(found_video):
+            if u.lower().split("?")[0].endswith(".mp4"):
+                return u
+        return found_video[-1]
+    return None
 
 
 async def _save_session_cookies(ctx, media_url: str) -> None:
@@ -910,3 +1111,123 @@ async def _save_session_cookies(ctx, media_url: str) -> None:
             logger.info("Session cookie kaydedildi: %s (%d adet)", media_domain, len(parts))
     except Exception as exc:
         logger.warning("Session cookie kayıt hatası: %s", exc)
+
+
+async def download_hls_via_playwright(
+    episode_url: str,
+    output_path: str,
+    min_bytes: int = 10_000_000,
+    timeout_sec: int = 90,
+) -> str | None:
+    """
+    HLS video'yu Playwright browser ile indir.
+    Segmentleri browser üzerinden yakalar (CF/Cloudflare bypass), 
+    birleştirir ve output_path'e yazar.
+    fastplay.mom/setfilmizle.uk benzeri korumalı siteler için.
+    output_path: tam dosya yolu (örn: /path/to/ep001.mp4)
+    """
+    from playwright.async_api import async_playwright
+
+    segment_data: dict[int, bytes] = {}
+    total_bytes = 0
+    segment_count = 0
+    stop_event = asyncio.Event()
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox"])
+        ctx = await browser.new_context(
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/131.0.0.0 Safari/537.36"
+            ),
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+            java_script_enabled=True,
+        )
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(ctx)
+        except Exception:
+            pass
+
+        page = await ctx.new_page()
+
+        async def on_response(response):
+            nonlocal segment_count, total_bytes, segment_data
+            url = response.url
+            if "srv." in url and ".cfd" in url and url.endswith(".png") and response.status == 200:
+                try:
+                    body = await response.body()
+                    if len(body) > 1000:
+                        idx = len(segment_data)
+                        segment_data[idx] = body
+                        segment_count += 1
+                        total_bytes += len(body)
+                        logger.info("HLS PW segment %d: %s (%d bytes)", idx, url.split("/")[-1], len(body))
+                        if total_bytes >= min_bytes:
+                            stop_event.set()
+                except Exception as e:
+                    logger.debug("HLS PW segment error: %s", e)
+
+        page.on("response", on_response)
+
+        logger.info("HLS PW: navigating to %s", episode_url[:80])
+        try:
+            await page.goto(episode_url, timeout=30000, wait_until="domcontentloaded")
+        except Exception as e:
+            logger.warning("HLS PW goto error: %s", e)
+            await browser.close()
+            return None
+
+        await asyncio.sleep(2)
+
+        play_btn = await page.query_selector("#fimcnt_pb")
+        if play_btn:
+            await play_btn.click(delay=500)
+            logger.info("HLS PW: clicked play button")
+        else:
+            for sel in (".play-button", "button.play", "img[alt*='play']"):
+                el = await page.query_selector(sel)
+                if el:
+                    await el.click(delay=500)
+                    logger.info("HLS PW: clicked %s", sel)
+                    break
+
+        await asyncio.sleep(3)
+
+        stall_count = 0
+        for i in range(timeout_sec // 3):
+            if stop_event.is_set():
+                break
+            old_total = total_bytes
+            await asyncio.sleep(3)
+            if total_bytes == old_total:
+                stall_count += 1
+            else:
+                stall_count = 0
+            if stall_count > 10:
+                logger.info("HLS PW: stalled for %ds", stall_count * 3)
+                break
+            logger.debug("HLS PW: %d segments, %.1fMB / %dMB", segment_count, total_bytes / 1e6, min_bytes / 1e6)
+
+        await browser.close()
+
+    if not segment_data:
+        logger.warning("HLS PW: no segments captured")
+        return None
+
+    sorted_idx = sorted(segment_data.keys())
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "wb") as f:
+        for idx in sorted_idx:
+            f.write(segment_data[idx])
+
+    actual_size = os.path.getsize(output_path)
+    logger.info("HLS PW: saved %s (%d bytes, %d segments)", output_path, actual_size, len(segment_data))
+
+    if actual_size < min_bytes:
+        logger.warning("HLS PW: file too small (%d bytes < %d)", actual_size, min_bytes)
+        return None
+
+    return output_path

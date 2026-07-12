@@ -34,8 +34,32 @@ def _extract_ep_from_url(url: str) -> int | None:
     return None
 
 
-def _derive_ep_url(site_url: str, current_ep: int, target_ep: int) -> str | None:
-    """Mevcut bölüm numarasını URL'de hedef numarayla değiştir."""
+def _extract_season_from_url(url: str) -> int | None:
+    """Site URL'sinden mevcut sezon numarasını çıkar (setfilmizle/hdfilm gibi siteler için)."""
+    m = re.search(r'-(\d+)-sezon[-/]', url, re.IGNORECASE)
+    if m:
+        try:
+            return int(m.group(1))
+        except ValueError:
+            pass
+    return None
+
+
+def _derive_ep_url(site_url: str, current_ep: int, target_ep: int, *, target_season: int | None = None) -> str | None:
+    """Mevcut bölüm numarasını URL'de hedef numarayla değiştir.
+
+    target_season verilirse, setfilmizle/hdfilm gibi URL'lerde sezon numarasını da günceller.
+    """
+    # setfilmizle/hdfilm tarzı URL'lerde önce sezon numarasını güncelle
+    if target_season is not None:
+        current_season = _extract_season_from_url(site_url)
+        if current_season is not None and current_season != target_season:
+            site_url = re.sub(r'-(\d+)-sezon([-/])', lambda m: f'-{target_season}-sezon{m.group(2)}', site_url, count=1)
+            # current_ep'i yeni URL'den yeniden çıkar çünkü sayısal değerler kaymış olabilir
+            extracted = _extract_ep_from_url(site_url)
+            if extracted is not None:
+                current_ep = extracted
+
     if not site_url or not current_ep or current_ep == target_ep:
         return site_url if current_ep == target_ep else None
 
@@ -114,8 +138,15 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
     if c.type == "game":
         raise HTTPException(400, "Oyunlar için bölüm sync desteklenmiyor")
 
-    # MAL prefix varsa external_id yok sayılır — site URL'den ilerle
-    has_anilist_id = c.external_id and not c.external_id.startswith("mal:") and not c.external_id.startswith("mdx:")
+    # Sadece bare numeric (prefixsiz) ID'ler AniList ID'sidir
+    is_anilist_id = (
+        c.external_id
+        and not c.external_id.startswith("mal:")
+        and not c.external_id.startswith("mdx:")
+        and not c.external_id.startswith("tmdb:")
+        and not c.external_id.startswith("steam:")
+        and ":" not in c.external_id
+    )
 
     # Primary site URL'den bölüm URL türetme için temel bilgiler
     primary_site = next((s for s in (c.sites or []) if s.is_primary), None) or (c.sites[0] if c.sites else None)
@@ -152,9 +183,15 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
             c.total_chapters = new_total
             c.updated_at = datetime.utcnow()
 
-    elif ext.startswith("mal:") or not has_anilist_id:
+    elif ext.startswith("mal:") or not is_anilist_id:
         # AniList ID yok → sadece site URL'den bölüm sayısını çıkar
-        total = site_current_ep or (c.total_episodes if c.type == "anime" else c.total_chapters) or 0
+        total = 0
+        if c.type in ("anime", "series") and c.total_episodes:
+            total = c.total_episodes
+        elif c.total_chapters:
+            total = c.total_chapters
+        if not total and site_current_ep:
+            total = max(site_current_ep or 0, 1)
         if not total and site_base_url:
             total = max(site_current_ep or 0, 1)
         if not total:
@@ -176,7 +213,7 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
             m_s = re.search(r'Episode\s+(\d+)', se.get("title", ""), re.IGNORECASE)
             if m_s:
                 n_s = int(m_s.group(1))
-                u_s = se.get("url") or (_derive_ep_url(site_base_url, site_current_ep, n_s) if site_current_ep else None)
+                u_s = se.get("url") or (_derive_ep_url(site_base_url, site_current_ep, n_s, target_season=season) if site_current_ep else None)
                 if u_s:
                     streaming_url_map[n_s] = u_s
         # Bölüm sayısı her zaman total_episodes'tan (streaming count DEĞİL)
@@ -185,7 +222,7 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
             total = max(streaming_url_map.keys())
         # Bölümleri oluştur (URL: site türetme > streaming — kullanıcının sitesi her zaman öncelikli)
         for i in range(1, int(total) + 1):
-            site_ep_url = _derive_ep_url(site_base_url, site_current_ep, i) if site_current_ep else None
+            site_ep_url = _derive_ep_url(site_base_url, site_current_ep, i, target_season=season) if site_current_ep else None
             fallback_url = streaming_url_map.get(i)
             ep_url = site_ep_url or fallback_url
             if i not in existing_numbers:
@@ -213,7 +250,7 @@ async def sync_episodes(content_id: int, body: EpisodeSyncBody = Body(default=Ep
     # total bölümlü içerikler için bölüm listesi oluştur (URL türeterek)
     if total > 0:
         for i in range(1, int(total) + 1):
-            derived_url = _derive_ep_url(site_base_url, site_current_ep, i) if site_current_ep else None
+            derived_url = _derive_ep_url(site_base_url, site_current_ep, i, target_season=season) if site_current_ep else None
             if i not in existing_numbers:
                 new_episodes.append(Episode(
                     content_id=content_id, season=season, number=i,
