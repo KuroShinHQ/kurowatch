@@ -143,6 +143,7 @@ _FORCE_PLAYWRIGHT = {
     "dizigom.love", "dizigom.tv", "dizigom1.com",
     "turkanime.tv",
     "setfilmizle.uk", "setfilmizle.com",
+    "animexe.com",
 }
 
 # Bu domainler Cloudflare Managed Challenge kullanır → nodriver (gerçek Chrome) gerekiyor
@@ -309,7 +310,7 @@ _SITE_PARSER_DOMAINS = {
     "setfilmizle": "setfilmizle",
 }
 
-_ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "tranimeizle.xyz", "turkanime.tv", "turkanime.com.tr", "anizm.net"}
+_ANIME_ONLY_DOMAINS = {"tranimaci.com", "tranimeizle.co", "tranimeizle.xyz", "turkanime.tv", "turkanime.com.tr", "anizm.net", "animexe.com"}
 
 
 from backend.scraper.tag_extractor import extract_site_tags
@@ -453,9 +454,15 @@ async def find_stream_url_with_tags(episode_url: str, media_type: str = "anime")
     except Exception as exc:
         logger.warning("Playwright fallback başarısız: %s", exc)
 
-    # tranimaci.com başarısız → mirror siteleri dene
+    # tranimaci.com başarısız → _resolve_tranimaci özel çözüm dene
     if "tranimaci.com" in domain:
-        for mirror in ("turkanime.tv", "tranimeizle.xyz", "turkanime.com.tr"):
+        logger.info("tranimaci.com özel çözüm deneniyor (_resolve_tranimaci)")
+        resolved = await _resolve_tranimaci(episode_url)
+        if resolved:
+            logger.info("tranimaci çözüldü: %s", resolved[:80])
+            return resolved, source_tags
+        # mirror siteleri dene
+        for mirror in ("turkanime.tv", "tranimeizle.xyz", "tranimeizle.co", "turkanime.com.tr"):
             mirror_url = episode_url.replace("tranimaci.com", mirror)
             if mirror_url != episode_url:
                 logger.info("tranimaci.com mirror deneniyor: %s", mirror)
@@ -815,6 +822,31 @@ async def _playwright_find_embed(episode_url: str, timeout_ms: int = 15000) -> O
             else:
                 wait_secs = 8
             await asyncio.sleep(wait_secs)
+
+            # tranimaci.com özel: auth wall veya boş player kontrolü
+            if "tranimaci.com" in domain:
+                try:
+                    await asyncio.sleep(3)  # navigasyon/rerender bitene kadar bekle
+                    player_state = await page.evaluate("""() => {
+                        const pd = document.querySelector('[data-player-embed]');
+                        if (!pd) return 'NO_PLAYER';
+                        const html = pd.innerHTML;
+                        const hasAlert = html.includes('triangle-alert') || html.includes('lucide-alert');
+                        const hasVideo = html.includes('iframe') || html.includes('video') || html.includes('m3u8');
+                        const childCount = pd.children.length;
+                        return {hasAlert, hasVideo, childCount};
+                    }""")
+                    if isinstance(player_state, dict):
+                        if player_state.get("hasAlert"):
+                            logger.warning("tranimaci.com: oynatıcı uyarı gösteriyor (triangle-alert) — oturum/kayıt gerekebilir")
+                            await browser.close()
+                            return None
+                        if not player_state.get("hasVideo") and player_state.get("childCount", 0) <= 1:
+                            logger.warning("tranimaci.com: oynatıcı boş (childCount=%s) — oturum veya embed sorunu", player_state.get("childCount"))
+                            await browser.close()
+                            return None
+                except Exception as pw_exc:
+                    logger.warning("tranimaci.com player durumu okunamadı: %s — normal akışa devam", pw_exc)
 
             html = await page.content()
 
@@ -1231,3 +1263,131 @@ async def download_hls_via_playwright(
         return None
 
     return output_path
+
+
+# ── tranimaci.com özel çözüm ─────────────────────────────────────────
+
+_TRANIMACI_MIRRORS = [
+    "tranimeizle.co",
+    "tranimeizle.xyz",
+    "tranimeizle.io",
+    "turkanime.tv",
+]
+
+async def _resolve_tranimaci(episode_url: str) -> Optional[str]:
+    """
+    tranimaci.com için özel çözüm.
+    Playwright ile:
+      1. PoW challenge'ı bekle (45sn)
+      2. Auth wall kontrolü (giriş gerekiyor mu?)
+      3. Video varsa embed URL'yi döndür
+      4. Video yoksa mirro dene
+    """
+    from playwright.async_api import async_playwright
+
+    async def _try_page(ctx, url: str) -> Optional[str]:
+        """Tek bir sayfayı dene, video embed bulursa döndür."""
+        page = await ctx.new_page()
+        found: list[str] = []
+        
+        def _capture(req):
+            u = req.url
+            if any(k in u for k in (".m3u8", ".mp4", "manifest", ".mpd")):
+                if u not in found:
+                    found.append(u)
+        page.on("request", _capture)
+        
+        try:
+            resp = await page.goto(url, timeout=45000, wait_until="domcontentloaded")
+            if resp and resp.status != 200:
+                logger.warning("tranimaci: HTTP %d - %s", resp.status, url[:60])
+                return None
+            
+            nidle_timeout = 25000
+            try:
+                await page.wait_for_load_state("networkidle", timeout=nidle_timeout)
+            except Exception:
+                pass
+            
+            await asyncio.sleep(10)
+            
+            # Auth wall kontrolü
+            player_state = await page.evaluate("""() => {
+                const pd = document.querySelector('[data-player-embed]');
+                if (!pd) return null;
+                return {
+                    hasAlert: pd.innerHTML.includes('triangle-alert') || pd.innerHTML.includes('lucide-alert'),
+                    hasVideo: pd.innerHTML.includes('iframe') || pd.innerHTML.includes('video') || pd.innerHTML.includes('m3u8'),
+                    childCount: pd.children.length
+                };
+            }""")
+            if player_state and player_state.get("hasAlert"):
+                logger.warning("tranimaci: auth wall tespit edildi (%s) — oturum gerekli", url[:60])
+                return None
+            
+            if player_state and not player_state.get("hasVideo") and player_state.get("childCount", 0) <= 1:
+                logger.warning("tranimaci: oynatıcı boş (%s) — video yüklenmedi", url[:60])
+                return None
+            
+            # Video URL'lerini topla (network + DOM)
+            await asyncio.sleep(8)
+            try:
+                await page.wait_for_load_state("networkidle", timeout=8000)
+            except Exception:
+                pass
+            
+            # DOM'dan embed/video URLs
+            dom_urls = await page.evaluate("""() => {
+                const urls = [];
+                document.querySelectorAll('iframe, video, video source').forEach(el => {
+                    const s = el.src || el.getAttribute('data-src') || el.getAttribute('data-lazy-src');
+                    if (s && s.startsWith('http')) urls.push(s);
+                });
+                return urls;
+            }""")
+            
+            all_urls = found + (dom_urls or [])
+            if all_urls:
+                logger.info("tranimaci: %d URL bulundu (%s)", len(all_urls), url[:60])
+                return all_urls[0]
+            
+            return None
+        except Exception as e:
+            logger.warning("tranimaci: hata: %s", e)
+            return None
+        finally:
+            await page.close()
+
+    async with async_playwright() as pw:
+        browser = await pw.chromium.launch(headless=True, args=["--no-sandbox"])
+        ctx = await browser.new_context(
+            user_agent=("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                       "AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"),
+            locale="tr-TR",
+            viewport={"width": 1920, "height": 1080},
+        )
+        try:
+            from playwright_stealth import Stealth
+            await Stealth().apply_stealth_async(ctx)
+        except Exception:
+            pass
+        
+        # Önce ana URL'yi dene
+        result = await _try_page(ctx, episode_url)
+        if result:
+            return result
+        
+        # Mirro dene
+        domain = _domain(episode_url)
+        for mirror in _TRANIMACI_MIRRORS:
+            mirror_url = episode_url.replace(domain, mirror)
+            if mirror_url == episode_url:
+                mirror_url = episode_url.replace("tranimaci.com", mirror)
+            logger.info("tranimaci mirror deneniyor: %s", mirror_url[:80])
+            result = await _try_page(ctx, mirror_url)
+            if result:
+                return result
+        
+        logger.warning("tranimaci: tüm kaynaklar denendi — hiçbiri video sunmuyor")
+        await browser.close()
+        return None

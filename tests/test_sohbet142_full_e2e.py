@@ -71,6 +71,9 @@ def poll_job(client, job_id, timeout=300, interval=3):
     return {"status": "timeout", "error": f"No completion after {timeout}s"}
 
 def verify_file(path_str, media_type):
+    # WSL path → Windows path çevirisi (backend WSL'de çalışıyorsa)
+    if path_str and path_str.startswith("/mnt/c/"):
+        path_str = "C:\\" + path_str.replace("/mnt/c/", "", 1).replace("/", "\\")
     p = Path(path_str) if path_str else None
     if not p or not p.exists():
         return False, {"message": f"File not found: {p}", "file_path": str(p) if p else str(path_str)}
