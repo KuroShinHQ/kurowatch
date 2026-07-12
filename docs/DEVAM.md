@@ -1,5 +1,33 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 12 Temmuz 2026 (SOHBET-143) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-143`
+**Son güncelleme:** 12 Temmuz 2026 (SOHBET-146) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-146`
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-146: hdfilmcehennemi.now Domain Güncellemesi (107 film)
+
+```
+SOHBET-146 — 714 TEST: 590/714 OK (%82.6), +77 iyileşme
+
+[1] hdfilmcehennemi.now URL yapısı değişmiş:
+    - Eski: /{slug}-izle/ (yıl yok, /film/ prefix yok)
+    - Yeni: /film/{slug}-{year}-izle-{n}/
+    - .now search API ile 46/63 film için doğru slug bulundu
+    - DB'de 297 episode URL, 113 site URL güncellendi
+
+[2] Test iyileştirmesi:
+    - movie: 6/113 (%5.3) → 49/113 (%43.4)
+    - series: 2/49 (%4.1) → 20/49 (%40.8)
+    - manga: 36/66 (%54.5) → 48/66 (%72.7)
+    - manhwa: 81/96 (%84.4) → 85/96 (%88.5)
+    - TOPLAM: 513/714 (%71.8) → 590/714 (%82.6)
+
+[3] Bulgular:
+    - .now hala çalışıyor, sadece URL şeması değişmiş
+    - .nl farklı URL yapısı kullanıyor (HEAD 403, GET 200)
+    - 15 film (.now'da bulunamayan koleksiyon/niche) hala hatalı
+
+Detay: docs/SOHBET-146_RAPORU.md
+```
 
 ---
 
