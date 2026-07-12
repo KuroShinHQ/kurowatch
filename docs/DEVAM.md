@@ -1,30 +1,29 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 12 Temmuz 2026 (SOHBET-142) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-142-fix`
+**Son güncelleme:** 12 Temmuz 2026 (SOHBET-143) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-143`
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-142: Türkçe Kaynak Öncelikli, URL Zenginleştirilmiş, Kanıtlı Sistem (5/6)
+## ✅ TAMAMLANDI — SOHBET-143: Naruto/tranimaci Auth Sorunu Çözümü — 6/6 PASS (%100)
 
 ```
-SOHBET-142 — 5/6 PASS (%83.3), 1/6 FAIL
+SOHBET-143 — 6/6 PASS (%100)
 
-[1] Anime — Naruto S01E01 (tranimaci.com):
-     ❌ FAIL — tranimaci.com sayfası oturum/üyelik gerektiriyor
-     Player div boş (Next.js auth wall), yt-dlp 0.2MB preview indiriyor
-     Çözüm için: farklı site/mirror veya auth bypass gerekiyor
+[1] Anime — Naruto S01E01:
+     ✅ PASS — 84.8 MB MP4 (renjiabari.asia CDN)
+     Çözüm: animexe.com (auth gerektirmeyen alternatif)
+     DB'de episode URL: tranimaci.com → animexe.com/watch/naruto/1/1
 
 [2] Dizi — Dexter S08E01 (setfilmizle.uk):
      ✅ PASS — 875 MB, fastplay.mom HLS segments intercepted via Playwright
-     yt-dlp önce 403 hatası alıyor, sonra Playwright HLS downloader devreye giriyor
 
 [3] Film — 3 Idiots (hdfilmcehennemi.now):
-     ✅ PASS — 15.2 MB, AV1 1280x720, 177sn video diske indi!
+     ✅ PASS — 15.2 MB, AV1 1280x720
 
 [4] Manga — Martial Peak Bölüm 1 (ragnarscans.net):
-     ✅ PASS — 19 sayfa, 2.1 MB, Madara pipeline
+     ✅ PASS — 19 sayfa
 
 [5] Manhwa — Returner's Magic Bölüm 1 (ragnarscans.net):
-     ✅ PASS — 3 görsel, 474 KB
+     ✅ PASS
 
 [6] Oyun — Cult of the Lamb (FitGirl Repack):
      ✅ PASS — magnet link kaydedildi
@@ -33,36 +32,23 @@ SOHBET-142 — 5/6 PASS (%83.3), 1/6 FAIL
 DEĞİŞİKLİKLER:
 ```
 stream_finder.py:
-  - _resolve_embed_with_playwright: M3U8/MP4 seçimi last-URL priority
-  - _is_embed / _is_video_target: "manifest" ve ".ts" eklendi
-  - Embed çözüm sırası: turkanime/fastplay önce, M3U8/MP4 sonra
-  - download_hls_via_playwright: YENİ — Playwright ile HLS segment interception
-    setfilmizle.uk → play button click → srv.*.cfd segment capture → concat
-  - _playwright_find_embed: turkanime.tv embed aynı PW session'da çözülür
-    (token/session expire engellemek için, yeni browser açılmadan)
-  - tranimaci.com wait_secs: 30→45 (PoW + player yüklenmesi için)
+  - _ANIME_ONLY_DOMAINS: animexe.com eklendi
+  - _FORCE_PLAYWRIGHT: animexe.com eklendi
 
-anime.py:
-  - yt-dlp başarısız olursa → Playwright HLS fallback (download_hls_via_playwright)
-  - Çıktı < 500KB ise de fallback dene (önizleme/preview bypass)
-  - Module-level logger eklendi
+tests/test_sohbet142_full_e2e.py:
+  - verify_file: WSL path (/mnt/c/...) → Windows path (C:\) çevirisi eklendi
 
-episodes.py:
-  - _derive_ep_url: setfilmizle için season-aware URL fix
-  - _extract_season_from_url: yeni helper
-  - sync_episodes: target_season parametresi eklendi
-  - is_anilist_id: tmdb:/steam: prefix fix
-  - total_episodes: series type için fix
+DB (kurowatch.db):
+  - Naruto ep1 (id=5816): https://tranimaci.com/video/naruto-1-bolum
+    → https://animexe.com/watch/naruto/1/1
 ```
 
 KANIT DOSYALARI:
+  - downloads/anime/469/ep001.mp4 (84.8 MB) — Naruto S01E01 (YENİ)
   - downloads/anime/287/ep001.mp4 (875 MB) — Dexter S08E01
   - downloads/anime/203/ep001.mp4 (15.2 MB) — 3 Idiots
   - downloads/manga/1/ch0001/ — 19 sayfa
-  - downloads/sohbet142_kanit/cult_of_the_lamb_magnet.txt
-  - _kanit_sohbet142/rapor.json — test sonuçları
-  - _kanit_sohbet142/url_zenginlestirme_raporu.json
-  - docs/SOHBET-142_RAPORU.md — detaylı rapor
+  - _kanit_sohbet142/rapor.json — 6/6 PASS
 
 ---
 
