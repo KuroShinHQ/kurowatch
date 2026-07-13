@@ -1,0 +1,6009 @@
+{
+  "summary": {
+    "total": 714,
+    "ok": 685,
+    "error": 29,
+    "skip": 0,
+    "success_rate": 95.9,
+    "duration_sec": 166.89284300804138
+  },
+  "by_type": {
+    "anime": {
+      "total": 318,
+      "ok": 318,
+      "error": 0,
+      "skip": 0,
+      "failures": []
+    },
+    "movie": {
+      "total": 113,
+      "ok": 113,
+      "error": 0,
+      "skip": 0,
+      "failures": []
+    },
+    "manga": {
+      "total": 66,
+      "ok": 66,
+      "error": 0,
+      "skip": 0,
+      "failures": []
+    },
+    "manhwa": {
+      "total": 96,
+      "ok": 96,
+      "error": 0,
+      "skip": 0,
+      "failures": []
+    },
+    "series": {
+      "total": 49,
+      "ok": 21,
+      "error": 28,
+      "skip": 0,
+      "failures": [
+        {
+          "id": 114,
+          "title": "Marvel's What If (S3)",
+          "type": "series",
+          "status": "HTTP_403",
+          "site": "dizibox.so",
+          "error": null
+        },
+        {
+          "id": 226,
+          "title": "Arka Sokaklar",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 570,
+          "title": "Teletubbies",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 677,
+          "title": "Öyle Bir Geçer Zaman ki",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 410,
+          "title": "Komedi Dükkanı (Tolga Çevik)",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 675,
+          "title": "Çok Güzel Hareketler Bunlar (1. Kuşak)",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 417,
+          "title": "Kurtlar Vadisi (Pusu)",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 674,
+          "title": "Çok Güzel Hareketler Bunlar",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 673,
+          "title": "Çocuklar Duymasın",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 201,
+          "title": "1 Kadın 1 Erkek",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 212,
+          "title": "Adanalı",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 243,
+          "title": "Behzat Ç. Bir Ankara Polisiyesi",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 242,
+          "title": "Behzat Ç.",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 293,
+          "title": "Doktorlar",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 322,
+          "title": "Galip Derviş",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 326,
+          "title": "Geniş Aile",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 352,
+          "title": "House M.D.",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 355,
+          "title": "Hugo",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 400,
+          "title": "Kardeş Payı",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 409,
+          "title": "Komedi Dükkanı",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 416,
+          "title": "Kurtlar Vadisi (Pusu dönemi)",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 459,
+          "title": "Muhteşem Yüzyıl",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 456,
+          "title": "Monsters At Work (Sevimli Canavarlar)",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 491,
+          "title": "Pis Yedili",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 522,
+          "title": "Seksenler",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 657,
+          "title": "Yaprak Dökümü",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 656,
+          "title": "Yahşi Cazibe",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        },
+        {
+          "id": 548,
+          "title": "Sihirli Annem",
+          "type": "series",
+          "status": "HTTP_404",
+          "site": "setfilmizle.uk",
+          "error": null
+        }
+      ]
+    },
+    "cartoon": {
+      "total": 53,
+      "ok": 52,
+      "error": 1,
+      "skip": 0,
+      "failures": [
+        {
+          "id": 113,
+          "title": "Rick and Morty (S7)",
+          "type": "cartoon",
+          "status": "HTTP_403",
+          "site": "yabancidizi.pro",
+          "error": null
+        }
+      ]
+    },
+    "game": {
+      "total": 19,
+      "ok": 19,
+      "error": 0,
+      "skip": 0,
+      "failures": []
+    }
+  },
+  "results": [
+    {
+      "id": 539,
+      "title": "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 535,
+      "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 24,
+      "title": "Hardcore Leveling Warrior",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 1,
+      "title": "Martial Peak",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 51,
+      "title": "I Reincarnated as the Crazed Heir",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 291,
+      "title": "Doctor Strange",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 474,
+      "title": "No Country for Old Men (İhtiyarlara Yer Yok)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 472,
+      "title": "New York'ta Beş Minare",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 365,
+      "title": "Iron Man",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 363,
+      "title": "Inception",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 362,
+      "title": "In Time (Zamana Karşı)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 345,
+      "title": "Hancock",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 342,
+      "title": "Hababam Sınıfı (Yeni)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 344,
+      "title": "Hacivat Karagöz Neden Öldürüldü?",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 341,
+      "title": "Hababam Sınıfı (Yeni Nesil)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 227,
+      "title": "Asena ve Oniriks",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 220,
+      "title": "Amerikan Sapığı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 219,
+      "title": "American Psycho (Amerikan Sapığı)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 217,
+      "title": "Alvin ve Sincaplar",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 215,
+      "title": "Akıl Oyunları",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 211,
+      "title": "Abimm",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 210,
+      "title": "A.R.O.G",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 205,
+      "title": "300 Spartalı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 209,
+      "title": "A Beautiful Mind (Akıl Oyunları)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 204,
+      "title": "300 (300 Spartalı)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 198,
+      "title": "Trash of the Count's Family (Lout of Count's Family)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 187,
+      "title": "The Legendary Moonlight Sculptor",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 190,
+      "title": "The Novel's Extra (Remake)",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 189,
+      "title": "The Novel's Extra",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 180,
+      "title": "The Bastard of Swordborne",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 162,
+      "title": "Overgeared",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 174,
+      "title": "Shadow of the Supreme",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 169,
+      "title": "Return of the Disaster-Class Hero",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 161,
+      "title": "Omniscient Reader's Viewpoint (ORV)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 158,
+      "title": "My S-Class Hunters",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 152,
+      "title": "Lout of Count's Family (Trash of the Count's Family)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 85,
+      "title": "Şeytani Egemenin Halefi",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 148,
+      "title": "Heavenly Demon Reborn!",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 143,
+      "title": "Chronicles of the Demon Faction",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 76,
+      "title": "Kage no Jitsuryokusha ni Naritakute",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 53,
+      "title": "Memorize",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 49,
+      "title": "Reverse Villain",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 84,
+      "title": "Library of Heaven's Path",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 33,
+      "title": "Rise from the Rubble",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 42,
+      "title": "The Return of the Crazy Demon",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 54,
+      "title": "I Just Want to Be Killed",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 31,
+      "title": "Kill the Hero",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangawow.com",
+      "error": null
+    },
+    {
+      "id": 30,
+      "title": "Return to Player",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 7,
+      "title": "Release That Witch",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangawow.com",
+      "error": null
+    },
+    {
+      "id": 707,
+      "title": "Kaguya-sama: Love is War?",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 681,
+      "title": "The Archmage Returns After 4000 Years",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 20,
+      "title": "FFF-Class Trashero",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 679,
+      "title": "5 Centimeters per Second",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 680,
+      "title": "The Greatest Estate Developer",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 505,
+      "title": "Rick and Morty",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 650,
+      "title": "What If...?",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 92,
+      "title": "Kahramanın Dönüşü",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 287,
+      "title": "Dexter",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 346,
+      "title": "Hannibal",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "dizipod.com",
+      "error": null
+    },
+    {
+      "id": 46,
+      "title": "Ranker's Return (Remake)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 113,
+      "title": "Rick and Morty (S7)",
+      "type": "cartoon",
+      "status": "HTTP_403",
+      "site": "yabancidizi.pro",
+      "error": null
+    },
+    {
+      "id": 10,
+      "title": "A Returner's Magic Should Be Special",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 112,
+      "title": "Dexter (S8)",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 713,
+      "title": "Komi Can't Communicate Part 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 702,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 114,
+      "title": "Marvel's What If (S3)",
+      "type": "series",
+      "status": "HTTP_403",
+      "site": "dizibox.so",
+      "error": null
+    },
+    {
+      "id": 710,
+      "title": "Blood Blockade Battlefront & Beyond",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 717,
+      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 718,
+      "title": "Let This Grieving Soul Retire Cour 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 714,
+      "title": "KONOSUBA -God's blessing on this wonderful world! 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 2,
+      "title": "Eskiden Zindan Patronuydum",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 715,
+      "title": "Black Butler: Book of Murder",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 716,
+      "title": "Black Butler: Public School Arc",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 711,
+      "title": "Quanzhi Gaoshou Specials",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 712,
+      "title": "The King's Avatar: For the Glory",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 705,
+      "title": "JoJo's Bizarre Adventure (2000)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 706,
+      "title": "Kabaneri of the Iron Fortress: The Battle of Unato",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 708,
+      "title": "Kakegurui xx",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 709,
+      "title": "By the Grace of the Gods 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 703,
+      "title": "Reborn as a Vending Machine, I Now Wander the Dungeon Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 704,
+      "title": "Hell’s Paradise Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 699,
+      "title": "High School of the Dead: Drifters of the Dead",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 700,
+      "title": "The Daily Life of the Immortal King Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 701,
+      "title": "Isekai Cheat Magician: Magicians and the Starry Night Festival",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 698,
+      "title": "High School DxD NEW",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 692,
+      "title": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 693,
+      "title": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 694,
+      "title": "Classroom of the Elite Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 695,
+      "title": "Code Geass: Lelouch of the Rebellion R2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 687,
+      "title": "Another: The Other",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 688,
+      "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 689,
+      "title": "Assassination Classroom Second Season",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 690,
+      "title": "BLEACH: Thousand-Year Blood War",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 691,
+      "title": "Bocchi the Rock! 2nd Season",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 683,
+      "title": "SPY x FAMILY",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 684,
+      "title": "Dungeon Meshi 2nd Season",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 686,
+      "title": "ISHURA Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 682,
+      "title": "The Rising of the Shield Hero",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 696,
+      "title": "DAN DA DAN Season 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 697,
+      "title": "Is It Wrong to Try to Pick Up Girls in a Dungeon? II",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 18,
+      "title": "Nano Machine",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 102,
+      "title": "Isekai Shikkaku (No Longer Allowed in Another World)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 213,
+      "title": "Adventure Time",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 19,
+      "title": "Murim Login",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 288,
+      "title": "Dexter's Laboratory",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 111,
+      "title": "Ishura",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimeizle.top",
+      "error": null
+    },
+    {
+      "id": 290,
+      "title": "Disney Broken Karaoke",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 371,
+      "title": "Isekai no Seikishi Monogatari",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 376,
+      "title": "Isekai Shikkaku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 461,
+      "title": "My Neighbor Totoro",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 462,
+      "title": "My Neighbor Totoro (Tonari no Totoro)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 473,
+      "title": "Ninjago: Masters of Spinjitzu",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 483,
+      "title": "Over the Garden Wall (Bahçe Duvarının Ötesinde)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 562,
+      "title": "Steven Universe",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 226,
+      "title": "Arka Sokaklar",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 457,
+      "title": "Mr. Robot",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 615,
+      "title": "The Yogi Bear Show",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 649,
+      "title": "We Bare Bears (Kafadan Ayılar)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 651,
+      "title": "Winnie the Pooh",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 592,
+      "title": "The Faraway Paladin (Saihate no Paladin)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 316,
+      "title": "Frieren: Beyond Journey's End (Sousou no Frieren)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 641,
+      "title": "Undisputed (Yenilmez Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 612,
+      "title": "The Walking Dead",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 328,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 570,
+      "title": "Teletubbies",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 334,
+      "title": "Gladio",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 354,
+      "title": "Howl's Moving Castle (Yürüyen Şato)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 638,
+      "title": "Uncle from Another World",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 418,
+      "title": "Kurtlar Vadisi Irak",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 498,
+      "title": "Real Steel (Çelik Yumruk)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 677,
+      "title": "Öyle Bir Geçer Zaman ki",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 454,
+      "title": "Monster Musume no Oishasan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 410,
+      "title": "Komedi Dükkanı (Tolga Çevik)",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 464,
+      "title": "Mynoghra 4X",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 675,
+      "title": "Çok Güzel Hareketler Bunlar (1. Kuşak)",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 417,
+      "title": "Kurtlar Vadisi (Pusu)",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 482,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu (Trapped in a Dating Sim)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 577,
+      "title": "Tensei shitara Ken deshita",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 525,
+      "title": "Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 556,
+      "title": "Spider-Man Serileri",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 566,
+      "title": "Tales of Zestiria the Cross",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 585,
+      "title": "The Daily Life of the Immortal King (Xian Wang de Richang)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 622,
+      "title": "Tomo-chan wa Onnanoko!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 667,
+      "title": "Yuusha, Yamemasu (I'm Quitting Heroing)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 672,
+      "title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 603,
+      "title": "The Maze Runner (Labirent: Ölümcül Kaçış Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 62,
+      "title": "Reverend Insanity",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 633,
+      "title": "Transformers Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 48,
+      "title": "The Heavenly Demon Can't Live a Normal Life",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 591,
+      "title": "The Faraway Paladin",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 458,
+      "title": "Mr. White)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 318,
+      "title": "Full Dive RPG",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 608,
+      "title": "The Scorpion King Serisi (Mumya ve Akrepler Kralı)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 607,
+      "title": "The Scorpion King Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 674,
+      "title": "Çok Güzel Hareketler Bunlar",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 673,
+      "title": "Çocuklar Duymasın",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 387,
+      "title": "JoJo Serisi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 239,
+      "title": "Baki Serisi (Tüm Sezonlar)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 360,
+      "title": "Ice Age (Buz Devri Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 604,
+      "title": "The Mentalist",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "dizipod.com",
+      "error": null
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 336,
+      "title": "Gokudols",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 234,
+      "title": "Attack on Titan (Shingeki no Kyojin)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 231,
+      "title": "Assessment Assassin",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 230,
+      "title": "Assassination Classroom (Ansatsu Kyoushitsu)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 309,
+      "title": "Fate Serisi (Stay Night, Zero, Unlimited Blade Works)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 373,
+      "title": "Isekai Ojisan (Uncle from Another World)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 635,
+      "title": "Tsuki ga Michibiku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 109,
+      "title": "Shangri-La Frontier (S2)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 93,
+      "title": "Forced to Become the Villain's Son-in-Law",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 157,
+      "title": "My Blasted Reincarnated Life",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 65,
+      "title": "O Gerçekten Bir Kahraman mı?",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 153,
+      "title": "Martial Divine Demon",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 137,
+      "title": "After Ten Millennia in Hell",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 199,
+      "title": "Tyrant of the Tower Defense Game",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 147,
+      "title": "Hardcore Leveling Warrior: Earth Game",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 134,
+      "title": "A Regressor's Tale of Cultivation",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 496,
+      "title": "Quanzhi Gaoshou (The King's Avatar)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 68,
+      "title": "Sokakta Hayatta Kalma Kılavuzu",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 140,
+      "title": "Cassmire: The Loyal Sword",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 286,
+      "title": "Demon Slayer (Kimetsu no Yaiba)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 571,
+      "title": "Tengen Toppa Gurren Lagann",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 666,
+      "title": "Yuusha, Yamemasu",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 584,
+      "title": "The Daily Life of the Immortal King",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 394,
+      "title": "Kabaneri of the Iron Fortress",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 624,
+      "title": "Tonari no Totoro",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 499,
+      "title": "Recep İvedik Üçlemesi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 467,
+      "title": "Nagatoro-san",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 542,
+      "title": "Shinmai Maou no Testament",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 550,
+      "title": "Slime Tensei (Tensura)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 369,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 630,
+      "title": "Tower of God (Kami no Tou)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 348,
+      "title": "Hazurewaku no \"Joutai Ijou Skill\" de Saikyou ni Natta Ore ga Subete wo Juurin suru made (Failure Frame)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 678,
+      "title": "Baki's Path 2. Kısım",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 66,
+      "title": "The Dungeon Master",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 67,
+      "title": "Sonsuz Döngüde Hapsolan",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 56,
+      "title": "Yıldız Hocası Baek",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 43,
+      "title": "Şamanın Yolu",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 45,
+      "title": "Kılıç Hanesinin Genç Efendisi",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 32,
+      "title": "The Max Level Hero Has Returned",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 41,
+      "title": "Strongest Fighter",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 55,
+      "title": "Gel Beni Al",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "golgebahcesi.com",
+      "error": null
+    },
+    {
+      "id": 70,
+      "title": "Oyuncunun Son Şansı",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "golgebahcesi.com",
+      "error": null
+    },
+    {
+      "id": 74,
+      "title": "Yetenek Yutan Sihirbaz",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 6,
+      "title": "Jujutsu Kaisen",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 22,
+      "title": "Juujika no Rokunin",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "tempestfansub.com",
+      "error": null
+    },
+    {
+      "id": 9,
+      "title": "The Hunter",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangawow.com",
+      "error": null
+    },
+    {
+      "id": 13,
+      "title": "Dünyanın En İyi Mühendisi",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 71,
+      "title": "Damn Reincarnation",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 29,
+      "title": "Tower Into the Clouds",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 78,
+      "title": "Im Not That Kind of Talent",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 8,
+      "title": "Geri Dönen Büyücü",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 69,
+      "title": "Overpowered Sword",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 135,
+      "title": "Absolute Regression",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 16,
+      "title": "The Beginning After the End",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 136,
+      "title": "Absolute Reign",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 145,
+      "title": "Doom Breaker (Suicidal Battle God)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 146,
+      "title": "Dungeon Odyssey",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 149,
+      "title": "I Killed the Main Player",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 150,
+      "title": "Latna Saga: Survival of a Sword King in a Fantasy World",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 151,
+      "title": "Level Up with the Gods",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 154,
+      "title": "Masters of Lightning Knives",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 155,
+      "title": "Mercenary Enrollment",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 156,
+      "title": "My Avatars' Path to Greatness",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 163,
+      "title": "Pick Me Up! (Infinite Gacha)",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 164,
+      "title": "Player Who Returned After 10000 Years",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 160,
+      "title": "Nebula's Civilization",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 159,
+      "title": "Myst, Might, Mayhem",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 171,
+      "title": "Returning With Absolutely Nothing",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 175,
+      "title": "SSS-Class Revival Hunter",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 172,
+      "title": "Revenge of the Baskerville Bloodhound",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 173,
+      "title": "Second Life Ranker",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 178,
+      "title": "Swordmaster's Youngest Son",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 176,
+      "title": "SSS-Class Revival Hunter (SSS-Class Suicide Hunter)",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 177,
+      "title": "Standard Of Reincarnation",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 179,
+      "title": "The Academy's Undercover Professor",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 181,
+      "title": "The Ember Knight",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 184,
+      "title": "The Infinite Mage",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 182,
+      "title": "The Extra's Academy Survival Guide",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 183,
+      "title": "The Grand Mudang Saga",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 185,
+      "title": "The Knight Only Lives Today",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 186,
+      "title": "The Lazy Lord Masters the Sword",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 188,
+      "title": "The Legendary Spearman Returns",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 191,
+      "title": "The Return Of The 8th Class Mage",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 194,
+      "title": "The Stellar Swordmaster",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 192,
+      "title": "The Sichuan Tang Clan's Entomologist",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 202,
+      "title": "100-man no Inochi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 193,
+      "title": "The Skeleton Soldier Failed to Defend the Dungeon",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 206,
+      "title": "5 Centimeters",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 214,
+      "title": "Akame ga Kill!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 216,
+      "title": "Aladdin (Çizgi Dizi)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 228,
+      "title": "Assassin Isekai",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 233,
+      "title": "Attack on Titan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 232,
+      "title": "Asteriks ve Oniriks",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 235,
+      "title": "Avatar",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 237,
+      "title": "Back Street Girls: Gokudols",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 236,
+      "title": "Avengers",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 238,
+      "title": "Baki Serisi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 201,
+      "title": "1 Kadın 1 Erkek",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 240,
+      "title": "Bakugan Battle Brawlers",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 212,
+      "title": "Adanalı",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 244,
+      "title": "Ben 10",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 245,
+      "title": "Ben 10 (Klasik, Alien Force, Ultimate Alien, Omniverse)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 241,
+      "title": "Batman Serisi (Kara Şövalye ve Tüm Filmler)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 246,
+      "title": "Berserk",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 247,
+      "title": "Beyblade",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 249,
+      "title": "Bleach",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 250,
+      "title": "Bocchi the Rock!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 251,
+      "title": "Bofuri",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 253,
+      "title": "Breaking Bad (Walter White",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 254,
+      "title": "Broken Karaoke",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 243,
+      "title": "Behzat Ç. Bir Ankara Polisiyesi",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 242,
+      "title": "Behzat Ç.",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 248,
+      "title": "Black Mirror",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 256,
+      "title": "Cars",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 258,
+      "title": "Chainsaw Man",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 259,
+      "title": "Charlotte",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 255,
+      "title": "Captain America",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 252,
+      "title": "Breaking Bad",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 262,
+      "title": "Clarence",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 274,
+      "title": "Dark (2017)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 275,
+      "title": "Dark Gathering",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 257,
+      "title": "Cem Yılmaz Fundamentals",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 267,
+      "title": "Corpse Bride",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 276,
+      "title": "Dark Healer",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 277,
+      "title": "Dawn of the Witch",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 278,
+      "title": "Dead Mount",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 260,
+      "title": "Chihiro Gidişi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 279,
+      "title": "Dead Mount Death Play",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 281,
+      "title": "Death March",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 282,
+      "title": "Death March kara Hajimaru Isekai Kyousoukyoku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 283,
+      "title": "Death Note",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 284,
+      "title": "Demon Lord 2099",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 285,
+      "title": "Demon Slayer",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 280,
+      "title": "Deadpool",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 296,
+      "title": "DreamWorks Dragons (Ejderha Binicileri)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 289,
+      "title": "Diriliş",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 298,
+      "title": "Ed, Edd n Eddy",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 297,
+      "title": "Düğün Dernek",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 300,
+      "title": "Elfen Lied",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 299,
+      "title": "Edge of Tomorrow (Yarının Sınırında)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 302,
+      "title": "Failure Frame",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 301,
+      "title": "Esaretin Bedeli",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 303,
+      "title": "Faraway Paladin",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 329,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki (How a Realist Hero Rebuilt the Kingdom)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 375,
+      "title": "Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 377,
+      "title": "Isekai Shoukan wa Nidome desu (Summoned to Another World for a Second Time)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 397,
+      "title": "Kaiko sareta Ankoku Heishi (30-dai) no Slow Life (Chillin' in My 30s after Getting Fired)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 293,
+      "title": "Doktorlar",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 292,
+      "title": "Doctor Who",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "dizipod.com",
+      "error": null
+    },
+    {
+      "id": 419,
+      "title": "Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 509,
+      "title": "Saikin Yatotta Maid ga Ayashii (The Maid I Hired Recently Is Mysterious)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 510,
+      "title": "Saikyou no Shienshoku \"Wajutsushi\" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru (The Most Notorious Talker)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 540,
+      "title": "Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 (Gift Mugen Gacha)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 543,
+      "title": "Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 572,
+      "title": "Tensai Ouji no Akaji Kokka Saisei Jutsu (The Genius Prince's Guide to Raising a Nation Out of Debt)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 576,
+      "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 304,
+      "title": "Faraway Paladin 2",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 305,
+      "title": "Farmer Skill",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 308,
+      "title": "Fate Serisi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 642,
+      "title": "Up",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 306,
+      "title": "Fast & Furious",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 307,
+      "title": "Fast & Furious (Hızlı ve Öfke",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 310,
+      "title": "Fetih 1453",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 312,
+      "title": "Fight Club (Dövüş Kulübü)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 315,
+      "title": "Frieren: Beyond Journey's End",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 313,
+      "title": "Filistin",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 314,
+      "title": "Finding Nemo",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 317,
+      "title": "Fuguushoku \"Kanteishi\" ga Jitsu wa Saikyou Datta",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 319,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 324,
+      "title": "Generator Rex",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 325,
+      "title": "Genius Prince",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 320,
+      "title": "Fury",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 327,
+      "title": "Genjitsu Shugi Yuusha",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 330,
+      "title": "Ghost in the Shell",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 332,
+      "title": "Gintama",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 323,
+      "title": "Game of Thrones",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 331,
+      "title": "Ghost Rider (Hayalet Sürücü)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 322,
+      "title": "Galip Derviş",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 337,
+      "title": "Gravity Falls (Esrarengiz Kasaba)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 333,
+      "title": "Gladiator",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 335,
+      "title": "Gladyatör",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 339,
+      "title": "Guimi Zhi Zhu: Xiaochou Pian (Lord of the Mysteries)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 351,
+      "title": "Highschool of the Dead (HOTD)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 326,
+      "title": "Geniş Aile",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 356,
+      "title": "Hunter x Hunter (2011)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 364,
+      "title": "Infinite Gacha",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 372,
+      "title": "Isekai Ojisan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 358,
+      "title": "I Am Legend (Ben Efsaneyim)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 374,
+      "title": "Isekai One Turn Kill Neesan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 378,
+      "title": "Isekai Yakkyoku (Isekai Eczanesi)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 379,
+      "title": "Ishuzoku Reviewers",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 380,
+      "title": "Itai no wa Iya nanode Bougyoryoku (Bofuri)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 382,
+      "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou (Reborn as a Vending Machine)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 383,
+      "title": "Jigokuraku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 352,
+      "title": "House M.D.",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 384,
+      "title": "Jitsu wa Ore, Saikyou deshita?",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 381,
+      "title": "İhtiyarlara Yer Yok",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 355,
+      "title": "Hugo",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 386,
+      "title": "Johnny Bravo",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 388,
+      "title": "JoJo's Bizarre Adventure",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 389,
+      "title": "JoJo's Bizarre Adventure Serisi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 385,
+      "title": "John Wick",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 391,
+      "title": "Justice League",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 392,
+      "title": "Justice League Unlimited",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 393,
+      "title": "Kabaneri",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 395,
+      "title": "Kaguya-sama: Love is War",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 390,
+      "title": "Joker (2019)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 396,
+      "title": "Kaifuku Jutsushi no Yarinaoshi (Redo of Healer)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 398,
+      "title": "Kakegurui",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 399,
+      "title": "Kami-tachi ni Hirowareta Otoko",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 401,
+      "title": "Kekkai Sensen",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 402,
+      "title": "Kim Possible",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 403,
+      "title": "Kimi to Boku no Saigo no Senjou",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 404,
+      "title": "King's Avatar",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 405,
+      "title": "Kinsou no Vermeil",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 406,
+      "title": "Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 407,
+      "title": "Koleksiyoncu",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 408,
+      "title": "Kolpaçino",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 413,
+      "title": "Kung Fu Panda",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 415,
+      "title": "Kuroshitsuji (Black Butler)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 424,
+      "title": "Limitless (Film)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 400,
+      "title": "Kardeş Payı",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 426,
+      "title": "Log Horizon",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 428,
+      "title": "Lord of the Mysteries",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 409,
+      "title": "Komedi Dükkanı",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 430,
+      "title": "Lv2 Cheat",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 431,
+      "title": "Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 420,
+      "title": "La Casa de Papel",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 434,
+      "title": "Mahoutsukai Reimeiki (The Dawn of the Witch)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 416,
+      "title": "Kurtlar Vadisi (Pusu dönemi)",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 432,
+      "title": "Léon: The Professional (Sevginin Gücü)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 429,
+      "title": "Love, Death & Robots",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 433,
+      "title": "Madagaskar",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 443,
+      "title": "Max Steel",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 435,
+      "title": "Maleficent (Malefiz)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 436,
+      "title": "Malefiz",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 441,
+      "title": "Maskeli Beşler",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 444,
+      "title": "Megas XLR",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 442,
+      "title": "Matrix Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 446,
+      "title": "Meikyuu Black Company (The Dungeon of Black Company)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 447,
+      "title": "Mickey Mouse",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 450,
+      "title": "Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 451,
+      "title": "Mob Psycho 100",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 452,
+      "title": "Monster",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 453,
+      "title": "Monster Musume",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 463,
+      "title": "Mynoghra",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 465,
+      "title": "Mysterious Maid",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 466,
+      "title": "Nagatoro",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 468,
+      "title": "Nageki no Bourei wa Intai shitai (Let This Grieving Soul Retire!)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 469,
+      "title": "Naruto",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 470,
+      "title": "Neon Genesis Evangelion",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 471,
+      "title": "Netoge no Yome",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 475,
+      "title": "No Game No Life",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 476,
+      "title": "Noragami",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 477,
+      "title": "Noumin Kanren no Skill bakka Agetetara Nazeka Tsuyoku Natta.",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 478,
+      "title": "One Punch Man",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 479,
+      "title": "One Punch Man (OPM)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 480,
+      "title": "Oregairu",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 459,
+      "title": "Muhteşem Yüzyıl",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 456,
+      "title": "Monsters At Work (Sevimli Canavarlar)",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 481,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 484,
+      "title": "Overlord",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 489,
+      "title": "Phineas and Ferb (Fineas ve Förb)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 485,
+      "title": "Pacific Rim (Pasifik Savaşı Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 486,
+      "title": "Para Avcısı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 487,
+      "title": "Percy Jackson Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 490,
+      "title": "Pirates of the Caribbean (Karayip Korsanları Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 495,
+      "title": "Punishment Hero",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 501,
+      "title": "Redo of Healer",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 500,
+      "title": "Record of Ragnarok",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 492,
+      "title": "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 502,
+      "title": "Regular Show (Sürekli Dizi)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 503,
+      "title": "Reincarnated as a Sword",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 506,
+      "title": "Rookie Older Adventurer",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 508,
+      "title": "Saihate no Paladin: Tetsusabi no Yama no Ou (The Faraway Paladin 2. Sezon)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 507,
+      "title": "Rosario to Vampire",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 504,
+      "title": "Resident Evil Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 491,
+      "title": "Pis Yedili",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 513,
+      "title": "Sakamoto Desu ga? (Haven't You Heard? I'm Sakamoto)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 515,
+      "title": "Samurai Jack",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 517,
+      "title": "Scooby-Doo",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 521,
+      "title": "Sekai Saikou no Ansatsusha (Suikastçı Isekai)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 524,
+      "title": "Sentouin, Haken shimasu!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 526,
+      "title": "Seven Deadly Sins",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 527,
+      "title": "Seventh Prince",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 528,
+      "title": "Sevginin Gücü",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 529,
+      "title": "Shark Tale",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 523,
+      "title": "Selena",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 532,
+      "title": "Shijou Saikyou no Daimaou, Murabito A ni Tensei suru",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 522,
+      "title": "Seksenler",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 533,
+      "title": "Shimoneta",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 534,
+      "title": "Shin no Nakama",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 530,
+      "title": "Sherlock",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 531,
+      "title": "Sherlock Holmes Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 669,
+      "title": "Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 663,
+      "title": "Youjo Senki (The Saga of Tanya the Evil)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 662,
+      "title": "You (Joe Goldberg)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 658,
+      "title": "Yasei no Last Boss ga Arawareta! (A Wild Last Boss Appeared!)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 676,
+      "title": "Ölüm Yarışı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 659,
+      "title": "Yeşil Yol",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 654,
+      "title": "Yahari Ore no Seishun (Oregairu)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 655,
+      "title": "Yahşi Batı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 653,
+      "title": "World War Z",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 647,
+      "title": "Wajutsushi (The Most Notorious Talker)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 648,
+      "title": "WALL-E",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 643,
+      "title": "Uzaki-chan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 640,
+      "title": "Undead Unluck",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 644,
+      "title": "V for Vendetta",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 639,
+      "title": "Uncle Grandpa",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 657,
+      "title": "Yaprak Dökümü",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 656,
+      "title": "Yahşi Cazibe",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 636,
+      "title": "Tsuki ga Michibiku Isekai",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 634,
+      "title": "Trapped in a Dating Sim",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 637,
+      "title": "Twilight (Alacakaranlık Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 632,
+      "title": "Transformers Prime",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 629,
+      "title": "Tower of God",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 628,
+      "title": "Totally Spies! (Ajanlar)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 627,
+      "title": "Total Drama Island (Drama Adası)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 626,
+      "title": "Toradora!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 625,
+      "title": "Tondemo Skill de Isekai Hourou Meshi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 631,
+      "title": "Toy Story",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 623,
+      "title": "Tomodachi Game",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 621,
+      "title": "Tomo-chan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 619,
+      "title": "Tokyo Ghoul",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 618,
+      "title": "To LOVE-Ru",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 610,
+      "title": "The Seven Deadly Sins",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 616,
+      "title": "Thor",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 611,
+      "title": "The Shawshank Redemption (Esaretin Bedeli)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 567,
+      "title": "Taşıyıcı",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 564,
+      "title": "Sword Art Online (SAO)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 574,
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru (Asasyn Kantei Skill)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 613,
+      "title": "The Witcher",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 578,
+      "title": "Tensei Shitara Ken Deshita (Reincarnated as a Sword)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 561,
+      "title": "Steins;Gate",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 555,
+      "title": "Spider-Man (Tobey Maguire Üçlemesi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 554,
+      "title": "Space Goofs (Uzay Çılgınları)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 580,
+      "title": "Tetikci",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 560,
+      "title": "Star Wars: The Clone Wars",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 579,
+      "title": "Terminator Serisi",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 553,
+      "title": "Sonic X",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 582,
+      "title": "The Amazing World of Gumball",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 568,
+      "title": "Teach You a Lesson",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "dizipod.com",
+      "error": null
+    },
+    {
+      "id": 552,
+      "title": "Sonic Serileri",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 587,
+      "title": "The Devil is a Part-Timer! (Hataraku Maou-sama!)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 583,
+      "title": "The Collector (Koleksiyoncu)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 551,
+      "title": "Solo Leveling (Anime)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 558,
+      "title": "Split (Parçalanmış)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 588,
+      "title": "The Eminence in Shadow",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 559,
+      "title": "Squid Game",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 589,
+      "title": "The Eminence in Shadow (Kage no Jitsuryokusha ni Naritakute!)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 590,
+      "title": "The Emperor's New School (Şaşkın İmparator'un Okulu)",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 549,
+      "title": "Slime Tensei",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 547,
+      "title": "Shuumatsu no Walküre (Record of Ragnarok)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 593,
+      "title": "The Godfather",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 594,
+      "title": "The Green Mile (Yeşil Yol)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 545,
+      "title": "Shrek",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 544,
+      "title": "Shinryaku! Ika Musume",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 598,
+      "title": "The Kingdoms of Ruin (Hametsu no Oukoku)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 596,
+      "title": "The Hunger Games (Açlık Oyunları Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 548,
+      "title": "Sihirli Annem",
+      "type": "series",
+      "status": "HTTP_404",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 541,
+      "title": "Shinmai Maou",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 538,
+      "title": "Shinchou Yuusha",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 597,
+      "title": "The Incredibles",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 537,
+      "title": "Shin Shinka no Mi: Shiranai Uchi ni Kachigumi Jinsei",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 536,
+      "title": "Shin Shinka no Mi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 602,
+      "title": "The Maze Runner (Labirent Serisi)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 167,
+      "title": "Reincarnation of the Fist King",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 605,
+      "title": "The Mummy",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 606,
+      "title": "The Revenant (Diriliş)",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 196,
+      "title": "To Be An Actor",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 72,
+      "title": "Fukushuu o Koinegau Saikyou Yuusha",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 39,
+      "title": "Back to Rule Again",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 40,
+      "title": "Bug Player",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 64,
+      "title": "Regresör Kullanım Kılavuzu",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 63,
+      "title": "Seoul Station Necromancer",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 38,
+      "title": "Soylu Ailenin İşe Yaramaz Oğlu",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 37,
+      "title": "I Am the Fated Villain",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 58,
+      "title": "The World After the End",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 59,
+      "title": "Mağdur Sıralamacının Dönüşü",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 61,
+      "title": "Return of the Shattered Constellation",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 34,
+      "title": "Top Tier Providence",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 35,
+      "title": "Kaderin Zirvesi",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 60,
+      "title": "Kahraman Döndü",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 26,
+      "title": "Deli Mühendis",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 27,
+      "title": "Kılıç Kralının Fantezi Dünyasında Hayatta Kalma Hikayesi",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 25,
+      "title": "Dungeon Reset",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangawow.org",
+      "error": null
+    },
+    {
+      "id": 36,
+      "title": "Player Who Returned 10,000 Years Later",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 23,
+      "title": "Seçkinin İkinci Yaşamı",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 21,
+      "title": "World's Apocalypse Online",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 3,
+      "title": "Above All Gods",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 110,
+      "title": "Hataraku Maou-sama (S3)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 90,
+      "title": "Sémalarin Kilici",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 106,
+      "title": "Spy x Family (S2)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 97,
+      "title": "Long Zu (Dragon Raja)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 91,
+      "title": "Oyun Obu Familia Aile Senki",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 105,
+      "title": "Tate no Yuusha no Nariagari (S3)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 101,
+      "title": "KonoSuba (S3)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 98,
+      "title": "Failure Frame (Hazurewaku)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 100,
+      "title": "Maou Gakuin no Futekigousha (S2)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 95,
+      "title": "Tsuki ga Michibiku Isekai Douchuu (S2)",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 15,
+      "title": "The Scholar's Reincarnation",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 94,
+      "title": "Cultivator Against Hero Society",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 12,
+      "title": "Above Ten Thousand People",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 17,
+      "title": "The Tutorial Tower of the Advanced Player",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 5,
+      "title": "I Am a Cultivation Bigshot",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 11,
+      "title": "Bilge Okuyucunun Bakış Açısı",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 81,
+      "title": "I Can Snatch 999 Types of Abilities",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 82,
+      "title": "Tanrıçanın Kulu",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 4,
+      "title": "Büyü İmparatoru",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 77,
+      "title": "Dövüş Tanrısının Dönüşü Günlükleri",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 73,
+      "title": "Revenge of the Iron-Blooded Sword Hound",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 75,
+      "title": "I Became the Tyrant of a Defense Game",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 44,
+      "title": "Doctor's Rebirth",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangawow.com",
+      "error": null
+    },
+    {
+      "id": 28,
+      "title": "Return of the Unrivaled Spear Knight",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 88,
+      "title": "Yıldırım Bıçağı Ustası",
+      "type": "manga",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 52,
+      "title": "Reincarnation of the Murim Clan's Former Ranker",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 168,
+      "title": "Reincarnation Of The Suicidal Battle God",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 165,
+      "title": "Reborn as a Scholar",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 166,
+      "title": "Reincarnated Murim Lord",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 170,
+      "title": "Return of the War God",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 57,
+      "title": "SSS-Class Suicide Hunter",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 221,
+      "title": "Animated",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 222,
+      "title": "Another",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 223,
+      "title": "Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 138,
+      "title": "Bad Born Blood",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 139,
+      "title": "Cassmire",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 224,
+      "title": "Appraisal Skill",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 225,
+      "title": "Arifureta",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 141,
+      "title": "Cheonhwa Archive's Young Master",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 229,
+      "title": "Assassination Classroom",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 142,
+      "title": "Chronicles of a Doomed Prodigy",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 144,
+      "title": "Demon King of the Royal Class",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 294,
+      "title": "Dororo",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 195,
+      "title": "The World After the Fall",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 295,
+      "title": "Dr. STONE",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 197,
+      "title": "Too Many Heroes",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 357,
+      "title": "Hyakuren no Haou to Seiyaku no Valkyria",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 359,
+      "title": "I'm Quitting Heroing",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 261,
+      "title": "Chuunibyou",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 200,
+      "title": "Yongsa High: Dungeon Raiders",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "mangatr.app",
+      "error": null
+    },
+    {
+      "id": 263,
+      "title": "Classroom of the Elite",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 361,
+      "title": "Immortal King",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 264,
+      "title": "Claymore",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 265,
+      "title": "Code Geass: Lelouch of the Rebellion",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 268,
+      "title": "Cyberpunk: Edgerunners",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 266,
+      "title": "Combatants Will Be Dispatched!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 366,
+      "title": "Isekai Cheat Magician",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 367,
+      "title": "Isekai de Cheat Skill",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 270,
+      "title": "Dandadan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 271,
+      "title": "DanMachi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 368,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 272,
+      "title": "Danshi Koukousei",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 370,
+      "title": "Isekai Mokushiroku Mynoghra: Hametsu no Bunmei de Hajimeru Sekai Seifuku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 437,
+      "title": "Maou Gakuin",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 438,
+      "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 340,
+      "title": "Gurren Lagann",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 439,
+      "title": "Maou-sama Retry!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 440,
+      "title": "Mashle",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 343,
+      "title": "Hachi-nan tte, Sore wa Nai deshou!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 445,
+      "title": "Meikyuu Black Company",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 349,
+      "title": "High School DxD",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 448,
+      "title": "Mirai Nikki",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 350,
+      "title": "Highschool of the Dead",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 449,
+      "title": "Mo Dao Zu Shi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 273,
+      "title": "Dark",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 411,
+      "title": "Komi-san",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 412,
+      "title": "KonoSuba: God's Blessing on This Wonderful World!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 511,
+      "title": "Saikyou Onmyouji no Isekai Tenseiki",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 512,
+      "title": "Sakamoto Desu ga?",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 414,
+      "title": "Kuroshitsuji",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 514,
+      "title": "Salaryman ga Isekai ni Ittara Shitennou ni Natta Hanashi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 516,
+      "title": "School Days",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 518,
+      "title": "Seitokai",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 519,
+      "title": "Seitokai Yakuindomo",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 421,
+      "title": "Last Boss",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 520,
+      "title": "Sekai Saikou no Ansatsusha",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 422,
+      "title": "Let This Grieving Soul Retire",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 493,
+      "title": "Plunderer",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 488,
+      "title": "Peter Grill to Kenja no Jikan",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 494,
+      "title": "Powerpuff Girls",
+      "type": "cartoon",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 646,
+      "title": "Villager A",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 497,
+      "title": "Rakudai Kishi no Cavalry",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 425,
+      "title": "Lion King",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 563,
+      "title": "Sword Art Online",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 565,
+      "title": "Tales of Zestiria",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 645,
+      "title": "Venom",
+      "type": "movie",
+      "status": "HTTP_OK",
+      "site": "hdfilmcehennemi.name",
+      "error": null
+    },
+    {
+      "id": 573,
+      "title": "Tensei Kenja no Isekai Life",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 575,
+      "title": "Tensei Oujo to Tensai Reijou",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 586,
+      "title": "The Devil is a Part-Timer!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 652,
+      "title": "Wolverine",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 664,
+      "title": "Yu-Gi-Oh!",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 665,
+      "title": "Yuragi-sou no Yuuna-san",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 668,
+      "title": "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 423,
+      "title": "Limitless",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "dizipod.com",
+      "error": null
+    },
+    {
+      "id": 671,
+      "title": "Zom 100",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 104,
+      "title": "Shangri-La Frontier",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 546,
+      "title": "Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 96,
+      "title": "Dungeon Meshi",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 107,
+      "title": "Hametsu no Oukoku",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 661,
+      "title": "You",
+      "type": "series",
+      "status": "HTTP_OK",
+      "site": "setfilmizle.uk",
+      "error": null
+    },
+    {
+      "id": 79,
+      "title": "Villain Unrivaled",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 108,
+      "title": "The Red Ranger Becomes an Adventurer in Another World",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimeizle.top",
+      "error": null
+    },
+    {
+      "id": 99,
+      "title": "The New Gate",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimaci.com",
+      "error": null
+    },
+    {
+      "id": 103,
+      "title": "Magic Maker",
+      "type": "anime",
+      "status": "HTTP_OK",
+      "site": "tranimeizle.top",
+      "error": null
+    },
+    {
+      "id": 130,
+      "title": "Witchfire",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 133,
+      "title": "Elden Ring",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 131,
+      "title": "Atlas Fallen",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 128,
+      "title": "Cult of the Lamb",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 129,
+      "title": "No Man's Sky",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 125,
+      "title": "Assassin's Creed Shadows",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 126,
+      "title": "Black Myth: Wukong",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 127,
+      "title": "Frostpunk 2",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 124,
+      "title": "Dragon's Dogma 2",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 122,
+      "title": "Children of Morta",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 123,
+      "title": "Beat Saber",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 119,
+      "title": "Final Fantasy VII Remake Intergrade",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 120,
+      "title": "Final Fantasy V",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 121,
+      "title": "IFSunsets",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 117,
+      "title": "Fantasy Map Simulator",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 87,
+      "title": "Raising Newbie Heroes in Another World",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 83,
+      "title": "Regressing with the King's Power",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 86,
+      "title": "My Insanely Competent Underlings",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 116,
+      "title": "Necroking",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 115,
+      "title": "Manor Lords",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 118,
+      "title": "Empire of the Ants",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    },
+    {
+      "id": 80,
+      "title": "Never Die Extra",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 47,
+      "title": "Return of the Mount Hua Sect",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "monomanga.com.tr",
+      "error": null
+    },
+    {
+      "id": 50,
+      "title": "Heavenly Demon Instructor",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 89,
+      "title": "The Unbeatable Dungeon's Lazy Boss Monster",
+      "type": "manhwa",
+      "status": "HTTP_OK",
+      "site": "ragnarscans.net",
+      "error": null
+    },
+    {
+      "id": 132,
+      "title": "Grim Soul: Dark Fantasy Survival",
+      "type": "game",
+      "status": "HTTP_OK",
+      "site": "fitgirl-repacks.site",
+      "error": null
+    }
+  ]
+}

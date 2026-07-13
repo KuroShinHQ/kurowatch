@@ -943,11 +943,13 @@
   async function renderDetail(id) {
     const qePanel = document.getElementById('progress-quick-edit');
     if (qePanel) qePanel.style.display = 'none';
+    showLoadingBar('İçerik yükleniyor...');
     let item;
     try { item = await apiGet('/api/content/' + id); }
     catch (err) { console.error('renderDetail fetch', err); showToast('İçerik yüklenemedi', 'error'); return; }
-    if (!item) { showToast('İçerik bulunamadı', 'error'); return; }
+    if (!item) { hideLoadingBar(); showToast('İçerik bulunamadı', 'error'); return; }
     try {
+    updateLoadingBar(20, 'Bilgiler yükleniyor...');
 
     const tc = TYPE_COLOR[item.type] || TYPE_COLOR.anime;
     const isPctType = item.type === 'game' || item.type === 'movie';
@@ -1219,6 +1221,12 @@
           // Update tab label
           var epTabBtn = document.querySelector('#screen-detail .sticky.top-0 [data-tab="episodes"]');
           if (epTabBtn) epTabBtn.innerHTML = '<span class="material-symbols-outlined text-[14px] align-middle" style="font-size:14px">download</span> İndirme';
+        }
+        // Hero shortcut: "Bölümler" → "İndirme"
+        var heroEpBtn = document.querySelector('#screen-detail .flex.gap-2 button[onclick*="episodes"]');
+        if (heroEpBtn) {
+          heroEpBtn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px">download</span>İndirme';
+          heroEpBtn.querySelector('.material-symbols-outlined').textContent = 'download';
         }
       } else {
         epsTabEl.querySelectorAll('#detail-tab-episodes-default').forEach(function(e) { e.classList.remove('hidden'); });
@@ -1510,6 +1518,8 @@
 
     // ── Sezon Tabları ─────────────────────────────────────────────
     (function() {
+      // Game tipinde sezon barını atla
+      if (item.type === 'game') return;
       var seasonBar  = document.getElementById('detail-season-bar');
       var seasonTabs = document.getElementById('detail-season-tabs');
       if (!seasonBar || !seasonTabs) return;
@@ -1551,7 +1561,10 @@
 
     // HATA-14: Her renderDetail'de tab'ı episodes'a sıfırla
     detailSwitchTab('episodes');
+    updateLoadingBar(100, 'Tamamlandı');
+    setTimeout(hideLoadingBar, 400);
   } catch (err) {
+    hideLoadingBar();
     console.error('[renderDetail] crash:', err);
     showToast('Detay sayfası yüklenirken hata oluştu', 'error');
   }}
@@ -2794,7 +2807,14 @@
     let activeSeason = allSeasons[allSeasons.length - 1]; // son sezon varsayılan
 
     function _buildEpisodeView() {
-      const seasonEps = episodes.filter(function(e) { return (e.season || 1) === activeSeason; });
+      // ── Duplicate koruma: (season, number) ikilisine göre unique ──
+      var seen = {};
+      var seasonEps = episodes.filter(function(e) {
+        var key = (e.season || 1) + '-' + e.number;
+        if (seen[key]) return false;
+        seen[key] = true;
+        return (e.season || 1) === activeSeason;
+      });
 
       // En iyi site: ölü değil + en yüksek bölüm sayısı (backend zaten sıralı gönderir)
       const primarySite = (sites || []).find(function(s) { return !s.is_dead; }) || (sites || [])[0];
@@ -3234,24 +3254,61 @@
     const cid = parseInt(btn.dataset.contentId, 10);
     const season = seasonOverride || parseInt(btn.dataset.season || '1', 10);
     btn.disabled = true;
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[16px]">progress_activity</span> Yükleniyor...';
+    // ── Loading bar göster ──
+    const container = btn.parentElement;
+    var loadingBar = document.createElement('div');
+    loadingBar.style.cssText = 'width:100%;height:4px;background:#31324d;border-radius:4px;overflow:hidden;margin-bottom:8px';
+    loadingBar.innerHTML = '<div class="ep-sync-progress" style="width:0%;height:100%;background:#00d4ff;border-radius:4px;transition:width .3s ease"></div>';
+    var loadingText = document.createElement('div');
+    loadingText.style.cssText = 'font-size:11px;color:#9090b0;text-align:center;margin-bottom:4px';
+    loadingText.textContent = 'Bölümler yükleniyor...';
+    btn.style.display = 'none';
+    container.insertBefore(loadingText, btn);
+    container.insertBefore(loadingBar, loadingText);
+    var progressBar = loadingBar.querySelector('.ep-sync-progress');
+    var progressInterval = setInterval(function() {
+      var w = parseFloat(progressBar.style.width) || 0;
+      if (w < 70) progressBar.style.width = (w + 2 + Math.random() * 5) + '%';
+    }, 400);
     const scr = document.getElementById('screen-detail');
     const savedY = scr ? scr.scrollTop : 0;
     try {
       const body = { season: season };
       if (anilistIdOverride) body.anilist_override_id = String(anilistIdOverride);
       const res = await apiPost('/api/content/' + cid + '/episodes/sync', body);
+      clearInterval(progressInterval);
+      progressBar.style.width = '100%';
       const total = res.episodes ? res.episodes.length : 0;
       const msg = res.synced > 0
         ? 'S' + season + ': ' + res.synced + ' bölüm yüklendi (' + total + ' toplam)'
         : total > 0 ? 'S' + season + ': ' + total + ' bölüm zaten güncel' : 'Bölüm bulunamadı';
-      showToast(msg, res.synced > 0 ? 'success' : (total > 0 ? 'info' : 'error'));
-      await renderDetail(cid);
-      if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+      setTimeout(async function() {
+        loadingText.textContent = '✓ ' + msg;
+        loadingText.style.color = '#4ade80';
+        setTimeout(function() {
+          loadingBar.remove();
+          loadingText.remove();
+          btn.style.display = '';
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle';
+        }, 1200);
+        await renderDetail(cid);
+        if (scr) requestAnimationFrame(function() { scr.scrollTop = savedY; });
+      }, 500);
     } catch (err) {
+      clearInterval(progressInterval);
+      progressBar.style.width = '100%';
+      progressBar.style.background = '#ffb4ab';
+      loadingText.textContent = 'Hata: ' + err.message;
+      loadingText.style.color = '#ffb4ab';
+      setTimeout(function() {
+        loadingBar.remove();
+        loadingText.remove();
+        btn.style.display = '';
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle';
+      }, 2000);
       showToast('Yükleme hatası: ' + err.message, 'error');
-      btn.disabled = false;
-      btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">cloud_sync</span> AniList\'ten Yükle';
     }
   }
 
@@ -3889,9 +3946,40 @@
               '</div>';
           }).join('');
           resultsBox.querySelectorAll('[data-add-pick]').forEach(function(row) {
-            row.querySelector('button').addEventListener('click', function() {
+            row.querySelector('button').addEventListener('click', async function() {
               const data = JSON.parse(row.dataset.addPick);
-              prefillAddForm(data);
+              // ── Direkt ekle + loading bar + detail navigate ──
+              closeModal('modal-add');
+              showLoadingBar('"' + (data.title || '') + '" ekleniyor...');
+              try {
+                const body = {
+                  title: data.title || '',
+                  type: data.type || 'anime',
+                  status: 'planning',
+                  cover_url: data.cover_url || null,
+                  external_id: data.external_id || null,
+                  genres: data.genres || undefined,
+                  total_episodes: data.total_episodes || undefined,
+                  total_chapters: data.total_chapters || undefined,
+                  external_score: data.external_score || undefined,
+                  release_year: data.year || undefined
+                };
+                const created = await apiPost('/api/content', body);
+                updateLoadingBar(60);
+                var createdId = created.id;
+                showScreen('detail');
+                renderDetail(createdId).then(async function() {
+                  updateLoadingBar(85, 'Bölümler yükleniyor...');
+                  try {
+                    await apiPost('/api/content/' + createdId + '/episodes/sync', { season: 1 });
+                  } catch(e) { console.warn('sync error', e); }
+                  updateLoadingBar(100, 'Tamamlandı!');
+                  setTimeout(hideLoadingBar, 800);
+                });
+              } catch(e) {
+                hideLoadingBar();
+                showToast('Ekleme hatası: ' + e.message, 'error');
+              }
             });
           });
         } catch(e) {
@@ -3990,6 +4078,38 @@
     } finally {
       if (btn) { btn.disabled = false; btn.innerHTML = '<span class="material-symbols-outlined">library_add</span> Kütüphaneye Ekle'; }
     }
+  }
+
+  // ── Loading Bar (soft, dashed yok, tam dolana kadar durmaz) ────
+  var _loadingBarEl = null;
+  var _loadingTextEl = null;
+  var _loadingContainer = null;
+  function showLoadingBar(text) {
+    hideLoadingBar();
+    _loadingContainer = document.createElement('div');
+    _loadingContainer.id = 'global-loading-bar';
+    _loadingContainer.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;padding:12px 16px 8px;background:#0d0d1a;border-bottom:1px solid rgba(0,212,255,0.2)';
+    _loadingTextEl = document.createElement('div');
+    _loadingTextEl.style.cssText = 'font-size:12px;color:#9090b0;text-align:center;margin-bottom:6px;font-weight:600';
+    _loadingTextEl.textContent = text || 'Yükleniyor...';
+    var barWrap = document.createElement('div');
+    barWrap.style.cssText = 'width:100%;height:4px;background:#31324d;border-radius:4px;overflow:hidden';
+    _loadingBarEl = document.createElement('div');
+    _loadingBarEl.style.cssText = 'width:2%;height:100%;background:linear-gradient(90deg,#00d4ff,#4ade80);border-radius:4px;transition:width .35s ease';
+    barWrap.appendChild(_loadingBarEl);
+    _loadingContainer.appendChild(_loadingTextEl);
+    _loadingContainer.appendChild(barWrap);
+    document.body.appendChild(_loadingContainer);
+    requestAnimationFrame(function() { _loadingBarEl.style.width = '8%'; });
+  }
+  function updateLoadingBar(pct, text) {
+    if (!_loadingBarEl) return;
+    _loadingBarEl.style.width = Math.min(100, Math.max(1, pct)) + '%';
+    if (text && _loadingTextEl) _loadingTextEl.textContent = text;
+  }
+  function hideLoadingBar() {
+    if (_loadingContainer) { _loadingContainer.remove(); _loadingContainer = null; }
+    _loadingBarEl = null; _loadingTextEl = null;
   }
 
   // ── Yardımcı Fonksiyonlar ────────────────────────────────────────

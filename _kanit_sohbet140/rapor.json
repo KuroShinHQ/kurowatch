@@ -1,23 +1,32 @@
 {
   "title": "SOHBET-140 — Gercek Indirme Testi",
-  "started": "2026-07-10T10:53:38.942480",
+  "started": "2026-07-11T09:07:02.907772",
   "results": {
     "anime_naruto": {
       "status": "failed",
       "details": {
-        "message": "Failed: tranimaci.com sitesinde video embed bulunamadı. Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. Detay için backend log'una bakın (stream_finder PW: HTTP ...)."
+        "message": "Failed: tranimaci.com için video embed bulundu (https://www.turkanime.tv/embed/) fakat yt-dlp bu kaynaktan video çekemedi. Site video sunucusu değiştirmiş veya engellenmiş olabilir."
       }
     },
     "series_dexter": {
       "status": "failed",
       "details": {
-        "message": "Failed: www.setfilmizle.uk sitesinde video embed bulunamadı. Sayfa 404 (içerik silinmiş) veya video oynatıcı yok. Detay için backend log'una bakın (stream_finder PW: HTTP ...)."
+        "message": "Failed: www.setfilmizle.uk için video embed bulundu (https://fastplay.mom/video/42c55H2C8v-t) fakat yt-dlp bu kaynaktan video çekemedi. Site video sunucusu değiştirmiş veya engellenmiş olabilir."
       }
     },
     "movie_3idiots": {
-      "status": "failed",
+      "status": "passed",
       "details": {
-        "message": "Failed: yt-dlp çıkış kodu 1: [SubtitlesConvertor] There aren't any subtitles to convert | ERROR: unable to download video data: HTTP Error 404: Not Found | [download] Finished downloading playlist: 3 Aptal - 3 Idiots izle | HDFilmcehennemi"
+        "file_path": "/mnt/c/Kuroshin/kurowatch/downloads/anime/203/ep001.mp4",
+        "file_exists": true,
+        "size_bytes": 15223130,
+        "size_mb": 14.52,
+        "ffprobe": true,
+        "has_video_stream": true,
+        "codecs": [
+          "av1",
+          "opus"
+        ]
       }
     },
     "manga_martial_peak": {
@@ -37,9 +46,9 @@
       "details": {
         "file_path": "/mnt/c/Kuroshin/kurowatch/downloads/manga/10/ch0001",
         "file_exists": true,
-        "image_count": 1,
-        "size_bytes": 168186,
-        "size_mb": 0.16,
+        "image_count": 3,
+        "size_bytes": 474471,
+        "size_mb": 0.45,
         "image_verified": true,
         "image_dimensions": "1200x675"
       }
@@ -57,10 +66,10 @@
   },
   "summary": {
     "total": 6,
-    "passed": 3,
-    "failed": 3,
+    "passed": 4,
+    "failed": 2,
     "skipped": 0
   },
-  "ended": "2026-07-10T10:56:19.836118",
-  "success_rate": 50.0
+  "ended": "2026-07-11T09:10:17.749312",
+  "success_rate": 66.7
 }
