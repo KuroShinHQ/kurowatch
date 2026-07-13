@@ -393,15 +393,25 @@ async def _playwright_get_html(url: str, wait_secs: int = 12) -> Optional[str]:
 
 
 async def _fetch_with_cf(url: str) -> tuple[str, str]:
-    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright/nodriver fallback."""
+    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright/nodriver fallback.
+    Çoklu impersonate dener: chrome131, chrome124, safari15_5, firefox102."""
+    host = urlparse(url).netloc.lstrip("www.")
+
+    # curl_cffi ile farklı impersonate'leri dene
     try:
         from curl_cffi.requests import AsyncSession
-        async with AsyncSession(impersonate="chrome131") as s:
-            resp = await s.get(url, timeout=20)
-            if resp.status_code == 200 and "challenge" not in (resp.url or "").lower():
-                text = resp.text
-                if len(text) > 500 and "captcha" not in text[:300].lower():
-                    return text, resp.url
+
+        impersonates = ["chrome131", "chrome124", "safari15_5", "firefox102"]
+        for imp in impersonates:
+            try:
+                async with AsyncSession(impersonate=imp) as s:
+                    resp = await s.get(url, timeout=20)
+                    if resp.status_code == 200 and "challenge" not in (resp.url or "").lower():
+                        text = resp.text
+                        if len(text) > 500 and "captcha" not in text[:300].lower():
+                            return text, resp.url
+            except Exception:
+                continue
     except Exception as exc:
         import logging
         logging.getLogger(__name__).warning("curl_cffi hatası, Playwright fallback: %s", exc)
@@ -412,18 +422,31 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
         return html, url
 
     # Playwright da başarısızsa → nodriver (daha gizli Chrome) dene
-    host = urlparse(url).netloc.lstrip("www.")
     if any(host.endswith(d) for d in ("ragnarscans.net", "ragnarscans.com", "hayalistic.com.tr",
-                                       "manga-sehri.net", "manga-sehri.com", "mangasehri.net")):
-        html = await _nodriver_get_html(url, wait_secs=20)
+                                       "manga-sehri.net", "manga-sehri.com", "mangasehri.net",
+                                       "merlintoon.com", "asurascans.com.tr")):
+        html = await _nodriver_get_html(url, wait_secs=25)
         if html and len(html) > 500 and "Just a moment" not in html[:1000]:
             return html, url
 
-    # Son çare: httpx düz istek
-    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:
-        r = await client.get(url)
-        r.raise_for_status()
-        return r.text, str(r.url)
+    # Son çare: httpx düz istek (custom headers ile)
+    cf_headers = dict(_HEADERS)
+    cf_headers.update({
+        "Referer": "https://www.google.com/",
+        "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8",
+        "Cache-Control": "no-cache",
+        "Pragma": "no-cache",
+    })
+    async with httpx.AsyncClient(timeout=30.0, follow_redirects=True, headers=cf_headers) as client:
+        try:
+            r = await client.get(url)
+            r.raise_for_status()
+            return r.text, str(r.url)
+        except httpx.HTTPStatusError:
+            # 403/503 durumunda yine de içeriği döndürmeyi dene
+            if r.status_code in (403, 503) and len(r.text) > 1000 and "captcha" not in r.text[:500].lower():
+                return r.text, str(r.url)
+            raise
 
 
 async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:

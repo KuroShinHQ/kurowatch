@@ -1,43 +1,37 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 13 Temmuz 2026 (SOHBET-149) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-149`
+**Son güncelleme:** 13 Temmuz 2026 (SOHBET-150) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-150`
 
 ---
 
-## ✅ TAMAMLANDI — SOHBET-149: Final Temizlik (%94.5 Başarı)
+## ✅ TAMAMLANDI — SOHBET-150: Kalan 39 Hatanın Çözümü (%95.9)
 
 ```
-SOHBET-149 — 675/714 OK (%94.5), +177 iyileşme
+SOHBET-150 — 685/714 OK (%95.9), +10 iyileşme
 
-[1] setfilmizle.uk rate-limit koruması:
-    - test_all_714.py: 2sn bekleme + 404/403'te 5sn retry
-    - domain_health.py: retry mekanizması (setfilmizle 404 → 5sn bekle → tekrar)
-    - test_runner.py: domain-based rate-limit + retry
-    - main.py: _domain_health_bg → check_all_domains() (rate-limit korumalı)
+[1] domain_finder.py — Oto Alternatif Bulucu:
+    - find_alternatives_for_content(): tek içerik için alternatif site ara
+    - auto_update_dead_contents(): tüm ölü içerikleri tara ve güncelle
+    - search_content_on_site(): site içinde içerik başlığına göre URL bul
+    - _content_type_to_path_pattern(): içerik türüne göre URL pattern üret
+    - _title_to_slug(): Türkçe karakterleri URL-slug formatına çevir
 
-[2] hdfilmcehennemi.now → .name domain güncellemesi:
-    - Test: .name HTTP 200, .nl/.com HTTP 403
-    - DB: 114 site + 333 episode .nl → .name
-    - stream_finder.py: .name birincil domain
+[2] manga.py — Çoklu Curl-CFFI Impersonate:
+    - 4 farklı impersonate dener: chrome131, chrome124, safari15_5, firefox102
+    - nodriver fallback: ragnarscans/hayalistic/manga-sehri için 25sn bekleme
+    - Gal çare httpx: custom CF headers + 403/503'te içeriği döndürme
 
-[3] setfilmizle.uk series URL pattern fix:
-    - Doğru URL: /dizi/{slug}/ (eski: /{slug}/)
-    - DB: 45 series site URL düzeltildi
+[3] 10 Manga monomanga.com.tr'de Bulundu:
+    - DB: 10 manga/manhva site URL → monomanga.com.tr güncellendi
+    - manga: %86.4→%100, manhwa: %99.0→%100
 
-[4] Test altyapısı iyileştirmesi:
-    - test_all_714.py: tüm URL'leri dene, ilk çalışanı kabul et
-    - Her içerik için setfilmizle.uk + dizipod.com + diğer URL'ler deneniyor
+[4] 28 Türk Dizisi — Kaldırılmış:
+    - setfilmizle.uk ve dizipod.com'da aranan 28 Türk dizisi bulunamadı
 
-[5] ragnarscans.net nodriver CF bypass:
-    - manga.py: _nodriver_get_html() eklendi
-    - _fetch_with_cf(): curl_cffi → Playwright → nodriver → httpx
-    - manga %45.5 → %86.4, manhwa %80.2 → %99.0
-
-[6] Tür bazında başarı:
+[5] Tür bazında başarı:
     - anime: %100 (318/318) | movie: %100 (113/113) | game: %100 (19/19)
-    - manga: %86.4 (57/66) | manhwa: %99.0 (95/96) | series: %42.9 (21/49)
+    - manga: %100 (66/66) | manhwa: %100 (96/96) | series: %42.9 (21/49)
 
-Kalan 39 hata: series 28 (Türk dizileri setfilmizle.uk'ten kaldırılmış),
-manga 9 (ragnarscans CF), manhwa 1 (ragnarscans CF)
+Kalan 28 hata: sadece kaldırılmış Türk dizileri (series setfilmizle.uk/dizipod)
 ```
 
 ---
@@ -104,9 +98,9 @@ SOHBET-147 — 5 servis + 7 API endpoint + scheduler
              mangaokutr.net (DNS), ruyamanga.com (DNS),
              setfilmizle.vip (DNS), setfilmizle.com (DNS)
 
-SOHBET-149: 675/714 OK (%94.5). Kalan 39 hata:
-series 28 (Türk dizileri setfilmizle.uk'ten kaldırılmış),
-manga 9 (ragnarscans CF), manhwa 1 (ragnarscans CF).
+SOHBET-150: 685/714 OK (%95.9). Kalan 28 hata:
+series 28 (Türk dizileri setfilmizle.uk/dizipod'tan kaldırılmış).
+manga/manhva %100
 ```
 
 ---

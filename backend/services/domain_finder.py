@@ -250,13 +250,216 @@ async def find_and_test_all_dead(
     return all_candidates
 
 
+def _content_type_to_path_pattern(ctype: str, title_slug: str) -> list[str]:
+    """İçerik türüne göre olası URL pattern'leri üret."""
+    patterns = {
+        'movie': [f'/film/{title_slug}/', f'/film/{title_slug}-izle/', f'/movie/{title_slug}/'],
+        'series': [f'/dizi/{title_slug}/', f'/dizi/{title_slug}-izle/', f'/series/{title_slug}/'],
+        'anime': [f'/anime/{title_slug}/', f'/anime/{title_slug}-izle/', f'/video/{title_slug}/'],
+        'manga': [f'/manga/{title_slug}/', f'/manga/{title_slug}/bolum-1/', f'/seri/{title_slug}/'],
+        'manhwa': [f'/manga/{title_slug}/', f'/manga/{title_slug}/bolum-1/', f'/seri/{title_slug}/'],
+        'game': [f'/?s={title_slug}', f'/game/{title_slug}/'],
+        'cartoon': [f'/dizi/{title_slug}/', f'/cartoon/{title_slug}/'],
+    }
+    return patterns.get(ctype, [f'/{title_slug}/'])
+
+
+def _title_to_slug(title: str) -> str:
+    """Başlığı URL-slug formatına çevir."""
+    import re
+    slug = title.lower()
+    tr_map = {'ç': 'c', 'ğ': 'g', 'ı': 'i', 'İ': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'ə': 'e'}
+    for k, v in tr_map.items():
+        slug = slug.replace(k, v)
+    slug = re.sub(r'[^a-z0-9\s-]', '', slug)
+    slug = re.sub(r'\s+', '-', slug.strip())
+    return slug
+
+
+async def search_content_on_site(site_url: str, title: str, ctype: str) -> Optional[str]:
+    """Belirli bir site içerisinde içerik başlığını ara, çalışan URL döndür."""
+    parsed = urlparse(site_url)
+    base = f"{parsed.scheme}://{parsed.netloc}"
+    slug = _title_to_slug(title)
+
+    patterns = _content_type_to_path_pattern(ctype, slug)
+    patterns.insert(0, f'/?s={slug}')  # site search first
+
+    for path in patterns[:5]:
+        url = f"{base}{path}"
+        try:
+            async with httpx.AsyncClient(timeout=10, follow_redirects=True, headers=HEADERS) as c:
+                r = await c.head(url)
+                if r.status_code == 405:
+                    r = await c.get(url)
+                if r.status_code == 200:
+                    logger.info(f"  Found on {parsed.netloc}: {path}")
+                    return url
+        except Exception:
+            continue
+    return None
+
+
+async def find_alternatives_for_content(db_session, content_id: int) -> dict:
+    """Tek içerik için alternatif site bul. DB'ye kaydetmez, öneri listesi döndür."""
+    from sqlalchemy import text
+
+    result = await db_session.execute(text("""
+        SELECT id, title, type FROM content WHERE id = :cid
+    """), {"cid": content_id})
+    content = result.fetchone()
+    if not content:
+        return {"ok": False, "error": "Content not found"}
+
+    cid, title, ctype = content
+
+    # Mevcut siteleri al
+    result = await db_session.execute(text("""
+        SELECT id, site_name, site_url FROM site WHERE content_id = :cid
+    """), {"cid": cid})
+    existing = [{"id": r[0], "name": r[1], "url": r[2]} for r in result.fetchall()]
+
+    # Mevcut domain'lerden alternatif tara
+    candidates = []
+    for site in existing:
+        domain = urlparse(site["url"]).netloc.lstrip("www.")
+        alt_candidates = await find_alternatives_for_domain(domain, site["name"])
+        for c in alt_candidates:
+            if c.status == "OK":
+                site_url = f"https://www.{c.domain}/"
+                found_url = await search_content_on_site(site_url, title, ctype)
+                if found_url:
+                    candidates.append({
+                        "domain": c.domain,
+                        "url": found_url,
+                        "status": c.status,
+                        "source": c.source,
+                    })
+
+    return {
+        "ok": True,
+        "content_id": cid,
+        "title": title,
+        "type": ctype,
+        "existing_sites": existing,
+        "candidates": candidates,
+    }
+
+
+async def auto_update_dead_contents(db_session, max_items: int = 20) -> dict:
+    """Tüm ölü içerikleri tara, alternatif bul, DB'ye kaydet."""
+    from sqlalchemy import text
+
+    updates = {"checked": 0, "updated": 0, "errors": 0, "details": []}
+
+    # İlk URL'si 404/403 dönen içerikleri bul
+    import httpx
+    rows = await db_session.execute(text("""
+        SELECT DISTINCT c.id, c.title, c.type, s.site_url, s.site_name
+        FROM content c
+        JOIN site s ON s.content_id = c.id
+        WHERE s.site_url IS NOT NULL
+        LIMIT :limit
+    """), {"limit": max_items * 3})
+    all_rows = rows.fetchall()
+
+    import random
+    random.shuffle(all_rows)  # farklı domainlerden örnek al
+
+    tested = 0
+    seen_cid = set()
+    for cid, title, ctype, site_url, site_name in all_rows:
+        if cid in seen_cid or tested >= max_items:
+            continue
+        seen_cid.add(cid)
+
+        # Test current URL
+        try:
+            async with httpx.AsyncClient(timeout=8, follow_redirects=True, headers=HEADERS) as c:
+                r = await c.head(site_url)
+                if r.status_code == 405:
+                    r = await c.get(site_url)
+                if r.status_code == 200:
+                    continue  # already working
+        except Exception:
+            pass
+
+        tested += 1
+        updates["checked"] += 1
+
+        # Search for this content
+        domain = urlparse(site_url).netloc.lstrip("www.")
+        logger.info(f"Finding alternatives for #{cid} {title[:40]} ({domain})")
+
+        alts = await find_alternatives_for_domain(domain, site_name, "/")
+        working = [c for c in alts if c.status == "OK"]
+
+        if not working:
+            # Try common Turkish series/manga sites directly
+            fallback_sites = []
+            if ctype == 'series':
+                fallback_sites = ['dizipod.com', 'dizibox.live', 'yabancidizi.pro']
+            elif ctype in ('manga', 'manhwa'):
+                fallback_sites = ['mangasehri.net', 'ragnarscans.net', 'monomanga.com.tr']
+
+            for fb_domain in fallback_sites:
+                if fb_domain == domain:
+                    continue
+                cand = await test_domain(fb_domain)
+                if cand.status == "OK":
+                    found = await search_content_on_site(f"https://www.{fb_domain}", title, ctype)
+                    if found:
+                        working.append(cand)
+                        break
+
+        if working:
+            best = working[0]
+            site_url_new = None
+            if not site_url_new:
+                site_url_new = f"https://www.{best.domain}/"
+
+            # Find exact content URL
+            found_url = await search_content_on_site(site_url_new, title, ctype)
+            if found_url:
+                await db_session.execute(text("""
+                    UPDATE site SET site_name = :name, site_url = :url, is_dead = 0
+                    WHERE content_id = :cid AND site_url = :old_url
+                """), {"name": best.domain, "url": found_url, "cid": cid, "old_url": site_url})
+                updates["updated"] += 1
+                updates["details"].append({
+                    "cid": cid, "title": title, "old_url": site_url, "new_url": found_url
+                })
+                logger.info(f"  UPDATED #{cid} {title[:40]}: {site_url} -> {found_url}")
+        else:
+            updates["errors"] += 1
+
+    await db_session.commit()
+    return updates
+
+
 if __name__ == "__main__":
     import sys
-    domain = sys.argv[1] if len(sys.argv) > 1 else "hdfilmcehennemi.now"
-    path = sys.argv[2] if len(sys.argv) > 2 else "/"
-    candidates = asyncio.run(find_alternatives_for_domain(domain, "", path))
-    print(json.dumps([
-        {"domain": c.domain, "source": c.source, "status": c.status,
-         "status_code": c.status_code}
-        for c in candidates
-    ], indent=2, ensure_ascii=False))
+    if len(sys.argv) > 1 and sys.argv[1] == "content":
+        domain = sys.argv[2] if len(sys.argv) > 2 else ""
+        path = sys.argv[3] if len(sys.argv) > 3 else "/"
+        candidates = asyncio.run(find_alternatives_for_domain(domain, "", path))
+        print(json.dumps([
+            {"domain": c.domain, "source": c.source, "status": c.status,
+             "status_code": c.status_code}
+            for c in candidates
+        ], indent=2, ensure_ascii=False))
+    elif len(sys.argv) > 1 and sys.argv[1] == "search":
+        title = sys.argv[2] if len(sys.argv) > 2 else ""
+        ctype = sys.argv[3] if len(sys.argv) > 3 else "series"
+        site = sys.argv[4] if len(sys.argv) > 4 else "https://www.setfilmizle.uk"
+        result = asyncio.run(search_content_on_site(site, title, ctype))
+        print(json.dumps({"url": result}, indent=2))
+    else:
+        domain = sys.argv[1] if len(sys.argv) > 1 else "hdfilmcehennemi.now"
+        path = sys.argv[2] if len(sys.argv) > 2 else "/"
+        candidates = asyncio.run(find_alternatives_for_domain(domain, "", path))
+        print(json.dumps([
+            {"domain": c.domain, "source": c.source, "status": c.status,
+             "status_code": c.status_code}
+            for c in candidates
+        ], indent=2, ensure_ascii=False))
