@@ -2798,7 +2798,6 @@
     const readIcon  = isWatchType ? 'play_circle' : 'menu_book';
     const isAnimeOrManga = contentType === 'anime' || contentType === 'manga' || contentType === 'manhwa';
     const isSeriesOrMovie = contentType === 'series' || contentType === 'movie' || contentType === 'cartoon';
-    const syncLabel = isAnimeOrManga ? 'AniList\'ten Yükle' : (isSeriesOrMovie ? 'Sezon Ekle' : '');
 
     // ── Sezon yönetimi ──
     const allSeasons = episodes.length
@@ -2825,12 +2824,6 @@
       const targetLabel = (nextEp && nextEp.url)
         ? readLabel + ' — Bölüm ' + nextEpNum
         : readLabel + (primarySite ? ' — ' + (function(url) { try { return new URL(url).hostname.replace(/^www\./, ''); } catch(e2) { return escapeHtml(primarySite.site_name); } })(primarySite.site_url) : '');
-
-      // ── Sync butonu (içerik tipine göre) ──
-      const syncBtnHtml = syncLabel
-        ? '<button class="ep-anilist-sync-btn" style="display:flex;align-items:center;gap:6px;width:100%;padding:8px 12px;margin-bottom:8px;border-radius:8px;background:#16213e;border:1px solid #ffffff0d;color:#9090b0;font-size:12px;font-weight:600;cursor:pointer" data-content-id="' + contentId + '" data-season="' + activeSeason + '">' +
-          '<span class="material-symbols-outlined" style="font-size:16px;color:#00d4ff">cloud_sync</span> S' + activeSeason + ' ' + syncLabel + '</button>'
-        : '';
 
       const addSeasonFormHtml = '';
       // Sıradaki bölüm indirilmişse oynat butonu göster
@@ -2888,18 +2881,18 @@
 
       if (!seasonEps.length) {
         var _trulyEmpty = episodes.length === 0;
-        el.innerHTML = seasonPickerHtml + (_trulyEmpty ? '' : _noSiteCard) + (_trulyEmpty ? '' : siteShortcut) + addSeasonFormHtml + syncBtnHtml +
+        el.innerHTML = seasonPickerHtml + (_trulyEmpty ? '' : _noSiteCard) + (_trulyEmpty ? '' : siteShortcut) + addSeasonFormHtml +
           '<div style="text-align:center;color:#9090b0;padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:10px">' +
           '<span class="material-symbols-outlined" style="font-size:48px;color:#31324d">' + (_trulyEmpty ? 'playlist_remove' : 'video_library') + '</span>' +
           (_trulyEmpty
             ? '<p style="font-size:13px">Henüz bölüm eklenmemiş</p>'
             : '<p style="font-size:13px">Sezon ' + activeSeason + ' bölüm listesi yok</p>') +
           (_trulyEmpty
-            ? '<p style="font-size:12px;color:#6060a0">"' + syncLabel + '" butonuna basarak otomatik ekleyin</p>'
-            : '<p style="font-size:12px;color:#6060a0">Yukarıdan "' + syncLabel + '" butonuna bas</p>') +
+            ? '<p style="font-size:12px;color:#6060a0">Karttan eklerken otomatik yüklenir</p>'
+            : '') +
           '</div>';
       } else {
-        el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + epCountBadge + syncBtnHtml +
+        el.innerHTML = seasonPickerHtml + _noSiteCard + siteShortcut + addSeasonFormHtml + epCountBadge +
           '<div id="ep-virtual-list" style="display:flex;flex-direction:column;gap:4px"></div>';
         const list = el.querySelector('#ep-virtual-list');
         let loaded = 0;
@@ -2934,9 +2927,7 @@
           _buildEpisodeView();
         });
       });
-      // (manual season add form removed — episodes are auto-synced)
-      const syncBtn2 = el.querySelector('.ep-anilist-sync-btn');
-      if (syncBtn2) syncBtn2.addEventListener('click', syncEpisodesFromAniList);
+      // (manual season add form removed — episodes are auto-synced on card add)
       const goSitesBtn = el.querySelector('.ep-go-sites-btn');
       if (goSitesBtn) goSitesBtn.addEventListener('click', function() { detailSwitchTab('sites'); });
     }
