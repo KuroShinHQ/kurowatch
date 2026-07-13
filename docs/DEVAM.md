@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 13 Temmuz 2026 (SOHBET-151) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-151`
+**Son güncelleme:** 13 Temmuz 2026 (SOHBET-152) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-152`
 
 ---
 
@@ -1570,6 +1570,17 @@ KALAN (bilerek bırakıldı):
 
 ```
 KuroWatch DEVAM.md oku. Özet:
+
+MEVCUT DURUM (13 Temmuz 2026 - SOHBET-152):
+  - Backend ✅ AYAKTA (localhost:8099, HTTP 200) — test sunucusu kapatıldı
+  - SOHBET-152: ✅ API total_chapters/total_episodes fix
+    * content.py mal: handler → AniList idMal (NameError fix, MAL API key gerekmez)
+    * anilist.py: get_by_mal_id(mal_id, media_type) eklendi
+    * fix_totals_from_api.py: MangaDex+AniList dual strategy (7 item fixed)
+    * test_real_download_all.py: tüm türlerden gerçek download pipeline test + diske yazılan dosyayı kontrol
+    * auto_repair.py: alternatif site bul, URL pattern oluştur, indirmeyi dene, DB güncelle
+    * SOHBET-152_RAPORU.md oluşturuldu
+  - SIRADAKI: WSL'de test_real_download_all.py çalıştır (yt-dlp+ffprobe kurulu ortam)
 
 MEVCUT DURUM (7 Temmuz 2026 - sohbet-119):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
