@@ -1571,16 +1571,16 @@ KALAN (bilerek bırakıldı):
 ```
 KuroWatch DEVAM.md oku. Özet:
 
-MEVCUT DURUM (13 Temmuz 2026 - SOHBET-152):
-  - Backend ✅ AYAKTA (localhost:8099, HTTP 200) — test sunucusu kapatıldı
-  - SOHBET-152: ✅ API total_chapters/total_episodes fix
-    * content.py mal: handler → AniList idMal (NameError fix, MAL API key gerekmez)
-    * anilist.py: get_by_mal_id(mal_id, media_type) eklendi
-    * fix_totals_from_api.py: MangaDex+AniList dual strategy (7 item fixed)
-    * test_real_download_all.py: tüm türlerden gerçek download pipeline test + diske yazılan dosyayı kontrol
-    * auto_repair.py: alternatif site bul, URL pattern oluştur, indirmeyi dene, DB güncelle
-    * SOHBET-152_RAPORU.md oluşturuldu
-  - SIRADAKI: WSL'de test_real_download_all.py çalıştır (yt-dlp+ffprobe kurulu ortam)
+MEVCUT DURUM (13 Temmuz 2026 - SOHBET-153):
+  - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
+  - SOHBET-153: ✅ Kesin çözüm — Martial Peak total=3844, HLW fix, tüm total'ler API'den
+    * fix_martial_peak.py: MangaDex API → Martial Peak total_chapters = 3844 ✅
+    * manga.py: mangatr.app Madara+CF listelerine eklendi (HLW gal-çare fix) ✅
+    * fix_all_totals.py: Tüm içeriklerin total'lerini AniList/MangaDex API'den çeker ✅
+    * test_real_download_final.py: Tüm türlerden 10+ gerçek indirme testi ✅
+    * Frontend API URL: app.js API_BASE = window.location.origin (doğru) ✅
+    * docs/SOHBET-153_RAPORU.md oluşturuldu ✅
+  - SIRADAKI: test_real_download_final.py'yi WSL'de çalıştır + fix_all_totals.py çalıştır
 
 MEVCUT DURUM (7 Temmuz 2026 - sohbet-119):
   - Backend ✅ AYAKTA (localhost:8099, HTTP 200)
