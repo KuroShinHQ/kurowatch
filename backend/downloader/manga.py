@@ -329,6 +329,39 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     return files
 
 
+_CHROMIUM_BIN = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
+
+
+async def _nodriver_get_html(url: str, wait_secs: int = 20) -> Optional[str]:
+    """nodriver (undetected Chrome) ile CF Managed Challenge aşılır, JS-render HTML alınır."""
+    try:
+        import nodriver as uc
+    except ImportError:
+        return None
+    browser = None
+    try:
+        browser = await uc.start(
+            headless=True,
+            browser_executable_path=_CHROMIUM_BIN,
+            no_sandbox=True,
+        )
+        tab = await browser.get(url)
+        await asyncio.sleep(wait_secs)
+        html = await tab.get_content()
+        title = await tab.evaluate("document.title")
+        if "security verification" in (title or "").lower() or len(html) < 1000:
+            return None
+        return html
+    except Exception:
+        return None
+    finally:
+        if browser:
+            try:
+                browser.stop()
+            except Exception:
+                pass
+
+
 async def _playwright_get_html(url: str, wait_secs: int = 12) -> Optional[str]:
     """Playwright ile CF/JS-render sayfa HTML'i al."""
     from playwright.async_api import async_playwright
@@ -360,7 +393,7 @@ async def _playwright_get_html(url: str, wait_secs: int = 12) -> Optional[str]:
 
 
 async def _fetch_with_cf(url: str) -> tuple[str, str]:
-    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright fallback."""
+    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright/nodriver fallback."""
     try:
         from curl_cffi.requests import AsyncSession
         async with AsyncSession(impersonate="chrome131") as s:
@@ -377,6 +410,14 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
     html = await _playwright_get_html(url, wait_secs=12)
     if html and len(html) > 500 and "Just a moment" not in html[:1000]:
         return html, url
+
+    # Playwright da başarısızsa → nodriver (daha gizli Chrome) dene
+    host = urlparse(url).netloc.lstrip("www.")
+    if any(host.endswith(d) for d in ("ragnarscans.net", "ragnarscans.com", "hayalistic.com.tr",
+                                       "manga-sehri.net", "manga-sehri.com", "mangasehri.net")):
+        html = await _nodriver_get_html(url, wait_secs=20)
+        if html and len(html) > 500 and "Just a moment" not in html[:1000]:
+            return html, url
 
     # Son çare: httpx düz istek
     async with httpx.AsyncClient(timeout=20.0, follow_redirects=True, headers=_HEADERS) as client:

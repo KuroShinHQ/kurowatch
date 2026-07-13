@@ -67,40 +67,54 @@ class TestReport:
 
 
 async def test_url(url: str) -> URLTestResult:
-    """Test a single URL and return result."""
+    """Test a single URL and return result. Retry for rate-limited domains."""
     parsed = urlparse(url)
     domain = parsed.netloc.lstrip("www.")
     result = URLTestResult(url=url[:200], domain=domain)
-    start = time.time()
-    try:
-        async with httpx.AsyncClient(timeout=TIMEOUT, follow_redirects=True, headers=HEADERS) as c:
-            r = await c.head(url)
-            if r.status_code == 405:
-                r = await c.get(url)
-            result.status_code = r.status_code
-            result.elapsed_ms = round((time.time() - start) * 1000, 1)
-            body = (r.text[:500] if hasattr(r, 'text') and r.text else '').lower()
-            if r.status_code < 400:
-                result.status = "OK"
-            elif "cloudflare" in body or "cf-ray" in (r.headers.get("cf-ray", "")):
-                result.status = "CLOUDFLARE"
-            elif r.status_code in (404, 410):
-                result.status = "DEAD"
+
+    async def _do_test() -> URLTestResult:
+        r2 = URLTestResult(url=url[:200], domain=domain)
+        t0 = time.time()
+        try:
+            async with httpx.AsyncClient(timeout=TIMEOUT, follow_redirects=True, headers=HEADERS) as c:
+                r = await c.head(url)
+                if r.status_code == 405:
+                    r = await c.get(url)
+                r2.status_code = r.status_code
+                r2.elapsed_ms = round((time.time() - t0) * 1000, 1)
+                body = (r.text[:500] if hasattr(r, 'text') and r.text else '').lower()
+                if r.status_code < 400:
+                    r2.status = "OK"
+                elif "cloudflare" in body or "cf-ray" in (r.headers.get("cf-ray", "")):
+                    r2.status = "CLOUDFLARE"
+                elif r.status_code in (404, 410):
+                    r2.status = "DEAD"
+                else:
+                    r2.status = "DEAD"
+                    r2.error = f"HTTP {r.status_code}"
+        except httpx.TimeoutException:
+            r2.status = "TIMEOUT"
+            r2.error = "timeout"
+        except httpx.ConnectError as e:
+            if "getaddrinfo" in str(e):
+                r2.status = "DNS_FAIL"
             else:
-                result.status = "DEAD"
-                result.error = f"HTTP {r.status_code}"
-    except httpx.TimeoutException:
-        result.status = "TIMEOUT"
-        result.error = "timeout"
-    except httpx.ConnectError as e:
-        if "getaddrinfo" in str(e):
-            result.status = "DNS_FAIL"
-        else:
-            result.status = "UNREACHABLE"
-        result.error = str(e)[:60]
-    except Exception as e:
-        result.status = "ERROR"
-        result.error = str(e)[:60]
+                r2.status = "UNREACHABLE"
+            r2.error = str(e)[:60]
+        except Exception as e:
+            r2.status = "ERROR"
+            r2.error = str(e)[:60]
+        return r2
+
+    result = await _do_test()
+
+    # Retry: setfilmizle rate-limit 404/403 → 5sn bekle, tekrar dene
+    if result.status == "DEAD" and result.status_code in (404, 403, 429) and 'setfilmizle' in domain:
+        await asyncio.sleep(5)
+        retry = await _do_test()
+        if retry.status == "OK":
+            return retry
+
     return result
 
 
@@ -145,6 +159,9 @@ async def run_full_test(db_session, sample_size: int = SAMPLE_SIZE,
             r.content_type = ctype
             r.site_name = site["site_name"]
             all_results.append(r)
+            # Rate-limit koruması: aynı domain'e art arda hızlı istek atma
+            if 'setfilmizle' in r.domain:
+                await asyncio.sleep(1)
 
             ds = by_domain[r.domain]
             ds.total += 1

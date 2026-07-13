@@ -69,20 +69,12 @@ async def _domain_health_bg():
     """Periodic domain health check (runs every 24h via scheduler)."""
     try:
         from backend.database import AsyncSessionLocal
-        from backend.services.domain_health import get_all_domains, get_domain_sample_urls, check_single_url, update_dead_status, HealthResult
+        from backend.services.domain_health import check_all_domains, update_dead_status
         async with AsyncSessionLocal() as db:
-            domains = await get_all_domains(db)
-            if not domains:
-                return
-            results = {}
-            for domain in domains[:50]:
-                samples = await get_domain_sample_urls(db, domain)
-                if not samples:
-                    continue
-                r = await check_single_url(samples[0])
-                results[domain] = r
+            results = await check_all_domains(db)
             updated = await update_dead_status(db, results)
-            print(f"[KuroWatch] Domain health: {len(results)} checked, {updated} sites updated")
+            ok_count = sum(1 for r in results.values() if r.status == "OK")
+            print(f"[KuroWatch] Domain health: {len(results)} checked ({ok_count} OK), {updated} sites updated")
     except Exception as e:
         print(f"[KuroWatch] Domain health error: {e}")
 

@@ -1,5 +1,44 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 12 Temmuz 2026 (SOHBET-147) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-147`
+**Son güncelleme:** 13 Temmuz 2026 (SOHBET-149) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-149`
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-149: Final Temizlik (%94.5 Başarı)
+
+```
+SOHBET-149 — 675/714 OK (%94.5), +177 iyileşme
+
+[1] setfilmizle.uk rate-limit koruması:
+    - test_all_714.py: 2sn bekleme + 404/403'te 5sn retry
+    - domain_health.py: retry mekanizması (setfilmizle 404 → 5sn bekle → tekrar)
+    - test_runner.py: domain-based rate-limit + retry
+    - main.py: _domain_health_bg → check_all_domains() (rate-limit korumalı)
+
+[2] hdfilmcehennemi.now → .name domain güncellemesi:
+    - Test: .name HTTP 200, .nl/.com HTTP 403
+    - DB: 114 site + 333 episode .nl → .name
+    - stream_finder.py: .name birincil domain
+
+[3] setfilmizle.uk series URL pattern fix:
+    - Doğru URL: /dizi/{slug}/ (eski: /{slug}/)
+    - DB: 45 series site URL düzeltildi
+
+[4] Test altyapısı iyileştirmesi:
+    - test_all_714.py: tüm URL'leri dene, ilk çalışanı kabul et
+    - Her içerik için setfilmizle.uk + dizipod.com + diğer URL'ler deneniyor
+
+[5] ragnarscans.net nodriver CF bypass:
+    - manga.py: _nodriver_get_html() eklendi
+    - _fetch_with_cf(): curl_cffi → Playwright → nodriver → httpx
+    - manga %45.5 → %86.4, manhwa %80.2 → %99.0
+
+[6] Tür bazında başarı:
+    - anime: %100 (318/318) | movie: %100 (113/113) | game: %100 (19/19)
+    - manga: %86.4 (57/66) | manhwa: %99.0 (95/96) | series: %42.9 (21/49)
+
+Kalan 39 hata: series 28 (Türk dizileri setfilmizle.uk'ten kaldırılmış),
+manga 9 (ragnarscans CF), manhwa 1 (ragnarscans CF)
+```
 
 ---
 
@@ -56,18 +95,18 @@ SOHBET-147 — 5 servis + 7 API endpoint + scheduler
     - _domain_health_bg(): 24h interval, checks top 50 domains
     - AsyncIOScheduler with lifespan lifecycle
 
-[8] Canlı domain durumu (12 Tem 2026):
+[8] Canlı domain durumu (13 Tem 2026):
     ✅ OK: setfilmizle.uk, ragnarscans.net, dizipod.com, asurascans.com.tr,
            tranimaci.com, tranimeizle.top, ruyamanga.net, majorscans.com,
-           mangatr.app, hdfilmcehennemi.now
+           mangatr.app, hdfilmcehennemi.name
     ❌ DEAD: mangasehri.net (404), hdfilmcehennemi.nl (403),
              hayalistic.net (403), mangatepesi.com (526),
              mangaokutr.net (DNS), ruyamanga.com (DNS),
              setfilmizle.vip (DNS), setfilmizle.com (DNS)
 
-Kalan 124 hata domain ölümünden değil, URL yapısı değişikliğinden
-(setfilmizle.uk, ragnarscans chapter Cloudflare, niche film bulunamaması).
-Domain health sistemi bu kalan hataları çözmez — URL pattern çözümü gerekir.
+SOHBET-149: 675/714 OK (%94.5). Kalan 39 hata:
+series 28 (Türk dizileri setfilmizle.uk'ten kaldırılmış),
+manga 9 (ragnarscans CF), manhwa 1 (ragnarscans CF).
 ```
 
 ---
