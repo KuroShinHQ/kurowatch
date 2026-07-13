@@ -29,6 +29,7 @@ _MADARA_DOMAINS = [
     "tempestfansub.com",
     "ruyamanga2.com",
     "mangakoleji.com",
+    "mangatr.app",
     # Eski (şimdilik 403/offline — fallback için kodda kalır)
     "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
@@ -46,6 +47,7 @@ _CF_BLOCKED = {
     "merlinscans.com",
     "mangatr.me",
     "mangatepesi.com",
+    "mangatr.app",
 }
 
 # Next.js App Router siteler — RSC payload'dan CDN görsel URL'leri çekilir
