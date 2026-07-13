@@ -1,5 +1,5 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 13 Temmuz 2026 (SOHBET-150) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-150`
+**Son güncelleme:** 13 Temmuz 2026 (SOHBET-151) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-151`
 
 ---
 
