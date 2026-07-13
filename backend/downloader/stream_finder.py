@@ -50,8 +50,8 @@ _CF_CACHE_TTL = 23 * 3600  # 23 saat (CF cookie ömrü ~24 saat)
 _CF_SITES = {
     "dizibox.live",
     "dizibox.so",
-    "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
-    "hdfilmcehennemi.com", "hdfilmcehennemi.name", "hdfilmcehennemi.gg",
+    "hdfilmcehennemi.name", "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com", "hdfilmcehennemi.gg",
     "hdfilmcehennemi.ws", "hdfilmcehennemi.now",
     "dizigom.info", "dizigom.com", "dizigom.vip", "dizigom.net",
     "dizigom.love", "dizigom.tv", "dizigom1.com",
@@ -136,8 +136,8 @@ _SKIP_IFRAME_DOMAINS = (
 _FORCE_PLAYWRIGHT = {
     "dizibox.live",
     "dizibox.so",
-    "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
-    "hdfilmcehennemi.com", "hdfilmcehennemi.name", "hdfilmcehennemi.gg",
+    "hdfilmcehennemi.name", "hdfilmcehennemi.nl", "hdfilmcehennemi.art", "hdfilmcehennemi.tv",
+    "hdfilmcehennemi.com", "hdfilmcehennemi.gg",
     "hdfilmcehennemi.ws", "hdfilmcehennemi.now",
     "dizigom.info", "dizigom.com", "dizigom.vip", "dizigom.net",
     "dizigom.love", "dizigom.tv", "dizigom1.com",

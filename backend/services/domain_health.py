@@ -39,50 +39,61 @@ HEADERS = {"User-Agent": UA, "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8"}
 
 
 async def check_single_url(url: str) -> HealthResult:
-    """Test a single URL and return health status."""
+    """Test a single URL and return health status. Retry for rate-limited domains."""
     parsed = urlparse(url)
     domain = parsed.netloc.lstrip("www.")
     start = time.time()
 
     result = HealthResult(domain=domain, sample_url=url[:120])
 
-    try:
-        async with httpx.AsyncClient(timeout=DOMAIN_TIMEOUT, follow_redirects=True, headers=HEADERS) as c:
-            r = await c.head(url)
-            if r.status_code == 405:
-                r = await c.get(url)
-            result.status_code = r.status_code
-            result.elapsed_ms = round((time.time() - start) * 1000, 1)
+    async def _do_check() -> HealthResult:
+        r2 = HealthResult(domain=domain, sample_url=url[:120])
+        try:
+            async with httpx.AsyncClient(timeout=DOMAIN_TIMEOUT, follow_redirects=True, headers=HEADERS) as c:
+                rr = await c.head(url)
+                if rr.status_code == 405:
+                    rr = await c.get(url)
+                r2.status_code = rr.status_code
+                r2.elapsed_ms = round((time.time() - start) * 1000, 1)
 
-            body_lower = (r.text[:1000] if hasattr(r, 'text') and r.text else '').lower()
+                body_lower = (rr.text[:1000] if hasattr(rr, 'text') and rr.text else '').lower()
 
-            if r.status_code < 400:
-                result.status = "OK"
-            elif "cloudflare" in body_lower or "cf-ray" in r.headers.get("cf-ray", ""):
-                result.status = "CLOUDFLARE"
-                result.error = "Cloudflare challenge detected"
-            elif r.status_code in (404, 410):
-                result.status = "DEAD"
-                result.error = f"HTTP {r.status_code}"
-            elif r.status_code in (403, 503, 520, 521, 525, 526):
-                result.status = "BLOCKED"
-                result.error = f"HTTP {r.status_code}"
+                if rr.status_code < 400:
+                    r2.status = "OK"
+                elif "cloudflare" in body_lower or "cf-ray" in rr.headers.get("cf-ray", ""):
+                    r2.status = "CLOUDFLARE"
+                    r2.error = "Cloudflare challenge detected"
+                elif rr.status_code in (404, 410):
+                    r2.status = "DEAD"
+                    r2.error = f"HTTP {rr.status_code}"
+                elif rr.status_code in (403, 503, 520, 521, 525, 526):
+                    r2.status = "BLOCKED"
+                    r2.error = f"HTTP {rr.status_code}"
+                else:
+                    r2.status = "DEAD"
+                    r2.error = f"HTTP {rr.status_code}"
+        except httpx.TimeoutException:
+            r2.status = "TIMEOUT"
+            r2.error = "Connection timed out"
+        except httpx.ConnectError as e:
+            if "getaddrinfo" in str(e):
+                r2.status = "DNS_FAIL"
             else:
-                result.status = "DEAD"
-                result.error = f"HTTP {r.status_code}"
+                r2.status = "UNREACHABLE"
+            r2.error = str(e)[:60]
+        except Exception as e:
+            r2.status = "ERROR"
+            r2.error = str(e)[:60]
+        return r2
 
-    except httpx.TimeoutException:
-        result.status = "TIMEOUT"
-        result.error = "Connection timed out"
-    except httpx.ConnectError as e:
-        if "getaddrinfo" in str(e):
-            result.status = "DNS_FAIL"
-        else:
-            result.status = "UNREACHABLE"
-        result.error = str(e)[:60]
-    except Exception as e:
-        result.status = "ERROR"
-        result.error = str(e)[:60]
+    result = await _do_check()
+
+    # Retry: setfilmizle rate-limit 404 → 5sn bekle, tekrar dene
+    if result.status in ("DEAD", "BLOCKED") and 'setfilmizle' in domain:
+        await asyncio.sleep(5)
+        retry = await _do_check()
+        if retry.status == "OK":
+            return retry
 
     return result
 
@@ -153,6 +164,9 @@ async def check_all_domains(db_session, progress_callback=None):
         if not domain:
             continue
         samples = await get_domain_sample_urls(db_session, domain)
+        # Rate-limit protection for aggressive sites
+        if 'setfilmizle' in domain:
+            await asyncio.sleep(2)
         if not samples:
             results[domain] = HealthResult(domain=domain, status="NO_SAMPLES")
             continue
