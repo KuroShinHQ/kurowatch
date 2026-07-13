@@ -20,7 +20,7 @@ AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=As
 def _configure_sqlite_connection(dbapi_connection, _connection_record):
     cursor = dbapi_connection.cursor()
     try:
-        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA journal_mode=DELETE")
         cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.execute("PRAGMA busy_timeout=30000")
         cursor.execute("PRAGMA foreign_keys=ON")
@@ -41,7 +41,7 @@ async def init_db():
     from backend import models  # noqa: F401  — register models with Base
     from sqlalchemy import text
     async with engine.begin() as conn:
-        await conn.execute(text("PRAGMA journal_mode=WAL"))
+        await conn.execute(text("PRAGMA journal_mode=DELETE"))
         await conn.execute(text("PRAGMA synchronous=NORMAL"))
         await conn.execute(text("PRAGMA busy_timeout=30000"))
         await conn.execute(text("PRAGMA foreign_keys=ON"))
