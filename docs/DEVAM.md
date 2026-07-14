@@ -1,20 +1,26 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Temmuz 2026 (SOHBET-161) · **Aktif sürüm:** v1.1-STABLE · **Son commit:** `SOHBET-161`
+**Son güncelleme:** 14 Temmuz 2026 (SOHBET-162) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-162`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-161 — Frontend type kontrolü + Madara parser fix + oyun detayı + monomanga entegrasyonu.
+**En son yapılan:** SOHBET-162 — OpenCode Skill MCP ile KuroWatch otomasyon sistemi kuruldu.
 
 **Aktif dosyalar:**
-- `frontend/app.js` — Type kontrol düzeltildi (6 noktada)
+- `~/.config/opencode/skills/kurowatch-automation/SKILL.md` — Skill tanımı
+- `~/.config/opencode/skills/kurowatch-automation/mcp-server.js` — MCP server (5 tool)
+- `~/.config/opencode/skills/kurowatch-automation/package.json`
+- `opencode.json` — MCP sunucu kaydı eklendi
+
+**SOHBET-161 öncesi aktif dosyalar:**
+- `frontend/app.js` — Type kontrol düzeltildi
 - `frontend/player.js` — Download job card type kontrol düzeltildi
-- `backend/downloader/manga.py` — NextJS parser regex fix (boşluk/Türkçe karakter)
-- `backend/scripts/sohbet161_fix_manhwa_sites.py` — DB toplu güncelleme
+- `backend/downloader/manga.py` — NextJS parser regex fix
+- `backend/scripts/sohbet161_fix_manhwa_sites.py` — DB güncelleme
 
 **Sıradaki görev:**
-1. Tüm manga/manhwa için MangaDex UUID senkronizasyonu (chapter URL'leri)
+1. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
 2. Kalan 88 film kaynağı bulma
 3. Monomanga slug doğrulama + sadece var olanları kullanma
 
