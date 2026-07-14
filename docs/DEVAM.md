@@ -1,23 +1,22 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 13 Temmuz 2026 (SOHBET-155) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `23c628a SOHBET-153`
+**Son güncelleme:** 14 Temmuz 2026 (SOHBET-161) · **Aktif sürüm:** v1.1-STABLE · **Son commit:** `SOHBET-161`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-155 — Gerçek %5 indirme testi. 11 içerik test edildi: 3 OK (MangaDex 19 sayfa, FitGirl 2 oyun), 8 FAIL (stream_finder/hepsi dead/CF). Rapor: `docs/SOHBET-155_RAPORU.md`.
+**En son yapılan:** SOHBET-161 — Frontend type kontrolü + Madara parser fix + oyun detayı + monomanga entegrasyonu.
 
 **Aktif dosyalar:**
-- `backend/scripts/s155_final.py` — Final test script (MangaDex+FitGirl çalışıyor)
-- `backend/downloader/stream_finder.py` — Tranimaci/hdfilmcehennemi stream bulamıyor
-- `backend/downloader/manga.py` — MangaDex çalışıyor, Madara siteleri ölü
+- `frontend/app.js` — Type kontrol düzeltildi (6 noktada)
+- `frontend/player.js` — Download job card type kontrol düzeltildi
+- `backend/downloader/manga.py` — NextJS parser regex fix (boşluk/Türkçe karakter)
+- `backend/scripts/sohbet161_fix_manhwa_sites.py` — DB toplu güncelleme
 
 **Sıradaki görev:**
-1. MangaDex ID'lerini DB'ye ekle (birincil manga/manhwa kaynağı)
-2. Ölü siteleri DB'de `is_dead=True` işaretle
-3. monomanga.com.tr için yeni downloader (Next.js)
-4. Yeni anime/film/dizi kaynağı bul + stream_finder'a ekle
-5. tranimaci.com CF bypass (Playwright selector güncelleme)
+1. Tüm manga/manhwa için MangaDex UUID senkronizasyonu (chapter URL'leri)
+2. Kalan 88 film kaynağı bulma
+3. Monomanga slug doğrulama + sadece var olanları kullanma
 
 ## SOHBET-155: Gerçek %5 İndirme Testi (RAPOR)
 
