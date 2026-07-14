@@ -1,0 +1,191 @@
+{
+  "timestamp": "2026-07-14T09:23:51.207883",
+  "summary": {
+    "alive": 10,
+    "cf_blocked": 1,
+    "dead": 6
+  },
+  "categories": {
+    "anime": [
+      {
+        "name": "Anizm (tranimeizle.org.tr)",
+        "url": "https://tranimeizle.org.tr/naruto-1-bolum-izle",
+        "type": "anime",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 5.61,
+        "content_length": 378067
+      },
+      {
+        "name": "OpenAnime",
+        "url": "https://openani.me/",
+        "type": "anime",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.39,
+        "content_length": 139074
+      },
+      {
+        "name": "AniTurk",
+        "url": "https://www.aniturk.co/",
+        "type": "anime",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.27,
+        "content_length": 5170
+      },
+      {
+        "name": "turkanime.co",
+        "url": "https://www.turkanime.co/",
+        "type": "anime",
+        "status": "http_525",
+        "http_status": 525,
+        "cf_detected": false,
+        "response_time": 0.25,
+        "content_length": 7056
+      },
+      {
+        "name": "animexe.com",
+        "url": "https://animexe.com/watch/naruto/1/1",
+        "type": "anime",
+        "status": "http_500",
+        "http_status": 500,
+        "cf_detected": false,
+        "response_time": 0.23,
+        "content_length": 800
+      }
+    ],
+    "movie": [
+      {
+        "name": "hdfilmcehennemi.io",
+        "url": "https://www.hdfilmcehennemi.io/",
+        "type": "movie",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.56,
+        "content_length": 213641
+      },
+      {
+        "name": "hdfilmcehennemi.sh",
+        "url": "https://www.hdfilmcehennemi.sh/",
+        "type": "movie",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.57,
+        "content_length": 213642
+      },
+      {
+        "name": "hdfilmcehennemi.net",
+        "url": "https://www.hdfilmcehennemi.net/",
+        "type": "movie",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.61,
+        "content_length": 213642
+      }
+    ],
+    "series": [
+      {
+        "name": "dizimag.com.tr",
+        "url": "https://www.dizimag.com.tr/",
+        "type": "series",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 1.61,
+        "content_length": 125797
+      },
+      {
+        "name": "netdizi.live",
+        "url": "https://www.netdizi.live/",
+        "type": "series",
+        "status": "dead_error",
+        "http_status": null,
+        "cf_detected": false,
+        "response_time": 0.31,
+        "content_length": 0,
+        "error": "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, c"
+      },
+      {
+        "name": "dizibox.vip",
+        "url": "https://dizibox.vip/",
+        "type": "series",
+        "status": "cf_blocked",
+        "http_status": 403,
+        "cf_detected": false,
+        "response_time": 0.52,
+        "content_length": 6963
+      },
+      {
+        "name": "roketdizi.com",
+        "url": "https://www.roketdizi.com/",
+        "type": "series",
+        "status": "dead_timeout",
+        "http_status": null,
+        "cf_detected": false,
+        "response_time": 10.25,
+        "content_length": 0
+      }
+    ],
+    "manga": [
+      {
+        "name": "monomanga.com.tr",
+        "url": "https://monomanga.com.tr/manga/hardcore-leveling-warrior/bolum-1/",
+        "type": "manga",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.31,
+        "content_length": 91021
+      },
+      {
+        "name": "mangawow.org",
+        "url": "https://mangawow.org/",
+        "type": "manga",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 1.06,
+        "content_length": 189863
+      },
+      {
+        "name": "majorscans.com",
+        "url": "https://www.majorscans.com/",
+        "type": "manga",
+        "status": "dead_short",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 4.69,
+        "content_length": 114
+      }
+    ],
+    "manhwa": [
+      {
+        "name": "monomanga.com.tr",
+        "url": "https://monomanga.com.tr/manga/hardcore-leveling-warrior/bolum-1/",
+        "type": "manhwa",
+        "status": "alive",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 0.32,
+        "content_length": 91021
+      },
+      {
+        "name": "majorscans.com",
+        "url": "https://www.majorscans.com/",
+        "type": "manhwa",
+        "status": "dead_short",
+        "http_status": 200,
+        "cf_detected": false,
+        "response_time": 1.65,
+        "content_length": 114
+      }
+    ]
+  }
+}
