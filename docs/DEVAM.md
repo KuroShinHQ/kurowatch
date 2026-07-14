@@ -1,11 +1,11 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Temmuz 2026 (SOHBET-162) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-162`
+**Son güncelleme:** 14 Temmuz 2026 (SOHBET-163) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-163`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-162 — OpenCode Skill MCP ile KuroWatch otomasyon sistemi kuruldu.
+**En son yapılan:** SOHBET-163 — MCP otomasyon sistemi devreye alındı. Test: 573/714 (%80.3).
 
 **Aktif dosyalar:**
 - `~/.config/opencode/skills/kurowatch-automation/SKILL.md` — Skill tanımı
@@ -20,9 +20,10 @@
 - `backend/scripts/sohbet161_fix_manhwa_sites.py` — DB güncelleme
 
 **Sıradaki görev:**
-1. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
-2. Kalan 88 film kaynağı bulma
-3. Monomanga slug doğrulama + sadece var olanları kullanma
+1. SOHBET-164: 113 filmin hdfilmcehennemi.now domain'ine taşınması (slug mapping)
+2. Kalan 88 film kaynağı bulma (28 series setfilmizle.uk kaldırılmış)
+3. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
+4. Monomanga slug doğrulama + sadece var olanları kullanma
 
 ## SOHBET-155: Gerçek %5 İndirme Testi (RAPOR)
 
