@@ -1,0 +1,111 @@
+{
+  "timestamp": "2026-07-13T18:31:13.355847",
+  "summary": {
+    "ok": 3,
+    "warn": 5,
+    "fail": 3,
+    "total": 11
+  },
+  "results": [
+    {
+      "id": 1,
+      "title": "Martial Peak",
+      "type": "manga",
+      "method": "mangadex",
+      "status": "OK",
+      "details": "19 pages, 3 verified",
+      "duration": 10.2
+    },
+    {
+      "id": 128,
+      "title": "Cult of the Lamb",
+      "type": "game",
+      "method": "fitgirl",
+      "status": "OK",
+      "details": "2 magnet links",
+      "duration": 0.4
+    },
+    {
+      "id": 127,
+      "title": "Frostpunk 2",
+      "type": "game",
+      "method": "fitgirl",
+      "status": "OK",
+      "details": "2 magnet links",
+      "duration": 0.4
+    },
+    {
+      "id": 24,
+      "title": "Hardcore Leveling Warrior",
+      "type": "manhwa",
+      "method": "check_sites",
+      "status": "WARN",
+      "details": "4 live, 0 dead | MangaTR=https://mangatr.app/manga/hardcore-leveling-warrior/bolum-15 | MangaGezgini=https://mangasehri.net/manga/hardcore-leveling-warrior/ | ragnarscans.net=https://ragnarscans.net/m",
+      "duration": 0.0
+    },
+    {
+      "id": 69,
+      "title": "Solo Leveling",
+      "type": "manhwa",
+      "method": "check_sites",
+      "status": "WARN",
+      "details": "4 live, 2 dead | MangaGezgini=https://mangasehri.net/manga/overpowered-sword/ | ragnarscans.net=https://ragnarscans.net/manga/the-veteran-healer-is-overpowe | MerlinToon=https://merlintoon.com/seri/ov",
+      "duration": 0.0
+    },
+    {
+      "id": 469,
+      "title": "Game of Thrones",
+      "type": "series",
+      "method": "check_sites",
+      "status": "WARN",
+      "details": "2 live, 0 dead | tranimeizle=https://www.tranimaci.com/naruto-1-bolum-izle | turkanime.tv=https://www.tranimaci.com/video/naruto-1-bolum",
+      "duration": 0.0
+    },
+    {
+      "id": 15,
+      "title": "Breaking Bad",
+      "type": "series",
+      "method": "check_sites",
+      "status": "WARN",
+      "details": "5 live, 0 dead | MangaOkuTR=https://ragnarscans.net/the-scholars-reincarnation-bolum-198 | MangaGezgini=https://mangasehri.net/manga/the-scholars-reincarnation/ | merlintoon.com=https://merlintoon.com",
+      "duration": 0.0
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "method": "stream",
+      "status": "FAILED",
+      "details": "stream URL bulunamadi",
+      "duration": 40.6
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "type": "movie",
+      "method": "stream",
+      "status": "FAILED",
+      "details": "stream URL bulunamadi",
+      "duration": 29.9
+    },
+    {
+      "id": 315,
+      "title": "The Silence of the Lambs",
+      "type": "movie",
+      "method": "check_sites",
+      "status": "WARN",
+      "details": "2 live, 0 dead | tranimeizle=https://www.tranimaci.com/frieren-beyond-journeys-end-1-bolu | turkanime.tv=https://www.tranimaci.com/video/sousou-no-frieren-1-bolum",
+      "duration": 0.0
+    },
+    {
+      "id": 233,
+      "title": "Naruto",
+      "type": "anime",
+      "method": "stream",
+      "status": "FAILED",
+      "details": "timeout 90s",
+      "duration": 95.9
+    }
+  ],
+  "sites_status": {}
+}

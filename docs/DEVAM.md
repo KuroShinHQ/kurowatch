@@ -1,5 +1,84 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 13 Temmuz 2026 (SOHBET-152) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `SOHBET-152`
+**Son güncelleme:** 13 Temmuz 2026 (SOHBET-155) · **Aktif sürüm:** v1.0-STABLE · **Son commit:** `23c628a SOHBET-153`
+
+---
+
+## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
+
+**En son yapılan:** SOHBET-155 — Gerçek %5 indirme testi. 11 içerik test edildi: 3 OK (MangaDex 19 sayfa, FitGirl 2 oyun), 8 FAIL (stream_finder/hepsi dead/CF). Rapor: `docs/SOHBET-155_RAPORU.md`.
+
+**Aktif dosyalar:**
+- `backend/scripts/s155_final.py` — Final test script (MangaDex+FitGirl çalışıyor)
+- `backend/downloader/stream_finder.py` — Tranimaci/hdfilmcehennemi stream bulamıyor
+- `backend/downloader/manga.py` — MangaDex çalışıyor, Madara siteleri ölü
+
+**Sıradaki görev:**
+1. MangaDex ID'lerini DB'ye ekle (birincil manga/manhwa kaynağı)
+2. Ölü siteleri DB'de `is_dead=True` işaretle
+3. monomanga.com.tr için yeni downloader (Next.js)
+4. Yeni anime/film/dizi kaynağı bul + stream_finder'a ekle
+5. tranimaci.com CF bypass (Playwright selector güncelleme)
+
+## SOHBET-155: Gerçek %5 İndirme Testi (RAPOR)
+
+```
+SOHBET-155 — 11 test: 3 OK, 8 FAIL
+
+TEST SONUÇLARI:
+  ✅ OK: Martial Peak (MangaDex — 19 sayfa, PIL verify)
+  ✅ OK: Cult of the Lamb (FitGirl — 2 magnet link)
+  ✅ OK: Frostpunk 2 (FitGirl — 2 magnet link)
+  ❌ FAIL: HLW, Solo Lv, TBATE (tüm Madara siteleri ölü/CF)
+  ❌ FAIL: Naruto, AoT (tranimaci.com — CF PoW challenge timeout)
+  ❌ FAIL: 3 Idiots, Fight Club (hdfilmcehennemi.nl — 404+403)
+  ❌ FAIL: Dexter, Breaking Bad, GOT (tüm siteler dead)
+
+SİTE DURUMU:
+  ✅ MangaDex — Çalışıyor (API-based, her manga var)
+  ✅ FitGirl — Çalışıyor (HTTP 200, magnet link)
+  ❌ mangatr.app — DOMAIN SATILIK
+  ❌ manhwahentai.me — DNS ÇÖKÜK
+  ❌ setfilmizle.uk — SİTE KALDIRILMIŞ
+  ❌ dizipod.com — SİTE KALDIRILMIŞ
+  ❌ hdfilmcehennemi.nl — 404 (film sayfaları yok)
+  ❌ tranimaci.com — CF PoW Challenge (bypass edilemiyor)
+  ❌ mangasehri.net, merlintoon.com — CF 403
+  ❌ mangakurdo.com — Bağlantı hatası
+  ⚠️ monomanga.com.tr — HTTP 200 ama Next.js JS render
+
+KRİTİK BULGU: Çoğu dış site Cloudflare korumasına geçti veya kapandı.
+MangaDex + FitGirl dışında çalışan kaynak kalmadı.
+Rapor: docs/SOHBET-155_RAPORU.md
+```
+
+---
+
+## ✅ TAMAMLANDI — SOHBET-153: Infa — Martial Peak total=3844, HLW fix, fix_all_totals
+
+```
+SOHBET-153 — 4 işlem tamamlandı:
+
+[1] Martial Peak total_chapters = 3844:
+    - MangaDex API UUID b1461071... sorgulandı
+    - backend/scripts/fix_martial_peak.py ile DB güncellendi
+    - Kanıt: DB total_chapters 14933→3844
+
+[2] Hardcore Leveling Warrior Madara fix:
+    - manga.py: mangatr.app _MADARA_DOMAINS + _CF_BLOCKED'e eklendi
+    - Artık _madara_chapter handler'ına düşüyor
+
+[3] fix_all_totals.py oluşturuldu:
+    - Tüm içeriklerin total_chapters/total_episodes'larını API'den çeker
+    - Desteklenen: mal:XXXX, mdx:UUID, bare numeric ID
+    - AniList + MangaDex API kullanır
+
+[4] test_real_download_final.py oluşturuldu:
+    - Yt-dlp %5 segment download + ffprobe doğrulama
+    - Her tür için 10+ içerik test eder
+    - Temizleme: indirme sonrası dosyaları siler
+
+KANIT: docs/SOHBET-153_RAPORU.md
+```
 
 ---
 
