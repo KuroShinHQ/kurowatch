@@ -1,0 +1,442 @@
+[
+  [
+    260,
+    "Chihiro Gidişi",
+    "chihiro-gidişi"
+  ],
+  [
+    267,
+    "Corpse Bride",
+    "corpse-bride"
+  ],
+  [
+    269,
+    "Dabbe Serisi",
+    "dabbe-serisi"
+  ],
+  [
+    280,
+    "Deadpool",
+    "deadpool"
+  ],
+  [
+    289,
+    "Diriliş",
+    "diriliş"
+  ],
+  [
+    291,
+    "Doctor Strange",
+    "doctor-strange"
+  ],
+  [
+    297,
+    "Düğün Dernek",
+    "düğün-dernek"
+  ],
+  [
+    299,
+    "Edge of Tomorrow (Yarının Sınırında)",
+    "edge-of-tomorrow-yarının-sınırında"
+  ],
+  [
+    301,
+    "Esaretin Bedeli",
+    "esaretin-bedeli"
+  ],
+  [
+    306,
+    "Fast & Furious",
+    "fast-furious"
+  ],
+  [
+    307,
+    "Fast & Furious (Hızlı ve Öfke",
+    "fast-furious-hızlı-ve-öfke"
+  ],
+  [
+    310,
+    "Fetih 1453",
+    "fetih-1453"
+  ],
+  [
+    311,
+    "Fight Club",
+    "fight-club"
+  ],
+  [
+    312,
+    "Fight Club (Dövüş Kulübü)",
+    "fight-club-dövüş-kulübü"
+  ],
+  [
+    313,
+    "Filistin",
+    "filistin"
+  ],
+  [
+    314,
+    "Finding Nemo",
+    "finding-nemo"
+  ],
+  [
+    320,
+    "Fury",
+    "fury"
+  ],
+  [
+    321,
+    "G.O.R.A",
+    "gora"
+  ],
+  [
+    331,
+    "Ghost Rider (Hayalet Sürücü)",
+    "ghost-rider-hayalet-sürücü"
+  ],
+  [
+    333,
+    "Gladiator",
+    "gladiator"
+  ],
+  [
+    334,
+    "Gladio",
+    "gladio"
+  ],
+  [
+    335,
+    "Gladyatör",
+    "gladyatör"
+  ],
+  [
+    341,
+    "Hababam Sınıfı (Yeni Nesil)",
+    "hababam-sınıfı-yeni-nesil"
+  ],
+  [
+    342,
+    "Hababam Sınıfı (Yeni)",
+    "hababam-sınıfı-yeni"
+  ],
+  [
+    344,
+    "Hacivat Karagöz Neden Öldürüldü?",
+    "hacivat-karagöz-neden-öldürüldü"
+  ],
+  [
+    345,
+    "Hancock",
+    "hancock"
+  ],
+  [
+    347,
+    "Harry Potter Serisi",
+    "harry-potter-serisi"
+  ],
+  [
+    354,
+    "Howl's Moving Castle (Yürüyen Şato)",
+    "howls-moving-castle-yürüyen-şato"
+  ],
+  [
+    358,
+    "I Am Legend (Ben Efsaneyim)",
+    "i-am-legend-ben-efsaneyim"
+  ],
+  [
+    360,
+    "Ice Age (Buz Devri Serisi)",
+    "ice-age-buz-devri-serisi"
+  ],
+  [
+    362,
+    "In Time (Zamana Karşı)",
+    "in-time-zamana-karşı"
+  ],
+  [
+    363,
+    "Inception",
+    "inception"
+  ],
+  [
+    365,
+    "Iron Man",
+    "iron-man"
+  ],
+  [
+    381,
+    "İhtiyarlara Yer Yok",
+    "ihtiyarlara-yer-yok"
+  ],
+  [
+    385,
+    "John Wick",
+    "john-wick"
+  ],
+  [
+    407,
+    "Koleksiyoncu",
+    "koleksiyoncu"
+  ],
+  [
+    413,
+    "Kung Fu Panda",
+    "kung-fu-panda"
+  ],
+  [
+    418,
+    "Kurtlar Vadisi Irak",
+    "kurtlar-vadisi-irak"
+  ],
+  [
+    425,
+    "Lion King",
+    "lion-king"
+  ],
+  [
+    432,
+    "Léon: The Professional (Sevginin Gücü)",
+    "lon-the-professional-sevginin-gücü"
+  ],
+  [
+    433,
+    "Madagaskar",
+    "madagaskar"
+  ],
+  [
+    435,
+    "Maleficent (Malefiz)",
+    "maleficent-malefiz"
+  ],
+  [
+    436,
+    "Malefiz",
+    "malefiz"
+  ],
+  [
+    442,
+    "Matrix Serisi",
+    "matrix-serisi"
+  ],
+  [
+    474,
+    "No Country for Old Men (İhtiyarlara Yer Yok)",
+    "no-country-for-old-men-ihtiyarlara-yer-yok"
+  ],
+  [
+    485,
+    "Pacific Rim (Pasifik Savaşı Serisi)",
+    "pacific-rim-pasifik-savaşı-serisi"
+  ],
+  [
+    486,
+    "Para Avcısı",
+    "para-avcısı"
+  ],
+  [
+    487,
+    "Percy Jackson Serisi",
+    "percy-jackson-serisi"
+  ],
+  [
+    490,
+    "Pirates of the Caribbean (Karayip Korsanları Serisi)",
+    "pirates-of-the-caribbean-karayip-korsanları-serisi"
+  ],
+  [
+    492,
+    "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+    "planet-of-the-apes-maymunlar-cehennemi-serisi"
+  ],
+  [
+    498,
+    "Real Steel (Çelik Yumruk)",
+    "real-steel-çelik-yumruk"
+  ],
+  [
+    499,
+    "Recep İvedik Üçlemesi",
+    "recep-ivedik-üçlemesi"
+  ],
+  [
+    504,
+    "Resident Evil Serisi",
+    "resident-evil-serisi"
+  ],
+  [
+    528,
+    "Sevginin Gücü",
+    "sevginin-gücü"
+  ],
+  [
+    529,
+    "Shark Tale",
+    "shark-tale"
+  ],
+  [
+    531,
+    "Sherlock Holmes Serisi",
+    "sherlock-holmes-serisi"
+  ],
+  [
+    545,
+    "Shrek",
+    "shrek"
+  ],
+  [
+    555,
+    "Spider-Man (Tobey Maguire Üçlemesi)",
+    "spider-man-tobey-maguire-üçlemesi"
+  ],
+  [
+    557,
+    "Spirited Away (Sen to Chihiro no Kamikakushi)",
+    "spirited-away-sen-to-chihiro-no-kamikakushi"
+  ],
+  [
+    558,
+    "Split (Parçalanmış)",
+    "split-parçalanmış"
+  ],
+  [
+    579,
+    "Terminator Serisi",
+    "terminator-serisi"
+  ],
+  [
+    581,
+    "Tetikçi",
+    "tetikçi"
+  ],
+  [
+    583,
+    "The Collector (Koleksiyoncu)",
+    "the-collector-koleksiyoncu"
+  ],
+  [
+    593,
+    "The Godfather",
+    "the-godfather"
+  ],
+  [
+    594,
+    "The Green Mile (Yeşil Yol)",
+    "the-green-mile-yeşil-yol"
+  ],
+  [
+    595,
+    "The Hobbit: An Unexpected Journey",
+    "the-hobbit-an-unexpected-journey"
+  ],
+  [
+    596,
+    "The Hunger Games (Açlık Oyunları Serisi)",
+    "the-hunger-games-açlık-oyunları-serisi"
+  ],
+  [
+    597,
+    "The Incredibles",
+    "the-incredibles"
+  ],
+  [
+    599,
+    "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+    "the-lord-of-the-rings-yüzüklerin-efendisi-serisi"
+  ],
+  [
+    603,
+    "The Maze Runner (Labirent: Ölümcül Kaçış Serisi)",
+    "the-maze-runner-labirent-ölümcül-kaçış-serisi"
+  ],
+  [
+    605,
+    "The Mummy",
+    "the-mummy"
+  ],
+  [
+    606,
+    "The Revenant (Diriliş)",
+    "the-revenant-diriliş"
+  ],
+  [
+    607,
+    "The Scorpion King Serisi",
+    "the-scorpion-king-serisi"
+  ],
+  [
+    611,
+    "The Shawshank Redemption (Esaretin Bedeli)",
+    "the-shawshank-redemption-esaretin-bedeli"
+  ],
+  [
+    614,
+    "The Wolf of Wall Street (Para Avcısı)",
+    "the-wolf-of-wall-street-para-avcısı"
+  ],
+  [
+    616,
+    "Thor",
+    "thor"
+  ],
+  [
+    617,
+    "Titanic",
+    "titanic"
+  ],
+  [
+    631,
+    "Toy Story",
+    "toy-story"
+  ],
+  [
+    637,
+    "Twilight (Alacakaranlık Serisi)",
+    "twilight-alacakaranlık-serisi"
+  ],
+  [
+    641,
+    "Undisputed (Yenilmez Serisi)",
+    "undisputed-yenilmez-serisi"
+  ],
+  [
+    642,
+    "Up",
+    "up"
+  ],
+  [
+    644,
+    "V for Vendetta",
+    "v-for-vendetta"
+  ],
+  [
+    645,
+    "Venom",
+    "venom"
+  ],
+  [
+    653,
+    "World War Z",
+    "world-war-z"
+  ],
+  [
+    655,
+    "Yahşi Batı",
+    "yahşi-batı"
+  ],
+  [
+    659,
+    "Yeşil Yol",
+    "yeşil-yol"
+  ],
+  [
+    670,
+    "Zamana Karşı",
+    "zamana-karşı"
+  ],
+  [
+    676,
+    "Ölüm Yarışı",
+    "ölüm-yarışı"
+  ]
+]
