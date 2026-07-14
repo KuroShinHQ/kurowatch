@@ -1,37 +1,31 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Temmuz 2026 (SOHBET-164) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-164`
+**Son güncelleme:** 14 Temmuz 2026 (SOHBET-165) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-165`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-164 — Film ve dizi migration: %80.3 → %97.6 (697/714).
+**En son yapılan:** SOHBET-165 — Son test ve tamamlama: %97.6 (697/714) + monomanga/mangadex/sezon/oyun fix.
 
-**SOHBET-164 Sonuçları:**
-- 104/113 film → hdfilmcehennemi.now (WP REST API + Türkçe title map)
-- 41/49 dizi → dizimag.com.tr + hdfc.now tvshows + alternatifler
-- 9 film + 8 dizi kaynaksız (eski Türk dizileri + niche filmler)
-- Kanıt: 3 Aptal trailer (1.22MB MP4), Dexter 875MB (önceki)
-- Rapor: kurowatch/docs/SOHBET-164_RAPORU.md
+**SOHBET-165 Sonuçları:**
+- MangaDex handler: title UUID → chapter ID bulma (API feed)
+- Monomanga: Playwright fallback (JS render) — novel sitesi tespit edildi
+- Kanıt: The Greatest Estate Developer ch2 — 79 sayfa, 63.2 MB (MangaDex)
+- Rick&Morty: 9→7 sezon (20 fake episode silindi)
+- Game: season_number=0, total_episodes=0 (Cult of the Lamb fix)
+- ⭐ 17 içerik KABUL EDİLDİ (9 film + 8 dizi)
+- Rapor: kurowatch/docs/SOHBET-165_RAPORU.md
 
 **Aktif dosyalar:**
-- `backend/scripts/sohbet164_migrate_movies_v2.py` — Film migrasyonu
-- `backend/scripts/sohbet164_migrate_series.py` — Dizi migrasyonu
-- `backend/scripts/sohbet164_add_final_matches.py` — Approximate matches
-- `backend/scripts/sohbet164_fix_114.py` — Marvel What If fix
-- `_kanit_sohbet164/` — Kanıt dosyaları (film trailer, dizi page)
-
-**SOHBET-163 öncesi aktif dosyalar:**
-- `~/.config/opencode/skills/kurowatch-automation/SKILL.md` — Skill tanımı
-- `~/.config/opencode/skills/kurowatch-automation/mcp-server.js` — MCP server (5 tool)
-- `frontend/app.js` — Type kontrol düzeltildi
-- `backend/downloader/manga.py` — NextJS parser regex fix
+- `backend/downloader/manga.py` — MangaDex title→chapter + monomanga PW fallback
+- `backend/scripts/sohbet165_fix_seasons.py` — Sezon + game fix
+- `_kanit_sohbet165/manga_680_ch2_mangadex/` — 79 sayfa manga kanıt
 
 **Sıradaki görev:**
-1. Kalan 17 içeriğe (9 film + 8 dizi) özel kaynak araştırması (YouTube, özel siteler)
-2. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
-3. Monomanga slug doğrulama + sadece var olanları kullanma
-4. Yanlış eşleşen filmleri düzeltme (WALL-E → Para Avcısı, The Godfather → Babam Noel vb.)
+1. (Lord kararı bekleniyor — %97.6 hedef sağlandı)
+2. Yanlış eşleşen filmleri düzeltme (WALL-E → Para Avcısı, The Godfather → Babam Noel vb.)
+3. MangaDex UUID senkronizasyonu (kalan manga/manhwa)
+4. Monomanga novel içerikler için metin okuma desteği (gelecek FAZ)
 
 ## SOHBET-155: Gerçek %5 İndirme Testi (RAPOR)
 

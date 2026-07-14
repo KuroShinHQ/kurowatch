@@ -230,10 +230,80 @@ async def download_manga_chapter(
 
 
 async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]:
+    """MangaDex chapter indir. URL formatları:
+    - https://mangadex.org/title/{UUID}  → manga title, chapter ID API'den bulunur
+    - https://mangadex.org/chapter/{UUID} → direkt chapter ID
+    """
+    import httpx
+
+    # Direkt chapter URL?
     m = re.search(r"/chapter/([a-f0-9-]{36})", url)
-    if not m:
-        raise ValueError(f"Geçersiz MangaDex chapter URL: {url}")
-    chapter_id = m.group(1)
+    if m:
+        chapter_id = m.group(1)
+    else:
+        # Title URL — chapter ID'yi API'den bul
+        m2 = re.search(r"/title/([a-f0-9-]{36})", url)
+        if not m2:
+            raise ValueError(f"Geçersiz MangaDex URL (title/chapter UUID yok): {url}")
+        manga_uuid = m2.group(1)
+
+        # URL'de chapter numarası var mı? (#chapter-N veya ?chapter=N)
+        ch_num_match = re.search(r'(?:#chapter-?|[\?&]chapter=)(\d+)', url)
+        target_ch = ch_num_match.group(1) if ch_num_match else "1"
+
+        # API'den chapter listesi al
+        async with httpx.AsyncClient(timeout=30, headers={"User-Agent": "MangaDexApi/1.0"}) as cl:
+            r = await cl.get("https://api.mangadex.org/chapter", params={
+                "manga": manga_uuid,
+                "limit": 100,
+                "order[chapter]": "asc",
+                "translatedLanguage[]": ["en", "tr"],
+            }, timeout=30)
+            chapters = []
+            if r.status_code == 200:
+                try:
+                    chapters = r.json().get("data", [])
+                except Exception:
+                    pass
+
+            # Dil filtresi ile bulunamazsa, tüm dilleri dene
+            if not chapters:
+                r = await cl.get("https://api.mangadex.org/chapter", params={
+                    "manga": manga_uuid,
+                    "limit": 100,
+                    "order[chapter]": "asc",
+                }, timeout=30)
+                if r.status_code == 200:
+                    try:
+                        chapters = r.json().get("data", [])
+                    except Exception:
+                        pass
+
+            if not chapters:
+                raise RuntimeError(f"MangaDex: manga {manga_uuid[:12]}... için chapter bulunamadı")
+
+            # Hedef chapter'ı bul (numara eşleşmesi)
+            target = None
+            for ch in chapters:
+                attrs = ch.get("attributes", {})
+                if attrs.get("chapter") == target_ch:
+                    target = ch
+                    break
+            # Bulunamazsa chapter 1 dene
+            if not target:
+                for ch in chapters:
+                    attrs = ch.get("attributes", {})
+                    if attrs.get("chapter") == "1":
+                        target = ch
+                        break
+            # Hala yoksa ilk chapter
+            if not target and chapters:
+                target = chapters[0]
+
+            if not target:
+                raise RuntimeError(f"MangaDex: chapter {target_ch} bulunamadı (toplam {len(chapters)} chapter)")
+
+            chapter_id = target["id"]
 
     async with httpx.AsyncClient(timeout=30) as client:
         r = await client.get(f"https://api.mangadex.org/at-home/server/{chapter_id}")
@@ -311,6 +381,13 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         img_urls.append(u)
 
     if not img_urls:
+        # Playwright fallback: JS render ile image URL'leri topla
+        try:
+            img_urls = await _nextjs_playwright_fallback(url)
+        except Exception as pw_err:
+            raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url} (PW fallback: {pw_err})")
+
+    if not img_urls:
         raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url}")
 
     # Sayfa numarasına göre sırala (dosya adının sonundaki numara)
@@ -341,6 +418,60 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         raise RuntimeError(f"NextJS: hiç sayfa indirilemedi — {url}")
     validate_manga_files(files)
     return files
+
+
+async def _nextjs_playwright_fallback(url: str) -> list[str]:
+    """Playwright ile Next.js sayfasını JS-render et, CDN image URL'leri topla.
+    monomanga.com.tr gibi NextJS siteler için RSC payload boşsa fallback."""
+    from playwright.async_api import async_playwright
+
+    img_urls: list[str] = []
+
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True, args=["--no-sandbox"])
+        page = await browser.new_page()
+
+        # Network response listener — CDN image isteklerini yakala
+        def _on_response(resp):
+            ct = resp.headers.get("content-type", "")
+            if "image" in ct and "cdn.monomanga" in resp.url:
+                if resp.url not in img_urls:
+                    img_urls.append(resp.url)
+
+        page.on("response", _on_response)
+
+        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
+        await page.wait_for_timeout(5000)
+
+        # Scroll down to trigger lazy load
+        for i in range(5):
+            await page.evaluate(f"window.scrollTo(0, document.body.scrollHeight * {(i+1)/5})")
+            await page.wait_for_timeout(2000)
+
+        # DOM'dan img src/data-src topla
+        dom_imgs = await page.eval_on_selector_all(
+            "img[src*='cdn'], img[data-src*='cdn']",
+            "els => els.map(e => e.src || e.getAttribute('data-src') || '')"
+        )
+        for src in dom_imgs:
+            if src and "cdn.monomanga" in src and src not in img_urls:
+                img_urls.append(src)
+
+        # Sayfa içeriğinden CDN URL'leri regex ile topla
+        content = await page.content()
+        import re as _re
+        cdn_in_html = _re.findall(
+            r"https://cdn\.monomanga\.com\.tr/chapters/[^\s\"'<>]+",
+            content
+        )
+        for u in cdn_in_html:
+            u = u.rstrip("\\/,.\"'")
+            if u not in img_urls:
+                img_urls.append(u)
+
+        await browser.close()
+
+    return img_urls
 
 
 _CHROMIUM_BIN = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
