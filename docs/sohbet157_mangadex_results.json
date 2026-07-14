@@ -1,0 +1,1199 @@
+[
+  {
+    "content_id": 1,
+    "title": "Martial Peak",
+    "type": "manga",
+    "uuid": "b1461071-bfbb-43e7-a5b6-a7ba5904649f",
+    "method": "exact_title",
+    "total_chapters": 3844,
+    "mal_id": "163850"
+  },
+  {
+    "content_id": 3,
+    "title": "Above All Gods",
+    "type": "manga",
+    "uuid": "1d5e923f-71e0-4bb5-aa75-3f42b7fcb109",
+    "method": "exact_title",
+    "total_chapters": 402,
+    "mal_id": "127480"
+  },
+  {
+    "content_id": 5,
+    "title": "I Am a Cultivation Bigshot",
+    "type": "manga",
+    "uuid": "18d0d458-0e2b-4e08-b377-6c9b2acab7e5",
+    "method": "exact_title",
+    "total_chapters": 395,
+    "mal_id": "183650"
+  },
+  {
+    "content_id": 6,
+    "title": "Jujutsu Kaisen",
+    "type": "manga",
+    "uuid": "c52b2ce3-7f95-469c-96b0-479524fb7a1a",
+    "method": "fuzzy_title",
+    "total_chapters": 3,
+    "mal_id": "101517"
+  },
+  {
+    "content_id": 7,
+    "title": "Release That Witch",
+    "type": "manga",
+    "uuid": "aafb046c-9de4-4c3d-990c-6d75b079c0b9",
+    "method": "exact_title",
+    "total_chapters": 694,
+    "mal_id": "136488"
+  },
+  {
+    "content_id": 9,
+    "title": "The Hunter",
+    "type": "manga",
+    "uuid": "29ab6984-7c1d-4d45-b925-25aa082b492e",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "96396"
+  },
+  {
+    "content_id": 10,
+    "title": "A Returner's Magic Should Be Special",
+    "type": "manhwa",
+    "uuid": "6a468761-5bd6-4de0-a0cb-47cb456ac2e0",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "105393"
+  },
+  {
+    "content_id": 12,
+    "title": "Above Ten Thousand People",
+    "type": "manga",
+    "uuid": "93eed9a5-6a1d-4bd9-b26e-137d3fd557b9",
+    "method": "exact_title",
+    "total_chapters": 315,
+    "mal_id": "89975"
+  },
+  {
+    "content_id": 15,
+    "title": "The Scholar's Reincarnation",
+    "type": "manga",
+    "uuid": "f2cb9465-c314-46a3-97fd-05210d3af0a7",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147924"
+  },
+  {
+    "content_id": 16,
+    "title": "The Beginning After the End",
+    "type": "manhwa",
+    "uuid": "4ada20eb-085a-491a-8c49-477ab42014d7",
+    "method": "exact_title",
+    "total_chapters": 58,
+    "mal_id": "93748"
+  },
+  {
+    "content_id": 17,
+    "title": "The Tutorial Tower of the Advanced Player",
+    "type": "manga",
+    "uuid": "b847ca8b-1b14-4780-98eb-10049467bc03",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "146742"
+  },
+  {
+    "content_id": 18,
+    "title": "Nano Machine",
+    "type": "manhwa",
+    "uuid": "6e4805a6-75ab-462d-883c-4ddedb8e4df6",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147863"
+  },
+  {
+    "content_id": 19,
+    "title": "Murim Login",
+    "type": "manhwa",
+    "uuid": "246f2c0c-4c50-4ef4-b292-c17f0f68a17c",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147389"
+  },
+  {
+    "content_id": 20,
+    "title": "FFF-Class Trashero",
+    "type": "manhwa",
+    "uuid": "1a4bc1ca-2ed8-425b-8235-d9372a446d93",
+    "method": "exact_title",
+    "total_chapters": 3,
+    "mal_id": "147463"
+  },
+  {
+    "content_id": 21,
+    "title": "World's Apocalypse Online",
+    "type": "manga",
+    "uuid": "0de7b6a4-ca45-4b9b-9547-697128b0acec",
+    "method": "exact_title",
+    "total_chapters": 15,
+    "mal_id": "39139"
+  },
+  {
+    "content_id": 22,
+    "title": "Juujika no Rokunin",
+    "type": "manga",
+    "uuid": "00446151-d199-45d6-8671-821db1151e6c",
+    "method": "fuzzy_title",
+    "total_chapters": 32,
+    "mal_id": "116671"
+  },
+  {
+    "content_id": 24,
+    "title": "Hardcore Leveling Warrior",
+    "type": "manga",
+    "uuid": "93398095-659d-4137-a630-5961c82a1f97",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "146944"
+  },
+  {
+    "content_id": 25,
+    "title": "Dungeon Reset",
+    "type": "manhwa",
+    "uuid": "dcdcc8c7-932e-4f60-a900-5f19934eb6cf",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "147438"
+  },
+  {
+    "content_id": 28,
+    "title": "Return of the Unrivaled Spear Knight",
+    "type": "manhwa",
+    "uuid": "707a112b-55cb-41a5-afe1-601d3e52e9a8",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "141479"
+  },
+  {
+    "content_id": 29,
+    "title": "Tower Into the Clouds",
+    "type": "manga",
+    "uuid": "e12b6196-7b9c-4537-8dd9-69cf488f67f1",
+    "method": "exact_title",
+    "total_chapters": 67,
+    "mal_id": "26178"
+  },
+  {
+    "content_id": 30,
+    "title": "Return to Player",
+    "type": "manhwa",
+    "uuid": "cac1a74c-0b5f-498a-8472-05f0636e1b4d",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "124577"
+  },
+  {
+    "content_id": 31,
+    "title": "Kill the Hero",
+    "type": "manga",
+    "uuid": "6964942d-5920-4e79-bc45-1f798d62b2bd",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "146979"
+  },
+  {
+    "content_id": 32,
+    "title": "The Max Level Hero Has Returned",
+    "type": "manga",
+    "uuid": "b407de00-75a5-415a-a001-585fb41b9cf2",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "147322"
+  },
+  {
+    "content_id": 33,
+    "title": "Rise from the Rubble",
+    "type": "manga",
+    "uuid": "623a992f-23f6-4b88-b1fb-5e3f30a344ce",
+    "method": "fuzzy_title",
+    "total_chapters": 2,
+    "mal_id": "6871"
+  },
+  {
+    "content_id": 34,
+    "title": "Top Tier Providence",
+    "type": "manga",
+    "uuid": "c089b50c-beeb-434a-ab8d-2676dc026564",
+    "method": "exact_title",
+    "total_chapters": 219,
+    "mal_id": "169728"
+  },
+  {
+    "content_id": 36,
+    "title": "Player Who Returned 10,000 Years Later",
+    "type": "manga",
+    "uuid": "b17b675e-fb9f-4903-b4db-7c7deb2d1cac",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "150210"
+  },
+  {
+    "content_id": 37,
+    "title": "I Am the Fated Villain",
+    "type": "manga",
+    "uuid": "63b2dc67-f55c-4f4a-899f-cedd77721bcf",
+    "method": "fuzzy_title",
+    "total_chapters": 79,
+    "mal_id": "107566"
+  },
+  {
+    "content_id": 39,
+    "title": "Back to Rule Again",
+    "type": "manga",
+    "uuid": "939361bd-32c5-4fb9-ba93-dce280889af4",
+    "method": "exact_title",
+    "total_chapters": 15,
+    "mal_id": "35013"
+  },
+  {
+    "content_id": 40,
+    "title": "Bug Player",
+    "type": "manhwa",
+    "uuid": "737af1eb-a79c-48fa-8a00-70968e20de32",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "96792"
+  },
+  {
+    "content_id": 41,
+    "title": "Strongest Fighter",
+    "type": "manga",
+    "uuid": "5d1c5f11-f531-4405-ac12-77293af855bd",
+    "method": "exact_title",
+    "total_chapters": 86,
+    "mal_id": "169013"
+  },
+  {
+    "content_id": 42,
+    "title": "The Return of the Crazy Demon",
+    "type": "manga",
+    "uuid": "09656afb-aaf9-4f9b-95fd-873cb537ddc3",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "147577"
+  },
+  {
+    "content_id": 44,
+    "title": "Doctor's Rebirth",
+    "type": "manhwa",
+    "uuid": "8acdc047-6c6b-4603-8ee9-55f03421fceb",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "129579"
+  },
+  {
+    "content_id": 46,
+    "title": "Ranker's Return (Remake)",
+    "type": "manhwa",
+    "uuid": "f81ad5fe-8a3f-4f30-8f7e-5f755af48a52",
+    "method": "exact_title",
+    "total_chapters": 16,
+    "mal_id": "137969"
+  },
+  {
+    "content_id": 47,
+    "title": "Return of the Mount Hua Sect",
+    "type": "manhwa",
+    "uuid": "f0f62b75-5989-4f32-9b59-ab56abe35fc1",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "132144"
+  },
+  {
+    "content_id": 48,
+    "title": "The Heavenly Demon Can't Live a Normal Life",
+    "type": "manhwa",
+    "uuid": "9debf709-4d0a-47f8-aa1a-b656bcd54727",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "136204"
+  },
+  {
+    "content_id": 49,
+    "title": "Reverse Villain",
+    "type": "manhwa",
+    "uuid": "c2068513-1e3b-4e44-b8f5-b0ac5567aa2b",
+    "method": "fuzzy_title",
+    "total_chapters": 1,
+    "mal_id": "118593"
+  },
+  {
+    "content_id": 50,
+    "title": "Heavenly Demon Instructor",
+    "type": "manhwa",
+    "uuid": "e56e4c26-584d-49be-90d0-1c1c07f5f233",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "143352"
+  },
+  {
+    "content_id": 51,
+    "title": "I Reincarnated as the Crazed Heir",
+    "type": "manga",
+    "uuid": "d364a3e4-4aad-4f14-b0c4-aaf9ff09a017",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "148512"
+  },
+  {
+    "content_id": 52,
+    "title": "Reincarnation of the Murim Clan's Former Ranker",
+    "type": "manhwa",
+    "uuid": "f1ea37a7-9e85-4a06-98b2-597f3e5f39ac",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "141316"
+  },
+  {
+    "content_id": 53,
+    "title": "Memorize",
+    "type": "manhwa",
+    "uuid": "87acdf66-30a9-4800-8a03-754c64e382b1",
+    "method": "exact_title",
+    "total_chapters": 98,
+    "mal_id": "124846"
+  },
+  {
+    "content_id": 54,
+    "title": "I Just Want to Be Killed",
+    "type": "manga",
+    "uuid": "8c6e0eb8-fb94-44a3-9bf4-fa72dee36775",
+    "method": "fuzzy_title",
+    "total_chapters": 26,
+    "mal_id": "163204"
+  },
+  {
+    "content_id": 57,
+    "title": "SSS-Class Suicide Hunter",
+    "type": "manhwa",
+    "uuid": "4a973243-952e-44d7-a50f-883b4b7c9cc2",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "128067"
+  },
+  {
+    "content_id": 58,
+    "title": "The World After the End",
+    "type": "manga",
+    "uuid": "f70e8da7-e6b2-4fb6-bd19-192906137c87",
+    "method": "fuzzy_title",
+    "total_chapters": 6,
+    "mal_id": "147217"
+  },
+  {
+    "content_id": 61,
+    "title": "Return of the Shattered Constellation",
+    "type": "manga",
+    "uuid": "8d12bb9f-dd9a-45ab-b6d7-fa26e52c91b5",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "146385"
+  },
+  {
+    "content_id": 62,
+    "title": "Reverend Insanity",
+    "type": "manga",
+    "uuid": "bb71e1b9-8773-4b44-85b2-68ed44d124eb",
+    "method": "exact_title",
+    "total_chapters": 97,
+    "mal_id": "125140"
+  },
+  {
+    "content_id": 63,
+    "title": "Seoul Station Necromancer",
+    "type": "manhwa",
+    "uuid": "cdd03460-c926-4aa3-9cea-1494d8c7c808",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147490"
+  },
+  {
+    "content_id": 66,
+    "title": "The Dungeon Master",
+    "type": "manga",
+    "uuid": "410d499a-f438-4a56-9ad4-eb90a4de5b39",
+    "method": "fuzzy_title",
+    "total_chapters": 4,
+    "mal_id": "86583"
+  },
+  {
+    "content_id": 69,
+    "title": "Overpowered Sword",
+    "type": "manhwa",
+    "uuid": "1eaf0d33-35ba-469e-a73a-d7f6e3c154e5",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "142526"
+  },
+  {
+    "content_id": 71,
+    "title": "Damn Reincarnation",
+    "type": "manhwa",
+    "uuid": "6e769716-df1e-4d66-89cc-32f3b46e17dc",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "149438"
+  },
+  {
+    "content_id": 72,
+    "title": "Fukushuu o Koinegau Saikyou Yuusha",
+    "type": "manga",
+    "uuid": "bd38c075-8b12-450a-aeee-125e3ac5da4b",
+    "method": "fuzzy_title",
+    "total_chapters": 168,
+    "mal_id": "107780"
+  },
+  {
+    "content_id": 73,
+    "title": "Revenge of the Iron-Blooded Sword Hound",
+    "type": "manhwa",
+    "uuid": "fbf326f7-ccbd-4d54-bbad-852d76e46523",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "163824"
+  },
+  {
+    "content_id": 75,
+    "title": "I Became the Tyrant of a Defense Game",
+    "type": "manhwa",
+    "uuid": "a846b1d7-2e57-4622-acdf-9c584d07ce7f",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "153513"
+  },
+  {
+    "content_id": 76,
+    "title": "Kage no Jitsuryokusha ni Naritakute",
+    "type": "manga",
+    "uuid": "91d928a1-7237-4d03-abc3-4b1440cc7d55",
+    "method": "fuzzy_title",
+    "total_chapters": 46,
+    "mal_id": "108428"
+  },
+  {
+    "content_id": 77,
+    "title": "Dövüş Tanrısının Dönüşü Günlükleri",
+    "type": "manga",
+    "uuid": "54e1b971-fe2c-4720-b96b-4dc049863ae7",
+    "method": "fuzzy_title",
+    "total_chapters": 1,
+    "mal_id": "159904"
+  },
+  {
+    "content_id": 78,
+    "title": "Im Not That Kind of Talent",
+    "type": "manga",
+    "uuid": "0eb1e1a0-ec19-4d84-907c-d6efe40cdc98",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "155726"
+  },
+  {
+    "content_id": 79,
+    "title": "Villain Unrivaled",
+    "type": "manhwa",
+    "uuid": "65a803d8-25ef-45d0-bbab-c573f4b0d09b",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "160605"
+  },
+  {
+    "content_id": 80,
+    "title": "Never Die Extra",
+    "type": "manhwa",
+    "uuid": "47a54583-a16f-4480-a6c3-b90248f91983",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "155490"
+  },
+  {
+    "content_id": 81,
+    "title": "I Can Snatch 999 Types of Abilities",
+    "type": "manga",
+    "uuid": "265da069-ca97-434a-ba54-d118ed9b6e7f",
+    "method": "exact_title",
+    "total_chapters": 143,
+    "mal_id": "98449"
+  },
+  {
+    "content_id": 83,
+    "title": "Regressing with the King's Power",
+    "type": "manhwa",
+    "uuid": "96616fa2-df45-4d86-a2b2-86b7609a8b81",
+    "method": "fuzzy_title",
+    "total_chapters": 5,
+    "mal_id": "170724"
+  },
+  {
+    "content_id": 84,
+    "title": "Library of Heaven's Path",
+    "type": "manga",
+    "uuid": "4f22d62e-cf9d-41ae-be80-2fdf4645b258",
+    "method": "exact_title",
+    "total_chapters": 231,
+    "mal_id": "110771"
+  },
+  {
+    "content_id": 86,
+    "title": "My Insanely Competent Underlings",
+    "type": "manhwa",
+    "uuid": "e175ce55-f63e-4260-887e-4fc999498d57",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "158488"
+  },
+  {
+    "content_id": 87,
+    "title": "Raising Newbie Heroes in Another World",
+    "type": "manhwa",
+    "uuid": "7e8f01ec-3939-4e21-86d2-b561884020a2",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "151615"
+  },
+  {
+    "content_id": 89,
+    "title": "The Unbeatable Dungeon's Lazy Boss Monster",
+    "type": "manhwa",
+    "uuid": "357575d3-7575-45bf-9651-58acdc6a978a",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "172623"
+  },
+  {
+    "content_id": 94,
+    "title": "Cultivator Against Hero Society",
+    "type": "manga",
+    "uuid": "37e782df-93ec-4ab3-bc3a-2e067c06b7bb",
+    "method": "exact_title",
+    "total_chapters": 210,
+    "mal_id": "557"
+  },
+  {
+    "content_id": 135,
+    "title": "Absolute Regression",
+    "type": "manhwa",
+    "uuid": "db1f4c31-f92f-4f4f-a8c6-fc898e432888",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "172750"
+  },
+  {
+    "content_id": 136,
+    "title": "Absolute Reign",
+    "type": "manhwa",
+    "uuid": "1de0715a-ba15-4250-8eb9-0149be0ac76e",
+    "method": "exact_title",
+    "total_chapters": 42,
+    "mal_id": "174691"
+  },
+  {
+    "content_id": 138,
+    "title": "Bad Born Blood",
+    "type": "manhwa",
+    "uuid": "f4b7f532-b2e1-4ef2-83d4-fbf94fac261e",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "184347"
+  },
+  {
+    "content_id": 139,
+    "title": "Cassmire",
+    "type": "manhwa",
+    "uuid": "9e02520f-11b9-4e29-a882-9d79034347a8",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "148369"
+  },
+  {
+    "content_id": 140,
+    "title": "Cassmire: The Loyal Sword",
+    "type": "manhwa",
+    "uuid": "9e02520f-11b9-4e29-a882-9d79034347a8",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "149579"
+  },
+  {
+    "content_id": 141,
+    "title": "Cheonhwa Archive's Young Master",
+    "type": "manhwa",
+    "uuid": "b2379cf4-3915-4577-b4df-329fc9900620",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "160693"
+  },
+  {
+    "content_id": 142,
+    "title": "Chronicles of a Doomed Prodigy",
+    "type": "manhwa",
+    "uuid": "abfdb82c-568b-47da-9e61-7868c7389243",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "183376"
+  },
+  {
+    "content_id": 143,
+    "title": "Chronicles of the Demon Faction",
+    "type": "manhwa",
+    "uuid": "365d291e-277e-45fd-b364-956d0c6b11c8",
+    "method": "exact_title",
+    "total_chapters": 22,
+    "mal_id": "164222"
+  },
+  {
+    "content_id": 144,
+    "title": "Demon King of the Royal Class",
+    "type": "manhwa",
+    "uuid": "d2a01e38-1c0d-4e4b-a9ae-21d119e8b326",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "160750"
+  },
+  {
+    "content_id": 145,
+    "title": "Doom Breaker (Suicidal Battle God)",
+    "type": "manhwa",
+    "uuid": "773c2211-750b-4fff-bd64-c914986e4637",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "22651"
+  },
+  {
+    "content_id": 146,
+    "title": "Dungeon Odyssey",
+    "type": "manhwa",
+    "uuid": "0153e96a-fb57-4665-a988-754b4f3aa744",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "152405"
+  },
+  {
+    "content_id": 148,
+    "title": "Heavenly Demon Reborn!",
+    "type": "manhwa",
+    "uuid": "3f38adf6-145c-4a04-b220-1ed8b5a20b55",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147572"
+  },
+  {
+    "content_id": 149,
+    "title": "I Killed the Main Player",
+    "type": "manhwa",
+    "uuid": "a4896718-ecef-4701-8497-5ba07d4e89cc",
+    "method": "exact_title",
+    "total_chapters": 4,
+    "mal_id": "165028"
+  },
+  {
+    "content_id": 150,
+    "title": "Latna Saga: Survival of a Sword King in a Fantasy World",
+    "type": "manhwa",
+    "uuid": "478e6926-b8bc-465c-9694-2bae1dbaf32b",
+    "method": "fuzzy_title",
+    "total_chapters": 7,
+    "mal_id": "146982"
+  },
+  {
+    "content_id": 151,
+    "title": "Level Up with the Gods",
+    "type": "manhwa",
+    "uuid": "4a43c227-b201-4fb7-b796-924c51797d50",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "123731"
+  },
+  {
+    "content_id": 152,
+    "title": "Lout of Count's Family (Trash of the Count's Family)",
+    "type": "manhwa",
+    "uuid": "1dc3ebf9-c86c-431c-bcca-5e35ac124f28",
+    "method": "fuzzy_title",
+    "total_chapters": 2,
+    "mal_id": "147317"
+  },
+  {
+    "content_id": 154,
+    "title": "Masters of Lightning Knives",
+    "type": "manhwa",
+    "uuid": "9d685cb5-594b-4891-9f98-e50bfee0ffa4",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147455"
+  },
+  {
+    "content_id": 155,
+    "title": "Mercenary Enrollment",
+    "type": "manhwa",
+    "uuid": "9ecd208c-c592-4462-9f57-4d7d4a9f956f",
+    "method": "exact_title",
+    "total_chapters": 37,
+    "mal_id": "146966"
+  },
+  {
+    "content_id": 156,
+    "title": "My Avatars' Path to Greatness",
+    "type": "manhwa",
+    "uuid": "578ecb66-718c-4091-a728-81c440f1e896",
+    "method": "fuzzy_title",
+    "total_chapters": 39,
+    "mal_id": "174687"
+  },
+  {
+    "content_id": 158,
+    "title": "My S-Class Hunters",
+    "type": "manhwa",
+    "uuid": "3f53fb25-b1b7-4fa6-92f8-2fc438a1ae65",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "147202"
+  },
+  {
+    "content_id": 159,
+    "title": "Myst, Might, Mayhem",
+    "type": "manhwa",
+    "uuid": "df5f8e3d-64a1-4287-8f08-4a732e9cb757",
+    "method": "exact_title",
+    "total_chapters": 73,
+    "mal_id": "168980"
+  },
+  {
+    "content_id": 160,
+    "title": "Nebula's Civilization",
+    "type": "manhwa",
+    "uuid": "c0d75ac6-04e6-413b-a494-42d0e7de7e99",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "165175"
+  },
+  {
+    "content_id": 161,
+    "title": "Omniscient Reader's Viewpoint (ORV)",
+    "type": "manhwa",
+    "uuid": "9a414441-bbad-43f1-a3a7-dc262ca790a3",
+    "method": "fuzzy_title",
+    "total_chapters": 4,
+    "mal_id": "132214"
+  },
+  {
+    "content_id": 162,
+    "title": "Overgeared",
+    "type": "manhwa",
+    "uuid": "3fc308c9-4b00-4dc3-943e-1f39242bc708",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147727"
+  },
+  {
+    "content_id": 163,
+    "title": "Pick Me Up! (Infinite Gacha)",
+    "type": "manhwa",
+    "uuid": "58167656-a065-4b49-b499-bd73d00555d5",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "154587"
+  },
+  {
+    "content_id": 164,
+    "title": "Player Who Returned After 10000 Years",
+    "type": "manhwa",
+    "uuid": "b17b675e-fb9f-4903-b4db-7c7deb2d1cac",
+    "method": "fuzzy_title",
+    "total_chapters": 2,
+    "mal_id": "147693"
+  },
+  {
+    "content_id": 165,
+    "title": "Reborn as a Scholar",
+    "type": "manhwa",
+    "uuid": "f7901d23-e934-468e-88de-f407f478cd24",
+    "method": "fuzzy_title",
+    "total_chapters": 75,
+    "mal_id": "97770"
+  },
+  {
+    "content_id": 166,
+    "title": "Reincarnated Murim Lord",
+    "type": "manhwa",
+    "uuid": "e6b9f326-116b-4dbb-96de-7736e3897535",
+    "method": "exact_title",
+    "total_chapters": 69,
+    "mal_id": "176790"
+  },
+  {
+    "content_id": 167,
+    "title": "Reincarnation of the Fist King",
+    "type": "manhwa",
+    "uuid": "ff73234b-4387-448c-ab54-2879626b4442",
+    "method": "fuzzy_title",
+    "total_chapters": 4,
+    "mal_id": "205160"
+  },
+  {
+    "content_id": 168,
+    "title": "Reincarnation Of The Suicidal Battle God",
+    "type": "manhwa",
+    "uuid": "773c2211-750b-4fff-bd64-c914986e4637",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "136220"
+  },
+  {
+    "content_id": 169,
+    "title": "Return of the Disaster-Class Hero",
+    "type": "manhwa",
+    "uuid": "0c3e20da-6f48-468f-bf92-755ee46e05ec",
+    "method": "fuzzy_title",
+    "total_chapters": 6,
+    "mal_id": "143056"
+  },
+  {
+    "content_id": 170,
+    "title": "Return of the War God",
+    "type": "manhwa",
+    "uuid": "54e1b971-fe2c-4720-b96b-4dc049863ae7",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "150319"
+  },
+  {
+    "content_id": 171,
+    "title": "Returning With Absolutely Nothing",
+    "type": "manhwa",
+    "uuid": "5bad4a36-31a3-491d-a63c-2640f08f0cba",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "152612"
+  },
+  {
+    "content_id": 172,
+    "title": "Revenge of the Baskerville Bloodhound",
+    "type": "manhwa",
+    "uuid": "fbf326f7-ccbd-4d54-bbad-852d76e46523",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "157888"
+  },
+  {
+    "content_id": 173,
+    "title": "Second Life Ranker",
+    "type": "manhwa",
+    "uuid": "1ffca916-3ad7-46d2-9591-a9b39e639971",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147324"
+  },
+  {
+    "content_id": 174,
+    "title": "Shadow of the Supreme",
+    "type": "manhwa",
+    "uuid": "91d928a1-7237-4d03-abc3-4b1440cc7d55",
+    "method": "fuzzy_title",
+    "total_chapters": 46,
+    "mal_id": "172844"
+  },
+  {
+    "content_id": 175,
+    "title": "SSS-Class Revival Hunter",
+    "type": "manhwa",
+    "uuid": "4a973243-952e-44d7-a50f-883b4b7c9cc2",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "146909"
+  },
+  {
+    "content_id": 176,
+    "title": "SSS-Class Revival Hunter (SSS-Class Suicide Hunter)",
+    "type": "manga",
+    "uuid": "4a973243-952e-44d7-a50f-883b4b7c9cc2",
+    "method": "fuzzy_title",
+    "total_chapters": 1,
+    "mal_id": "26"
+  },
+  {
+    "content_id": 177,
+    "title": "Standard Of Reincarnation",
+    "type": "manhwa",
+    "uuid": "e7b5dec0-d875-4d44-b06c-8b45af865a32",
+    "method": "exact_title",
+    "total_chapters": 9,
+    "mal_id": "150549"
+  },
+  {
+    "content_id": 178,
+    "title": "Swordmaster's Youngest Son",
+    "type": "manhwa",
+    "uuid": "85a8ebda-9959-4244-ad03-a2d9f6a746a2",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": "146949"
+  },
+  {
+    "content_id": 179,
+    "title": "The Academy's Undercover Professor",
+    "type": "manhwa",
+    "uuid": "d5c0896a-d4d5-4ee0-8bf1-a113cb1b86ac",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "149801"
+  },
+  {
+    "content_id": 180,
+    "title": "The Bastard of Swordborne",
+    "type": "manhwa",
+    "uuid": "274827f3-99da-4f73-b324-b740a828d422",
+    "method": "exact_title",
+    "total_chapters": 29,
+    "mal_id": "175209"
+  },
+  {
+    "content_id": 181,
+    "title": "The Ember Knight",
+    "type": "manhwa",
+    "uuid": "5ff9e370-a993-4f3b-9e70-750c3a098fc5",
+    "method": "exact_title",
+    "total_chapters": 115,
+    "mal_id": "148530"
+  },
+  {
+    "content_id": 182,
+    "title": "The Extra's Academy Survival Guide",
+    "type": "manhwa",
+    "uuid": "7f15e45c-b7fd-4164-8d8e-ede14a817f0d",
+    "method": "exact_title",
+    "total_chapters": 9,
+    "mal_id": "166865"
+  },
+  {
+    "content_id": 183,
+    "title": "The Grand Mudang Saga",
+    "type": "manhwa",
+    "uuid": "bdf9539e-c5f0-4ac1-b893-d862f1e83a53",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "148454"
+  },
+  {
+    "content_id": 184,
+    "title": "The Infinite Mage",
+    "type": "manhwa",
+    "uuid": "4d97b35d-2d9f-4369-964f-3b0ce2c7fbbc",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "154692"
+  },
+  {
+    "content_id": 185,
+    "title": "The Knight Only Lives Today",
+    "type": "manhwa",
+    "uuid": "514f1a94-b09f-4331-8cf9-0f01d06d3b80",
+    "method": "exact_title",
+    "total_chapters": 1,
+    "mal_id": "170427"
+  },
+  {
+    "content_id": 186,
+    "title": "The Lazy Lord Masters the Sword",
+    "type": "manhwa",
+    "uuid": "26c8f00a-3925-4f22-ac21-83145be2b733",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "146827"
+  },
+  {
+    "content_id": 187,
+    "title": "The Legendary Moonlight Sculptor",
+    "type": "manhwa",
+    "uuid": "1f5ade21-96a2-48a3-92e4-a8cac0c655e7",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "147536"
+  },
+  {
+    "content_id": 188,
+    "title": "The Legendary Spearman Returns",
+    "type": "manhwa",
+    "uuid": "707a112b-55cb-41a5-afe1-601d3e52e9a8",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "149163"
+  },
+  {
+    "content_id": 189,
+    "title": "The Novel's Extra",
+    "type": "manhwa",
+    "uuid": "45bc4fce-f59a-4a3b-85bd-d561d73633b3",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "148985"
+  },
+  {
+    "content_id": 191,
+    "title": "The Return Of The 8th Class Mage",
+    "type": "manhwa",
+    "uuid": "b2ae13e3-bea1-4f11-bfbe-4269f66e74f8",
+    "method": "exact_title",
+    "total_chapters": 81,
+    "mal_id": "148190"
+  },
+  {
+    "content_id": 192,
+    "title": "The Sichuan Tang Clan's Entomologist",
+    "type": "manhwa",
+    "uuid": "ece206e2-1199-48e4-a88c-1f99af3d5378",
+    "method": "fuzzy_title",
+    "total_chapters": 57,
+    "mal_id": "176223"
+  },
+  {
+    "content_id": 193,
+    "title": "The Skeleton Soldier Failed to Defend the Dungeon",
+    "type": "manhwa",
+    "uuid": "d993f789-e7e5-4832-92fd-37614220b427",
+    "method": "exact_title",
+    "total_chapters": 5,
+    "mal_id": "146761"
+  },
+  {
+    "content_id": 194,
+    "title": "The Stellar Swordmaster",
+    "type": "manhwa",
+    "uuid": "abe0bb3b-a05e-4602-aa4f-578e0b962cf9",
+    "method": "exact_title",
+    "total_chapters": 8,
+    "mal_id": "163116"
+  },
+  {
+    "content_id": 195,
+    "title": "The World After the Fall",
+    "type": "manhwa",
+    "uuid": "b78f8c5c-d53d-4de2-a4f6-9c1abceb4513",
+    "method": "fuzzy_title",
+    "total_chapters": 5,
+    "mal_id": "144957"
+  },
+  {
+    "content_id": 196,
+    "title": "To Be An Actor",
+    "type": "manhwa",
+    "uuid": "1d25919b-e677-45c1-a64d-e40c2ea14fd5",
+    "method": "fuzzy_title",
+    "total_chapters": 111,
+    "mal_id": "92329"
+  },
+  {
+    "content_id": 197,
+    "title": "Too Many Heroes",
+    "type": "manhwa",
+    "uuid": "1429f443-4995-4acc-9597-96a167c27a22",
+    "method": "fuzzy_title",
+    "total_chapters": null,
+    "mal_id": "202986"
+  },
+  {
+    "content_id": 199,
+    "title": "Tyrant of the Tower Defense Game",
+    "type": "manhwa",
+    "uuid": "a846b1d7-2e57-4622-acdf-9c584d07ce7f",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "153518"
+  },
+  {
+    "content_id": 200,
+    "title": "Yongsa High: Dungeon Raiders",
+    "type": "manhwa",
+    "uuid": "36a56405-5f4f-4a7b-8b27-085bed19c7f7",
+    "method": "exact_title",
+    "total_chapters": 3,
+    "mal_id": "155967"
+  },
+  {
+    "content_id": 680,
+    "title": "The Greatest Estate Developer",
+    "type": "manhwa",
+    "uuid": "d7f56ace-cd30-48b9-8b64-afeca0077fca",
+    "method": "exact_title",
+    "total_chapters": 3,
+    "mal_id": "140407"
+  },
+  {
+    "content_id": 681,
+    "title": "The Archmage Returns After 4000 Years",
+    "type": "manhwa",
+    "uuid": "ff14c29a-3456-4047-828d-10c9671cac4c",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": "118424"
+  },
+  {
+    "content_id": 93,
+    "title": "Forced to Become the Villain's Son-in-Law",
+    "type": "manga",
+    "uuid": "daf070c3-4398-4beb-8dae-4c8d21376cec",
+    "method": "exact_title",
+    "total_chapters": 44,
+    "mal_id": null
+  },
+  {
+    "content_id": 134,
+    "title": "A Regressor's Tale of Cultivation",
+    "type": "manhwa",
+    "uuid": "6a11714d-ca8e-4f8f-8c32-697e4cb761fe",
+    "method": "exact_title",
+    "total_chapters": null,
+    "mal_id": null
+  },
+  {
+    "content_id": 137,
+    "title": "After Ten Millennia in Hell",
+    "type": "manhwa",
+    "uuid": "b17b675e-fb9f-4903-b4db-7c7deb2d1cac",
+    "method": "exact_title",
+    "total_chapters": 2,
+    "mal_id": null
+  },
+  {
+    "content_id": 147,
+    "title": "Hardcore Leveling Warrior: Earth Game",
+    "type": "manhwa",
+    "uuid": "83644dad-1f46-47c7-8a75-484cf311a4c4",
+    "method": "exact_title",
+    "total_chapters": 92,
+    "mal_id": null
+  },
+  {
+    "content_id": 157,
+    "title": "My Blasted Reincarnated Life",
+    "type": "manhwa",
+    "uuid": "166c5f7f-97f2-464f-a214-bed62a0dcb42",
+    "method": "fuzzy_title",
+    "total_chapters": 15,
+    "mal_id": null
+  },
+  {
+    "content_id": 190,
+    "title": "The Novel's Extra (Remake)",
+    "type": "manga",
+    "uuid": "6f18c4ef-3eb6-40ee-98a4-507343f05855",
+    "method": "fuzzy_title",
+    "total_chapters": 7,
+    "mal_id": null
+  },
+  {
+    "content_id": 198,
+    "title": "Trash of the Count's Family (Lout of Count's Family)",
+    "type": "manhwa",
+    "uuid": "1dc3ebf9-c86c-431c-bcca-5e35ac124f28",
+    "method": "fuzzy_title",
+    "total_chapters": 2,
+    "mal_id": null
+  }
+]
