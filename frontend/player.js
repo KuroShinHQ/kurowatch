@@ -222,7 +222,7 @@
 
     let actions = '';
       if (job.status === 'done') {
-      if (job.media_type === 'anime') {
+      if (job.media_type === 'anime' || job.media_type === 'series' || job.media_type === 'movie' || job.media_type === 'cartoon') {
         actions = '<button class="dl-play-btn px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition-all min-h-[36px]"' +
           ' title="Oynat" data-job-id="' + job.id + '" data-title="' + escHtml(job.content_title + ' — ' + ep) + '"' +
           ' style="background:#00d4ff;color:#003642;box-shadow:0 0 10px rgba(0,212,255,0.3)">▶ OYNAT</button>';

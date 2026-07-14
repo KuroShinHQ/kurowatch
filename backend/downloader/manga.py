@@ -263,7 +263,8 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
 
 
 async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """Next.js App Router siteler (monomanga.com.tr) — RSC payload'dan CDN URL çıkar."""
+    """Next.js App Router siteler (monomanga.com.tr) — RSC payload'dan CDN URL çıkar.
+    URL'ler Türkçe karakter ve boşluk içerebilir — regex bunu desteklemeli."""
     import httpx
 
     async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
@@ -282,42 +283,53 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
 
     all_payloads = " ".join(rsc_payloads)
 
-    # CDN image URL'lerini çıkar
+    # CDN image URL'lerini çıkar (RSC payload — boşluk ve Türkçe karakter dahil)
     cdn_urls = re.findall(
-        r"https://cdn\.monomanga\.com\.tr/chapters/[^\"'\\\s,}\]]+\.(?:webp|jpg|png)",
+        r"https://cdn\.monomanga\.com\.tr/chapters/[^\"'\\,}\]]+",
         all_payloads
     )
 
-    # Ayrıca HTML'deki doğrudan <img> tag'lerinden de topla
-    img_tags = re.findall(
-        r'<img[^>]+src="(https://cdn\.monomanga\.com\.tr/chapters/[^"]+)"',
-        html
-    )
-    cdn_urls.extend(img_tags)
+    # HTML'deki doğrudan src/data-src attribute'lerinden topla
+    for attr in ("src", "data-src", "data-lazy-src"):
+        tags = re.findall(
+            rf'{attr}="(https://cdn\.monomanga\.com\.tr/chapters/[^"]+)"',
+            html
+        )
+        cdn_urls.extend(tags)
 
     # Benzersiz yap + sırala
     seen: set[str] = set()
     img_urls: list[str] = []
     for u in cdn_urls:
-        if u not in seen:
-            seen.add(u)
-            img_urls.append(u)
+        u = u.strip().rstrip(".,;'\"")
+        if not u or u in seen or not u.startswith("https://cdn.monomanga.com.tr/chapters/"):
+            continue
+        # Sadece resim uzantılı olanları al
+        if not re.search(r'\.(webp|jpg|jpeg|png|avif)(?:\?|$)', u, re.IGNORECASE):
+            continue
+        seen.add(u)
+        img_urls.append(u)
 
     if not img_urls:
         raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url}")
 
-    # 00.webp varsa önce onu al (ilk sayfa genelde 00)
-    img_urls.sort(key=lambda u: (
-        int(re.search(r'/(\d+)\.(?:webp|jpg|png)', u).group(1))
-        if re.search(r'/(\d+)\.(?:webp|jpg|png)', u) else 999
-    ))
+    # Sayfa numarasına göre sırala (dosya adının sonundaki numara)
+    def _page_num(u: str) -> int:
+        # URL'deki son sayıyı bul: .../N.webp veya .../NN.jpg
+        base = os.path.splitext(u.rstrip("/").split("?")[0])[0]
+        nums = re.findall(r'(\d+)(?!.*\d)', base)
+        return int(nums[-1]) if nums else 999
+
+    img_urls.sort(key=_page_num)
 
     total = len(img_urls)
     files: list[str] = []
 
     async with httpx.AsyncClient(timeout=60.0, follow_redirects=True) as client:
         for i, img_url in enumerate(img_urls):
-            ext = os.path.splitext(img_url.split("?")[0])[1] or ".webp"
+            # URL query string varsa temizle
+            clean_url = img_url.split("?")[0]
+            ext = os.path.splitext(clean_url)[1] or ".webp"
             dest = os.path.join(output_dir, f"{i + 1:04d}{ext}")
             img_r = await client.get(img_url, headers=_image_headers(url))
             _save_image_response(img_r, dest, img_url)

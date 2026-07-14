@@ -964,7 +964,7 @@
     typeBadgeEl.textContent = typeLabelMap[item.type] || (item.type || '').toUpperCase();
     typeBadgeEl.style.cssText = tcStyle(tc).badge;
     document.getElementById('detail-progress-bar').style.background = tc.color;
-    const statusIcon = item.type==='game' ? 'download' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime' ? 'play_circle' : 'menu_book'));
+    const statusIcon = item.type==='game' ? 'download' : (item.type==='movie' ? 'movie' : (item.type==='series'||item.type==='anime'||item.type==='cartoon' ? 'play_circle' : 'menu_book'));
     var sColor = statusColor(item.status);
     document.getElementById('detail-status-badge').innerHTML = `<span class="material-symbols-outlined text-[14px]">${statusIcon}</span> ${STATUS_LABEL[item.status] || item.status}`;
     document.getElementById('detail-status-badge').style.cssText = `background:${sColor}22;border:1px solid ${sColor}55;color:${sColor};border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px`;
@@ -1773,7 +1773,7 @@
           'DETAYLAR</button></div></div></div>';
       }
 
-      const actionLabel = (u.content_type === 'anime') ? 'İZLE' : 'OKU';
+      const actionLabel = (u.content_type === 'anime' || u.content_type === 'series' || u.content_type === 'movie' || u.content_type === 'cartoon') ? 'İZLE' : 'OKU';
       return '<div class="flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer active:scale-[0.98] shadow-[0_4px_12px_rgba(0,0,0,0.4)]"' +
         ' style="background:rgba(26,26,46,0.6);border-left:4px solid #00d4ff" data-content-id="' + u.content_id + '">' +
         coverBox +
@@ -3030,9 +3030,9 @@
         const cid   = parseInt(playDoneBtn.dataset.contentId, 10);
         const epNum = parseInt(playDoneBtn.dataset.epNum, 10);
         const label = playDoneBtn.dataset.label || '';
-        if (contentType === 'anime' && window.kuroPlayer) {
+        if ((contentType === 'anime' || contentType === 'series' || contentType === 'movie' || contentType === 'cartoon') && window.kuroPlayer) {
           await window.kuroPlayer.openVideo(jobId, label);
-        } else if (contentType !== 'anime' && window.kuroReader) {
+        } else if (window.kuroReader) {
           await window.kuroReader.open(jobId, label, cid, epNum);
         }
         if (epId) {
@@ -3059,9 +3059,9 @@
             doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
           }
           if (doneJob) {
-            if (doneJob.media_type === 'anime' && window.kuroPlayer) {
+            if ((doneJob.media_type === 'anime' || doneJob.media_type === 'series' || doneJob.media_type === 'movie' || doneJob.media_type === 'cartoon') && window.kuroPlayer) {
               await window.kuroPlayer.openVideo(doneJob.id, label);
-            } else if (doneJob.media_type !== 'anime' && window.kuroReader) {
+            } else if (window.kuroReader) {
               await window.kuroReader.open(doneJob.id, label, cid, epNum);
             }
             if (epId) {
@@ -3117,7 +3117,7 @@
         if (dlBtn.dataset.downloaded) {
           const doneJob = window.kuroDownload.getDownloadedJob(cid, epNum);
           if (doneJob) {
-            if (doneJob.media_type === 'anime' && window.kuroPlayer) {
+            if ((doneJob.media_type === 'anime' || doneJob.media_type === 'series' || doneJob.media_type === 'movie' || doneJob.media_type === 'cartoon') && window.kuroPlayer) {
               window.kuroPlayer.openVideo(doneJob.id, 'Bölüm ' + epNum);
             } else if (window.kuroReader) {
               window.kuroReader.open(doneJob.id, dlBtn.dataset.contentTitle + ' — Bölüm ' + epNum, cid, epNum);
