@@ -1,29 +1,37 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Temmuz 2026 (SOHBET-163) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-163`
+**Son güncelleme:** 14 Temmuz 2026 (SOHBET-164) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-164`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-163 — MCP otomasyon sistemi devreye alındı. Test: 573/714 (%80.3).
+**En son yapılan:** SOHBET-164 — Film ve dizi migration: %80.3 → %97.6 (697/714).
+
+**SOHBET-164 Sonuçları:**
+- 104/113 film → hdfilmcehennemi.now (WP REST API + Türkçe title map)
+- 41/49 dizi → dizimag.com.tr + hdfc.now tvshows + alternatifler
+- 9 film + 8 dizi kaynaksız (eski Türk dizileri + niche filmler)
+- Kanıt: 3 Aptal trailer (1.22MB MP4), Dexter 875MB (önceki)
+- Rapor: kurowatch/docs/SOHBET-164_RAPORU.md
 
 **Aktif dosyalar:**
+- `backend/scripts/sohbet164_migrate_movies_v2.py` — Film migrasyonu
+- `backend/scripts/sohbet164_migrate_series.py` — Dizi migrasyonu
+- `backend/scripts/sohbet164_add_final_matches.py` — Approximate matches
+- `backend/scripts/sohbet164_fix_114.py` — Marvel What If fix
+- `_kanit_sohbet164/` — Kanıt dosyaları (film trailer, dizi page)
+
+**SOHBET-163 öncesi aktif dosyalar:**
 - `~/.config/opencode/skills/kurowatch-automation/SKILL.md` — Skill tanımı
 - `~/.config/opencode/skills/kurowatch-automation/mcp-server.js` — MCP server (5 tool)
-- `~/.config/opencode/skills/kurowatch-automation/package.json`
-- `opencode.json` — MCP sunucu kaydı eklendi
-
-**SOHBET-161 öncesi aktif dosyalar:**
 - `frontend/app.js` — Type kontrol düzeltildi
-- `frontend/player.js` — Download job card type kontrol düzeltildi
 - `backend/downloader/manga.py` — NextJS parser regex fix
-- `backend/scripts/sohbet161_fix_manhwa_sites.py` — DB güncelleme
 
 **Sıradaki görev:**
-1. SOHBET-164: 113 filmin hdfilmcehennemi.now domain'ine taşınması (slug mapping)
-2. Kalan 88 film kaynağı bulma (28 series setfilmizle.uk kaldırılmış)
-3. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
-4. Monomanga slug doğrulama + sadece var olanları kullanma
+1. Kalan 17 içeriğe (9 film + 8 dizi) özel kaynak araştırması (YouTube, özel siteler)
+2. Tüm manga/manhwa için MangaDex UUID senkronizasyonu
+3. Monomanga slug doğrulama + sadece var olanları kullanma
+4. Yanlış eşleşen filmleri düzeltme (WALL-E → Para Avcısı, The Godfather → Babam Noel vb.)
 
 ## SOHBET-155: Gerçek %5 İndirme Testi (RAPOR)
 
