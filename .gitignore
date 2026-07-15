@@ -1,7 +1,16 @@
 memory/kurowatch.db
 memory/*.db
+memory/backups/
 backend/config.json
 downloads/
+gallery-dl/
+temp/
+logs/
+_test_output_sohbet*/
+_kanit_sohbet*/
+_iyilestirme_kanitlari/
+backend/downloads/
+backend/logs/
 __pycache__/
 **/__pycache__/
 *.pyc
@@ -12,6 +21,7 @@ venv/
 node_modules/
 .DS_Store
 *.log
+*.err
 dist/
 build/
 
@@ -26,3 +36,7 @@ scripts/_*.py
 scripts/test_*.py
 rescue_*.json
 config.json
+kuroshin.db
+tmp_*.html
+*.mp4
+*.ts
