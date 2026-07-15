@@ -1,6 +1,6 @@
 # SOHBET-144 — 714 İçerik Toplu Test Raporu
-**Tarih:** 2026-07-14T16:56:43.299256
-**Süre:** 159s
+**Tarih:** 2026-07-14T18:18:50.369920
+**Süre:** 139s
 
 ## Genel Sonuç
 | Metric | Değer |
@@ -43,4 +43,4 @@
 | 655 | Yahşi Batı | movie | hdfilmcehennemi.nl | HTTP_403 |  |
 
 ---
-_Rapor otomatik oluşturuldu: 2026-07-14T16:56:43.299356_
+_Rapor otomatik oluşturuldu: 2026-07-14T18:18:50.370041_

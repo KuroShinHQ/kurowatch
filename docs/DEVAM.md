@@ -1,11 +1,19 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 14 Temmuz 2026 (SOHBET-165) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-165`
+**Son güncelleme:** 15 Temmuz 2026 (SOHBET-165-HOTFIX) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-165-HOTFIX`
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
-**En son yapılan:** SOHBET-165 — Son test ve tamamlama: %97.6 (697/714) + monomanga/mangadex/sezon/oyun fix.
+**En son yapılan:** SOHBET-165-HOTFIX — player.js hardcoded localhost:8099 → window.location.origin (Failed to fetch fix).
+
+**SOHBET-165-HOTFIX:**
+- `frontend/player.js` (3 yerde) sabit `localhost:8099` → `window.location.origin` / `window.location.host`
+- `frontend/player.js` line 7: `const API = window.location.origin;`
+- `frontend/player.js` line 75: `WebSocket('ws://' + window.location.host + '/api/download/ws')`
+- `frontend/player.js` line 1455: `WebSocket('ws://' + window.location.host + '/api/translate/ws')`
+- Dosya yapısı temizliği: 24 eski SOHBET raporu + 10 JSON/txt test çıktısı `docs/archive/` altına taşındı
+- CLAUDE.md Dosya Haritası güncellendi (17 router, 6 yeni scraper, extension/, tests/, services/, analyzer/, scripts/, tools/)
 
 **SOHBET-165 Sonuçları:**
 - MangaDex handler: title UUID → chapter ID bulma (API feed)
@@ -17,6 +25,7 @@
 - Rapor: kurowatch/docs/SOHBET-165_RAPORU.md
 
 **Aktif dosyalar:**
+- `frontend/player.js` — video player + indirme modülü (API URL dinamik)
 - `backend/downloader/manga.py` — MangaDex title→chapter + monomanga PW fallback
 - `backend/scripts/sohbet165_fix_seasons.py` — Sezon + game fix
 - `_kanit_sohbet165/manga_680_ch2_mangadex/` — 79 sayfa manga kanıt
