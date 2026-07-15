@@ -4,7 +4,7 @@
 (function () {
   'use strict';
 
-  const API = 'http://localhost:8099';
+  const API = window.location.origin;
 
   // ── İndirme WS Bağlantısı ────────────────────────────────────────
   let _ws = null;
@@ -72,7 +72,7 @@
 
   function connectDownloadWS() {
     if (_ws && _ws.readyState < 2) return;
-    _ws = new WebSocket('ws://localhost:8099/api/download/ws');
+    _ws = new WebSocket('ws://' + window.location.host + '/api/download/ws');
 
     _ws.onmessage = function (e) {
       const msg = JSON.parse(e.data);
@@ -1452,7 +1452,7 @@
 
     _connectWS() {
       if (this._ws && this._ws.readyState < 2) return;
-      this._ws = new WebSocket('ws://localhost:8099/api/translate/ws');
+      this._ws = new WebSocket('ws://' + window.location.host + '/api/translate/ws');
       this._ws.onmessage = (e) => {
         const msg = JSON.parse(e.data);
         if (msg.event === 'progress') {
