@@ -1,0 +1,4770 @@
+{
+  "timestamp": "2026-07-14T08:49:50.280759",
+  "elapsed": 53.89064073562622,
+  "total_passed": 404,
+  "total_failed": 161,
+  "results": [
+    {
+      "id": 1,
+      "title": "Martial Peak",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "3844",
+      "size": 660780,
+      "site": "MangaDex"
+    },
+    {
+      "id": 2,
+      "title": "Eskiden Zindan Patronuydum",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 3,
+      "title": "Above All Gods",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "403",
+      "size": 137578,
+      "site": "MangaDex"
+    },
+    {
+      "id": 4,
+      "title": "Büyü İmparatoru",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "701",
+      "size": 2176663,
+      "site": "MangaDex"
+    },
+    {
+      "id": 5,
+      "title": "I Am a Cultivation Bigshot",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "487",
+      "size": 191112,
+      "site": "MangaDex"
+    },
+    {
+      "id": 6,
+      "title": "Jujutsu Kaisen",
+      "type": "manga",
+      "status": "fail",
+      "error": "No pages"
+    },
+    {
+      "id": 7,
+      "title": "Release That Witch",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "695",
+      "size": 415332,
+      "site": "MangaDex"
+    },
+    {
+      "id": 9,
+      "title": "The Hunter",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 10,
+      "title": "A Returner's Magic Should Be Special",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 11,
+      "title": "Bilge Okuyucunun Bakış Açısı",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "262",
+      "size": 813497,
+      "site": "MangaDex"
+    },
+    {
+      "id": 12,
+      "title": "Above Ten Thousand People",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "314",
+      "size": 607525,
+      "site": "MangaDex"
+    },
+    {
+      "id": 13,
+      "title": "Dünyanın En İyi Mühendisi",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "9",
+      "size": 250133,
+      "site": "MangaDex"
+    },
+    {
+      "id": 15,
+      "title": "The Scholar's Reincarnation",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 16,
+      "title": "The Beginning After the End",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No pages"
+    },
+    {
+      "id": 17,
+      "title": "The Tutorial Tower of the Advanced Player",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 18,
+      "title": "Nano Machine",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 19,
+      "title": "Murim Login",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 20,
+      "title": "FFF-Class Trashero",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "9",
+      "size": 144550,
+      "site": "MangaDex"
+    },
+    {
+      "id": 21,
+      "title": "World's Apocalypse Online",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "16",
+      "size": 515915,
+      "site": "MangaDex"
+    },
+    {
+      "id": 22,
+      "title": "Juujika no Rokunin",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "232.5",
+      "size": 947730,
+      "site": "MangaDex"
+    },
+    {
+      "id": 23,
+      "title": "Seçkinin İkinci Yaşamı",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "13.2",
+      "size": 983958,
+      "site": "MangaDex"
+    },
+    {
+      "id": 24,
+      "title": "Hardcore Leveling Warrior",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 25,
+      "title": "Dungeon Reset",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "240",
+      "size": 4306689,
+      "site": "MangaDex"
+    },
+    {
+      "id": 27,
+      "title": "Kılıç Kralının Fantezi Dünyasında Hayatta Kalma Hikayesi",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "244",
+      "size": 375258,
+      "site": "MangaDex"
+    },
+    {
+      "id": 28,
+      "title": "Return of the Unrivaled Spear Knight",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 29,
+      "title": "Tower Into the Clouds",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "95",
+      "size": 95588,
+      "site": "MangaDex"
+    },
+    {
+      "id": 30,
+      "title": "Return to Player",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 31,
+      "title": "Kill the Hero",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 32,
+      "title": "The Max Level Hero Has Returned",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 33,
+      "title": "Rise from the Rubble",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "2",
+      "size": 1704597,
+      "site": "MangaDex"
+    },
+    {
+      "id": 34,
+      "title": "Top Tier Providence",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "227",
+      "size": 784999,
+      "site": "MangaDex"
+    },
+    {
+      "id": 35,
+      "title": "Kaderin Zirvesi",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "39",
+      "size": 1019629,
+      "site": "MangaDex"
+    },
+    {
+      "id": 36,
+      "title": "Player Who Returned 10,000 Years Later",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "128",
+      "size": 443912,
+      "site": "MangaDex"
+    },
+    {
+      "id": 37,
+      "title": "I Am the Fated Villain",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "45",
+      "size": 333196,
+      "site": "MangaDex"
+    },
+    {
+      "id": 38,
+      "title": "Soylu Ailenin İşe Yaramaz Oğlu",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "40",
+      "size": 454978,
+      "site": "MangaDex"
+    },
+    {
+      "id": 39,
+      "title": "Back to Rule Again",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "15",
+      "size": 876884,
+      "site": "MangaDex"
+    },
+    {
+      "id": 40,
+      "title": "Bug Player",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 41,
+      "title": "Strongest Fighter",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "117",
+      "size": 1026663,
+      "site": "MangaDex"
+    },
+    {
+      "id": 42,
+      "title": "The Return of the Crazy Demon",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "168",
+      "size": 2174277,
+      "site": "MangaDex"
+    },
+    {
+      "id": 44,
+      "title": "Doctor's Rebirth",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 45,
+      "title": "Kılıç Hanesinin Genç Efendisi",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "27",
+      "size": 76330,
+      "site": "MangaDex"
+    },
+    {
+      "id": 46,
+      "title": "Ranker's Return (Remake)",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "160",
+      "size": 1561940,
+      "site": "MangaDex"
+    },
+    {
+      "id": 47,
+      "title": "Return of the Mount Hua Sect",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 48,
+      "title": "The Heavenly Demon Can't Live a Normal Life",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "100",
+      "size": 2758272,
+      "site": "MangaDex"
+    },
+    {
+      "id": 49,
+      "title": "Reverse Villain",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "1",
+      "size": 850987,
+      "site": "MangaDex"
+    },
+    {
+      "id": 50,
+      "title": "Heavenly Demon Instructor",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 51,
+      "title": "I Reincarnated as the Crazed Heir",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 52,
+      "title": "Reincarnation of the Murim Clan's Former Ranker",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 53,
+      "title": "Memorize",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "100",
+      "size": 258713,
+      "site": "MangaDex"
+    },
+    {
+      "id": 54,
+      "title": "I Just Want to Be Killed",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "145",
+      "size": 124821,
+      "site": "MangaDex"
+    },
+    {
+      "id": 56,
+      "title": "Yıldız Hocası Baek",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "32",
+      "size": 671728,
+      "site": "MangaDex"
+    },
+    {
+      "id": 57,
+      "title": "SSS-Class Suicide Hunter",
+      "type": "manhwa",
+      "status": "pass",
+      "chapter": "151",
+      "size": 2677127,
+      "site": "MangaDex"
+    },
+    {
+      "id": 58,
+      "title": "The World After the End",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "6",
+      "size": 2430210,
+      "site": "MangaDex"
+    },
+    {
+      "id": 59,
+      "title": "Mağdur Sıralamacının Dönüşü",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 60,
+      "title": "Kahraman Döndü",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "32",
+      "size": 301886,
+      "site": "MangaDex"
+    },
+    {
+      "id": 61,
+      "title": "Return of the Shattered Constellation",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 62,
+      "title": "Reverend Insanity",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "96",
+      "size": 52212,
+      "site": "MangaDex"
+    },
+    {
+      "id": 63,
+      "title": "Seoul Station Necromancer",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 64,
+      "title": "Regresör Kullanım Kılavuzu",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 65,
+      "title": "O Gerçekten Bir Kahraman mı?",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "10",
+      "size": 1688112,
+      "site": "MangaDex"
+    },
+    {
+      "id": 66,
+      "title": "The Dungeon Master",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "4",
+      "size": 1663303,
+      "site": "MangaDex"
+    },
+    {
+      "id": 68,
+      "title": "Sokakta Hayatta Kalma Kılavuzu",
+      "type": "manga",
+      "status": "pass",
+      "chapter": "80",
+      "size": 722416,
+      "site": "MangaDex"
+    },
+    {
+      "id": 69,
+      "title": "Overpowered Sword",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 71,
+      "title": "Damn Reincarnation",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 72,
+      "title": "Fukushuu o Koinegau Saikyou Yuusha",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 73,
+      "title": "Revenge of the Iron-Blooded Sword Hound",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 74,
+      "title": "Yetenek Yutan Sihirbaz",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 75,
+      "title": "I Became the Tyrant of a Defense Game",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 76,
+      "title": "Kage no Jitsuryokusha ni Naritakute",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 77,
+      "title": "Dövüş Tanrısının Dönüşü Günlükleri",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 78,
+      "title": "Im Not That Kind of Talent",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 79,
+      "title": "Villain Unrivaled",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 80,
+      "title": "Never Die Extra",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 81,
+      "title": "I Can Snatch 999 Types of Abilities",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 82,
+      "title": "Tanrıçanın Kulu",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 83,
+      "title": "Regressing with the King's Power",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 84,
+      "title": "Library of Heaven's Path",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 85,
+      "title": "Şeytani Egemenin Halefi",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 86,
+      "title": "My Insanely Competent Underlings",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 87,
+      "title": "Raising Newbie Heroes in Another World",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 88,
+      "title": "Yıldırım Bıçağı Ustası",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 93,
+      "title": "Forced to Become the Villain's Son-in-Law",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 94,
+      "title": "Cultivator Against Hero Society",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 134,
+      "title": "A Regressor's Tale of Cultivation",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 135,
+      "title": "Absolute Regression",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 136,
+      "title": "Absolute Reign",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 137,
+      "title": "After Ten Millennia in Hell",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 138,
+      "title": "Bad Born Blood",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 139,
+      "title": "Cassmire",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 140,
+      "title": "Cassmire: The Loyal Sword",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 141,
+      "title": "Cheonhwa Archive's Young Master",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 142,
+      "title": "Chronicles of a Doomed Prodigy",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 143,
+      "title": "Chronicles of the Demon Faction",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 144,
+      "title": "Demon King of the Royal Class",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 145,
+      "title": "Doom Breaker (Suicidal Battle God)",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 146,
+      "title": "Dungeon Odyssey",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 147,
+      "title": "Hardcore Leveling Warrior: Earth Game",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 148,
+      "title": "Heavenly Demon Reborn!",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 149,
+      "title": "I Killed the Main Player",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 150,
+      "title": "Latna Saga: Survival of a Sword King in a Fantasy World",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 151,
+      "title": "Level Up with the Gods",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 152,
+      "title": "Lout of Count's Family (Trash of the Count's Family)",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 154,
+      "title": "Masters of Lightning Knives",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 155,
+      "title": "Mercenary Enrollment",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 156,
+      "title": "My Avatars' Path to Greatness",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 157,
+      "title": "My Blasted Reincarnated Life",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 158,
+      "title": "My S-Class Hunters",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 159,
+      "title": "Myst, Might, Mayhem",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 160,
+      "title": "Nebula's Civilization",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 161,
+      "title": "Omniscient Reader's Viewpoint (ORV)",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 162,
+      "title": "Overgeared",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 163,
+      "title": "Pick Me Up! (Infinite Gacha)",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 164,
+      "title": "Player Who Returned After 10000 Years",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 165,
+      "title": "Reborn as a Scholar",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 166,
+      "title": "Reincarnated Murim Lord",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 167,
+      "title": "Reincarnation of the Fist King",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 168,
+      "title": "Reincarnation Of The Suicidal Battle God",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 169,
+      "title": "Return of the Disaster-Class Hero",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 170,
+      "title": "Return of the War God",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 171,
+      "title": "Returning With Absolutely Nothing",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 172,
+      "title": "Revenge of the Baskerville Bloodhound",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 173,
+      "title": "Second Life Ranker",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 175,
+      "title": "SSS-Class Revival Hunter",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 176,
+      "title": "SSS-Class Revival Hunter (SSS-Class Suicide Hunter)",
+      "type": "manga",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 177,
+      "title": "Standard Of Reincarnation",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 178,
+      "title": "Swordmaster's Youngest Son",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 179,
+      "title": "The Academy's Undercover Professor",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 180,
+      "title": "The Bastard of Swordborne",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 181,
+      "title": "The Ember Knight",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 182,
+      "title": "The Extra's Academy Survival Guide",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 183,
+      "title": "The Grand Mudang Saga",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 184,
+      "title": "The Infinite Mage",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 185,
+      "title": "The Knight Only Lives Today",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 186,
+      "title": "The Lazy Lord Masters the Sword",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 187,
+      "title": "The Legendary Moonlight Sculptor",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 188,
+      "title": "The Legendary Spearman Returns",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 189,
+      "title": "The Novel's Extra",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 190,
+      "title": "The Novel's Extra (Remake)",
+      "type": "manga",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 191,
+      "title": "The Return Of The 8th Class Mage",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 192,
+      "title": "The Sichuan Tang Clan's Entomologist",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 193,
+      "title": "The Skeleton Soldier Failed to Defend the Dungeon",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 194,
+      "title": "The Stellar Swordmaster",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 195,
+      "title": "The World After the Fall",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 196,
+      "title": "To Be An Actor",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 197,
+      "title": "Too Many Heroes",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 198,
+      "title": "Trash of the Count's Family (Lout of Count's Family)",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 199,
+      "title": "Tyrant of the Tower Defense Game",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 200,
+      "title": "Yongsa High: Dungeon Raiders",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 680,
+      "title": "The Greatest Estate Developer",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "At-home HTTP 429"
+    },
+    {
+      "id": 681,
+      "title": "The Archmage Returns After 4000 Years",
+      "type": "manhwa",
+      "status": "fail",
+      "error": "No EN chapters"
+    },
+    {
+      "id": 14,
+      "title": "Solo Leveling",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 95,
+      "title": "Tsuki ga Michibiku Isekai Douchuu (S2)",
+      "type": "anime",
+      "status": "pass",
+      "size": 188289,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 96,
+      "title": "Dungeon Meshi",
+      "type": "anime",
+      "status": "pass",
+      "size": 185049,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 98,
+      "title": "Failure Frame (Hazurewaku)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 100,
+      "title": "Maou Gakuin no Futekigousha (S2)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 102,
+      "title": "Isekai Shikkaku (No Longer Allowed in Another World)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181696,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 106,
+      "title": "Spy x Family (S2)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183315,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 107,
+      "title": "Hametsu no Oukoku",
+      "type": "anime",
+      "status": "pass",
+      "size": 182914,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 109,
+      "title": "Shangri-La Frontier (S2)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 110,
+      "title": "Hataraku Maou-sama (S3)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181276,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 202,
+      "title": "100-man no Inochi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 206,
+      "title": "5 Centimeters",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 214,
+      "title": "Akame ga Kill!",
+      "type": "anime",
+      "status": "pass",
+      "size": 190297,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 222,
+      "title": "Another",
+      "type": "anime",
+      "status": "pass",
+      "size": 184925,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 223,
+      "title": "Ansatsusha de Aru Ore no Status ga Yuusha yori mo Akiraka ni Tsuyoi no da ga",
+      "type": "anime",
+      "status": "pass",
+      "size": 186217,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 224,
+      "title": "Appraisal Skill",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 225,
+      "title": "Arifureta",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 228,
+      "title": "Assassin Isekai",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 229,
+      "title": "Assassination Classroom",
+      "type": "anime",
+      "status": "pass",
+      "size": 186569,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 230,
+      "title": "Assassination Classroom (Ansatsu Kyoushitsu)",
+      "type": "anime",
+      "status": "pass",
+      "size": 186569,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 231,
+      "title": "Assessment Assassin",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 233,
+      "title": "Attack on Titan",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 234,
+      "title": "Attack on Titan (Shingeki no Kyojin)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 237,
+      "title": "Back Street Girls: Gokudols",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 238,
+      "title": "Baki Serisi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 239,
+      "title": "Baki Serisi (Tüm Sezonlar)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 240,
+      "title": "Bakugan Battle Brawlers",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 245,
+      "title": "Ben 10 (Klasik, Alien Force, Ultimate Alien, Omniverse)",
+      "type": "anime",
+      "status": "pass",
+      "size": 190508,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 246,
+      "title": "Berserk",
+      "type": "anime",
+      "status": "pass",
+      "size": 188958,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 247,
+      "title": "Beyblade",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 249,
+      "title": "Bleach",
+      "type": "anime",
+      "status": "pass",
+      "size": 315536,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 250,
+      "title": "Bocchi the Rock!",
+      "type": "anime",
+      "status": "pass",
+      "size": 182460,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 251,
+      "title": "Bofuri",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 253,
+      "title": "Breaking Bad (Walter White",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 256,
+      "title": "Cars",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 258,
+      "title": "Chainsaw Man",
+      "type": "anime",
+      "status": "pass",
+      "size": 185207,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 259,
+      "title": "Charlotte",
+      "type": "anime",
+      "status": "pass",
+      "size": 183487,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 261,
+      "title": "Chuunibyou",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 263,
+      "title": "Classroom of the Elite",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 264,
+      "title": "Claymore",
+      "type": "anime",
+      "status": "pass",
+      "size": 185811,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 265,
+      "title": "Code Geass: Lelouch of the Rebellion",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 266,
+      "title": "Combatants Will Be Dispatched!",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 268,
+      "title": "Cyberpunk: Edgerunners",
+      "type": "anime",
+      "status": "pass",
+      "size": 182871,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 270,
+      "title": "Dandadan",
+      "type": "anime",
+      "status": "pass",
+      "size": 186670,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 271,
+      "title": "DanMachi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 272,
+      "title": "Danshi Koukousei",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 274,
+      "title": "Dark (2017)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 275,
+      "title": "Dark Gathering",
+      "type": "anime",
+      "status": "pass",
+      "size": 186327,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 276,
+      "title": "Dark Healer",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 277,
+      "title": "Dawn of the Witch",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 278,
+      "title": "Dead Mount",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 279,
+      "title": "Dead Mount Death Play",
+      "type": "anime",
+      "status": "pass",
+      "size": 181543,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 281,
+      "title": "Death March",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 282,
+      "title": "Death March kara Hajimaru Isekai Kyousoukyoku",
+      "type": "anime",
+      "status": "pass",
+      "size": 182429,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 283,
+      "title": "Death Note",
+      "type": "anime",
+      "status": "pass",
+      "size": 196603,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 284,
+      "title": "Demon Lord 2099",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 285,
+      "title": "Demon Slayer",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 286,
+      "title": "Demon Slayer (Kimetsu no Yaiba)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 294,
+      "title": "Dororo",
+      "type": "anime",
+      "status": "pass",
+      "size": 186449,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 295,
+      "title": "Dr. STONE",
+      "type": "anime",
+      "status": "pass",
+      "size": 189360,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 300,
+      "title": "Elfen Lied",
+      "type": "anime",
+      "status": "pass",
+      "size": 183330,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 302,
+      "title": "Failure Frame",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 303,
+      "title": "Faraway Paladin",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 304,
+      "title": "Faraway Paladin 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 305,
+      "title": "Farmer Skill",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 308,
+      "title": "Fate Serisi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 309,
+      "title": "Fate Serisi (Stay Night, Zero, Unlimited Blade Works)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 315,
+      "title": "Frieren: Beyond Journey's End",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 316,
+      "title": "Frieren: Beyond Journey's End (Sousou no Frieren)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 317,
+      "title": "Fuguushoku \"Kanteishi\" ga Jitsu wa Saikyou Datta",
+      "type": "anime",
+      "status": "pass",
+      "size": 188070,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 318,
+      "title": "Full Dive RPG",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 319,
+      "title": "Fullmetal Alchemist: Brotherhood",
+      "type": "anime",
+      "status": "pass",
+      "size": 204133,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 325,
+      "title": "Genius Prince",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 327,
+      "title": "Genjitsu Shugi Yuusha",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 328,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki",
+      "type": "anime",
+      "status": "pass",
+      "size": 183697,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 329,
+      "title": "Genjitsu Shugi Yuusha no Oukoku Saikenki (How a Realist Hero Rebuilt the Kingdom)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183697,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 330,
+      "title": "Ghost in the Shell",
+      "type": "anime",
+      "status": "pass",
+      "size": 182519,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 332,
+      "title": "Gintama",
+      "type": "anime",
+      "status": "pass",
+      "size": 273150,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 336,
+      "title": "Gokudols",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 339,
+      "title": "Guimi Zhi Zhu: Xiaochou Pian (Lord of the Mysteries)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 340,
+      "title": "Gurren Lagann",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 343,
+      "title": "Hachi-nan tte, Sore wa Nai deshou!",
+      "type": "anime",
+      "status": "pass",
+      "size": 183157,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 348,
+      "title": "Hazurewaku no \"Joutai Ijou Skill\" de Saikyou ni Natta Ore ga Subete wo Juurin suru made (Failure Frame)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183945,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 349,
+      "title": "High School DxD",
+      "type": "anime",
+      "status": "pass",
+      "size": 188984,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 350,
+      "title": "Highschool of the Dead",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 351,
+      "title": "Highschool of the Dead (HOTD)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 356,
+      "title": "Hunter x Hunter (2011)",
+      "type": "anime",
+      "status": "pass",
+      "size": 201029,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 357,
+      "title": "Hyakuren no Haou to Seiyaku no Valkyria",
+      "type": "anime",
+      "status": "pass",
+      "size": 182401,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 359,
+      "title": "I'm Quitting Heroing",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 361,
+      "title": "Immortal King",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 364,
+      "title": "Infinite Gacha",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 366,
+      "title": "Isekai Cheat Magician",
+      "type": "anime",
+      "status": "pass",
+      "size": 181122,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 367,
+      "title": "Isekai de Cheat Skill",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 368,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 369,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Mo Kaeta",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 370,
+      "title": "Isekai Mokushiroku Mynoghra: Hametsu no Bunmei de Hajimeru Sekai Seifuku",
+      "type": "anime",
+      "status": "pass",
+      "size": 189297,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 371,
+      "title": "Isekai no Seikishi Monogatari",
+      "type": "anime",
+      "status": "pass",
+      "size": 182785,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 372,
+      "title": "Isekai Ojisan",
+      "type": "anime",
+      "status": "pass",
+      "size": 181145,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 373,
+      "title": "Isekai Ojisan (Uncle from Another World)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181145,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 374,
+      "title": "Isekai One Turn Kill Neesan",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 375,
+      "title": "Isekai One Turn Kill Neesan: Ane Douhan no Isekai Seikatsu Hajimemashita",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 376,
+      "title": "Isekai Shikkaku",
+      "type": "anime",
+      "status": "pass",
+      "size": 181696,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 377,
+      "title": "Isekai Shoukan wa Nidome desu (Summoned to Another World for a Second Time)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183705,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 378,
+      "title": "Isekai Yakkyoku (Isekai Eczanesi)",
+      "type": "anime",
+      "status": "pass",
+      "size": 184761,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 379,
+      "title": "Ishuzoku Reviewers",
+      "type": "anime",
+      "status": "pass",
+      "size": 178371,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 380,
+      "title": "Itai no wa Iya nanode Bougyoryoku (Bofuri)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 382,
+      "title": "Jidou Hanbaiki ni Umarekawatta Ore wa Meikyuu wo Samayou (Reborn as a Vending Machine)",
+      "type": "anime",
+      "status": "pass",
+      "size": 185638,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 383,
+      "title": "Jigokuraku",
+      "type": "anime",
+      "status": "pass",
+      "size": 188247,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 384,
+      "title": "Jitsu wa Ore, Saikyou deshita?",
+      "type": "anime",
+      "status": "pass",
+      "size": 181702,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 387,
+      "title": "JoJo Serisi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 388,
+      "title": "JoJo's Bizarre Adventure",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 389,
+      "title": "JoJo's Bizarre Adventure Serisi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 393,
+      "title": "Kabaneri",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 394,
+      "title": "Kabaneri of the Iron Fortress",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 396,
+      "title": "Kaifuku Jutsushi no Yarinaoshi (Redo of Healer)",
+      "type": "anime",
+      "status": "pass",
+      "size": 222877,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 397,
+      "title": "Kaiko sareta Ankoku Heishi (30-dai) no Slow Life (Chillin' in My 30s after Getting Fired)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 398,
+      "title": "Kakegurui",
+      "type": "anime",
+      "status": "pass",
+      "size": 183323,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 399,
+      "title": "Kami-tachi ni Hirowareta Otoko",
+      "type": "anime",
+      "status": "pass",
+      "size": 183822,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 401,
+      "title": "Kekkai Sensen",
+      "type": "anime",
+      "status": "pass",
+      "size": 182123,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 403,
+      "title": "Kimi to Boku no Saigo no Senjou",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 404,
+      "title": "King's Avatar",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 405,
+      "title": "Kinsou no Vermeil",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 406,
+      "title": "Kiseijû: Sei no Kakuritsu (Parasyte -the maxim-)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 411,
+      "title": "Komi-san",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 412,
+      "title": "KonoSuba: God's Blessing on This Wonderful World!",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 414,
+      "title": "Kuroshitsuji",
+      "type": "anime",
+      "status": "pass",
+      "size": 187011,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 415,
+      "title": "Kuroshitsuji (Black Butler)",
+      "type": "anime",
+      "status": "pass",
+      "size": 187011,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 419,
+      "title": "Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara",
+      "type": "anime",
+      "status": "pass",
+      "size": 185084,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 421,
+      "title": "Last Boss",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 422,
+      "title": "Let This Grieving Soul Retire",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 424,
+      "title": "Limitless (Film)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 426,
+      "title": "Log Horizon",
+      "type": "anime",
+      "status": "pass",
+      "size": 186002,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 428,
+      "title": "Lord of the Mysteries",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 430,
+      "title": "Lv2 Cheat",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 431,
+      "title": "Lv2 kara Cheat datta Motoyuusha Kouho no Mattari Isekai Life",
+      "type": "anime",
+      "status": "pass",
+      "size": 183574,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 434,
+      "title": "Mahoutsukai Reimeiki (The Dawn of the Witch)",
+      "type": "anime",
+      "status": "pass",
+      "size": 182131,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 437,
+      "title": "Maou Gakuin",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 438,
+      "title": "Maou no Ore ga Dorei Elf wo Yome ni Shitanda ga",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 439,
+      "title": "Maou-sama Retry!",
+      "type": "anime",
+      "status": "pass",
+      "size": 181691,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 440,
+      "title": "Mashle",
+      "type": "anime",
+      "status": "pass",
+      "size": 192635,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 445,
+      "title": "Meikyuu Black Company",
+      "type": "anime",
+      "status": "pass",
+      "size": 181118,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 446,
+      "title": "Meikyuu Black Company (The Dungeon of Black Company)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181118,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 448,
+      "title": "Mirai Nikki",
+      "type": "anime",
+      "status": "pass",
+      "size": 187919,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 449,
+      "title": "Mo Dao Zu Shi",
+      "type": "anime",
+      "status": "pass",
+      "size": 186107,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 450,
+      "title": "Mo Dao Zu Shi (Grandmaster of Demonic Cultivation)",
+      "type": "anime",
+      "status": "pass",
+      "size": 186107,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 451,
+      "title": "Mob Psycho 100",
+      "type": "anime",
+      "status": "pass",
+      "size": 180996,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 452,
+      "title": "Monster",
+      "type": "anime",
+      "status": "pass",
+      "size": 202649,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 453,
+      "title": "Monster Musume",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 454,
+      "title": "Monster Musume no Oishasan",
+      "type": "anime",
+      "status": "pass",
+      "size": 181602,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 458,
+      "title": "Mr. White)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 461,
+      "title": "My Neighbor Totoro",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 462,
+      "title": "My Neighbor Totoro (Tonari no Totoro)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 463,
+      "title": "Mynoghra",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 464,
+      "title": "Mynoghra 4X",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 465,
+      "title": "Mysterious Maid",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 466,
+      "title": "Nagatoro",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 467,
+      "title": "Nagatoro-san",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 468,
+      "title": "Nageki no Bourei wa Intai shitai (Let This Grieving Soul Retire!)",
+      "type": "anime",
+      "status": "pass",
+      "size": 184103,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 469,
+      "title": "Naruto",
+      "type": "anime",
+      "status": "pass",
+      "size": 259450,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 470,
+      "title": "Neon Genesis Evangelion",
+      "type": "anime",
+      "status": "pass",
+      "size": 196823,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 471,
+      "title": "Netoge no Yome",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 475,
+      "title": "No Game No Life",
+      "type": "anime",
+      "status": "pass",
+      "size": 187089,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 476,
+      "title": "Noragami",
+      "type": "anime",
+      "status": "pass",
+      "size": 186280,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 477,
+      "title": "Noumin Kanren no Skill bakka Agetetara Nazeka Tsuyoku Natta.",
+      "type": "anime",
+      "status": "pass",
+      "size": 182228,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 478,
+      "title": "One Punch Man",
+      "type": "anime",
+      "status": "pass",
+      "size": 183655,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 479,
+      "title": "One Punch Man (OPM)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183655,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 480,
+      "title": "Oregairu",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 481,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu",
+      "type": "anime",
+      "status": "pass",
+      "size": 183398,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 482,
+      "title": "Otome Game Sekai wa Mob ni Kibishii Sekai desu (Trapped in a Dating Sim)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183398,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 484,
+      "title": "Overlord",
+      "type": "anime",
+      "status": "pass",
+      "size": 188621,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 488,
+      "title": "Peter Grill to Kenja no Jikan",
+      "type": "anime",
+      "status": "pass",
+      "size": 182184,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 493,
+      "title": "Plunderer",
+      "type": "anime",
+      "status": "pass",
+      "size": 185206,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 495,
+      "title": "Punishment Hero",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 496,
+      "title": "Quanzhi Gaoshou (The King's Avatar)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 497,
+      "title": "Rakudai Kishi no Cavalry",
+      "type": "anime",
+      "status": "pass",
+      "size": 181665,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 500,
+      "title": "Record of Ragnarok",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 501,
+      "title": "Redo of Healer",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 503,
+      "title": "Reincarnated as a Sword",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 506,
+      "title": "Rookie Older Adventurer",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 507,
+      "title": "Rosario to Vampire",
+      "type": "anime",
+      "status": "pass",
+      "size": 182624,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 508,
+      "title": "Saihate no Paladin: Tetsusabi no Yama no Ou (The Faraway Paladin 2. Sezon)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183182,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 509,
+      "title": "Saikin Yatotta Maid ga Ayashii (The Maid I Hired Recently Is Mysterious)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181643,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 510,
+      "title": "Saikyou no Shienshoku \"Wajutsushi\" de Aru Ore wa Sekai Saikyou Clan wo Shitagaeru (The Most Notorious Talker)",
+      "type": "anime",
+      "status": "pass",
+      "size": 183287,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 511,
+      "title": "Saikyou Onmyouji no Isekai Tenseiki",
+      "type": "anime",
+      "status": "pass",
+      "size": 182609,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 512,
+      "title": "Sakamoto Desu ga?",
+      "type": "anime",
+      "status": "pass",
+      "size": 181417,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 513,
+      "title": "Sakamoto Desu ga? (Haven't You Heard? I'm Sakamoto)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181417,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 514,
+      "title": "Salaryman ga Isekai ni Ittara Shitennou ni Natta Hanashi",
+      "type": "anime",
+      "status": "pass",
+      "size": 182987,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 516,
+      "title": "School Days",
+      "type": "anime",
+      "status": "pass",
+      "size": 183975,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 518,
+      "title": "Seitokai",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 519,
+      "title": "Seitokai Yakuindomo",
+      "type": "anime",
+      "status": "pass",
+      "size": 181938,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 520,
+      "title": "Sekai Saikou no Ansatsusha",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 521,
+      "title": "Sekai Saikou no Ansatsusha (Suikastçı Isekai)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 524,
+      "title": "Sentouin, Haken shimasu!",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 525,
+      "title": "Sentouin, Haken shimasu! (Combatants Will Be Dispatched!)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 526,
+      "title": "Seven Deadly Sins",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 527,
+      "title": "Seventh Prince",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 532,
+      "title": "Shijou Saikyou no Daimaou, Murabito A ni Tensei suru",
+      "type": "anime",
+      "status": "pass",
+      "size": 183019,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 533,
+      "title": "Shimoneta",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 534,
+      "title": "Shin no Nakama",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 535,
+      "title": "Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita",
+      "type": "anime",
+      "status": "pass",
+      "size": 184359,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 536,
+      "title": "Shin Shinka no Mi",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 537,
+      "title": "Shin Shinka no Mi: Shiranai Uchi ni Kachigumi Jinsei",
+      "type": "anime",
+      "status": "pass",
+      "size": 182806,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 538,
+      "title": "Shinchou Yuusha",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 539,
+      "title": "Shinchou Yuusha: Kono Yuusha ga Ore Tueee Kuse ni Shinchou Sugiru",
+      "type": "anime",
+      "status": "pass",
+      "size": 183877,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 540,
+      "title": "Shinjiteita Nakama-tachi ni Dungeon Okuchi de Korosarekaketa ga Gift \"Mugen Gacha\" de Level 9999 (Gift Mugen Gacha)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 541,
+      "title": "Shinmai Maou",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 542,
+      "title": "Shinmai Maou no Testament",
+      "type": "anime",
+      "status": "pass",
+      "size": 183115,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 543,
+      "title": "Shinmai Ossan Boukensha, Saikyou Party ni Shinu hodo Kitaerarete Muteki ni Naru.",
+      "type": "anime",
+      "status": "pass",
+      "size": 183157,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 544,
+      "title": "Shinryaku! Ika Musume",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 546,
+      "title": "Shun de Chiryou shiteita noni Yakutatazu to Tsuihou sareta Tensai Chiyushi, Yami Healer toshite Tanoshiku Ikiru",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 547,
+      "title": "Shuumatsu no Walküre (Record of Ragnarok)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 549,
+      "title": "Slime Tensei",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 550,
+      "title": "Slime Tensei (Tensura)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 551,
+      "title": "Solo Leveling (Anime)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 556,
+      "title": "Spider-Man Serileri",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 561,
+      "title": "Steins;Gate",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 563,
+      "title": "Sword Art Online",
+      "type": "anime",
+      "status": "pass",
+      "size": 190391,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 564,
+      "title": "Sword Art Online (SAO)",
+      "type": "anime",
+      "status": "pass",
+      "size": 190391,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 565,
+      "title": "Tales of Zestiria",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 566,
+      "title": "Tales of Zestiria the Cross",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 571,
+      "title": "Tengen Toppa Gurren Lagann",
+      "type": "anime",
+      "status": "pass",
+      "size": 188437,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 572,
+      "title": "Tensai Ouji no Akaji Kokka Saisei Jutsu (The Genius Prince's Guide to Raising a Nation Out of Debt)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181676,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 573,
+      "title": "Tensei Kenja no Isekai Life",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 574,
+      "title": "Tensei Kizoku, Kantei Skill de Nariagaru (Asasyn Kantei Skill)",
+      "type": "anime",
+      "status": "pass",
+      "size": 185630,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 575,
+      "title": "Tensei Oujo to Tensai Reijou",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 576,
+      "title": "Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu",
+      "type": "anime",
+      "status": "pass",
+      "size": 186633,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 577,
+      "title": "Tensei shitara Ken deshita",
+      "type": "anime",
+      "status": "pass",
+      "size": 182008,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 578,
+      "title": "Tensei Shitara Ken Deshita (Reincarnated as a Sword)",
+      "type": "anime",
+      "status": "pass",
+      "size": 182008,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 580,
+      "title": "Tetikci",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 584,
+      "title": "The Daily Life of the Immortal King",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 585,
+      "title": "The Daily Life of the Immortal King (Xian Wang de Richang)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 586,
+      "title": "The Devil is a Part-Timer!",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 587,
+      "title": "The Devil is a Part-Timer! (Hataraku Maou-sama!)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 588,
+      "title": "The Eminence in Shadow",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 589,
+      "title": "The Eminence in Shadow (Kage no Jitsuryokusha ni Naritakute!)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 591,
+      "title": "The Faraway Paladin",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 592,
+      "title": "The Faraway Paladin (Saihate no Paladin)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 598,
+      "title": "The Kingdoms of Ruin (Hametsu no Oukoku)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 608,
+      "title": "The Scorpion King Serisi (Mumya ve Akrepler Kralı)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 610,
+      "title": "The Seven Deadly Sins",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 618,
+      "title": "To LOVE-Ru",
+      "type": "anime",
+      "status": "pass",
+      "size": 186654,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 619,
+      "title": "Tokyo Ghoul",
+      "type": "anime",
+      "status": "pass",
+      "size": 182091,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 621,
+      "title": "Tomo-chan",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 622,
+      "title": "Tomo-chan wa Onnanoko!",
+      "type": "anime",
+      "status": "pass",
+      "size": 183351,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 623,
+      "title": "Tomodachi Game",
+      "type": "anime",
+      "status": "pass",
+      "size": 182629,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 624,
+      "title": "Tonari no Totoro",
+      "type": "anime",
+      "status": "pass",
+      "size": 176670,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 625,
+      "title": "Tondemo Skill de Isekai Hourou Meshi",
+      "type": "anime",
+      "status": "pass",
+      "size": 183404,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 626,
+      "title": "Toradora!",
+      "type": "anime",
+      "status": "pass",
+      "size": 187529,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 629,
+      "title": "Tower of God",
+      "type": "anime",
+      "status": "pass",
+      "size": 181403,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 630,
+      "title": "Tower of God (Kami no Tou)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181403,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 634,
+      "title": "Trapped in a Dating Sim",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 635,
+      "title": "Tsuki ga Michibiku",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 636,
+      "title": "Tsuki ga Michibiku Isekai",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 638,
+      "title": "Uncle from Another World",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 640,
+      "title": "Undead Unluck",
+      "type": "anime",
+      "status": "pass",
+      "size": 186423,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 643,
+      "title": "Uzaki-chan",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 646,
+      "title": "Villager A",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 647,
+      "title": "Wajutsushi (The Most Notorious Talker)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 652,
+      "title": "Wolverine",
+      "type": "anime",
+      "status": "pass",
+      "size": 180989,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 654,
+      "title": "Yahari Ore no Seishun (Oregairu)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 658,
+      "title": "Yasei no Last Boss ga Arawareta! (A Wild Last Boss Appeared!)",
+      "type": "anime",
+      "status": "pass",
+      "size": 191327,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 662,
+      "title": "You (Joe Goldberg)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 663,
+      "title": "Youjo Senki (The Saga of Tanya the Evil)",
+      "type": "anime",
+      "status": "pass",
+      "size": 184340,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 664,
+      "title": "Yu-Gi-Oh!",
+      "type": "anime",
+      "status": "pass",
+      "size": 257106,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 665,
+      "title": "Yuragi-sou no Yuuna-san",
+      "type": "anime",
+      "status": "pass",
+      "size": 183203,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 666,
+      "title": "Yuusha, Yamemasu",
+      "type": "anime",
+      "status": "pass",
+      "size": 181885,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 667,
+      "title": "Yuusha, Yamemasu (I'm Quitting Heroing)",
+      "type": "anime",
+      "status": "pass",
+      "size": 181885,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 668,
+      "title": "Yuusha-kei ni Shosu: Choubatsu Yuusha 9004-tai Keimu Kiroku",
+      "type": "anime",
+      "status": "pass",
+      "size": 188695,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 669,
+      "title": "Yôkoso Jitsuryoku Shijô Shugi no Kyôshitsu (Classroom of the Elite)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 671,
+      "title": "Zom 100",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 672,
+      "title": "Zom 100: Zombie ni Naru made ni Shitai 100 no Koto",
+      "type": "anime",
+      "status": "pass",
+      "size": 182798,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 678,
+      "title": "Baki's Path 2. Kısım",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 679,
+      "title": "5 Centimeters per Second",
+      "type": "anime",
+      "status": "pass",
+      "size": 176732,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 682,
+      "title": "The Rising of the Shield Hero",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 683,
+      "title": "SPY x FAMILY",
+      "type": "anime",
+      "status": "pass",
+      "size": 183315,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 684,
+      "title": "Dungeon Meshi 2nd Season",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 686,
+      "title": "ISHURA Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 687,
+      "title": "Another: The Other",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 688,
+      "title": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 689,
+      "title": "Assassination Classroom Second Season",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 690,
+      "title": "BLEACH: Thousand-Year Blood War",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 691,
+      "title": "Bocchi the Rock! 2nd Season",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 692,
+      "title": "BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 693,
+      "title": "Love, Chunibyo & Other Delusions: Glimmering...Explosive Festival (Slapstick Noel)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 694,
+      "title": "Classroom of the Elite Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 695,
+      "title": "Code Geass: Lelouch of the Rebellion R2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 696,
+      "title": "DAN DA DAN Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 697,
+      "title": "Is It Wrong to Try to Pick Up Girls in a Dungeon? II",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 698,
+      "title": "High School DxD NEW",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 699,
+      "title": "High School of the Dead: Drifters of the Dead",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 700,
+      "title": "The Daily Life of the Immortal King Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 701,
+      "title": "Isekai Cheat Magician: Magicians and the Starry Night Festival",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 702,
+      "title": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 703,
+      "title": "Reborn as a Vending Machine, I Now Wander the Dungeon Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 704,
+      "title": "Hell’s Paradise Season 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 705,
+      "title": "JoJo's Bizarre Adventure (2000)",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 706,
+      "title": "Kabaneri of the Iron Fortress: The Battle of Unato",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 708,
+      "title": "Kakegurui xx",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 709,
+      "title": "By the Grace of the Gods 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 710,
+      "title": "Blood Blockade Battlefront & Beyond",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 711,
+      "title": "Quanzhi Gaoshou Specials",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 712,
+      "title": "The King's Avatar: For the Glory",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 713,
+      "title": "Komi Can't Communicate Part 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 714,
+      "title": "KONOSUBA -God's blessing on this wonderful world! 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 715,
+      "title": "Black Butler: Book of Murder",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 716,
+      "title": "Black Butler: Public School Arc",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 717,
+      "title": "Yasei no Last Boss ga Arawareta! 2nd Season",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 718,
+      "title": "Let This Grieving Soul Retire Cour 2",
+      "type": "anime",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 113,
+      "title": "Rick and Morty (S7)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 213,
+      "title": "Adventure Time",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 175597,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 216,
+      "title": "Aladdin (Çizgi Dizi)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 218,
+      "title": "American Dragon: Jake Long (Genç Ejder)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 221,
+      "title": "Animated",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 244,
+      "title": "Ben 10",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 190508,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 254,
+      "title": "Broken Karaoke",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 262,
+      "title": "Clarence",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 288,
+      "title": "Dexter's Laboratory",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 290,
+      "title": "Disney Broken Karaoke",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 296,
+      "title": "DreamWorks Dragons (Ejderha Binicileri)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 298,
+      "title": "Ed, Edd n Eddy",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 324,
+      "title": "Generator Rex",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 337,
+      "title": "Gravity Falls (Esrarengiz Kasaba)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 338,
+      "title": "Green Lantern: The Animated Series",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 386,
+      "title": "Johnny Bravo",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 391,
+      "title": "Justice League",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 392,
+      "title": "Justice League Unlimited",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 402,
+      "title": "Kim Possible",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 427,
+      "title": "Looney Tunes",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 443,
+      "title": "Max Steel",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 444,
+      "title": "Megas XLR",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 175486,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 447,
+      "title": "Mickey Mouse",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 455,
+      "title": "Monsters At Work",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 460,
+      "title": "My Little Pony",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 473,
+      "title": "Ninjago: Masters of Spinjitzu",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 483,
+      "title": "Over the Garden Wall (Bahçe Duvarının Ötesinde)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 489,
+      "title": "Phineas and Ferb (Fineas ve Förb)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 494,
+      "title": "Powerpuff Girls",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 502,
+      "title": "Regular Show (Sürekli Dizi)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 515,
+      "title": "Samurai Jack",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 198206,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 517,
+      "title": "Scooby-Doo",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 552,
+      "title": "Sonic Serileri",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 553,
+      "title": "Sonic X",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 183626,
+      "has_player": true,
+      "site": "Anizm"
+    },
+    {
+      "id": 554,
+      "title": "Space Goofs (Uzay Çılgınları)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 560,
+      "title": "Star Wars: The Clone Wars",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 562,
+      "title": "Steven Universe",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 569,
+      "title": "Teen Titans Go!",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 582,
+      "title": "The Amazing World of Gumball",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 590,
+      "title": "The Emperor's New School (Şaşkın İmparator'un Okulu)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 600,
+      "title": "The Many Adventures of Winnie the Pooh (Tigger ve Pooh)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 601,
+      "title": "The Marvelous Misadventures of Flapjack",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 609,
+      "title": "The Secret Saturdays",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 615,
+      "title": "The Yogi Bear Show",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 620,
+      "title": "Tom and Jerry",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 627,
+      "title": "Total Drama Island (Drama Adası)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 628,
+      "title": "Totally Spies! (Ajanlar)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 632,
+      "title": "Transformers Prime",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 639,
+      "title": "Uncle Grandpa",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 649,
+      "title": "We Bare Bears (Kafadan Ayılar)",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 650,
+      "title": "What If...?",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 651,
+      "title": "Winnie the Pooh",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 660,
+      "title": "Yogi Bear",
+      "type": "cartoon",
+      "status": "pass",
+      "size": 16041,
+      "has_player": false,
+      "site": "Anizm"
+    },
+    {
+      "id": 112,
+      "title": "Dexter (S8)",
+      "type": "series",
+      "status": "pass",
+      "size": 81581,
+      "site": "Dizimag"
+    },
+    {
+      "id": 203,
+      "title": "3 Idiots",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 209,
+      "title": "A Beautiful Mind (Akıl Oyunları)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 217,
+      "title": "Alvin ve Sincaplar",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 219,
+      "title": "American Psycho (Amerikan Sapığı)",
+      "type": "movie",
+      "status": "pass",
+      "size": 137757,
+      "has_iframe": true,
+      "site": "www.hdfilmcehennemi.io"
+    },
+    {
+      "id": 220,
+      "title": "Amerikan Sapığı",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 236,
+      "title": "Avengers",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 241,
+      "title": "Batman Serisi (Kara Şövalye ve Tüm Filmler)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 255,
+      "title": "Captain America",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 260,
+      "title": "Chihiro Gidişi",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 269,
+      "title": "Dabbe Serisi",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 280,
+      "title": "Deadpool",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 289,
+      "title": "Diriliş",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 291,
+      "title": "Doctor Strange",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 297,
+      "title": "Düğün Dernek",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 299,
+      "title": "Edge of Tomorrow (Yarının Sınırında)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 301,
+      "title": "Esaretin Bedeli",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 306,
+      "title": "Fast & Furious",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 311,
+      "title": "Fight Club",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 320,
+      "title": "Fury",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 321,
+      "title": "G.O.R.A",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 333,
+      "title": "Gladiator",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 335,
+      "title": "Gladyatör",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 347,
+      "title": "Harry Potter Serisi",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 362,
+      "title": "In Time (Zamana Karşı)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 365,
+      "title": "Iron Man",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 381,
+      "title": "İhtiyarlara Yer Yok",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 385,
+      "title": "John Wick",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 407,
+      "title": "Koleksiyoncu",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 408,
+      "title": "Kolpaçino",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 413,
+      "title": "Kung Fu Panda",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 433,
+      "title": "Madagaskar",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 436,
+      "title": "Malefiz",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 474,
+      "title": "No Country for Old Men (İhtiyarlara Yer Yok)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 492,
+      "title": "Planet of the Apes (Maymunlar Cehennemi Serisi)",
+      "type": "movie",
+      "status": "pass",
+      "size": 121470,
+      "has_iframe": true,
+      "site": "www.hdfilmcehennemi.io"
+    },
+    {
+      "id": 529,
+      "title": "Shark Tale",
+      "type": "movie",
+      "status": "pass",
+      "size": 114393,
+      "has_iframe": true,
+      "site": "www.hdfilmcehennemi.io"
+    },
+    {
+      "id": 557,
+      "title": "Spirited Away (Sen to Chihiro no Kamikakushi)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 581,
+      "title": "Tetikçi",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 583,
+      "title": "The Collector (Koleksiyoncu)",
+      "type": "movie",
+      "status": "pass",
+      "size": 74340,
+      "has_iframe": true,
+      "site": "www.hdfilmcehennemi.io"
+    },
+    {
+      "id": 593,
+      "title": "The Godfather",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 594,
+      "title": "The Green Mile (Yeşil Yol)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 595,
+      "title": "The Hobbit: An Unexpected Journey",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 596,
+      "title": "The Hunger Games (Açlık Oyunları Serisi)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 597,
+      "title": "The Incredibles",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 599,
+      "title": "The Lord of the Rings (Yüzüklerin Efendisi Serisi)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 602,
+      "title": "The Maze Runner (Labirent Serisi)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 614,
+      "title": "The Wolf of Wall Street (Para Avcısı)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 617,
+      "title": "Titanic",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 637,
+      "title": "Twilight (Alacakaranlık Serisi)",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 642,
+      "title": "Up",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 644,
+      "title": "V for Vendetta",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 645,
+      "title": "Venom",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 659,
+      "title": "Yeşil Yol",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    },
+    {
+      "id": 670,
+      "title": "Zamana Karşı",
+      "type": "movie",
+      "status": "fail",
+      "error": "No working URL"
+    }
+  ]
+}
