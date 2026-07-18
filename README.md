@@ -109,6 +109,22 @@ Edit `backend/config.json` with:
 - `/api/game-download` — FitGirl magnet links
 - And more (episodes, sites, tags, settings, sync, push, analytics, ...)
 
+## Screenshots
+
+> Screenshots coming soon. The PWA frontend includes a Netflix-style discovery grid,
+> detail pages with metadata + cover art, a download manager with WebSocket progress,
+> and a Chrome extension popup for in-browser content bridging.
+
+## Roadmap
+
+- [x] **FAZ-1**: Core tracking + AniList/MAL/IGDB scrapers
+- [x] **FAZ-2**: System health + domain management
+- [x] **FAZ-3**: Download engine (yt-dlp, gallery-dl, FitGirl)
+- [x] **FAZ-4**: Intro/outro detection (chromaprint)
+- [x] **FAZ-5**: Manga translation (manga-image-translator, GPU-only)
+- [ ] **FAZ-6**: Mobile companion app
+- [ ] **FAZ-7**: Multi-user support
+
 ## Status
 
 **v1.2-STABLE** — 97.6% content matched (697/714). 17 contents accepted as sourceless (old Turkish series + niche films not available on any site).
