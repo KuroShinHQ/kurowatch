@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 :: ============================================
 :: kurowatch.bat
 :: Versiyon: v1.0
