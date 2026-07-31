@@ -117,7 +117,7 @@ async def main():
         print("\n=== yt-dlp on hdfc page ===")
         proc = await asyncio.create_subprocess_exec(
             'wsl', '-e', 'bash', '-c',
-            f'cd /mnt/c/Kuroshin/kurowatch/downloads && source /root/kuroshin/venv/bin/activate && yt-dlp --referer "https://www.hdfilmcehennemi.nl/" --user-agent "Mozilla/5.0" --dump-json "https://www.hdfilmcehennemi.nl/american-psycho-6/" 2>&1',
+            f'cd /mnt/c/Kuroshin/kurowatch/downloads && source /opt/kuroshin/venv/bin/activate && yt-dlp --referer "https://www.hdfilmcehennemi.nl/" --user-agent "Mozilla/5.0" --dump-json "https://www.hdfilmcehennemi.nl/american-psycho-6/" 2>&1',
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
         )
         stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=30)
