@@ -6,7 +6,7 @@ download_dir = os.path.join(script_dir, "..", "..", "downloads")
 os.makedirs(download_dir, exist_ok=True)
 
 async def run_wsl(cmd, timeout=120):
-    full_cmd = f'bash -c "cd /mnt/c/Kuroshin/kurowatch/backend/scripts && source /root/kuroshin/venv/bin/activate && {cmd}"'
+    full_cmd = f'bash -c "cd /mnt/c/Kuroshin/kurowatch/backend/scripts && source /opt/kuroshin/venv/bin/activate && {cmd}"'
     proc = await asyncio.create_subprocess_exec(
         'wsl', '-e', 'bash', '-c', full_cmd,
         stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
