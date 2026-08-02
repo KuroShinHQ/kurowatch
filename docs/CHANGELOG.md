@@ -18,7 +18,7 @@
   - `%~1` argüman + `goto MENU` sonsuz döngü (yüzlerce log satırı) → `:CLEAN`'da argümanlıysa `goto END`.
 - **Kanıt:** `start_backend.sh` → uvicorn PID, 8099 LISTENING, `/docs` 200, `/api/content` 200; WSL IP `172.25.89.7:8099` → 200.
 - **Açık (wslrelay):** Windows'tan `localhost:8099` bazen 000 (wslrelay kararsız), WSL IP'den her zaman 200.
-- Commit: 37e9249 (başlık referansı) — v1.2 değişikliklerinin commit'i bekliyor.
+- Commit: `919ac4d` (feat: kurowatch v1.2 — WSL backend, :FRONTEND kaldirma, yeni menu, arguman destegi, wslrelay :PICK_URL toleransi + CHANGELOG v1.2). Önceki satırdaki "37e9249 (başlık referansı)" yalnızca Q5 venv taşıma commit'iydi — v1.2 değişiklikleri 919ac4d ile commit edildi.
 
 ## v1.1 (1 Ağustos 2026)
 
@@ -32,7 +32,7 @@
   - `kurowatch.sh` v1.0 → v1.1 — logger entegrasyonu (set -e uyumlu) + **Q5 venv düzeltmesi** (sistem python'u `idna` eksikti → `/opt/kuroshin/venv` aktive edildi, test ile doğrulandı: 8099 LISTENING)
   - `start_backend.sh` v1.0 — başlık bloğu + logger + **ölü yol düzeltmesi** (`/mnt/c/Kuroshin/kurowatch` → dinamik `KW_ROOT`)
 - Log formatı: `YYYY-MM-DDTHH:MM:SS [SEVIYE] mesaj`
-- Commit: 37e9249 (başlık referansı) — bu değişikliklerin commit'i bekliyor
+- Commit: v1.1 + v1.2 değişiklikleri birlikte `919ac4d` ile commit edildi (yukarıdaki v1.2 entry'sine bakın).
 
 ## v1.0 (30 Temmuz 2026)
 
