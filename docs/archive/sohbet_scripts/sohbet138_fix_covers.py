@@ -4,9 +4,9 @@ import httpx
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "memory", "kurowatch.db")
 REPORT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "_kanit_sohbet138")
-TMDB_KEY = "f04836fd27e727ace4233602dd71d47c"
+TMDB_KEY = "REDACTED_TMDB_KEY"
 TMDB_BASE = "https://api.themoviedb.org/3"
-MAL_CLIENT_ID = "7bf9dbc0538aefb6eb465ca9ef04c8bb"
+MAL_CLIENT_ID = "REDACTED_MAL_CLIENT_ID"
 
 COVERABLE_TYPES = ("movie", "series", "cartoon", "anime")
 

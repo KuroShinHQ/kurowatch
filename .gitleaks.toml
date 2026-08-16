@@ -1,0 +1,10 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Eski gecmis commit'lerde kalan tek-seferlik tehis script key'leri (arsivlendi/redakte edildi) + DEVAM.md VAPID public key"
+paths = [
+  '''backend/scripts/.*''',
+  '''docs/archive/sohbet_scripts/.*''',
+  '''docs/DEVAM\.md''',
+]
