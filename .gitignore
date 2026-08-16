@@ -40,3 +40,5 @@ kuroshin.db
 tmp_*.html
 *.mp4
 *.ts
+# Gecici tehis scriptleri (repo kokune ait degil)
+_*.py
