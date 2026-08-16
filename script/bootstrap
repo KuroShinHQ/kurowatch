@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Scripts to Rule Them All: script/bootstrap (kurowatch)
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+if [ -f "$ROOT/backend/requirements.txt" ]; then
+  echo "[bootstrap] kurowatch backend requirements kuruluyor..."
+  python3 -m pip install --quiet -r "$ROOT/backend/requirements.txt" || echo "[bootstrap] pip uyarisi (devam)" >&2
+fi
+
+if [ -d "$ROOT/frontend" ] && [ -f "$ROOT/frontend/package.json" ]; then
+  echo "[bootstrap] frontend npm kuruluyor..."
+  (cd "$ROOT/frontend" && npm install --silent) || echo "[bootstrap] npm uyarisi (devam)" >&2
+fi
+
+echo "[bootstrap] tamam"
