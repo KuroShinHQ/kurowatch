@@ -14,8 +14,14 @@ MDX_BASE = "https://api.mangadex.org"
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "memory", "kurowatch.db")
 REPORT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "_kanit_sohbet135")
 
-TMDB_KEY = "f04836fd27e727ace4233602dd71d47c"
-MAL_CLIENT_ID = "7bf9dbc0538aefb6eb465ca9ef04c8bb"
+_CFG = {}
+for _p in (os.path.join(os.path.dirname(__file__), "..", "config.json"), "config.json"):
+    if os.path.exists(_p):
+        with open(_p, encoding="utf-8") as _f:
+            _CFG = json.load(_f)
+        break
+TMDB_KEY = os.environ.get("TMDB_API_KEY") or _CFG.get("tmdb_api_key") or ""
+MAL_CLIENT_ID = os.environ.get("MAL_CLIENT_ID") or _CFG.get("mal_client_id") or ""
 
 ANILIST_EP_Q = """
 query ($idMal: Int, $type: MediaType) {
