@@ -18,7 +18,8 @@ set "KLOG_FILE=%ROOT%_hub\shared-logs\kurowatch_launcher.log"
 call "%KLOGGER%" "%KLOG_FILE%" init "kurowatch.bat v1.2"
 set "KW_PORT=8099"
 set "KW_URL=http://localhost:%KW_PORT%"
-set "KW_ROOT_WSL=/mnt/c/KuroshinHQ/kurowatch"
+set "KW_ROOT_WSL="
+for /f %%p in ('wsl wslpath -u "%KW_ROOT%" 2^>nul') do set "KW_ROOT_WSL=%%p"
 
 set "WSLIP="
 title KuroWatch Backend :%KW_PORT%
