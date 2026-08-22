@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
 
 permissions:
@@ -10,21 +10,25 @@ permissions:
 
 jobs:
   test:
+    name: unit tests + import check
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
           cache: pip
-      - name: Dependencies
+
+      - name: Install dependencies (fail hard — hata gizlenmez)
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r backend/requirements.txt || true
-      - name: Scripts to Rule Them All — test
-        run: |
-          chmod +x script/bootstrap script/test 2>/dev/null || true
-          bash script/test 2>/dev/null || python3 -m py_compile backend/*.py 2>/dev/null || true
+          python -m pip install -r backend/requirements.txt
+          python -m pip install pytest pytest-asyncio
+
+      - name: Run unit tests (tests/unit)
+        run: bash script/test
 
   secrets:
     runs-on: ubuntu-latest

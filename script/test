@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Scripts to Rule Them All: script/test (kurowatch)
+# Gercek test dongusu: birim testler (mock, sunucusuz) + import saglamasi.
+# HATA GIZLENMEZ: her adim set -e ile kirmizi cikarir.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+PYTHON="${PYTHON:-python3}"
+
+echo "[test] 1/2 — backend birim testleri (tests/unit — sunucu gerektirmez)..."
+"$PYTHON" -m pytest tests/unit -q
+
+if [ -f "backend/main.py" ]; then
+  echo "[test] 2/2 — backend import saglamasi..."
+  "$PYTHON" - <<'EOF'
+import sys
+sys.path.insert(0, ".")
+from backend.main import app
+routes = [r for r in app.routes]
+assert len(routes) > 10, f"router yuklenemedi: {len(routes)} route"
+print(f"[test] OK: {len(routes)} route yuklu")
+EOF
+fi
+
+# E2E testler (tests/test_*.py) AYRIDIR: calisan sunucu + Playwright ister.
+# Calistirmak icin: uvicorn backend.main:app --port 8099 && python -m pytest tests -m e2e
+echo "[test] tamam: tum birim testler gecti"
