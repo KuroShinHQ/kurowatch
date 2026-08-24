@@ -10,6 +10,15 @@ import threading, queue
 from datetime import datetime
 from pathlib import Path
 
+# S-166 encoding fix (BAT-REHBER: pencere yonetimi Python'da): stdio UTF-8'e
+# zorlanir — cp1254/1252 konsollarinda tower/radar arti 'â–ˆ' mojibake oluyordu.
+os.environ.setdefault("PYTHONUTF8", "1")
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 import pyfiglet
 from rich.console import Console, Group
 from rich.panel import Panel
@@ -168,7 +177,7 @@ def log(level, msg):
     try:
         if KLOGGER.exists():
             subprocess.run([str(KLOGGER), str(LOG_FILE), level, msg],
-                           capture_output=True, timeout=10)
+                           capture_output=True, timeout=10, stdin=subprocess.DEVNULL)
         else:
             LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
             with LOG_FILE.open("a", encoding="utf-8") as f:
@@ -331,7 +340,6 @@ def boot_animation():
                 Text(""),
                 t2,
                 Text(""),
-                *signal_lines(i * 0.7, rows=1),
             ))
             time.sleep(0.28)
 
@@ -347,7 +355,7 @@ def port_in_use():
     r = subprocess.run(
         ["powershell", "-NoProfile", "-Command",
          f"if (Get-NetTCPConnection -LocalPort {KW_PORT} -State Listen -EA 0) {{ 'Y' }} else {{ 'N' }}"],
-        capture_output=True, text=True, timeout=15)
+        capture_output=True, text=True, timeout=15, stdin=subprocess.DEVNULL)
     return "Y" in (r.stdout or "")
 
 
@@ -360,7 +368,8 @@ def get_wsl_ip():
         return _WSL_IP_CACHE["ip"]
     try:
         r = subprocess.run(["wsl", "-e", "bash", "-c", "hostname -I"],
-                           capture_output=True, text=True, timeout=15)
+                           capture_output=True, text=True, timeout=15,
+                           stdin=subprocess.DEVNULL)  # S-166: wsl pipe stdin'i YIYORDU
         ip = (r.stdout or "").split()
         _WSL_IP_CACHE["ip"] = ip[0] if ip else None
         _WSL_IP_CACHE["ts"] = now
@@ -375,7 +384,8 @@ def wsl_root():
     fwd = str(ROOT).replace("\\", "/")
     try:
         r = subprocess.run(["wsl", "wslpath", "-u", fwd],
-                           capture_output=True, text=True, timeout=15)
+                           capture_output=True, text=True, timeout=15,
+                           stdin=subprocess.DEVNULL)
         out = (r.stdout or "").strip()
         if out.startswith("/mnt/"):
             return out
@@ -421,12 +431,12 @@ def port_cleanup():
         ["wsl", "bash", "-c",
          "pkill -f 'uvicorn backend.main' 2>/dev/null; fuser -k "
          f"{KW_PORT}/tcp 2>/dev/null; true"],
-        capture_output=True, timeout=30)
+        capture_output=True, timeout=30, stdin=subprocess.DEVNULL)
     subprocess.run(
         ["powershell", "-NoProfile", "-Command",
          f"Get-NetTCPConnection -LocalPort {KW_PORT} -State Listen -EA 0 | "
          "ForEach-Object{Stop-Process -Id $_.OwningProcess -Force -EA 0}"],
-        capture_output=True, timeout=20)
+        capture_output=True, timeout=20, stdin=subprocess.DEVNULL)
     time.sleep(1)
 
 
@@ -497,7 +507,7 @@ def start_backend(open_browser=False):
     subprocess.Popen(
         ["wsl", "bash", "-c",
          f"printf '\\033]0;KuroWatch-Backend\\007'; bash '{root_wsl}/start_backend.sh'"],
-        creationflags=subprocess.CREATE_NEW_CONSOLE)
+        creationflags=subprocess.CREATE_NEW_CONSOLE, stdin=subprocess.DEVNULL)
     ok, secs = wait_backend(60)
     url = pick_url()
     if ok:
@@ -623,11 +633,43 @@ def _prov_url(ext: str, ctype: str = "") -> str:
     return ext
 
 
+_TYPE_ORDER = {"anime": 0, "manga": 1, "manhwa": 2, "series": 3, "movie": 4, "cartoon": 5, "game": 6}
+
+
+def _score_of(it):
+    s = it.get("my_score") or it.get("external_score") or 0
+    try:
+        return float(s)
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _saved_box(it):
+    """Sag panel: kayitli bilgi kutusu (dinamik)."""
+    my = it.get("my_score")
+    ext = it.get("external_score")
+    score = f"{my:.1f}" if my else (f"{ext:.1f} (ext)" if ext else "-")
+    pct = it.get("my_progress_pct")
+    prog = f"{it.get('my_progress') or 0}"
+    if it.get("total_episodes") and it["type"] not in ("game", "movie"):
+        prog += f"/{it['total_episodes']}"
+    return Panel(
+        f"[bold]{it.get('title_tr') or it.get('title','')}[/]\n"
+        f"[dim]#{it['id']}[/] [cyan]{it.get('type','')}[/] "
+        f"{it.get('status') or 'planning'}\n\n"
+        f"{T('u_puan')}: [yellow]{score}[/]  {T('u_prog')}: [cyan]{prog}[/]"
+        + (f" (%{pct})" if pct else "") + "\n"
+        f"{T('u_col_cover')}: "
+        + (f"[green]{T('u_cov_ok')}[/]" if it.get("cover_url") else f"[red]{T('u_cov_no')}[/]")
+        + "\n\n"
+        f"[bright_black]{_prov_url(it.get('external_id'), it.get('type',''))}[/]",
+        title=f"[bold green] {T('u_saved')} [/]",
+        border_style="green", box=box.DOUBLE, width=(WIDTH - 4) // 2)
+
+
 def _urls_list():
-    """Tek-tek pager (Lord istegi): her Enter/Space'te siradaki medya karti."""
-    term = _ask(f"  {T('u_filter')}")
-    path = "/api/content?q=" + urllib.parse.quote(term) if term else "/api/content"
-    st, items = _api("GET", path)
+    """Sirali pager (Lord istegi): kategori sirasi + puan desc; sagda kayitli bilgi."""
+    st, items = _api("GET", "/api/content")
     if st != 0 and st != 200:
         sfx("fail")
         console.print(f"[red]{T('err_pre')}[/] {items.get('detail', st)}")
@@ -636,50 +678,87 @@ def _urls_list():
     if not total:
         console.print(f"[yellow]{T('u_none')}[/]")
         return
-    log("INFO", f"menu5.1 pager: {total} kayit")
+    items.sort(key=lambda x: (_TYPE_ORDER.get(x.get("type", ""), 9), -_score_of(x), x["id"]))
+    log("INFO", f"menu5.1 pager: {total} kayit ({T('u_sort')})")
+    half = (WIDTH - 4) // 2
     for idx, it in enumerate(items, 1):
         cover = f"[green]{T('u_cov_ok')}[/]" if it.get("cover_url") else f"[red]{T('u_cov_no')}[/]"
-        my = it.get("my_score")
-        ext = it.get("external_score")
-        score = f"{my:.1f}" if my else (f"[yellow]{ext:.1f}[/]" if ext else "-")
-        prog = it.get("my_progress") or 0
-        card = Panel(
+        left = Panel(
             f"[bold white]{it.get('title_tr') or it.get('title','')}[/]\n"
-            f"[dim]#{it['id']}[/]  [cyan]{it.get('type','')}[/]  "
-            f"{T('u_puan')}: {score}  {T('u_prog')}: {prog}  "
-            f"{T('u_col_cover')}: {cover}\n\n"
+            f"[dim]#{it['id']}[/]  [cyan]{it.get('type','')}[/]\n"
+            f"{T('u_puan')}: {_score_of(it) or '-'}  {T('u_col_cover')}: {cover}\n"
             f"[bright_black]{_prov_url(it.get('external_id'), it.get('type',''))}[/]",
             title=f"[bold cyan] {idx}/{total} [/]",
-            border_style="cyan", box=box.DOUBLE, width=WIDTH)
+            border_style="cyan", box=box.DOUBLE, width=half)
+        duo = Table.grid(padding=(0, 2))
+        duo.add_column(ratio=1)
+        duo.add_column(ratio=1)
+        duo.add_row(left, _saved_box(it))
         console.clear()
-        console.print(card)
-        console.print(f"  [dim]{T('u_next_hint')}[/]")
+        console.print(duo)
+        console.print(f"\n  [dim]{T('u_next_hint')}[/]")
         ch = _ask("")
-        if ch.lower() in ("q", "0", "x", "cik", "exit"):
+        if ch.lower() in ("q", "x", "cik", "exit"):
             return
     console.print(f"\n  [green]{T('u_end')} ({total})[/]")
     _ask(f"  {T('press_enter')}")
 
 
 def _urls_add():
-    url = _ask(f"  {T('u_ask_url')}")
-    if not url:
-        console.print(f"[yellow]{T('u_empty')}[/]")
-        return
-    st, res = _api("POST", "/api/content/from-url", {"url": url})
-    if st == 201:
-        sfx("ok")
-        console.print(Panel(
-            f"[bold green]{T('u_added')}[/]\n\n"
-            f"[cyan]#{res['id']}[/] [bold]{res['title']}[/]  ({res['type']})\n"
-            f"{res['external_id']}\n"
-            f"{_prov_url(res['external_id'], res['type'])}",
-            border_style="green", box=box.DOUBLE, width=WIDTH))
-        log("INFO", f"menu5.2 eklendi: #{res['id']} {res['title']}")
-    else:
-        sfx("fail")
-        console.print(f"[red]{T('err_pre')}[/] {res.get('detail', st)}")
-        log("ERROR", f"menu5.2 eklenemedi: {res.get('detail')}")
+    """Bekleyen akis (Lord istegi): prompt seni bekler; 0=kayitli dogru devam,
+    URL yapistirilirsa mevcut kayit etiketlenir ('GUNCEL BILGI ARTIK BU') veya
+    yeni kayit acilir ('YENI EKLENDI')."""
+    last = ""
+    while True:
+        ctx = Table.grid(padding=(0, 2))
+        ctx.add_column(style="bright_black")
+        ctx.add_column(style="white")
+        ctx.add_row("0:", T("u_keep"))
+        ctx.add_row("URL:", T("u_ask2"))
+        if last:
+            ctx.add_row("", "")
+            ctx.add_row(T("u_son"), last)
+        console.print(Panel(ctx, border_style="cyan", box=box.ROUNDED, width=WIDTH))
+        s = _ask(f"\n  {T('u_ask2')} ").strip()
+        if s == "0":
+            console.print(f"  [green]{T('u_keep')}[/]")
+            return
+        if not s:
+            continue
+        st, res = _api("POST", "/api/content/from-url", {"url": s})
+        if st == 201:
+            sfx("ok")
+            tag = f"[bold green]- {T('u_tag_new')} -[/]"
+            log("INFO", f"menu5.2 eklendi: #{res['id']} {res['title']}")
+        elif st == 409:
+            import re as _re
+            mnum = _re.search(r"#(\d+)", str(res.get("detail", "")))
+            if mnum:
+                sid = int(mnum.group(1))
+                std, det = _api("GET", f"/api/content/{sid}")
+                if std == 200:
+                    res = det
+                else:
+                    res = {"id": sid, "title": str(res.get("detail"))[:60], "type": "",
+                           "external_id": ""}
+            sfx("ok")
+            tag = f"[bold yellow]= {T('u_tag_cur')} =[/]"
+            log("INFO", f"menu5.2 guncel etiket: #{res.get('id')}")
+        else:
+            sfx("fail")
+            console.print(f"[red]{T('err_pre')}[/] {res.get('detail', st)}")
+            log("ERROR", f"menu5.2: {res.get('detail')}")
+            last = f"[red]{str(res.get('detail'))[:70]}[/]"
+            continue
+        last = Panel(
+            f"{tag}\n\n"
+            f"[bold white]{res.get('title','')}[/]  [dim]#{res.get('id')}[/]\n"
+            f"[cyan]{res.get('type','')}[/]  {res.get('external_id','')}\n"
+            f"[bright_black]{_prov_url(res.get('external_id'), res.get('type',''))}[/]",
+            border_style="green" if st == 201 else "yellow",
+            box=box.DOUBLE, width=WIDTH)
+        console.clear()
+        console.print(last)
 
 
 def _urls_sites():
@@ -733,7 +812,7 @@ def action_urls():
             f"  [bold cyan][2][/] {T('u_m2')}\n"
             f"  [bold cyan][3][/] {T('u_m3')}\n"
             f"  [bold red][0][/] {T('u_back')}",
-            title="[bold white on cyan] URL YONETIMI [/]",
+            title=f"[bold white on cyan] {T('u_panel')} [/]",
             border_style="cyan", box=box.DOUBLE_EDGE, width=WIDTH))
         ch = _ask(f"\n  {T('prompt_ask')}: ")
         if ch in ("", "0"):
@@ -754,6 +833,7 @@ def action_urls():
 
 L10N["en"].update({
     "m9": "URL MANAGER", "m9_d": "Media list / add from URL / downloader sites",
+    "m_tower": "WATCH TOWER",
     "u_m1": "List saved media (name + source URL)",
     "u_m2": "Add content from scratch (paste URL)",
     "u_m3": "Downloader sites (dead / alive)",
@@ -774,11 +854,14 @@ L10N["en"].update({
     "u_puan": "score", "u_prog": "progress",
     "u_next_hint": "[Enter/Space] next - [q] back to menu",
     "u_end": "End of list",
+    "u_panel": "URL MANAGER", "u_saved": "SAVED INFO", "u_tag_new": "NEW - ADDED!", "u_tag_cur": "CURRENT INFO IS THIS NOW",
+    "u_ask2": "Paste URL (0=back):", "u_keep": "Kept saved info.", "u_sort": "sorted: category + score desc", "u_son": "Last:",
 })
 
 try:
     L10N["tr"].update({
         "m9": "URL YONETIMI", "m9_d": "Medya listesi / URL'den ekle / indirici siteler",
+        "m_tower": "IZLEME KULESI",
         "u_m1": "Kayitli medya listesi (isim + kaynak URL)",
         "u_m2": "Sifirdan icerik ekle (URL yapistir)",
         "u_m3": "Indirici siteler (olu / canli)",
@@ -799,6 +882,10 @@ try:
         "u_puan": "puan", "u_prog": "ilerleme",
         "u_next_hint": "[Enter/Space] sonraki - [q] menuye don",
         "u_end": "Listenin sonu",
+        "u_panel": "URL YONETIMI", "u_saved": "KAYITLI BILGI",
+        "u_tag_new": "YENI EKLENDI!", "u_tag_cur": "GUNCEL BILGI ARTIK BU",
+        "u_ask2": "URL yapistir (0=geri):", "u_keep": "Kayitli bilgi korundu.",
+        "u_sort": "sirali: kategori + puan desc", "u_son": "Son islem:",
     })
 except KeyError:
     pass
@@ -852,12 +939,10 @@ def menu_frame(t):
         Text(""),
         Panel(frame, border_style="green", box=box.HEAVY, width=WIDTH),
         Text(""),
-        Panel(items, title="[bold white on green] IZLEME KULESI [/]",
+        Panel(items, title=f"[bold white on green] {T('m_tower')} [/]",
               border_style="green", box=box.DOUBLE_EDGE, width=WIDTH),
         Text(""),
-        *signal_lines(t * 2.0, rows=1),
-        Text(""),
-        Align.center(Text(f"{T('prompt')}", style="bold green")),
+                Align.center(Text(f"{T('prompt')}", style="bold green")),
     )
 
 
