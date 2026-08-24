@@ -532,6 +532,7 @@ async def enrich_covers(db: AsyncSession = Depends(get_db)):
 
 class FromUrlIn(BaseModel):
     url: str
+    content_id: Optional[int] = None  # verildiginde YENI acilmaz, bu kaydin kaynagi guncellenir
 
 
 _URL_PARSERS = [
@@ -576,6 +577,24 @@ async def create_from_url(body: FromUrlIn, db: AsyncSession = Depends(get_db)):
         ext_id, ctype, provider = _parse_content_url(body.url)
     except ValueError as exc:
         raise HTTPException(422, str(exc))
+
+    # UPDATE modu (menu-5 pager): mevcut kaydin kaynak URL/ID'sini degistir
+    if body.content_id:
+        c_upd = (await db.execute(select(Content).where(Content.id == body.content_id))).scalar_one_or_none()
+        if not c_upd:
+            raise HTTPException(404, "Kayit yok")
+        if ext_id != c_upd.external_id:
+            clash = (await db.execute(select(Content).where(Content.external_id == ext_id))).scalar_one_or_none()
+            if clash:
+                raise HTTPException(409, f"Bu ID baska kayitta: #{clash.id} {clash.title}")
+        old = c_upd.external_id
+        c_upd.external_id = ext_id
+        c_upd.updated_at = datetime.utcnow()
+        await db.commit()
+        return {"id": c_upd.id, "title": c_upd.title, "type": c_upd.type,
+                "external_id": c_upd.external_id, "cover_url": c_upd.cover_url,
+                "provider": provider, "old_external_id": old,
+                "updated": True}
 
     dup = (await db.execute(select(Content).where(Content.external_id == ext_id))).scalar_one_or_none()
     if dup:

@@ -698,8 +698,26 @@ def _urls_list():
         console.print(duo)
         console.print(f"\n  [dim]{T('u_next_hint')}[/]")
         ch = _ask("")
-        if ch.lower() in ("q", "x", "cik", "exit"):
+        if not ch:
+            continue
+        low = ch.lower()
+        if low in ("q", "x", "cik", "exit"):
             return
+        # URL yapistirildi -> bu kartin kaynagini guncelle (Lord akisi)
+        if "://" in ch:
+            st2, res2 = _api("POST", "/api/content/from-url",
+                             {"url": ch, "content_id": it["id"]})
+            if st2 == 200 and res2.get("updated"):
+                it["external_id"] = res2["external_id"]
+                sfx("ok")
+                console.print(f"  [green]{T('u_src_upd')}[/] #{it['id']} -> "
+                              f"{_prov_url(it['external_id'], it.get('type',''))}")
+                log("INFO", f"menu5.1 kaynak guncel: #{it['id']} {res2['external_id']}")
+            else:
+                sfx("fail")
+                console.print(f"[red]{T('err_pre')}[/] {res2.get('detail', st2)}")
+            _ask(f"  {T('press_enter')}")
+        # diger tuslar: yok say, ayni kart kalir
     console.print(f"\n  [green]{T('u_end')} ({total})[/]")
     _ask(f"  {T('press_enter')}")
 
@@ -855,7 +873,7 @@ L10N["en"].update({
     "u_next_hint": "[Enter/Space] next - [q] back to menu",
     "u_end": "End of list",
     "u_panel": "URL MANAGER", "u_saved": "SAVED INFO", "u_tag_new": "NEW - ADDED!", "u_tag_cur": "CURRENT INFO IS THIS NOW",
-    "u_ask2": "Paste URL (0=back):", "u_keep": "Kept saved info.", "u_sort": "sorted: category + score desc", "u_son": "Last:",
+    "u_ask2": "Paste URL (0=back):", "u_keep": "Kept saved info.", "u_sort": "sorted: category + score desc", "u_son": "Last:", "u_src_upd": "SOURCE UPDATED:",
 })
 
 try:
@@ -885,7 +903,7 @@ try:
         "u_panel": "URL YONETIMI", "u_saved": "KAYITLI BILGI",
         "u_tag_new": "YENI EKLENDI!", "u_tag_cur": "GUNCEL BILGI ARTIK BU",
         "u_ask2": "URL yapistir (0=geri):", "u_keep": "Kayitli bilgi korundu.",
-        "u_sort": "sirali: kategori + puan desc", "u_son": "Son islem:",
+        "u_sort": "sirali: kategori + puan desc", "u_son": "Son islem:", "u_src_upd": "KAYNAK GUNCELLENDI:",
     })
 except KeyError:
     pass

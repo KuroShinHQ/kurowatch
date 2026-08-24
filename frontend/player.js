@@ -834,15 +834,12 @@
   };
 
   // ── Quality Panel v7 ─────────────────────────────────────────────
+  // P1 fix (S-166): sahte 1080p/720p/480p/360p listesi KALDIRILDI —
+  // kaynak tek akis verir; panel artik GERCEK cozunurlugu video elemanindan gosterir.
   const _panelQuality = {
-    _qualities: ['1080p', '720p', '480p', '360p'],
-    _current: '720p',
-
-    open(currentQuality) {
+    open() {
       const panel = document.getElementById('panel-quality');
       if (!panel) return;
-      this._current  = currentQuality || '720p';
-      this._selected = this._current;
       this._render();
       panel.classList.remove('hidden');
     },
@@ -850,23 +847,19 @@
     _render() {
       const listEl = document.getElementById('panel-quality-list');
       if (!listEl) return;
-      const selected = this._selected || this._current;
-      listEl.innerHTML = this._qualities.map(function (q) {
-        const isCurrent  = q === _panelQuality._current;
-        const isSelected = q === selected;
-        return '<button class="quality-opt w-full flex items-center justify-between p-4 rounded-xl transition-all active:scale-[0.97]"' +
-          ' data-quality="' + q + '"' +
-          ' style="' + (isSelected ? 'background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.4)' : 'background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)') + '">' +
-          '<span class="text-[15px] font-semibold text-[#dde3e7]">' + q + (isCurrent ? ' — Mevcut' : '') + '</span>' +
-          (isSelected ? '<span class="material-symbols-outlined" style="color:#00d4ff;font-variation-settings:\'FILL\' 1">check_circle</span>' : '') +
-          '</button>';
-      }).join('');
-      listEl.querySelectorAll('.quality-opt').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          _panelQuality._selected = btn.dataset.quality;
-          _panelQuality._render();
-        });
-      });
+      const v = document.querySelector('#player-video, video');
+      let res = 'algılanıyor…';
+      if (v && v.videoHeight) {
+        res = v.videoWidth && v.videoWidth > v.videoHeight
+          ? v.videoHeight + 'p' : v.videoHeight + 'p';
+        if (v.videoWidth) res = v.videoWidth + '×' + v.videoHeight;
+      }
+      listEl.innerHTML =
+        '<div class="w-full flex items-center justify-between p-4 rounded-xl" ' +
+        'style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.35)">' +
+        '<span class="text-[15px] font-semibold text-[#dde3e7]">Otomatik — kaynak: ' + res + '</span>' +
+        '<span class="material-symbols-outlined" style="color:#00d4ff;font-variation-settings:\'FILL\' 1">check_circle</span>' +
+        '</div>';
     },
 
     close() {

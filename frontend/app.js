@@ -517,17 +517,23 @@
         var total = isPctType ? 100 : (it.type==='series'||it.type==='anime' ? (it.total_episodes || 1) : (it.total_chapters || 1));
         var pct = isPctType ? (it.my_progress_pct || 0) : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
         var progressHtml = pct > 0 ? `<div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden"><div class="h-full" style="${tcStyle(col).bar};width:${pct}%;box-shadow:0 0 8px ${col.color}99"></div></div>` : '';
-        return `<div class="flex-none w-[140px] md:w-[180px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
-          <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${sColor};z-index:10"></div>
-          <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
-          <div class="absolute top-2 right-2 z-20 flex items-center gap-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span>${myScoreBadge}</div>
-          ${starsHtml}
-          <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
-            <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
-            ${extraInfo}
-            ${progressHtml}
-          </div>
-        </div>`;
+      return `<div class="group flex-none w-[140px] md:w-[180px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 transition-all duration-200 snap-start cursor-pointer hover:scale-[1.18] hover:-translate-y-3.5 hover:z-20 hover:shadow-[0_24px_48px_rgba(0,0,0,0.75)]" data-content-id="${it.id}">
+        <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${sColor};z-index:10"></div>
+        <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
+        <div class="absolute top-2 right-2 z-20 flex items-center gap-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span>${myScoreBadge}</div>
+        ${starsHtml}
+        <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
+          <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
+          ${extraInfo}
+          ${progressHtml}
+        </div>
+        <div class="absolute inset-x-0 bottom-0 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-gradient-to-t from-black/95 via-black/70 to-transparent p-2 pt-8">
+          <div class="text-[10px] font-semibold text-white/85">${isPctType ? '%' + pct : 'B.' + ((it.my_progress||0)+1) + '/' + (total||'?') + ' · ' + pct + '%'}</div>
+          <button class="mt-1 w-full h-7 rounded-md bg-[#00d4ff] text-[#0d0d1a] text-[11px] font-bold flex items-center justify-center gap-1 hover:bg-[#3cd7ff]" onclick="event.stopPropagation(); openDetail(${it.id});">
+            <span class="material-symbols-outlined" style="font-size:14px">play_arrow</span>Devam Et
+          </button>
+        </div>
+      </div>`;
       }).join('');
       row.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
       _addDragScroll(row);
@@ -2729,6 +2735,16 @@
     }
     var savedTheme = localStorage.getItem('kurowatch-theme') || 'kuro';
     _applyThemeUI(savedTheme);
+    // S-166: global delegasyon — butonlar yeniden render edilse de tema calisir
+    // (eskisi sadece Settings render'inda baglaniyordu; statik DOM'da klik oluyordu)
+    document.addEventListener('click', function(e) {
+      var b = e.target.closest && e.target.closest('.settings-theme-btn');
+      if (!b) return;
+      var theme = b.dataset.theme;
+      if (!_THEMES[theme]) return;
+      try { localStorage.setItem('kurowatch-theme', theme); } catch (_e) {}
+      _applyThemeUI(theme);
+    });
     document.querySelectorAll('.settings-theme-btn').forEach(function(btn) {
       btn.onclick = function() {
         var theme = this.dataset.theme;
