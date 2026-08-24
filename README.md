@@ -3,11 +3,22 @@
   <p align="center">Self-hosted anime/manga/manhwa/game tracking, discovery & download platform</p>
 </p>
 
+```text
+                      .
+        ╲          \|/          ╱
+         ╲─────────┴─────────╱
+               ┌─────────┐
+               │  (o.)   │      <- gozcu chibi + donen radar (menu ayni figur)
+               └─────────┘
+              ╱▔▔▔▔▔▔▔▔▔▔▔╲
+             ███████████████
+```
+
 <p align="center">
   <img alt="Status" src="https://img.shields.io/badge/status-v1.2--STABLE%20%2097.6%25%20matched-brightgreen">
   <img alt="License" src="https://img.shields.io/github/license/KuroShinHQ/kurowatch">
   <img alt="Python" src="https://img.shields.io/badge/python-3.10%2B-blue">
-  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-0.1.0-009688">
+  <img alt="Version" src="https://img.shields.io/badge/app-v0.1.0-009688">
 </p>
 
 ---
@@ -82,22 +93,41 @@ git clone https://github.com/KuroShinHQ/kurowatch.git
 cd kurowatch
 pip install -r backend/requirements.txt
 
-# Configure
-cp backend/config.json.example backend/config.json  # Edit with your API keys
-
-# Run
-cd backend && python main.py
+# Run from the REPO ROOT (main.py has no __main__ entrypoint)
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8099
 # Access at http://localhost:8099
 ```
 
+### Windows One-Click Launcher
+
+| File | What it does |
+|------|-------------|
+| `kurowatch.bat` | Single entry point (TEK-BAT policy): TUI control menu (`kurowatch_menu.py`) — backend+frontend start, port cleanup, URL manager, accepts a menu number as argument (e.g. `kurowatch.bat 4`). The frontend is served by the FastAPI backend itself — no separate static server needed. |
+
 ### Configuration
 
-Edit `backend/config.json` with:
-- AniList: no auth needed
+The backend runs with **zero config** — `backend/config.json` is optional and
+gitignored (`config.py` returns `{}` when it is missing). Create it only to
+override defaults:
+
+```json
+{
+  "igdb_client_id": "...",
+  "igdb_client_secret": "...",
+  "tmdb_api_key": "...",
+  "max_concurrent_downloads": 2,
+  "default_quality": "720p"
+}
+```
+
+- AniList & MangaDex: no auth needed
 - IGDB: Twitch Client ID + Secret
 - TMDB: API key
-- MangaDex: no auth needed
-- VAPID keys: for web push notifications
+- VAPID keys: auto-generated on first push use (see `backend/push_manager.py`)
+
+> **Docker note:** `docker-compose.yml` mounts `./config.json` from the repo
+> root. Since it is gitignored, create the file before `docker-compose up -d`
+> — otherwise Docker creates an empty *directory* named `config.json`.
 
 ## API Overview
 

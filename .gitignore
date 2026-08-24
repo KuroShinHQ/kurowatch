@@ -42,3 +42,6 @@ tmp_*.html
 *.ts
 # Gecici tehis scriptleri (repo kokune ait degil)
 _*.py
+
+# runtime dil tercihi (BAT_REHBERI 15.6 k7)
+.lang

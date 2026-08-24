@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import BaseModel
@@ -13,9 +13,26 @@ from backend.models import Content, Site, Episode, Update, Tag, ContentTag
 
 router = APIRouter()
 
+# export/import tasinan tum scalar alanlar (tek kaynak — export ve upsert ayni listeyi kullanir)
+_SCALARS = [
+    "title", "title_tr", "type", "cover_url", "external_id", "status",
+    "total_episodes", "total_chapters", "my_progress", "my_progress_pct",
+    "my_score", "external_score", "note_text", "note_is_spoiler",
+    "synopsis", "synopsis_tr", "genres", "season_number",
+    "runtime_minutes", "release_year", "developer", "publisher", "game_metadata",
+]
+
+
+def _dt(d):
+    return d.isoformat() if d else None
+
+
+def _parse_dt(v):
+    return datetime.fromisoformat(v) if v else None
+
 
 async def _full_export(db: AsyncSession) -> dict:
-    """Tüm tabloları JSON'a döküm"""
+    """Tum tablolari JSON'a dokum (episodes + sites + tags DAHIL — S-166 fix'i)."""
     r_c = await db.execute(select(Content).options(
         selectinload(Content.sites),
         selectinload(Content.episodes),
@@ -27,30 +44,33 @@ async def _full_export(db: AsyncSession) -> dict:
     r_t = await db.execute(select(Tag))
     tags = r_t.scalars().all()
 
-    def dt(d):
-        return d.isoformat() if d else None
+    by_id = {c.id: c for c in contents}
+    out = []
+    for c in contents:
+        item = {k: getattr(c, k) for k in _SCALARS}
+        item["added_at"] = _dt(c.added_at)
+        item["updated_at"] = _dt(c.updated_at)
+        # parent_id yerine parent_external_id (import'ta cozumlenir — id'ler kayar)
+        item["parent_external_id"] = by_id[c.parent_id].external_id if c.parent_id in by_id else None
+        item["sites"] = [
+            {"site_name": s.site_name, "site_url": s.site_url,
+             "is_primary": s.is_primary, "latest_known_ep": s.latest_known_ep,
+             "is_dead": s.is_dead}
+            for s in c.sites
+        ]
+        item["episodes"] = [
+            {"season": e.season, "number": e.number, "title": e.title,
+             "url": e.url, "is_watched": e.is_watched,
+             "watched_at": _dt(e.watched_at), "is_new": e.is_new}
+            for e in c.episodes
+        ]
+        item["tag_ids"] = [ct.tag_id for ct in c.tags]
+        out.append(item)
 
     return {
-        "version": 1,
+        "version": 2,
         "exported_at": datetime.utcnow().isoformat(),
-        "contents": [
-            {
-                "id": c.id, "title": c.title, "type": c.type,
-                "cover_url": c.cover_url, "external_id": c.external_id,
-                "status": c.status, "total_episodes": c.total_episodes,
-                "total_chapters": c.total_chapters, "my_progress": c.my_progress,
-                "my_progress_pct": c.my_progress_pct, "my_score": c.my_score,
-                "note_text": c.note_text, "note_is_spoiler": c.note_is_spoiler,
-                "added_at": dt(c.added_at), "updated_at": dt(c.updated_at),
-                "sites": [
-                    {"site_name": s.site_name, "site_url": s.site_url,
-                     "is_primary": s.is_primary, "latest_known_ep": s.latest_known_ep}
-                    for s in c.sites
-                ],
-                "tag_ids": [ct.tag_id for ct in c.tags],
-            }
-            for c in contents
-        ],
+        "contents": out,
         "tags": [
             {"id": t.id, "name": t.name, "tag_type": t.tag_type, "color": t.color}
             for t in tags
@@ -107,52 +127,101 @@ class ResolveBody(BaseModel):
     new_items: Optional[List[dict]] = []
 
 
-@router.post("/import/resolve")
-async def resolve_import(body: ResolveBody, db: AsyncSession = Depends(get_db)):
-    """Çakışma kararlarını + yeni öğeleri DB'ye uygula"""
-    added = 0
+async def _apply_relations(db: AsyncSession, content: Content, item: dict):
+    """sites + episodes + tag_ids restore (idempotent: once temizle sonra ekle)."""
+    if "sites" in item:
+        await db.execute(delete(Site).where(Site.content_id == content.id))
+        for s in item["sites"] or []:
+            db.add(Site(
+                content_id=content.id,
+                site_name=s.get("site_name", ""),
+                site_url=s.get("site_url", ""),
+                is_primary=bool(s.get("is_primary", False)),
+                latest_known_ep=s.get("latest_known_ep"),
+                is_dead=s.get("is_dead"),
+            ))
+    if "episodes" in item:
+        await db.execute(delete(Episode).where(Episode.content_id == content.id))
+        for e in item["episodes"] or []:
+            db.add(Episode(
+                content_id=content.id,
+                season=e.get("season", 1) or 1,
+                number=e.get("number", 0) or 0,
+                title=e.get("title"),
+                url=e.get("url"),
+                is_watched=bool(e.get("is_watched", False)),
+                watched_at=_parse_dt(e.get("watched_at")),
+                is_new=bool(e.get("is_new", False)),
+            ))
+    if "tag_ids" in item:
+        await db.execute(delete(ContentTag).where(ContentTag.content_id == content.id))
+        for tid in item["tag_ids"] or []:
+            db.add(ContentTag(content_id=content.id, tag_id=tid))
 
-    async def _upsert(item: dict):
-        nonlocal added
-        ext_id = item.get("external_id")
-        if ext_id:
-            r = await db.execute(select(Content).where(Content.external_id == ext_id))
-            existing = r.scalar_one_or_none()
-            if existing:
-                for k, v in item.items():
-                    if k in ("id", "sites", "tag_ids", "added_at"):
-                        continue
-                    if k == "updated_at":
-                        setattr(existing, k, datetime.fromisoformat(v) if v else None)
-                    elif hasattr(existing, k):
-                        setattr(existing, k, v)
-                return
-        # Yeni kayıt
+
+async def _upsert(item: dict, db: AsyncSession, ctx: dict):
+    """Tek icerigi ekle/guncelle; ctx: {added, id_map, parent_queue}."""
+    ctx["added"] += 1
+    ext_id = item.get("external_id")
+    existing = None
+    if ext_id:
+        r = await db.execute(select(Content).where(Content.external_id == ext_id))
+        existing = r.scalar_one_or_none()
+
+    if existing is not None:
+        for k in _SCALARS:
+            if k != "id" and k in item:
+                setattr(existing, k, item[k])
+        if item.get("updated_at"):
+            existing.updated_at = _parse_dt(item["updated_at"]) or existing.updated_at
+        content = existing
+    else:
+        kwargs = {k: item[k] for k in _SCALARS if k in item and k != "id"}
+        kwargs.setdefault("status", "planning")
+        kwargs.setdefault("my_progress", 0)
+        kwargs.setdefault("note_is_spoiler", False)
+        kwargs.setdefault("season_number", 1)
+        kwargs["season_number"] = kwargs["season_number"] or 1
         c = Content(
-            title=item.get("title", ""),
-            type=item.get("type", "anime"),
-            cover_url=item.get("cover_url"),
-            external_id=item.get("external_id"),
-            status=item.get("status", "planning"),
-            total_episodes=item.get("total_episodes"),
-            total_chapters=item.get("total_chapters"),
-            my_progress=item.get("my_progress", 0),
-            my_progress_pct=item.get("my_progress_pct"),
-            my_score=item.get("my_score"),
-            note_text=item.get("note_text"),
-            note_is_spoiler=item.get("note_is_spoiler", False),
             added_at=datetime.utcnow(),
-            updated_at=datetime.utcnow(),
+            updated_at=_parse_dt(item.get("updated_at")) or datetime.utcnow(),
+            **kwargs,
         )
         db.add(c)
-        added += 1
+        await db.flush()
+        content = c
+        if ext_id:
+            ctx["id_map"][ext_id] = c.id
+
+    # parent cozumleme: parent_external_id -> id (ikinci geciste baglanir)
+    p_ext = item.get("parent_external_id")
+    if p_ext:
+        if p_ext in ctx["id_map"]:
+            content.parent_id = ctx["id_map"][p_ext]
+        else:
+            ctx["parent_queue"].append((content, p_ext))
+
+    await _apply_relations(db, content, item)
+
+
+@router.post("/import/resolve")
+async def resolve_import(body: ResolveBody, db: AsyncSession = Depends(get_db)):
+    """Çakışma kararlarını + yeni öğeleri DB'ye uygula (episodes/sites/tags dahil)."""
+    ctx = {"added": 0, "id_map": {}, "parent_queue": []}
 
     for dec in body.decisions:
         if dec.get("choice") == "import":
-            await _upsert(dec["data"])
+            await _upsert(dec["data"], db, ctx)
 
     for item in (body.new_items or []):
-        await _upsert(item)
+        await _upsert(item, db, ctx)
+
+    # ikinci gecis: parent'lari bagla
+    linked = 0
+    for content, p_ext in ctx["parent_queue"]:
+        if p_ext in ctx["id_map"]:
+            content.parent_id = ctx["id_map"][p_ext]
+            linked += 1
 
     await db.commit()
-    return {"ok": True, "added": added}
+    return {"ok": True, "added": ctx["added"], "parents_linked": linked}

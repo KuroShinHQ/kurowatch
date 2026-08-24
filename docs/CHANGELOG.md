@@ -1,3 +1,29 @@
+# kurowatch - Changelog
+
+## v2.2 (24 Agustos 2026)
+
+**Menu-5 URL YONETIMI + duplike merge + sapkin tip fix + TEK-BAT uyumu.**
+
+- **MENU-5 (Lord istegi; onceki "9"dan tasinandi):** URL yonetim paneli — [1] medya PAGER'i (tek kart + Enter/Space sonraki + q don; 677 kayit tek-tek), [2] sifirdan URL ile ekle (anilist/mal/tmdb/imdb/mangadex parse; anilist'te baslik+kapak+puan CANLI), [3] indirici siteleri (olu/canli + filtre + toggle). Yeni API: GET /api/sites, POST /api/content/from-url (201/409/422 kanitli).
+- **READER-THREAD YARISI FIX (Lord'un "1'e bastim cevap yok" dersi):** live_menu reader-thread'i olmuyordu, sonraki input()'larin stdin'ini yutuyordu. Yeni mimari: TEK kalici thread + TEK kuyruk; _ask() ayni kuyruktan okur. Ayrica main()'de "5" hala EXIT olarak listeliydi (gizli bug) — temizlendi.
+- **DEFAULT EN dogrulandi:** .lang tercihi 'tr' kaydi silindi → acilis EN ([L] ile kalici TR mumkun).
+
+- **TEK-BAT POLITIKASI (15.1 k1):** redundant `start.bat` (eski http.server frontend launcher) SILINDI — islevi zaten menu-1'de (FastAPI frontend'i kendisi servis ediyor). Repoda tek giris: `kurowatch.bat`. README tablosu guncellendi.
+
+- **MENU-9 (Lord istegi):** URL yonetim paneli — [1] kayitli medya listesi (isim + kaynak URL kutusu + kapak/puan durumu), [2] sifirdan URL ile icerik ekle (anilist/mal/tmdb/imdb/mangadex parse; anilist'te baslik+kapak+puan CANLI cekilir), [3] indirici siteleri (olu/canli sayac + domain filtre + ID ile toggle). Yeni API: GET /api/sites (1342 satir, content join), POST /api/content/from-url (201/409-dup/422-gecersiz; kanit: Frieren 154587 canli fetch).
+- **7 review cifti karara baglandi:** MERGE Dexter(112->287, tmdb dogru) + Hababam(342->341) + Ben10 bundle(245->244); SPY/Kaguya S1-S2, JoJo 2012-vs-2000-OVA, Shangri-La S1/S2 AYRI kaldi (meşru sezon). Final: **677 kayit**.
+- **Kanitlar:** pipe testleri EXIT=0; mangatr filtresi 84/84 OLU dogru; pytest 51/51.
+
+## v2.1 (24 Agustos 2026)
+
+**BAT_OLUSTURMA_REHBERI standardizasyonu (15.10 3-ekran + 12a i18n) + 4 launcher bug fix'i.**
+
+- **Ekran-2 KULE AURA (15.10 k1):** izleme kulesi sahnesi - donen radar, yanip sonen beacon (magenta vurgu), gozcu chibi (gozler kayar), wordmark reveal + radar zemin seridi. TUSLA SKIP (msvcrt.kbhit), EOF-pipe guvenli. TEMA-BAG BENZERSIZLIK: kule/radar/gozcu motifi kurowatch'a ozel.
+- **Ekran-3 MINI-AURA + CANLI MENU (15.10 k4/k6, kaizoku v2.1):** ust seritte mini radar chibi + versiyon/saat/port-durumu. Menu secim beklerken animasyon DURMAZ: Rich Live menu_frame(t) yeniler, giris reader-thread (sys.stdin.readline + queue, isatty gate YOK - ISATTY TUZAGI dersi). `< nul` EOF'ta zarif dusus (EXIT=0).
+- **i18n (12a/15.6):** L10N tr/en + T() + [L] menu satiri. DEFAULT EN, tercih ROOT/.lang (.gitignore'da, .lang.example="en"). TAM KAPSAM: menu, boot adimlari, PASS/FAIL, panel basliklari, prompt, veda. Parite testi: tests/unit/test_menu_l10n.py (7 test).
+- **PANEL-WRAP (15.10 k9):** paneller WIDTH=100 sabit.
+- **4 launcher bug fix (logger kanitli):** pause_or_close NameError -> pause_enter; wslpath backslash yutma -> forward-slash + /mnt fallback; start-title tuzaigi -> Popen CREATE_NEW_CONSOLE; backend_alive localhost-only -> localhost+WSL-IP cift health-check + pick_url gercek URL.
+- **Kanitlar:** `< nul` EXIT=0 (6s); `echo 0 |` EXIT=0; pytest 51/51; canli PASS Backend canli, /api/content 200 (676 kayit); logger sifir ERROR.
 # kurowatch — Changelog
 
 ## v1.2 (1 Ağustos 2026)

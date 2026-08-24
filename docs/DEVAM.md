@@ -1,10 +1,33 @@
 # 🚀 KuroWatch DEVAM — Yeni Sohbet Brief
-**Son güncelleme:** 15 Temmuz 2026 (SOHBET-165-HOTFIX) · **Aktif sürüm:** v1.2-STABLE · **Son commit:** `SOHBET-165-HOTFIX`
+**Son güncelleme:** 24 Ağustos 2026 (SOHBET-166-FIX) · **Aktif sürüm:** v1.2-STABLE→v2.1-menu · **Son commit:** `SOHBET-165-HOTFIX` (commit bekliyor)
 
 ---
 
 ## ⚡ YENİ SOHBET BAŞLANGIÇ PROMPT
 
+**En son yapılan:** SOHBET-166-FIX — 4-agent bulgu fix turu (BAT v2.1 menü + veri kurtarma + async paketi + kart zenginlikleri + duplike merge).
+
+**SOHBET-166-FIX (kanıtlı):**
+- **VERİ KURTARMA:** `kurowatch_20260707_112426.zip` içindeki ham SQLite geri yüklendi → 714 kayıt/18.223 bölüm/1.368 site döndü. Ön yedekler: `memory/backups/pre_restore_676_*.db`, `pre_prefix_fix_*.db`, `pre_merge_*.db`
+- **sync.py KALICI FİX:** export'a 12 eksik alan + episodes + sites + tag_ids + parent_external_id eklendi; import tam restore yapıyor (roundtrip kanıtlı). EXPORT-IMPORT PARİTE kuralı: yeni Content alanı → _SCALARS listesine ekle
+- **ASYNC PAKETİ:** ffprobe → asyncio.to_thread (integrity.py) · hardcode chromium-1228 → `backend/downloader/browser.py` platform çözümleyici · 17× lstrip("www.") → removeprefix · manager CancelledError re-raise · SSE saniyelik client leak → get_shared_client cache · storage os.walk → to_thread+TTL
+- **SESSION YARIŞI:** _SESSION_HEADERS/COOKIES global dict → contextvars (task-başına izole, anime.py aynı task'ta okur)
+- **ÖLÜ SİTE FAST-FAIL:** find_stream_url_with_tags girişinde DB is_dead sorgusu (5dk cache) — 4-mirror zincirine girmez
+- **PLAYWRIGHT LEAK:** stream_finder tranimaci success-path + manga _imc_chapter/_nextjs_fallback → try/finally browser.close (zombi chrome.exe fix)
+- **MADARA SORT:** bölüm sıralaması string→numeric ("1","10","100","2" bug'ı)
+- **KART ZENĞİNLİKLERİ GERİ GELDİ (G6):** v7 satır kartlarına my_score badge + yıldızlar + status şeridi + progress bar kodlandı; "+N Site" badge İLK KEZ gerçek kod (/api/updates?unread_only=true, 60sn cache). CANLI KANIT: 843 kartta 633 yıldızlı/696 puan badge'li/756 progress/119 şerit/+1 Site badge id=62'de
+- **ENRICH DOĞRULAMA:** results[0] kör kabul kaldırıldı → başlık benzerliği (≥0.82 kabul, <0.55 red); bare-ID yazımı da prefix'li
+- **VERİ TEMİZLİĞİ:** 198 çıplak ID → anilist: prefix · 5 sapkın tip düzeltildi (Fight Club/Hababam/Limitless movie; Ben10/Monsters cartoon) · 34 güvenli duplike MERGE (714→680 kayıt, 423 duble bölüm silindi) · yanlış kapak paylaşan 6 kayıt temizlendi
+- **Test:** pytest 51/51 PASS · backend canlı PID değişken (start_backend.sh)
+
+**SIRADAKİ GÖREVLER (öncelik sırası):**
+1. COMMIT (~24 dosya — Lord emri bekliyor): backend/{routers,downloader,services} + app.js + menu + docs
+2. UI GRUBU (ayrı sohbet önerilir): Netflix hover-expand (DESIGN.md:126-148) · player kalite butonu GERÇEK src değişimi · mobil butonlar · tema switch doğrulama
+3. TMDB KEY: Lord Ayarlar'a girecek → 9 film/dizi kapağı otomatik gelecek (kod hazır, /api/download/storage tarzı enrich scripti Temp'de)
+4. 7 REVIEW duplike çifti: Dexter(112/287), SPY(106/683), Kaguya(395/707), JoJo(388/705), Hababam Yeni(341/342), Shangri-La S2(104/109 SEASON-sağlam), Ben10 bundle(244/245) — Lord kararı
+5. mal_sync.py normalize-title ikincil eşleşme (yeni duplike üretmesin)
+
+---
 **En son yapılan:** SOHBET-165-HOTFIX — player.js hardcoded localhost:8099 → window.location.origin (Failed to fetch fix).
 
 **SOHBET-165-HOTFIX:**

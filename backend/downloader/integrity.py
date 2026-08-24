@@ -182,6 +182,12 @@ def validate_video_file_playable(path: str) -> int:
     return size
 
 
+async def validate_video_file_playable_async(path: str) -> int:
+    """Executor'da calisir — ffprobe (20sn'e kadar) event loop'u BLOKLAMAZ (S-166 async fix)."""
+    import asyncio
+    return await asyncio.to_thread(validate_video_file_playable, path)
+
+
 def remove_path(path: str) -> bool:
     if not path or not os.path.exists(path):
         return False

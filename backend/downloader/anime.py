@@ -171,14 +171,15 @@ async def download_anime(
     # Uzantı yt-dlp tarafından eklendi — bul
     p = _find_output()
     if p:
-        validate_video_file_playable(p)
+        from backend.downloader.integrity import validate_video_file_playable_async
+        await validate_video_file_playable_async(p)
         if on_progress:
             await on_progress(100)
         # Otonom etiket senkronizasyonu: kaynak site etiketlerini DB'ye yansıt
         if content_id and source_tags:
             try:
                 from backend.services import tag_sync
-                site_key = urlparse(url).netloc.lstrip("www.")
+                site_key = urlparse(url).netloc.removeprefix("www.")
                 await tag_sync.sync_site_tags(content_id, site_key, source_tags)
                 logger.info("Otonom tag sync calisti: content_id=%s tags=%s", content_id, source_tags)
             except Exception as exc:  # noqa: BLE001

@@ -226,7 +226,16 @@ def cancel_job(job_id: int) -> bool:
     return False
 
 
+_storage_cache: tuple[float, int] = (0.0, 0)  # (ts, bytes)
+
+
 def get_storage_bytes() -> int:
+    # S-166: 30sn TTL cache — buyuk agaclarda event-loop bloklamasini da azaltir
+    global _storage_cache
+    import time
+    ts, cached = _storage_cache
+    if time.monotonic() - ts < 30:
+        return cached
     total = 0
     if not os.path.isdir(_DOWNLOADS_ROOT):
         return 0
@@ -236,6 +245,7 @@ def get_storage_bytes() -> int:
                 total += os.path.getsize(os.path.join(root, f))
             except OSError:
                 pass
+    _storage_cache = (time.monotonic(), total)
     return total
 
 
@@ -391,6 +401,7 @@ async def _run_job(job: dict):
                 remove_path(cleanup_path)
             except OSError:
                 pass
+        raise  # asyncio iptal semantigi: CancelledError re-raise ZORUNLU (S-166 fix)
     except Exception as exc:
         job["status"] = "failed"
         job["error_msg"] = str(exc)[:500]

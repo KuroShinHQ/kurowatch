@@ -1,5 +1,5 @@
 """
-SOHBET-147 — Alternative Domain Finder
+SOHBET-147 â€” Alternative Domain Finder
 Searches for working alternative domains for dead sites.
 """
 import asyncio, json, logging, os, re
@@ -50,7 +50,7 @@ KNOWN_ALTERNATIVES = {
     "ruyamanga.com": ["ruyamanga.net"],
 }
 
-# Site name → possible search keywords
+# Site name â†’ possible search keywords
 SITE_SEARCH_KEYWORDS = {
     "hdfilmcehennemi": "hdfilmcehennemi yeni domain adresi 2026",
     "hdfilmcehennemi.now": "hdfilmcehennemi yeni site adresi",
@@ -59,10 +59,10 @@ SITE_SEARCH_KEYWORDS = {
     "asurascans": "asurascans yeni domain",
     "dizipod": "dizipod yeni adres",
     "dizibox": "dizibox yeni domain",
-    "manga-sehri": "manga şehri yeni adres",
+    "manga-sehri": "manga ÅŸehri yeni adres",
     "turkanime": "turkanime yeni domain",
     "tranimaci": "tranimaci yeni adres",
-    "yabancidizi": "yabancı dizi yeni site",
+    "yabancidizi": "yabancÄ± dizi yeni site",
     "mangatr": "mangatr yeni adres",
     "hayalistic": "hayalistic yeni domain",
     "merlintoon": "merlintoon yeni adres",
@@ -83,7 +83,7 @@ class DomainCandidate:
 async def test_domain(d: str, sample_path: str = "/") -> DomainCandidate:
     """Test if a domain is reachable and returns content."""
     url = f"https://www.{d}{sample_path}" if not d.startswith("http") else d
-    clean_domain = urlparse(url).netloc.lstrip("www.")
+    clean_domain = urlparse(url).netloc.removeprefix("www.")
 
     cand = DomainCandidate(domain=clean_domain, source="test")
     try:
@@ -115,7 +115,7 @@ async def search_duckduckgo(query: str, max_results: int = 10) -> list[str]:
             if r.status_code == 200:
                 domains = set(re.findall(r'https?://([^/"\'<>]+)', r.text))
                 for d in domains:
-                    d = d.lstrip("www.").split("/")[0].split("?")[0]
+                    d = d.removeprefix("www.").split("/")[0].split("?")[0]
                     if d and '.' in d and not any(x in d for x in ['duckduckgo', 'google', 'facebook', 'twitter',
                                                                      'instagram', 'youtube', 'reddit', 'github']):
                         urls.append(d)
@@ -138,7 +138,7 @@ async def search_google_cse(query: str, api_key: str = "", cse_id: str = "") -> 
             if r.status_code == 200:
                 for item in r.json().get("items", []):
                     link = item.get("link", "")
-                    domain = urlparse(link).netloc.lstrip("www.")
+                    domain = urlparse(link).netloc.removeprefix("www.")
                     if domain:
                         urls.append(domain)
     except Exception as e:
@@ -174,7 +174,7 @@ async def find_alternatives_for_domain(
         if key in SITE_SEARCH_KEYWORDS:
             search_terms.append(SITE_SEARCH_KEYWORDS[key])
     search_terms.append(f"{name_key} yeni domain 2026")
-    search_terms.append(f"{name_key} güncel adres")
+    search_terms.append(f"{name_key} gÃ¼ncel adres")
 
     found_domains = set()
     for query in search_terms[:3]:
@@ -234,7 +234,7 @@ async def find_and_test_all_dead(
 
     for idx, (site_name, site_url) in enumerate(dead_sites):
         parsed = urlparse(site_url)
-        domain = parsed.netloc.lstrip("www.")
+        domain = parsed.netloc.removeprefix("www.")
         path = parsed.path or "/"
 
         candidates = await find_alternatives_for_domain(
@@ -251,7 +251,7 @@ async def find_and_test_all_dead(
 
 
 def _content_type_to_path_pattern(ctype: str, title_slug: str) -> list[str]:
-    """İçerik türüne göre olası URL pattern'leri üret."""
+    """Ä°Ã§erik tÃ¼rÃ¼ne gÃ¶re olasÄ± URL pattern'leri Ã¼ret."""
     patterns = {
         'movie': [f'/film/{title_slug}/', f'/film/{title_slug}-izle/', f'/movie/{title_slug}/'],
         'series': [f'/dizi/{title_slug}/', f'/dizi/{title_slug}-izle/', f'/series/{title_slug}/'],
@@ -265,10 +265,10 @@ def _content_type_to_path_pattern(ctype: str, title_slug: str) -> list[str]:
 
 
 def _title_to_slug(title: str) -> str:
-    """Başlığı URL-slug formatına çevir."""
+    """BaÅŸlÄ±ÄŸÄ± URL-slug formatÄ±na Ã§evir."""
     import re
     slug = title.lower()
-    tr_map = {'ç': 'c', 'ğ': 'g', 'ı': 'i', 'İ': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'ə': 'e'}
+    tr_map = {'Ã§': 'c', 'ÄŸ': 'g', 'Ä±': 'i', 'Ä°': 'i', 'Ã¶': 'o', 'ÅŸ': 's', 'Ã¼': 'u', 'É™': 'e'}
     for k, v in tr_map.items():
         slug = slug.replace(k, v)
     slug = re.sub(r'[^a-z0-9\s-]', '', slug)
@@ -277,7 +277,7 @@ def _title_to_slug(title: str) -> str:
 
 
 async def search_content_on_site(site_url: str, title: str, ctype: str) -> Optional[str]:
-    """Belirli bir site içerisinde içerik başlığını ara, çalışan URL döndür."""
+    """Belirli bir site iÃ§erisinde iÃ§erik baÅŸlÄ±ÄŸÄ±nÄ± ara, Ã§alÄ±ÅŸan URL dÃ¶ndÃ¼r."""
     parsed = urlparse(site_url)
     base = f"{parsed.scheme}://{parsed.netloc}"
     slug = _title_to_slug(title)
@@ -301,7 +301,7 @@ async def search_content_on_site(site_url: str, title: str, ctype: str) -> Optio
 
 
 async def find_alternatives_for_content(db_session, content_id: int) -> dict:
-    """Tek içerik için alternatif site bul. DB'ye kaydetmez, öneri listesi döndür."""
+    """Tek iÃ§erik iÃ§in alternatif site bul. DB'ye kaydetmez, Ã¶neri listesi dÃ¶ndÃ¼r."""
     from sqlalchemy import text
 
     result = await db_session.execute(text("""
@@ -322,7 +322,7 @@ async def find_alternatives_for_content(db_session, content_id: int) -> dict:
     # Mevcut domain'lerden alternatif tara
     candidates = []
     for site in existing:
-        domain = urlparse(site["url"]).netloc.lstrip("www.")
+        domain = urlparse(site["url"]).netloc.removeprefix("www.")
         alt_candidates = await find_alternatives_for_domain(domain, site["name"])
         for c in alt_candidates:
             if c.status == "OK":
@@ -347,12 +347,12 @@ async def find_alternatives_for_content(db_session, content_id: int) -> dict:
 
 
 async def auto_update_dead_contents(db_session, max_items: int = 20) -> dict:
-    """Tüm ölü içerikleri tara, alternatif bul, DB'ye kaydet."""
+    """TÃ¼m Ã¶lÃ¼ iÃ§erikleri tara, alternatif bul, DB'ye kaydet."""
     from sqlalchemy import text
 
     updates = {"checked": 0, "updated": 0, "errors": 0, "details": []}
 
-    # İlk URL'si 404/403 dönen içerikleri bul
+    # Ä°lk URL'si 404/403 dÃ¶nen iÃ§erikleri bul
     import httpx
     rows = await db_session.execute(text("""
         SELECT DISTINCT c.id, c.title, c.type, s.site_url, s.site_name
@@ -364,7 +364,7 @@ async def auto_update_dead_contents(db_session, max_items: int = 20) -> dict:
     all_rows = rows.fetchall()
 
     import random
-    random.shuffle(all_rows)  # farklı domainlerden örnek al
+    random.shuffle(all_rows)  # farklÄ± domainlerden Ã¶rnek al
 
     tested = 0
     seen_cid = set()
@@ -388,7 +388,7 @@ async def auto_update_dead_contents(db_session, max_items: int = 20) -> dict:
         updates["checked"] += 1
 
         # Search for this content
-        domain = urlparse(site_url).netloc.lstrip("www.")
+        domain = urlparse(site_url).netloc.removeprefix("www.")
         logger.info(f"Finding alternatives for #{cid} {title[:40]} ({domain})")
 
         alts = await find_alternatives_for_domain(domain, site_name, "/")

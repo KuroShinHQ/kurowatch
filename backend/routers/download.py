@@ -77,7 +77,8 @@ async def cancel_or_delete(job_id: int):
 
 @router.get("/download/storage")
 async def get_storage():
-    total = manager.get_storage_bytes()
+    import asyncio
+    total = await asyncio.to_thread(manager.get_storage_bytes)  # S-166: loop bloklamaz
     return {"bytes": total, "mb": round(total / 1024 / 1024, 1)}
 
 
@@ -235,7 +236,7 @@ async def download_stream():
         while True:
             try:
                 cfg = get_config()
-                client = create_client(cfg)
+                client = get_shared_client(cfg)  # saniyelik yeni-client leak fix (S-166)
                 torrents = []
                 if client:
                     t_list = await client.get_status()

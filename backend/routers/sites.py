@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 from pydantic import BaseModel
 
 from backend.database import get_db
@@ -14,6 +15,28 @@ class SiteCreate(BaseModel):
     site_name: str
     site_url: str
     is_primary: bool = False
+
+
+@router.get("/sites")
+async def list_all_sites(db: AsyncSession = Depends(get_db)):
+    """Tum siteler + icerik adlari (menu 9.3 site yonetimi icin — S-166)."""
+    r = await db.execute(
+        select(Site).options(selectinload(Site.content)).order_by(Site.is_dead, Site.site_name)
+    )
+    sites = r.scalars().all()
+    return [
+        {
+            "id": s.id,
+            "site_name": s.site_name,
+            "site_url": s.site_url,
+            "is_dead": bool(s.is_dead),
+            "is_primary": bool(s.is_primary),
+            "content_id": s.content_id,
+            "content_title": s.content.title if s.content else None,
+            "content_type": s.content.type if s.content else None,
+        }
+        for s in sites
+    ]
 
 
 @router.post("/content/{content_id}/sites", status_code=201)

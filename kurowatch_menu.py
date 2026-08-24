@@ -1,9 +1,12 @@
 """
 KUROWATCH - IZLEME KULESI
-Rich TUI Menu v2.0 - BAT_OLUSTURMA_REHBERI standardi
-Eski kurowatch.bat v1.2 mantigi birebir korunmus; gorsel katman ship_menu v2 sablonu.
+Rich TUI Menu v2.1 - BAT_OLUSTURMA_REHBERI standardi (15.10 3-ekran + 12a i18n)
+v2.1: kule AURA animasyonu (ekran-2) + mini radar chibi ust serit (ekran-3) +
+      canli menu (kaizoku v2.1 reader-thread deseni) + TR/EN L10N ([L], default EN).
+Eski kurowatch.bat v1.2 mantigi birebir korunmus; otomasyon arg yolu ayni.
 """
 import os, sys, subprocess, time, random, math, webbrowser, urllib.request
+import threading, queue
 from datetime import datetime
 from pathlib import Path
 
@@ -17,7 +20,6 @@ from rich.live import Live
 from rich.color import Color
 from rich.style import Style
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn, TimeElapsedColumn
-from rich.prompt import IntPrompt
 from rich import box
 
 console = Console()
@@ -26,20 +28,140 @@ HQ = ROOT.parent
 HUB = HQ / "_hub"
 KLOGGER = HUB / "shared-scripts" / "kuro_logger.bat"
 LOG_FILE = HUB / "shared-logs" / "kurowatch_launcher.log"
+LANG_FILE = ROOT / ".lang"
 
 KW_PORT = 8099
 KW_URL = f"http://localhost:{KW_PORT}"
+WIDTH = min(console.width, 100)  # PANEL-WRAP kurali (15.10 k9): sabit sinir
 
 SUBTITLE = "Izleme Kulesi - Backend/Frontend Orkestrasyon"
-VERSION = "v2.0"
-
-WATCH_QUOTES = [
-    "Kule gozde, sinyal guclu.",
-    "Radar temiz - ufukta girinti yok.",
-    "Nabiz atiyor: kule ayakta.",
-    "Gozcu yerinde, kayitlar akiyor.",
-]
+VERSION = "v2.1"
 NOW = lambda: datetime.now().strftime("%H:%M:%S")
+
+
+# ---------------------------------------------------------------- L10N (12a / 15.6)
+L10N = {
+    "en": {
+        "subtitle": "Watch Tower - Backend/Frontend Orchestration",
+        "port_lbl": "Port", "live": "LIVE", "idle": "idle",
+        "prompt": "Watcher's choice?", "prompt_ask": "Choice",
+        "invalid": "Invalid choice!", "err_pre": "ERROR:",
+        "lang_row": "[L] Language / Dil",
+        "m1": "BACKEND+FRONTEND", "m1_d": "WSL backend + browser",
+        "m2": "BACKEND ONLY", "m2_d": "Browser not opened",
+        "m3": "FOREGROUND", "m3_d": "Logs in this window (Ctrl+C)",
+        "m4": "PORT CLEANUP", "m4_d": "{p} WSL+Windows purge",
+        "m0": "EXIT", "m0_d": "Leave the tower",
+        "boot_title": "TOWER CHECK",
+        "steps": [
+            "Reading port {p} state",
+            "Preparing WSL bridge",
+            "Checking backend pulse",
+            "Connecting logger",
+            "Tower ready for duty!",
+        ],
+        "chk_port": "Port {p}", "open": "open", "free": "free",
+        "chk_wsl": "WSL bridge", "none": "none",
+        "chk_logger": "Logger", "ok": "OK",
+        "p_full": "START BACKEND + FRONTEND",
+        "p_backend": "START BACKEND ONLY",
+        "p_fg": "FOREGROUND BACKEND (Ctrl+C to stop)",
+        "p_clean": "PORT CLEANUP",
+        "starting": "Starting backend (WSL)...",
+        "fail_wsl": "FAIL: WSL path could not be resolved.",
+        "alive": "PASS Backend LIVE ({s}s): {u}",
+        "browser": "Browser opened (frontend + API).",
+        "dead": "FAIL Backend did not rise - see the KuroWatch-Backend window.",
+        "pulse": "Backend pulse...", "pulse_ok": "Backend ALIVE!",
+        "pulse_fail": "NO PULSE!", "pulse_wait": "Listening pulse... ({s}s)",
+        "fg_exit": "uvicorn exit: rc=",
+        "clean_ok": "PASS Port {p} clean (was {w}).",
+        "was_busy": "busy", "was_free": "free",
+        "clean_fail": "FAIL Port {p} still busy.",
+        "closing": "Closing in {n}s...",
+        "bye": "The tower kept watch. Watchman out!",
+        "press_enter": "Press Enter to continue...",
+        "quotes": [
+            "Tower eyes on, signal strong.",
+            "Radar clean - no blips on the horizon.",
+            "Pulse detected: the tower stands.",
+            "Watcher in place, records flowing.",
+        ],
+    },
+    "tr": {
+        "subtitle": "Izleme Kulesi - Backend/Frontend Orkestrasyon",
+        "port_lbl": "Port", "live": "CANLI", "idle": "sessiz",
+        "prompt": "Gozcunun secimi?", "prompt_ask": "Seciminiz",
+        "invalid": "Gecersiz secim!", "err_pre": "HATA:",
+        "lang_row": "[L] Dil / Language",
+        "m1": "BACKEND+FRONTEND", "m1_d": "WSL backend + tarayici",
+        "m2": "SADECE BACKEND", "m2_d": "Tarayici acilmaz",
+        "m3": "ON PLANDA", "m3_d": "Loglar bu pencerede (Ctrl+C)",
+        "m4": "PORT TEMIZLIK", "m4_d": "{p} WSL+Windows purge",
+        "m0": "CIKIS", "m0_d": "Kuleden in",
+        "boot_title": "KULE KONTROL",
+        "steps": [
+            "Liman/port durumu okunuyor",
+            "WSL koprusu hazirlaniyor",
+            "Backend nabzi kontrol ediliyor",
+            "Logger baglaniyor",
+            "Kule goreve hazir!",
+        ],
+        "chk_port": "Liman {p}", "open": "ACIK", "free": "bos",
+        "chk_wsl": "WSL kopru", "none": "yok",
+        "chk_logger": "Logger", "ok": "OK",
+        "p_full": "BACKEND + FRONTEND BASLAT",
+        "p_backend": "SADECE BACKEND BASLAT",
+        "p_fg": "ON PLANDA BACKEND (Ctrl+C ile durdur)",
+        "p_clean": "PORT TEMIZLIK",
+        "starting": "Backend (WSL) baslatiliyor...",
+        "fail_wsl": "FAIL: WSL yol cozumlenemedi.",
+        "alive": "PASS Backend CANLI ({s}s): {u}",
+        "browser": "Tarayici acildi (frontend + API).",
+        "dead": "FAIL Backend kalkmadi - KuroWatch-Backend penceresine bak.",
+        "pulse": "Backend nabzi...", "pulse_ok": "Backend CANLI!",
+        "pulse_fail": "NABIZ ALINAMADI!", "pulse_wait": "Nabiz dinleniyor... ({s}s)",
+        "fg_exit": "uvicorn cikisi: rc=",
+        "clean_ok": "PASS Port {p} temiz (onceden {w}).",
+        "was_busy": "doluydu", "was_free": "bostu",
+        "clean_fail": "FAIL Port {p} hala dolu.",
+        "closing": "{n} saniye sonra bu pencere kapanacak...",
+        "bye": "Kule gozetimde kaldi. Gozcun!",
+        "press_enter": "Devam icin Enter'a basin...",
+        "quotes": [
+            "Kule gozde, sinyal guclu.",
+            "Radar temiz - ufukta girinti yok.",
+            "Nabiz atiyor: kule ayakta.",
+            "Gozcu yerinde, kayitlar akiyor.",
+        ],
+    },
+}
+
+
+def _detect_lang():
+    try:
+        v = LANG_FILE.read_text(encoding="utf-8").strip().lower()
+        return v if v in ("tr", "en") else "en"
+    except Exception:
+        return "en"
+
+
+_LANG = _detect_lang()
+
+
+def T(key):
+    return L10N[_LANG].get(key, L10N["en"].get(key, key))
+
+
+def toggle_lang():
+    global _LANG
+    _LANG = "tr" if _LANG == "en" else "en"
+    try:
+        LANG_FILE.write_text(_LANG, encoding="utf-8")
+    except Exception:
+        pass
+    log("DIL", f"lang={_LANG}")
+    return _LANG
 
 
 def log(level, msg):
@@ -78,6 +200,7 @@ def gradient_banner():
 
 def radar_row(t, width):
     """Taranan radar seridi: hareketli parlak blok + noktalar."""
+    width = max(min(width, WIDTH - 4), 40)
     txt = Text()
     head = int((t * 14) % width)
     for x in range(width):
@@ -96,43 +219,91 @@ def radar_row(t, width):
 
 
 def signal_lines(t, rows=2):
-    return [radar_row(t * 0.8, max(console.width - 6, 50)) for _ in range(rows)]
+    return [radar_row(t * 0.8, WIDTH - 6) for _ in range(rows)]
 
 
+# ---------------------------------------------------------------- KULE AURA (ekran-2 + mini chibi)
+RADAR_PHASES = ["\\|/", "-|-", "/|\\", "-|-"]
+BEACON_PHASES = [".", "o", "*", "o"]
+EYE_PHASES = ["(o.)", "(oo)", "(.o)", "(oo)"]
+
+
+def mini_radar(t):
+    """Ekran-3 ust serit chibi'si: deniz feneri kulesi + donen radar (tek satir)."""
+    txt = Text()
+    txt.append(BEACON_PHASES[int(t * 3) % 4], style="bold magenta")
+    txt.append(RADAR_PHASES[int(t * 3) % 4], style="bold cyan")
+    txt.append(BEACON_PHASES[int(t * 3) % 4], style="bold magenta")
+    return txt
+
+
+def tower_scene(f):
+    """Ekran-2 AURA'si: izleme kulesi + donen radar + gozcu chibi (AURA OKUNABILIRLIGI: satir bazli, okunur)."""
+    radar = RADAR_PHASES[f % 4]
+    beacon = BEACON_PHASES[f % 4]
+    eyes = EYE_PHASES[f % 4]
+    lines = []
+    ln = Text()
+    ln.append(" " * 20)
+    ln.append(beacon, style="bold magenta")
+    lines.append(ln)
+    ln = Text()
+    ln.append(" " * 8 + "â•²" + " " * 10)
+    ln.append(radar, style="bold cyan")
+    ln.append(" " * 10 + "â•±", style="bold cyan")
+    lines.append(ln)
+    lines.append(Text(" " * 9 + "â•²" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â•±", style="cyan"))
+    lines.append(Text(" " * 15 + "â”Œ" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€" + "â”", style="green"))
+    ln = Text()
+    ln.append(" " * 15 + "â”‚" + "  ")
+    ln.append(eyes, style="bold white")
+    ln.append("   " + "â”‚", style="green")
+    lines.append(ln)
+    lines.append(Text(" " * 15 + "â””" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€" + "â”˜", style="green"))
+    lines.append(Text(" " * 14 + "â•±" + "â–”" * 11 + "â•²", style="green"))
+    lines.append(Text(" " * 13 + "â–ˆ" * 15, style="bold green"))
+    lines.append(Text(" " * 12 + "â–ˆ" * 17, style="green"))
+    return lines
+
+
+def _skip_pressed():
+    try:
+        import msvcrt
+        return msvcrt.kbhit()
+    except Exception:
+        return False
+
+
+# ---------------------------------------------------------------- boot (ekran-2)
 def boot_animation():
     console.clear()
     console.print()
     title_lines = [ln for ln in pyfiglet.figlet_format("KUROWATCH", font="slant").splitlines()]
 
-    steps = [
-        ("Liman/port durumu okunuyor", KW_PORT),
-        ("WSL koprusu hazirlaniyor", None),
-        ("Backend nabzi kontrol ediliyor", None),
-        ("Logger baglaniyor", None),
-        ("Kule goreve hazir!", None),
-    ]
-    steps_tbl = Table.grid(padding=(0, 2))
-    steps_tbl.add_column(width=3, justify="center", style="yellow")
-    steps_tbl.add_column(style="white")
-    steps_tbl.add_column(width=4, justify="center")
+    steps = [T("steps")[i].replace("{p}", str(KW_PORT)) for i in range(5)]
 
     with Live(console=console, refresh_per_second=10) as live:
-        # FAZ A: banner + radar
+        # FAZ A: kule sahnesi + wordmark reveal
         n_frames = 12
         for f in range(n_frames):
+            if _skip_pressed():
+                break
             reveal = min(len(title_lines), int((f / (n_frames - 1)) * len(title_lines)) + 1)
-            parts = [gradient_text(ln) if ln.strip() else Text("") for ln in title_lines[:reveal]]
+            parts = tower_scene(f)
             parts.append(Text(""))
-            parts.extend(signal_lines(f * 0.5))
+            parts.extend(gradient_text(ln) if ln.strip() else Text("") for ln in title_lines[:reveal])
+            parts.append(Text(""))
+            parts.extend(signal_lines(f * 0.5, rows=1))
             live.update(Group(*parts))
             time.sleep(0.13)
 
         # FAZ B: kontrol listesi + gercek veriler
         wsl_ip = get_wsl_ip()
         checks = [
-            (f"Liman {KW_PORT}", "ACIK" if port_in_use() else "bos"),
-            ("WSL kopru", wsl_ip or "yok"),
-            ("Logger", "OK" if KLOGGER.exists() else "fallback"),
+            (T("chk_port").replace("{p}", str(KW_PORT)),
+             T("open") if port_in_use() else T("free")),
+            (T("chk_wsl"), wsl_ip or T("none")),
+            (T("chk_logger"), T("ok") if KLOGGER.exists() else "fallback"),
         ]
         tbl2 = Table.grid(padding=(0, 2))
         tbl2.add_column(style="cyan", justify="right")
@@ -141,8 +312,10 @@ def boot_animation():
             tbl2.add_row(name + ":", str(val))
 
         for i in range(len(steps)):
+            if _skip_pressed():
+                break
             rows = []
-            for j, (desc, _) in enumerate(steps):
+            for j, desc in enumerate(steps):
                 mark = "[green]v[/]" if j < i else ("[..]" if j == i else "")
                 icon = "*" if j == i else "+"
                 rows.append((icon, desc, mark))
@@ -153,19 +326,20 @@ def boot_animation():
             for ic, d, mk in rows:
                 t2.add_row(ic, d, mk)
             live.update(Group(
-                Panel(tbl2, title="[bold]KULE KONTROL[/]", border_style="green", box=box.HEAVY),
+                Panel(tbl2, title=f"[bold]{T('boot_title')}[/]", border_style="green",
+                      box=box.HEAVY, width=WIDTH),
                 Text(""),
                 t2,
                 Text(""),
-                *signal_lines(i * 0.7),
+                *signal_lines(i * 0.7, rows=1),
             ))
             time.sleep(0.28)
 
     console.print()
-    console.print(Align.center(Text(f"[{NOW()}] " + random.choice(WATCH_QUOTES),
+    console.print(Align.center(Text(f"[{NOW()}] " + random.choice(T("quotes")),
                                     style="italic bright_black")))
     console.print()
-    time.sleep(0.4)
+    time.sleep(0.3)
 
 
 # ---------------------------------------------------------------- yardimcilar (eski bat mantigi)
@@ -177,40 +351,68 @@ def port_in_use():
     return "Y" in (r.stdout or "")
 
 
+_WSL_IP_CACHE = {"ip": None, "ts": 0.0}
+
+
 def get_wsl_ip():
+    now = time.time()
+    if _WSL_IP_CACHE["ip"] and now - _WSL_IP_CACHE["ts"] < 300:
+        return _WSL_IP_CACHE["ip"]
     try:
         r = subprocess.run(["wsl", "-e", "bash", "-c", "hostname -I"],
                            capture_output=True, text=True, timeout=15)
         ip = (r.stdout or "").split()
-        return ip[0] if ip else None
+        _WSL_IP_CACHE["ip"] = ip[0] if ip else None
+        _WSL_IP_CACHE["ts"] = now
+        return _WSL_IP_CACHE["ip"]
     except Exception:
         return None
 
 
 def wsl_root():
+    # wsl.exe arguman zinciri backslash'i yutar (C:\K -> C:K) -
+    # forward-slash dene, olmazsa deterministik /mnt/<surucu> cevrimi.
+    fwd = str(ROOT).replace("\\", "/")
     try:
-        r = subprocess.run(["wsl", "wslpath", "-u", str(ROOT)],
+        r = subprocess.run(["wsl", "wslpath", "-u", fwd],
                            capture_output=True, text=True, timeout=15)
-        return (r.stdout or "").strip()
+        out = (r.stdout or "").strip()
+        if out.startswith("/mnt/"):
+            return out
     except Exception:
-        return ""
+        pass
+    p = str(ROOT)
+    if len(p) >= 2 and p[1] == ":":
+        return "/mnt/" + p[0].lower() + p[2:].replace("\\", "/")
+    return ""
 
 
-def backend_alive():
+def _alive(url):
     try:
-        req = urllib.request.urlopen(f"{KW_URL}/docs", timeout=2)
+        req = urllib.request.urlopen(f"{url}/docs", timeout=2)
         return req.status == 200
     except Exception:
         return False
 
 
+def backend_alive():
+    # wslrelay kararsiz: localhost relay'i iletmezse WSL IP'den dene (pick_url felsefesi)
+    urls = [KW_URL]
+    ip = get_wsl_ip()
+    if ip:
+        urls.append(f"http://{ip}:{KW_PORT}")
+    return any(_alive(u) for u in urls)
+
+
 def pick_url():
     """localhost relay calisiyorsa onu kullan; yoksa WSL IP'ye dus."""
-    if backend_alive():
+    if _alive(KW_URL):
         return KW_URL
     ip = get_wsl_ip()
     if ip:
-        return f"http://{ip}:{KW_PORT}"
+        u = f"http://{ip}:{KW_PORT}"
+        if _alive(u):
+            return u
     return KW_URL
 
 
@@ -239,19 +441,19 @@ def wait_backend(max_s=60):
             TimeElapsedColumn(),
             console=console,
         )
-        t = prog.add_task("Backend nabzi...", total=max_s)
+        t = prog.add_task(T("pulse"), total=max_s)
         while True:
             elapsed = time.time() - start
             if backend_alive():
-                prog.update(t, completed=max_s, description="Backend CANLI!")
+                prog.update(t, completed=max_s, description=T("pulse_ok"))
                 live.update(Group(prog, *signal_lines(elapsed)))
                 return True, int(elapsed)
             if elapsed >= max_s:
-                prog.update(t, description="NABIZ ALINAMADI!")
+                prog.update(t, description=T("pulse_fail"))
                 live.update(Group(prog))
                 return False, int(elapsed)
             prog.update(t, completed=int(elapsed),
-                        description=f"Nabiz dinleniyor... ({int(elapsed)}s)")
+                        description=T("pulse_wait").replace("{s}", str(int(elapsed))))
             live.update(Group(prog, *signal_lines(elapsed)))
             time.sleep(2)
 
@@ -272,9 +474,8 @@ def sfx(kind):
 
 
 def auto_close():
-    console.print("  [dim]5 saniye sonra bu pencere kapanacak...[/]")
     for i in range(5, 0, -1):
-        console.print(f"  [dim]{i}...[/]", end="\r")
+        console.print(T("closing").replace("{n}", str(i)), end="\r")
         time.sleep(1)
     sys.exit(0)
 
@@ -284,121 +485,443 @@ def start_backend(open_browser=False):
     port_cleanup()
     root_wsl = wsl_root()
     log("INFO", f"menu: backend baslatiliyor (wsl={root_wsl})")
-    console.print(f"  [cyan]>>[/] Backend (WSL) baslatiliyor...")
+    console.print(f"  [cyan]>>[/] {T('starting')}")
     if not root_wsl:
         sfx("fail")
-        console.print("  [red]FAIL[/] WSL yol cozumlenemedi (wslpath).")
+        console.print(f"  [red]{T('fail_wsl')}[/]")
         log("FAIL", "wslpath cozumlemedi")
-        pause_or_close()
+        pause_enter()
         return
+    # cmd 'start' baslik/tirnak tuzagina dusmeden yeni konsol penceresi:
+    # wsl dogrudan CREATE_NEW_CONSOLE ile acilir (pencere basligi WSL tarafinda set edilir)
     subprocess.Popen(
-        ["start", "KuroWatch-Backend",
-         "wsl", "bash", "-c", f"bash '{root_wsl}/start_backend.sh'"],
-        shell=True)
+        ["wsl", "bash", "-c",
+         f"printf '\\033]0;KuroWatch-Backend\\007'; bash '{root_wsl}/start_backend.sh'"],
+        creationflags=subprocess.CREATE_NEW_CONSOLE)
     ok, secs = wait_backend(60)
     url = pick_url()
     if ok:
         sfx("pass")
         log("PASS", f"backend canli ({secs}s, url={url})")
-        console.print(f"  [green]PASS[/] Backend canli ({secs}s): {url}")
+        console.print(f"  [green]{T('alive').replace('{s}', str(secs)).replace('{u}', url)}[/]")
         if open_browser:
             webbrowser.open(url)
-            console.print("  [green]>>[/] Tarayici acildi (frontend + API).")
+            console.print(f"  [green]>>[/] {T('browser')}")
             log("PASS", f"backend+frontend acildi (url={url}, exit 0)")
     else:
         sfx("fail")
         log("FAIL", f"backend 60s icinde kalkmadi (url denendi={url})")
-        console.print("  [red]FAIL[/] Backend kalkmadi - KuroWatch-Backend penceresine bak.")
+        console.print(f"  [red]{T('dead')}[/]")
 
 
 def action_full():
-    console.print(Panel("[bold green]BACKEND + FRONTEND BASLAT[/]", border_style="green"))
+    console.print(Panel(f"[bold green]{T('p_full')}[/]", border_style="green", width=WIDTH))
     start_backend(open_browser=True)
     auto_close()
 
 
 def action_backend():
-    console.print(Panel("[bold cyan]SADECE BACKEND BASLAT[/]", border_style="cyan"))
+    console.print(Panel(f"[bold cyan]{T('p_backend')}[/]", border_style="cyan", width=WIDTH))
     start_backend(open_browser=False)
     auto_close()
 
 
 def action_foreground():
-    console.print(Panel("[bold yellow]ON PLANDA BACKEND (Ctrl+C ile durdur)[/]", border_style="yellow"))
+    console.print(Panel(f"[bold yellow]{T('p_fg')}[/]", border_style="yellow", width=WIDTH))
     root_wsl = wsl_root()
     log("INFO", f"menu: foreground backend (wsl={root_wsl})")
     cmd = (f"cd '{root_wsl}' && source /opt/kuroshin/venv/bin/activate && "
            f"exec python -m uvicorn backend.main:app --port {KW_PORT} --host 0.0.0.0 --log-level warning")
     rc = subprocess.call(["wsl", "bash", "-c", cmd])
     log("EXITCODE", f"uvicorn foreground rc={rc}")
-    console.print(f"  [dim]uvicorn cikisi: rc={rc}[/]")
+    console.print(f"  [dim]{T('fg_exit')}{rc}[/]")
     pause_enter()
 
 
 def action_clean():
-    console.print(Panel("[bold red]PORT TEMIZLIK[/]", border_style="red"))
+    console.print(Panel(f"[bold red]{T('p_clean')}[/]", border_style="red", width=WIDTH))
     was = port_in_use()
     port_cleanup()
     still = port_in_use()
     if still:
         sfx("fail")
         log("FAIL", f"port {KW_PORT} temizlenemedi")
-        console.print(f"  [red]FAIL[/] Port {KW_PORT} hala dolu.")
+        console.print(f"  [red]{T('clean_fail').replace('{p}', str(KW_PORT))}[/]")
     else:
         sfx("pass")
-        log("PASS", f"port {KW_PORT} temizlendi (once={'dolu' if was else 'bostu'}, exit 0)")
-        console.print(f"  [green]PASS[/] Port {KW_PORT} temiz (onceden {'doluydu' if was else 'bostu'}).")
+        w = T("was_busy") if was else T("was_free")
+        log("PASS", f"port 8099 temizlendi (once={'doluydu' if was else 'bostu'}, exit 0)")
+        console.print(f"  [green]{T('clean_ok').replace('{p}', str(KW_PORT)).replace('{w}', w)}[/]")
     auto_close()
 
 
 def pause_enter():
     try:
-        input("  Devam icin Enter'a basin...")
+        input(f"  {T('press_enter')}")
     except (EOFError, OSError):
         time.sleep(1)
 
 
+# ------------------------------------------------- menu-9: URL yonetimi (S-166)
+import json as _json
+import urllib.error
+
+
+def _api(method: str, path: str, body=None):
+    """Backend HTTP cagrisi â€” (status, dict) doner, hicbir sekilde patlamaz."""
+    base = pick_url()
+    req = urllib.request.Request(base + path, method=method)
+    data = None
+    if body is not None:
+        data = _json.dumps(body).encode()
+        req.add_header("Content-Type", "application/json")
+    try:
+        with urllib.request.urlopen(req, data=data, timeout=60) as r:
+            raw = r.read().decode() or "{}"
+            return r.status, _json.loads(raw)
+    except urllib.error.HTTPError as e:
+        raw = ""
+        try:
+            raw = e.read().decode()[:300]
+        except Exception:
+            pass
+        try:
+            j = _json.loads(raw)
+            msg = j.get("detail") if isinstance(j, dict) else None
+        except Exception:
+            msg = None
+        return e.code, {"detail": msg or raw or f"HTTP {e.code}"}
+    except Exception as e:
+        return 0, {"detail": str(e)}
+
+
+def _ask(prompt: str = ""):
+    """Tek kuyruktan oku â€” live_menu reader-thread'i ile yarÄ±s YOK (S-166)."""
+    if prompt:
+        console.print(prompt, end="")
+    line = _get_line()
+    return "" if line == "EOF" else line
+
+
+def _prov_url(ext: str, ctype: str = "") -> str:
+    if not ext:
+        return "-"
+    p, _, v = ext.partition(":")
+    if p == "anilist":
+        kind = "manga" if ctype in ("manga", "manhwa") else "anime"
+        return f"https://anilist.co/{kind}/{v}"
+    if p == "mal":
+        kind = "manga" if ctype in ("manga", "manhwa") else "anime"
+        return f"https://myanimelist.net/{kind}/{v}"
+    if p == "tmdb":
+        kind = "tv" if ctype == "series" else "movie"
+        return f"https://www.themoviedb.org/{kind}/{v}"
+    if p == "imdb":
+        return f"https://www.imdb.com/title/{v}/"
+    if p == "mangadex":
+        return f"https://mangadex.org/title/{v}"
+    return ext
+
+
+def _urls_list():
+    """Tek-tek pager (Lord istegi): her Enter/Space'te siradaki medya karti."""
+    term = _ask(f"  {T('u_filter')}")
+    path = "/api/content?q=" + urllib.parse.quote(term) if term else "/api/content"
+    st, items = _api("GET", path)
+    if st != 0 and st != 200:
+        sfx("fail")
+        console.print(f"[red]{T('err_pre')}[/] {items.get('detail', st)}")
+        return
+    total = len(items)
+    if not total:
+        console.print(f"[yellow]{T('u_none')}[/]")
+        return
+    log("INFO", f"menu5.1 pager: {total} kayit")
+    for idx, it in enumerate(items, 1):
+        cover = f"[green]{T('u_cov_ok')}[/]" if it.get("cover_url") else f"[red]{T('u_cov_no')}[/]"
+        my = it.get("my_score")
+        ext = it.get("external_score")
+        score = f"{my:.1f}" if my else (f"[yellow]{ext:.1f}[/]" if ext else "-")
+        prog = it.get("my_progress") or 0
+        card = Panel(
+            f"[bold white]{it.get('title_tr') or it.get('title','')}[/]\n"
+            f"[dim]#{it['id']}[/]  [cyan]{it.get('type','')}[/]  "
+            f"{T('u_puan')}: {score}  {T('u_prog')}: {prog}  "
+            f"{T('u_col_cover')}: {cover}\n\n"
+            f"[bright_black]{_prov_url(it.get('external_id'), it.get('type',''))}[/]",
+            title=f"[bold cyan] {idx}/{total} [/]",
+            border_style="cyan", box=box.DOUBLE, width=WIDTH)
+        console.clear()
+        console.print(card)
+        console.print(f"  [dim]{T('u_next_hint')}[/]")
+        ch = _ask("")
+        if ch.lower() in ("q", "0", "x", "cik", "exit"):
+            return
+    console.print(f"\n  [green]{T('u_end')} ({total})[/]")
+    _ask(f"  {T('press_enter')}")
+
+
+def _urls_add():
+    url = _ask(f"  {T('u_ask_url')}")
+    if not url:
+        console.print(f"[yellow]{T('u_empty')}[/]")
+        return
+    st, res = _api("POST", "/api/content/from-url", {"url": url})
+    if st == 201:
+        sfx("ok")
+        console.print(Panel(
+            f"[bold green]{T('u_added')}[/]\n\n"
+            f"[cyan]#{res['id']}[/] [bold]{res['title']}[/]  ({res['type']})\n"
+            f"{res['external_id']}\n"
+            f"{_prov_url(res['external_id'], res['type'])}",
+            border_style="green", box=box.DOUBLE, width=WIDTH))
+        log("INFO", f"menu5.2 eklendi: #{res['id']} {res['title']}")
+    else:
+        sfx("fail")
+        console.print(f"[red]{T('err_pre')}[/] {res.get('detail', st)}")
+        log("ERROR", f"menu5.2 eklenemedi: {res.get('detail')}")
+
+
+def _urls_sites():
+    flt = _ask(f"  {T('s_filter')}").lower()
+    st, sites = _api("GET", "/api/sites")
+    if st != 200:
+        sfx("fail")
+        console.print(f"[red]{T('err_pre')}[/] {sites.get('detail', st)}")
+        return
+    rows = [s for s in sites
+            if not flt or flt in (s.get("site_url") or "").lower()
+            or flt in (s.get("site_name") or "").lower()]
+    shown = rows[:50]
+    tbl = Table(box=box.SIMPLE_HEAVY, width=WIDTH, title=T("s_title"))
+    tbl.add_column("ID", justify="right", style="cyan", width=6)
+    tbl.add_column("DURUM", justify="center", width=7)
+    tbl.add_column(T("s_col_site"), ratio=2, overflow="fold")
+    tbl.add_column(T("s_col_content"), ratio=2, overflow="fold", style="bright_black")
+    for s in shown:
+        durum = "[red]OLU[/]" if s.get("is_dead") else "[green]CANLI[/]"
+        tbl.add_row(str(s["id"]), durum, s.get("site_url") or "",
+                    s.get("content_title") or "")
+    extra = len(rows) - len(shown)
+    if extra > 0:
+        console.print(f"[dim]... +{extra} {T('s_more')}[/]")
+    dead_n = sum(1 for s in rows if s.get("is_dead"))
+    console.print(f"  [green]CANLI:[/] {len(rows) - dead_n}   [red]OLU:[/] {dead_n}")
+    sid = _ask(f"  {T('s_toggle_ask')}")
+    if not sid:
+        return
+    srow = next((s for s in rows if str(s["id"]) == sid), None)
+    if not srow:
+        console.print(f"[red]{T('invalid')}[/]")
+        return
+    act = "mark-alive" if srow.get("is_dead") else "mark-dead"
+    st2, _r = _api("PATCH", f"/api/sites/{sid}/{act}")
+    if st2 == 200:
+        sfx("ok")
+        console.print(f"  [bold green]{T('s_done')}[/] #{sid} -> "
+                      f"{'CANLI' if act == 'mark-alive' else 'OLU'}")
+        log("INFO", f"menu5.3 site {act}: #{sid}")
+    else:
+        sfx("fail")
+        console.print(f"[red]{T('err_pre')}[/] {_r.get('detail', st2)}")
+
+
+def action_urls():
+    while True:
+        console.print(Panel(
+            f"  [bold cyan][1][/] {T('u_m1')}\n"
+            f"  [bold cyan][2][/] {T('u_m2')}\n"
+            f"  [bold cyan][3][/] {T('u_m3')}\n"
+            f"  [bold red][0][/] {T('u_back')}",
+            title="[bold white on cyan] URL YONETIMI [/]",
+            border_style="cyan", box=box.DOUBLE_EDGE, width=WIDTH))
+        ch = _ask(f"\n  {T('prompt_ask')}: ")
+        if ch in ("", "0"):
+            return
+        console.clear()
+        if ch == "1":
+            _urls_list()
+        elif ch == "2":
+            _urls_add()
+        elif ch == "3":
+            _urls_sites()
+        else:
+            console.print(f"[red]{T('invalid')}[/]")
+        if _ask(f"\n  {T('press_enter')}"):
+            pass
+        console.clear()
+
+
+L10N["en"].update({
+    "m9": "URL MANAGER", "m9_d": "Media list / add from URL / downloader sites",
+    "u_m1": "List saved media (name + source URL)",
+    "u_m2": "Add content from scratch (paste URL)",
+    "u_m3": "Downloader sites (dead / alive)",
+    "u_back": "Back",
+    "u_filter": "Filter by name (Enter=all):",
+    "u_list_title": "SAVED MEDIA",
+    "u_col_name": "NAME", "u_col_cover": "COV",
+    "u_ask_url": "Content URL (anilist/mal/tmdb/imdb/mangadex):",
+    "u_empty": "No URL given.",
+    "u_added": "ADDED!",
+    "s_filter": "Filter by domain (Enter=all):",
+    "s_title": "DOWNLOADER SITES",
+    "s_col_site": "SITE URL", "s_col_content": "CONTENT", "s_more": "more rows",
+    "s_toggle_ask": "Site ID to toggle dead/alive (Enter=skip):",
+    "s_done": "Updated:",
+    "u_none": "No records.",
+    "u_cov_ok": "cover OK", "u_cov_no": "no cover",
+    "u_puan": "score", "u_prog": "progress",
+    "u_next_hint": "[Enter/Space] next - [q] back to menu",
+    "u_end": "End of list",
+})
+
+try:
+    L10N["tr"].update({
+        "m9": "URL YONETIMI", "m9_d": "Medya listesi / URL'den ekle / indirici siteler",
+        "u_m1": "Kayitli medya listesi (isim + kaynak URL)",
+        "u_m2": "Sifirdan icerik ekle (URL yapistir)",
+        "u_m3": "Indirici siteler (olu / canli)",
+        "u_back": "Geri",
+        "u_filter": "Isme gore filtrele (Enter=tumu):",
+        "u_list_title": "KAYITLI MEDYA",
+        "u_col_name": "ISIM", "u_col_cover": "KAPAK",
+        "u_ask_url": "Icerik URL'si (anilist/mal/tmdb/imdb/mangadex):",
+        "u_empty": "URL girilmedi.",
+        "u_added": "EKLENDI!",
+        "s_filter": "Domain'e gore filtrele (Enter=tumu):",
+        "s_title": "INDIRICI SITELER",
+        "s_col_site": "SITE URL", "s_col_content": "ICERIK", "s_more": "satir daha",
+        "s_toggle_ask": "Olu/canli cevrilecek Site ID (Enter=gec):",
+        "s_done": "Guncellendi:",
+        "u_none": "Kayit yok.",
+        "u_cov_ok": "kapak OK", "u_cov_no": "kapak yok",
+        "u_puan": "puan", "u_prog": "ilerleme",
+        "u_next_hint": "[Enter/Space] sonraki - [q] menuye don",
+        "u_end": "Listenin sonu",
+    })
+except KeyError:
+    pass
+
+try:
+    import urllib.parse
+except ImportError:
+    pass
+
 ACTIONS = {
-    1: ("BACKEND+FRONTEND", action_full),
-    2: ("SADECE BACKEND", action_backend),
-    3: ("ON PLANDA BACKEND", action_foreground),
-    4: ("PORT TEMIZLIK", action_clean),
+    "1": ("m1", "m1_d", action_full),
+    "2": ("m2", "m2_d", action_backend),
+    "3": ("m3", "m3_d", action_foreground),
+    "4": ("m4", "m4_d", action_clean),
+    "5": ("m9", "m9_d", action_urls),
 }
 
 
-def show_menu():
-    console.clear()
-    console.print()
-    gradient_banner()
-    header = Table.grid(expand=True, padding=(0, 1))
-    header.add_column(justify="left", ratio=2)
-    header.add_column(justify="center", ratio=1)
-    header.add_column(justify="right", ratio=1)
-    status = "[green]CANLI[/]" if port_in_use() else "[bright_black]sessiz[/]"
-    header.add_row(
-        f"[bold white]{SUBTITLE}[/] [dim]{VERSION}[/]",
-        f"[bold yellow]Port:[/] [cyan]{KW_PORT}[/] {status}",
-        f"[bold white]{NOW()}[/]",
-    )
-    console.print(Panel(header, border_style="green", box=box.HEAVY))
-    console.print()
+# ---------------------------------------------------------------- ekran-3: canli menu (kaizoku v2.1 reader-thread)
+def menu_frame(t):
+    frame = Table.grid(padding=(0, 1))
+    frame.add_column(justify="left", ratio=3)
+    frame.add_column(justify="center", ratio=2)
+    frame.add_column(justify="right", ratio=1)
+
+    status = f"[bold green]{T('live')}[/]" if port_in_use() else f"[bright_black]{T('idle')}[/]"
+    chibi = mini_radar(t)
+    left = Table.grid(padding=(0, 1))
+    left.add_column(justify="left")
+    left.add_row(Text.assemble(chibi, ("  ", ""),
+                               (f"{T('subtitle')} ", "bold white"),
+                               (VERSION, "dim")))
+    frame.add_row(left,
+                  f"[bold yellow]{T('port_lbl')}:[/] [cyan]{KW_PORT}[/] {status}",
+                  f"[bold white]{NOW()}[/]")
 
     items = Table(show_header=False, box=None, padding=(0, 2))
     items.add_column("No", style="bold cyan", width=4, justify="center")
     items.add_column("Islem", style="bold white", min_width=26)
     items.add_column("Aciklama", style="bright_black")
-    items.add_row("[1]", "[bold green]BACKEND+FRONTEND[/]", "WSL backend + tarayici")
-    items.add_row("[2]", "[bold cyan]SADECE BACKEND[/]", "Tarayici acilmaz")
-    items.add_row("[3]", "[bold yellow]ON PLANDA[/]", "Loglar bu pencerede (Ctrl+C)")
-    items.add_row("[4]", "[bold red]PORT TEMIZLIK[/]", f"{KW_PORT} WSL+Windows purge")
-    items.add_row("[0]", "[bold red]CIKIS[/]", "Kuleden in")
-    console.print(Panel(items, title="[bold white on green] IZLEME KULESI [/]",
-                        border_style="green", box=box.DOUBLE_EDGE))
-    console.print()
-    for row in signal_lines(time.time() % 5, rows=1):
-        console.print(row)
-    console.print()
-    console.print(Align.center(Text("Gozcunun secimi?", style="bold green")))
+    for key in ("1", "2", "3", "4", "5"):
+        name, desc, _ = ACTIONS[key]
+        color = {"1": "bold green", "2": "bold cyan", "3": "bold yellow",
+                 "4": "bold red", "5": "bold blue"}[key]
+        items.add_row(f"[{key}]", f"[{color}]{T(name)}[/]",
+                      T(desc).replace("{p}", str(KW_PORT)))
+    items.add_row("[L]", f"[bold magenta]{T('lang_row')}[/]", "tr/en")
+    items.add_row("[0]", f"[bold red]{T('m0')}[/]", T("m0_d"))
+
+    return Group(
+        Text(""),
+        Panel(frame, border_style="green", box=box.HEAVY, width=WIDTH),
+        Text(""),
+        Panel(items, title="[bold white on green] IZLEME KULESI [/]",
+              border_style="green", box=box.DOUBLE_EDGE, width=WIDTH),
+        Text(""),
+        *signal_lines(t * 2.0, rows=1),
+        Text(""),
+        Align.center(Text(f"{T('prompt')}", style="bold green")),
+    )
+
+
+def _reader(out_q):
+    try:
+        while True:
+            line = sys.stdin.readline()
+            if line == "":
+                out_q.put(None)
+                return
+            out_q.put(line)
+    except Exception:
+        out_q.put(None)
+
+
+# S-166 fix: TEK kalici reader-thread + TEK kuyruk. Eski desen live_menu'dan
+# donunce thread'i birakip input()'a kacirdigi icin sonraki prompt'lar stdin'i
+# asla alamiyordu ("1'e bastim cevap yok" dersi). Artik _ask() da ayni kuyruktan
+# okur â€” yarÄ±s yok, kimse kimsenin satirini yutmaz.
+_stdin_q: queue.Queue = queue.Queue()
+_stdin_thread = None
+_stdin_eof = False
+
+
+def _ensure_reader():
+    global _stdin_thread
+    if _stdin_thread is None or not _stdin_thread.is_alive():
+        _stdin_thread = threading.Thread(target=_reader, args=(_stdin_q,), daemon=True)
+        _stdin_thread.start()
+
+
+def _get_line(timeout=None):
+    """Kuyruktan satir; timeout'ta None-olmayan bos sinyal. EOF -> ('EOF',)."""
+    global _stdin_eof
+    _ensure_reader()
+    if _stdin_eof:
+        return "EOF"
+    try:
+        line = _stdin_q.get() if timeout is None else _stdin_q.get(timeout=timeout)
+    except queue.Empty:
+        return None
+    if line is None:
+        _stdin_eof = True
+        return "EOF"
+    return line.strip()
+
+
+def live_menu():
+    """Canli menu: animasyon secim beklerken DONMEZ (reader-thread, kaizoku v2.1).
+    Donus: '0'..'5', 'l', None (EOF -> zarif dusus)."""
+    _ensure_reader()
+    t0 = time.time()
+    with Live(console=console, refresh_per_second=6, transient=False) as live:
+        while True:
+            live.update(menu_frame(time.time() - t0))
+            line = _get_line(timeout=0.12)
+            if line is None:
+                continue
+            if line == "EOF":
+                return None
+            line = line.strip().lower()
+            if line == "":
+                continue
+            return line
 
 
 def _banner_texts():
@@ -411,41 +934,42 @@ def sail_away():
     with Live(console=console, refresh_per_second=12) as live:
         for f in range(10):
             live.update(Group(
+                *tower_scene(f),
+                Text(""),
                 *banner,
                 Text(""),
-                *signal_lines(f * 0.6, rows=2),
+                *signal_lines(f * 0.6, rows=1),
             ))
             time.sleep(0.09)
-    console.print(Align.center(Text("Kule gozetimde kaldi. Gozcun!", style="italic green")))
+    console.print(Align.center(Text(T("bye"), style="italic green")))
     console.print(Align.center(Text(f"KUROWATCH - {VERSION}", style="dim bright_black")))
 
 
 def main():
     # otomasyon destegi: kurowatch_menu.py 4 -> dogrudan eylem
-    if len(sys.argv) > 1 and sys.argv[1].strip() in "1234":
+    if len(sys.argv) > 1 and sys.argv[1].strip() in "12345":
         choice = int(sys.argv[1])
         console.clear()
-        ACTIONS[choice][1]()
+        ACTIONS[str(choice)][2]()
         return
     boot_animation()
     while True:
-        show_menu()
-        try:
-            choice = IntPrompt.ask("  Seciminiz", choices=["0","1","2","3","4"], show_choices=False)
-            sfx("select")
-        except KeyboardInterrupt:
-            choice = 0
-        except EOFError:
-            choice = 0
-        if choice in (0, 5):
+        choice = live_menu()
+        # S-166: "5" artik URL YONETIMI — cikis sadece 0/EOF
+        if choice is None or choice in ("0", "q", "exit"):
             console.clear()
             sail_away()
             log("INFO", "menu cikis (exit 0)")
             break
+        if choice == "l":
+            toggle_lang()
+            continue
         if choice in ACTIONS:
+            sfx("select")
             console.clear()
-            name, fn = ACTIONS[choice]
-            console.print(Panel(f"[bold] {name} [/]", border_style="cyan", box=box.HEAVY))
+            name, desc, fn = ACTIONS[choice]
+            console.print(Panel(f"[bold] {T(name)} [/]", border_style="cyan",
+                                box=box.HEAVY, width=WIDTH))
             console.print()
             try:
                 fn()
@@ -453,13 +977,14 @@ def main():
                 raise
             except Exception as e:
                 sfx("fail")
-                console.print(f"[bold red]HATA:[/] {e}")
+                console.print(f"[bold red]{T('err_pre')}[/] {e}")
                 log("ERROR", f"hata [{choice}]: {e}")
                 time.sleep(2)
         else:
-            console.print("[red]Gecersiz secim![/]")
+            console.print(f"[red]{T('invalid')}[/]")
             time.sleep(1)
 
 
 if __name__ == "__main__":
     main()
+

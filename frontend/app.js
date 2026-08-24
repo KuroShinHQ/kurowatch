@@ -506,18 +506,62 @@
         const yearBadge = it.release_year ? `<span class="text-[9px] text-[#9090b0] font-medium">${it.release_year}</span>` : '';
         const platBadges = platforms.length ? platforms.map(function(p){return '<span class="text-[8px] px-1 py-0.5 rounded bg-white/10 text-[#859398] font-medium leading-tight">'+escapeHtml(p)+'</span>';}).join('') : '';
         const extraInfo = isGame && (yearBadge || platBadges) ? '<div class="flex items-center gap-1.5 mt-0.5 flex-wrap">'+yearBadge+platBadges+'</div>' : '';
+        // S-166: v7 redesign'da kaybolan kart zenginlikleri geri geldi (SOHBET-122/130 parcasi)
+        const sColor = statusColor(it.status);
+        var myScoreBadge = it.my_score != null && it.my_score > 0
+          ? `<span style="background:#00d4ff;color:#003642;font-size:9px;font-weight:700;padding:1px 5px;border-radius:999px;box-shadow:0 2px 8px #0006">${it.my_score.toFixed(1)}</span>` : '';
+        var extStarCount = it.external_score != null && it.external_score > 0 ? Math.round(it.external_score / 2) : 0;
+        var starsHtml = extStarCount > 0
+          ? `<div style="position:absolute;top:6px;left:6px;z-index:10;pointer-events:none;color:#fbbf24;font-size:9px;text-shadow:0 1px 4px rgba(0,0,0,0.9);letter-spacing:1px;display:flex;gap:1px">${'★'.repeat(extStarCount)}<span style="opacity:0.22;color:#fff">${'★'.repeat(5 - extStarCount)}</span></div>` : '';
+        var isPctType = it.type === 'game' || it.type === 'movie';
+        var total = isPctType ? 100 : (it.type==='series'||it.type==='anime' ? (it.total_episodes || 1) : (it.total_chapters || 1));
+        var pct = isPctType ? (it.my_progress_pct || 0) : Math.min(100, Math.round((it.my_progress || 0) / total * 100));
+        var progressHtml = pct > 0 ? `<div class="w-full bg-white/10 h-1 rounded-full mt-1 overflow-hidden"><div class="h-full" style="${tcStyle(col).bar};width:${pct}%;box-shadow:0 0 8px ${col.color}99"></div></div>` : '';
         return `<div class="flex-none w-[140px] md:w-[180px] aspect-[2/3] relative rounded-xl overflow-hidden bg-[#1a1a2e] border border-white/5 active:scale-[0.95] transition-all snap-start cursor-pointer hover:-translate-y-1" data-content-id="${it.id}">
+          <div style="position:absolute;left:0;top:0;bottom:0;width:3px;background:${sColor};z-index:10"></div>
           <div class="absolute inset-0 bg-cover bg-center" ${bg}>${!it.cover_url ? '<div class="absolute inset-0 flex items-center justify-center text-[#31324d] text-3xl font-bold">'+escapeHtml(it.title.slice(0,2).toUpperCase())+'</div>' : ''}</div>
-          <div class="absolute top-2 right-2 z-20"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span></div>
+          <div class="absolute top-2 right-2 z-20 flex items-center gap-1"><span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase backdrop-blur-sm" style="${tcStyle(col).badge}">${escapeHtml(col.label)}</span>${myScoreBadge}</div>
+          ${starsHtml}
           <div class="absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-[#0d0d1a]/95 via-[#0d0d1a]/60 to-transparent">
             <h4 class="text-[11px] font-bold text-[#e1e0ff] line-clamp-2">${escapeHtml(it.title_tr||it.title)}</h4>
             ${extraInfo}
+            ${progressHtml}
           </div>
         </div>`;
       }).join('');
       row.querySelectorAll('[data-content-id]').forEach(c => _attachCardEvents(c));
       _addDragScroll(row);
+      _injectUpdateBadges(row);  // "+N Site" badge (FEATURE_MAP dokumani, S-166 restore)
     });
+  }
+
+  // ── "+N Site" update badge (FEATURE_MAP.md:75 — v7'de hic kodlanmamisti, S-166) ──
+  let _updBadgeCache = { data: null, ts: 0 };
+  async function _injectUpdateBadges(rowEl) {
+    try {
+      var now = Date.now();
+      if (!_updBadgeCache.data || now - _updBadgeCache.ts > 60000) {
+        var ups = await apiGet('/api/updates?unread_only=true');
+        var counts = {};
+        (ups || []).forEach(function(u) {
+          if (!u.content_id) return;
+          counts[u.content_id] = counts[u.content_id] || {};
+          counts[u.content_id][u.site_name] = 1;
+        });
+        Object.keys(counts).forEach(function(k) { counts[k] = Object.keys(counts[k]).length; });
+        _updBadgeCache = { data: counts, ts: now };
+      }
+      Object.entries(_updBadgeCache.data).forEach(function(pair) {
+        var card = rowEl.querySelector('[data-content-id="' + pair[0] + '"]');
+        if (card && !card.querySelector('.upd-badge')) {
+          var b = document.createElement('div');
+          b.className = 'upd-badge';
+          b.style.cssText = 'position:absolute;top:6px;left:6px;z-index:20;background:#22c55e;color:#003642;font-size:9px;font-weight:700;padding:1px 6px;border-radius:999px;box-shadow:0 2px 8px #0008';
+          b.textContent = '+' + pair[1] + ' Site';
+          card.appendChild(b);
+        }
+      });
+    } catch (e) { /* badge kritik degil */ }
   }
 
   async function _fitgirlSearch(contentId, title) {

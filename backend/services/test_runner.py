@@ -1,5 +1,5 @@
 """
-SOHBET-147 — Test Runner
+SOHBET-147 â€” Test Runner
 Tests all URLs in the database, reports pass/fail counts per domain/content-type.
 """
 import asyncio, json, logging, os, time
@@ -69,7 +69,7 @@ class TestReport:
 async def test_url(url: str) -> URLTestResult:
     """Test a single URL and return result. Retry for rate-limited domains."""
     parsed = urlparse(url)
-    domain = parsed.netloc.lstrip("www.")
+    domain = parsed.netloc.removeprefix("www.")
     result = URLTestResult(url=url[:200], domain=domain)
 
     async def _do_test() -> URLTestResult:
@@ -108,7 +108,7 @@ async def test_url(url: str) -> URLTestResult:
 
     result = await _do_test()
 
-    # Retry: setfilmizle rate-limit 404/403 → 5sn bekle, tekrar dene
+    # Retry: setfilmizle rate-limit 404/403 â†’ 5sn bekle, tekrar dene
     if result.status == "DEAD" and result.status_code in (404, 403, 429) and 'setfilmizle' in domain:
         await asyncio.sleep(5)
         retry = await _do_test()
@@ -159,7 +159,7 @@ async def run_full_test(db_session, sample_size: int = SAMPLE_SIZE,
             r.content_type = ctype
             r.site_name = site["site_name"]
             all_results.append(r)
-            # Rate-limit koruması: aynı domain'e art arda hızlı istek atma
+            # Rate-limit korumasÄ±: aynÄ± domain'e art arda hÄ±zlÄ± istek atma
             if 'setfilmizle' in r.domain:
                 await asyncio.sleep(1)
 
@@ -245,7 +245,7 @@ async def test_domain_update(db_session, domain: str, new_domain: str) -> TestRe
     report.by_domain = dict(by_domain)
     report.sample_results = results
 
-    logger.info(f"Domain update test: {new_domain} → {report.ok_pct}% OK ({report.total_ok}/{report.total_urls})")
+    logger.info(f"Domain update test: {new_domain} â†’ {report.ok_pct}% OK ({report.total_ok}/{report.total_urls})")
     return report
 
 

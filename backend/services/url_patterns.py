@@ -1,5 +1,5 @@
 """
-SOHBET-147 — URL Pattern Generator
+SOHBET-147 â€” URL Pattern Generator
 Learns URL patterns from existing site entries and generates new URLs for alternative domains.
 """
 import json, logging, os, re
@@ -83,12 +83,12 @@ def learn_pattern_from_urls(urls: list[str]) -> Optional[UrlPattern]:
     has_film = '/film/' in paths[0]
 
     # Determine slug style
-    has_turkish = bool(re.search(r'[ığüşöç]', paths[0]))
+    has_turkish = bool(re.search(r'[Ä±ÄŸÃ¼ÅŸÃ¶Ã§]', paths[0]))
     slug_style = "turkish" if has_turkish else "english"
 
     slug = paths[0].split("/")[-2] if paths[0].endswith("/") else paths[0].split("/")[-1] if paths[0] else ""
     # Try to identify the slug
-    has_ep = "bolum" in paths[0].lower() or "episode" in paths[0].lower() or "bölüm" in paths[0].lower()
+    has_ep = "bolum" in paths[0].lower() or "episode" in paths[0].lower() or "bÃ¶lÃ¼m" in paths[0].lower()
 
     pattern = UrlPattern(
         site_name="unknown",
@@ -118,7 +118,7 @@ async def find_slug_for_content(db_session, content_id: int, domain: str) -> Opt
     for site_url, site_name in existing:
         parsed = urlparse(site_url)
         if domain in parsed.netloc or domain.split(".")[0] in parsed.netloc:
-            existing_domain = parsed.netloc.lstrip("www.")
+            existing_domain = parsed.netloc.removeprefix("www.")
             path = parsed.path.rstrip("/")
             slug = path.split("/")[-1] if path else ""
             if slug:
@@ -140,7 +140,7 @@ def apply_new_domain_to_url(old_url: str, new_domain: str, content_type: str, sl
     """Apply a new domain to an old URL, adjusting the path if needed."""
     parsed = urlparse(old_url)
     path = parsed.path
-    old_domain = parsed.netloc.lstrip("www.")
+    old_domain = parsed.netloc.removeprefix("www.")
 
     # Simple domain replacement
     new_url = old_url.replace(parsed.netloc, f"www.{new_domain}" if not new_domain.startswith("www.") else new_domain)
@@ -177,7 +177,7 @@ def extract_slug(url: str) -> str:
 def normalize_domain(domain: str) -> str:
     """Normalize domain to netloc format."""
     domain = domain.strip().lower()
-    domain = domain.lstrip("www.").lstrip(".")
+    domain = domain.removeprefix("www.").lstrip(".")
     domain = re.sub(r'^https?://', '', domain)
     return domain
 

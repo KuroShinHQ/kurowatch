@@ -10,7 +10,7 @@ from backend.downloader.integrity import validate_image_file, validate_manga_fil
 from backend.scraper.tag_extractor import extract_manga_source_tags
 
 _MADARA_DOMAINS = [
-    # 5 Tem 2026 — gerçek chapter testi ile onaylanan siteler
+    # 5 Tem 2026 Ã¢â‚¬â€ gerÃƒÂ§ek chapter testi ile onaylanan siteler
     "mangawow.com", "mangawow.org",
     "hayalistic.com.tr",
     "ragnarscans.com", "ragnarscans.net",
@@ -30,13 +30,13 @@ _MADARA_DOMAINS = [
     "ruyamanga2.com",
     "mangakoleji.com",
     "mangatr.app",
-    # Eski (şimdilik 403/offline — fallback için kodda kalır)
+    # Eski (Ã…Å¸imdilik 403/offline Ã¢â‚¬â€ fallback iÃƒÂ§in kodda kalÃ„Â±r)
     "mangakeyf.com", "mangahost.net",
     "okumangatr.com", "turkmanga.net", "mangaturk.org",
     "asurascans.com.tr",
 ]
 
-# CF turnstile siteler — curl_cffi impersonate ile aşılır
+# CF turnstile siteler Ã¢â‚¬â€ curl_cffi impersonate ile aÃ…Å¸Ã„Â±lÃ„Â±r
 _CF_BLOCKED = {
     "ragnarscans.com", "ragnarscans.net",
     "hayalistic.com.tr",
@@ -50,8 +50,8 @@ _CF_BLOCKED = {
     "mangatr.app",
 }
 
-# Next.js App Router siteler — RSC payload'dan CDN görsel URL'leri çekilir
-# Tarayıcı gerekmez, tek httpx GET + regex yeterli
+# Next.js App Router siteler Ã¢â‚¬â€ RSC payload'dan CDN gÃƒÂ¶rsel URL'leri ÃƒÂ§ekilir
+# TarayÃ„Â±cÃ„Â± gerekmez, tek httpx GET + regex yeterli
 _NEXTJS_DOMAINS = {
     "monomanga.com.tr",
 }
@@ -60,7 +60,7 @@ _IMC_DOMAINS = {
     "merlintoon.com",
 }
 
-# DNS fail / offline siteler — anında hata döndür
+# DNS fail / offline siteler Ã¢â‚¬â€ anÃ„Â±nda hata dÃƒÂ¶ndÃƒÂ¼r
 _OFFLINE = {
     "majorscans.com", "majorscans.net",
     "mangatr.net",
@@ -165,13 +165,13 @@ def _extract_img_urls_from_section(section: str, seen: set) -> list:
 
 
 def _save_image_response(resp: httpx.Response, dest: str, img_url: str, min_bytes: int = 0) -> bool:
-    """Görseli diske kaydet. min_bytes altındaysa False döner (skip)."""
+    """GÃƒÂ¶rseli diske kaydet. min_bytes altÃ„Â±ndaysa False dÃƒÂ¶ner (skip)."""
     resp.raise_for_status()
     content_type = (resp.headers.get("content-type") or "").lower()
     if "text/html" in content_type or "application/json" in content_type:
-        raise RuntimeError(f"Görsel yerine {content_type or 'bilinmeyen'} döndü: {img_url}")
+        raise RuntimeError(f"GÃƒÂ¶rsel yerine {content_type or 'bilinmeyen'} dÃƒÂ¶ndÃƒÂ¼: {img_url}")
     if not resp.content:
-        raise RuntimeError(f"Boş görsel cevabı: {img_url}")
+        raise RuntimeError(f"BoÃ…Å¸ gÃƒÂ¶rsel cevabÃ„Â±: {img_url}")
     if min_bytes > 0 and len(resp.content) < min_bytes:
         return False
     with open(dest, "wb") as fh:
@@ -188,7 +188,7 @@ def _save_image_response(resp: httpx.Response, dest: str, img_url: str, min_byte
 
 
 def _is_madara(url: str) -> bool:
-    host = urlparse(url).netloc.lstrip("www.")
+    host = urlparse(url).netloc.removeprefix("www.")
     return any(host.endswith(d) for d in _MADARA_DOMAINS)
 
 
@@ -197,16 +197,16 @@ async def download_manga_chapter(
     output_dir: str,
     on_progress: Optional[Callable] = None,
 ) -> list[str]:
-    """Manga bölümü indir. Sayfa dosyalarının yol listesini döner."""
+    """Manga bÃƒÂ¶lÃƒÂ¼mÃƒÂ¼ indir. Sayfa dosyalarÃ„Â±nÃ„Â±n yol listesini dÃƒÂ¶ner."""
     os.makedirs(output_dir, exist_ok=True)
 
-    host = urlparse(url).netloc.lstrip("www.")
+    host = urlparse(url).netloc.removeprefix("www.")
 
     # Offline / DNS fail siteler
     if any(host.endswith(d) for d in _OFFLINE):
         raise RuntimeError(
-            f"Bu site erişilemez durumda (offline/DNS fail): {host}\n"
-            "Çözüm: Bölüm URL'sini çalışan bir kaynakla güncelle."
+            f"Bu site eriÃ…Å¸ilemez durumda (offline/DNS fail): {host}\n"
+            "Ãƒâ€¡ÃƒÂ¶zÃƒÂ¼m: BÃƒÂ¶lÃƒÂ¼m URL'sini ÃƒÂ§alÃ„Â±Ã…Å¸an bir kaynakla gÃƒÂ¼ncelle."
         )
 
     if "mangadex.org" in url:
@@ -220,8 +220,8 @@ async def download_manga_chapter(
     elif _is_madara(url):
         return await _madara_chapter(url, output_dir, on_progress)
     else:
-        # Bilinmeyen site: önce Madara dene (çoğu WordPress/Madara tema kullanır)
-        # gallery-dl son çare
+        # Bilinmeyen site: ÃƒÂ¶nce Madara dene (ÃƒÂ§oÃ„Å¸u WordPress/Madara tema kullanÃ„Â±r)
+        # gallery-dl son ÃƒÂ§are
         try:
             return await _madara_chapter(url, output_dir, on_progress)
         except Exception:
@@ -230,9 +230,9 @@ async def download_manga_chapter(
 
 
 async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """MangaDex chapter indir. URL formatları:
-    - https://mangadex.org/title/{UUID}  → manga title, chapter ID API'den bulunur
-    - https://mangadex.org/chapter/{UUID} → direkt chapter ID
+    """MangaDex chapter indir. URL formatlarÃ„Â±:
+    - https://mangadex.org/title/{UUID}  Ã¢â€ â€™ manga title, chapter ID API'den bulunur
+    - https://mangadex.org/chapter/{UUID} Ã¢â€ â€™ direkt chapter ID
     """
     import httpx
 
@@ -241,13 +241,13 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
     if m:
         chapter_id = m.group(1)
     else:
-        # Title URL — chapter ID'yi API'den bul
+        # Title URL Ã¢â‚¬â€ chapter ID'yi API'den bul
         m2 = re.search(r"/title/([a-f0-9-]{36})", url)
         if not m2:
-            raise ValueError(f"Geçersiz MangaDex URL (title/chapter UUID yok): {url}")
+            raise ValueError(f"GeÃƒÂ§ersiz MangaDex URL (title/chapter UUID yok): {url}")
         manga_uuid = m2.group(1)
 
-        # URL'de chapter numarası var mı? (#chapter-N veya ?chapter=N)
+        # URL'de chapter numarasÃ„Â± var mÃ„Â±? (#chapter-N veya ?chapter=N)
         ch_num_match = re.search(r'(?:#chapter-?|[\?&]chapter=)(\d+)', url)
         target_ch = ch_num_match.group(1) if ch_num_match else "1"
 
@@ -266,7 +266,7 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
                 except Exception:
                     pass
 
-            # Dil filtresi ile bulunamazsa, tüm dilleri dene
+            # Dil filtresi ile bulunamazsa, tÃƒÂ¼m dilleri dene
             if not chapters:
                 r = await cl.get("https://api.mangadex.org/chapter", params={
                     "manga": manga_uuid,
@@ -280,9 +280,9 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
                         pass
 
             if not chapters:
-                raise RuntimeError(f"MangaDex: manga {manga_uuid[:12]}... için chapter bulunamadı")
+                raise RuntimeError(f"MangaDex: manga {manga_uuid[:12]}... iÃƒÂ§in chapter bulunamadÃ„Â±")
 
-            # Hedef chapter'ı bul (numara eşleşmesi)
+            # Hedef chapter'Ã„Â± bul (numara eÃ…Å¸leÃ…Å¸mesi)
             target = None
             for ch in chapters:
                 attrs = ch.get("attributes", {})
@@ -301,7 +301,7 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
                 target = chapters[0]
 
             if not target:
-                raise RuntimeError(f"MangaDex: chapter {target_ch} bulunamadı (toplam {len(chapters)} chapter)")
+                raise RuntimeError(f"MangaDex: chapter {target_ch} bulunamadÃ„Â± (toplam {len(chapters)} chapter)")
 
             chapter_id = target["id"]
 
@@ -333,33 +333,33 @@ async def _mangadex_chapter(url: str, output_dir: str, on_progress) -> list[str]
 
 
 async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """Next.js App Router siteler (monomanga.com.tr) — RSC payload'dan CDN URL çıkar.
-    URL'ler Türkçe karakter ve boşluk içerebilir — regex bunu desteklemeli."""
+    """Next.js App Router siteler (monomanga.com.tr) Ã¢â‚¬â€ RSC payload'dan CDN URL ÃƒÂ§Ã„Â±kar.
+    URL'ler TÃƒÂ¼rkÃƒÂ§e karakter ve boÃ…Å¸luk iÃƒÂ§erebilir Ã¢â‚¬â€ regex bunu desteklemeli."""
     import httpx
 
     async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
         resp = await client.get(url)
         if resp.status_code != 200:
-            raise RuntimeError(f"NextJS: HTTP {resp.status_code} — {url}")
+            raise RuntimeError(f"NextJS: HTTP {resp.status_code} Ã¢â‚¬â€ {url}")
         html = resp.text
 
-    # RSC payload'larını çıkar: self.__next_f.push([...])
+    # RSC payload'larÃ„Â±nÃ„Â± ÃƒÂ§Ã„Â±kar: self.__next_f.push([...])
     rsc_payloads = re.findall(
         r"self\.__next_f\.push\(\[(.*?)\]\)",
         html, re.DOTALL
     )
     if not rsc_payloads:
-        raise RuntimeError(f"NextJS: RSC payload bulunamadı — {url}")
+        raise RuntimeError(f"NextJS: RSC payload bulunamadÃ„Â± Ã¢â‚¬â€ {url}")
 
     all_payloads = " ".join(rsc_payloads)
 
-    # CDN image URL'lerini çıkar (RSC payload — boşluk ve Türkçe karakter dahil)
+    # CDN image URL'lerini ÃƒÂ§Ã„Â±kar (RSC payload Ã¢â‚¬â€ boÃ…Å¸luk ve TÃƒÂ¼rkÃƒÂ§e karakter dahil)
     cdn_urls = re.findall(
         r"https://cdn\.monomanga\.com\.tr/chapters/[^\"'\\,}\]]+",
         all_payloads
     )
 
-    # HTML'deki doğrudan src/data-src attribute'lerinden topla
+    # HTML'deki doÃ„Å¸rudan src/data-src attribute'lerinden topla
     for attr in ("src", "data-src", "data-lazy-src"):
         tags = re.findall(
             rf'{attr}="(https://cdn\.monomanga\.com\.tr/chapters/[^"]+)"',
@@ -367,14 +367,14 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         )
         cdn_urls.extend(tags)
 
-    # Benzersiz yap + sırala
+    # Benzersiz yap + sÃ„Â±rala
     seen: set[str] = set()
     img_urls: list[str] = []
     for u in cdn_urls:
         u = u.strip().rstrip(".,;'\"")
         if not u or u in seen or not u.startswith("https://cdn.monomanga.com.tr/chapters/"):
             continue
-        # Sadece resim uzantılı olanları al
+        # Sadece resim uzantÃ„Â±lÃ„Â± olanlarÃ„Â± al
         if not re.search(r'\.(webp|jpg|jpeg|png|avif)(?:\?|$)', u, re.IGNORECASE):
             continue
         seen.add(u)
@@ -385,14 +385,14 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
         try:
             img_urls = await _nextjs_playwright_fallback(url)
         except Exception as pw_err:
-            raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url} (PW fallback: {pw_err})")
+            raise RuntimeError(f"NextJS: hiÃƒÂ§ gÃƒÂ¶rsel URL bulunamadÃ„Â± Ã¢â‚¬â€ {url} (PW fallback: {pw_err})")
 
     if not img_urls:
-        raise RuntimeError(f"NextJS: hiç görsel URL bulunamadı — {url}")
+        raise RuntimeError(f"NextJS: hiÃƒÂ§ gÃƒÂ¶rsel URL bulunamadÃ„Â± Ã¢â‚¬â€ {url}")
 
-    # Sayfa numarasına göre sırala (dosya adının sonundaki numara)
+    # Sayfa numarasÃ„Â±na gÃƒÂ¶re sÃ„Â±rala (dosya adÃ„Â±nÃ„Â±n sonundaki numara)
     def _page_num(u: str) -> int:
-        # URL'deki son sayıyı bul: .../N.webp veya .../NN.jpg
+        # URL'deki son sayÃ„Â±yÃ„Â± bul: .../N.webp veya .../NN.jpg
         base = os.path.splitext(u.rstrip("/").split("?")[0])[0]
         nums = re.findall(r'(\d+)(?!.*\d)', base)
         return int(nums[-1]) if nums else 999
@@ -415,70 +415,77 @@ async def _nextjs_chapter(url: str, output_dir: str, on_progress) -> list[str]:
                 await on_progress(i + 1, total)
 
     if not files:
-        raise RuntimeError(f"NextJS: hiç sayfa indirilemedi — {url}")
+        raise RuntimeError(f"NextJS: hiÃƒÂ§ sayfa indirilemedi Ã¢â‚¬â€ {url}")
     validate_manga_files(files)
     return files
 
 
 async def _nextjs_playwright_fallback(url: str) -> list[str]:
-    """Playwright ile Next.js sayfasını JS-render et, CDN image URL'leri topla.
-    monomanga.com.tr gibi NextJS siteler için RSC payload boşsa fallback."""
+    """Playwright ile Next.js sayfasÃ„Â±nÃ„Â± JS-render et, CDN image URL'leri topla.
+    monomanga.com.tr gibi NextJS siteler iÃƒÂ§in RSC payload boÃ…Å¸sa fallback."""
     from playwright.async_api import async_playwright
 
     img_urls: list[str] = []
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=["--no-sandbox"])
-        page = await browser.new_page()
+        # S-166: her cikis yolunda kapan — zombi chrome.exe birikimi fix'i
+        try:
+            page = await browser.new_page()
 
-        # Network response listener — CDN image isteklerini yakala
-        def _on_response(resp):
-            ct = resp.headers.get("content-type", "")
-            if "image" in ct and "cdn.monomanga" in resp.url:
-                if resp.url not in img_urls:
-                    img_urls.append(resp.url)
+            # Network response listener Ã¢â‚¬â€ CDN image isteklerini yakala
+            def _on_response(resp):
+                ct = resp.headers.get("content-type", "")
+                if "image" in ct and "cdn.monomanga" in resp.url:
+                    if resp.url not in img_urls:
+                        img_urls.append(resp.url)
 
-        page.on("response", _on_response)
+            page.on("response", _on_response)
 
-        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
-        await page.wait_for_timeout(5000)
+            await page.goto(url, wait_until="domcontentloaded", timeout=20000)
+            await page.wait_for_timeout(5000)
 
-        # Scroll down to trigger lazy load
-        for i in range(5):
-            await page.evaluate(f"window.scrollTo(0, document.body.scrollHeight * {(i+1)/5})")
-            await page.wait_for_timeout(2000)
+            # Scroll down to trigger lazy load
+            for i in range(5):
+                await page.evaluate(f"window.scrollTo(0, document.body.scrollHeight * {(i+1)/5})")
+                await page.wait_for_timeout(2000)
 
-        # DOM'dan img src/data-src topla
-        dom_imgs = await page.eval_on_selector_all(
-            "img[src*='cdn'], img[data-src*='cdn']",
-            "els => els.map(e => e.src || e.getAttribute('data-src') || '')"
-        )
-        for src in dom_imgs:
-            if src and "cdn.monomanga" in src and src not in img_urls:
-                img_urls.append(src)
+            # DOM'dan img src/data-src topla
+            dom_imgs = await page.eval_on_selector_all(
+                "img[src*='cdn'], img[data-src*='cdn']",
+                "els => els.map(e => e.src || e.getAttribute('data-src') || '')"
+            )
+            for src in dom_imgs:
+                if src and "cdn.monomanga" in src and src not in img_urls:
+                    img_urls.append(src)
 
-        # Sayfa içeriğinden CDN URL'leri regex ile topla
-        content = await page.content()
-        import re as _re
-        cdn_in_html = _re.findall(
-            r"https://cdn\.monomanga\.com\.tr/chapters/[^\s\"'<>]+",
-            content
-        )
-        for u in cdn_in_html:
-            u = u.rstrip("\\/,.\"'")
-            if u not in img_urls:
-                img_urls.append(u)
-
-        await browser.close()
+            # Sayfa iÃƒÂ§eriÃ„Å¸inden CDN URL'leri regex ile topla
+            content = await page.content()
+            import re as _re
+            cdn_in_html = _re.findall(
+                r"https://cdn\.monomanga\.com\.tr/chapters/[^\s\"'<>]+",
+                content
+            )
+            for u in cdn_in_html:
+                u = u.rstrip("\\/,.\"'")
+                if u not in img_urls:
+                    img_urls.append(u)
+        finally:
+            try:
+                await browser.close()
+            except Exception:
+                pass
 
     return img_urls
 
 
-_CHROMIUM_BIN = os.path.expanduser("~/.cache/ms-playwright/chromium-1228/chrome-linux64/chrome")
+# nodriver Chromium binary yolu — platform-gercek cozumleyici (S-166 fix)
+from backend.downloader.browser import resolve_chromium_bin
+_CHROMIUM_BIN = resolve_chromium_bin()
 
 
 async def _nodriver_get_html(url: str, wait_secs: int = 20) -> Optional[str]:
-    """nodriver (undetected Chrome) ile CF Managed Challenge aşılır, JS-render HTML alınır."""
+    """nodriver (undetected Chrome) ile CF Managed Challenge aÃ…Å¸Ã„Â±lÃ„Â±r, JS-render HTML alÃ„Â±nÃ„Â±r."""
     try:
         import nodriver as uc
     except ImportError:
@@ -538,11 +545,11 @@ async def _playwright_get_html(url: str, wait_secs: int = 12) -> Optional[str]:
 
 
 async def _fetch_with_cf(url: str) -> tuple[str, str]:
-    """curl_cffi impersonate ile CF korumalı sayfa getir; Playwright/nodriver fallback.
-    Çoklu impersonate dener: chrome131, chrome124, safari15_5, firefox102."""
-    host = urlparse(url).netloc.lstrip("www.")
+    """curl_cffi impersonate ile CF korumalÃ„Â± sayfa getir; Playwright/nodriver fallback.
+    Ãƒâ€¡oklu impersonate dener: chrome131, chrome124, safari15_5, firefox102."""
+    host = urlparse(url).netloc.removeprefix("www.")
 
-    # curl_cffi ile farklı impersonate'leri dene
+    # curl_cffi ile farklÃ„Â± impersonate'leri dene
     try:
         from curl_cffi.requests import AsyncSession
 
@@ -559,14 +566,14 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
                 continue
     except Exception as exc:
         import logging
-        logging.getLogger(__name__).warning("curl_cffi hatası, Playwright fallback: %s", exc)
+        logging.getLogger(__name__).warning("curl_cffi hatasÃ„Â±, Playwright fallback: %s", exc)
 
-    # curl_cffi yoksa/CF challenge ise Playwright ile gerçek tarayıcıdan çek
+    # curl_cffi yoksa/CF challenge ise Playwright ile gerÃƒÂ§ek tarayÃ„Â±cÃ„Â±dan ÃƒÂ§ek
     html = await _playwright_get_html(url, wait_secs=12)
     if html and len(html) > 500 and "Just a moment" not in html[:1000]:
         return html, url
 
-    # Playwright da başarısızsa → nodriver (daha gizli Chrome) dene
+    # Playwright da baÃ…Å¸arÃ„Â±sÃ„Â±zsa Ã¢â€ â€™ nodriver (daha gizli Chrome) dene
     if any(host.endswith(d) for d in ("ragnarscans.net", "ragnarscans.com", "hayalistic.com.tr",
                                        "manga-sehri.net", "manga-sehri.com", "mangasehri.net",
                                        "merlintoon.com", "asurascans.com.tr")):
@@ -574,7 +581,7 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
         if html and len(html) > 500 and "Just a moment" not in html[:1000]:
             return html, url
 
-    # Son çare: httpx düz istek (custom headers ile)
+    # Son ÃƒÂ§are: httpx dÃƒÂ¼z istek (custom headers ile)
     cf_headers = dict(_HEADERS)
     cf_headers.update({
         "Referer": "https://www.google.com/",
@@ -588,15 +595,15 @@ async def _fetch_with_cf(url: str) -> tuple[str, str]:
             r.raise_for_status()
             return r.text, str(r.url)
         except httpx.HTTPStatusError:
-            # 403/503 durumunda yine de içeriği döndürmeyi dene
+            # 403/503 durumunda yine de iÃƒÂ§eriÃ„Å¸i dÃƒÂ¶ndÃƒÂ¼rmeyi dene
             if r.status_code in (403, 503) and len(r.text) > 1000 and "captcha" not in r.text[:500].lower():
                 return r.text, str(r.url)
             raise
 
 
 async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """IMC (InitMangaEncryptedChapter) sitelerinden Playwright ile bölüm indir.
-    merlintoon.com gibi siteler görselleri JS ile şifreler — Playwright şart."""
+    """IMC (InitMangaEncryptedChapter) sitelerinden Playwright ile bÃƒÂ¶lÃƒÂ¼m indir.
+    merlintoon.com gibi siteler gÃƒÂ¶rselleri JS ile Ã…Å¸ifreler Ã¢â‚¬â€ Playwright Ã…Å¸art."""
     from playwright.async_api import async_playwright
 
     async with async_playwright() as pw:
@@ -611,74 +618,79 @@ async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             locale="tr-TR",
             viewport={"width": 1920, "height": 1080},
         )
+        # S-166: her cikis yolunda kapan — zombi chrome.exe birikimi fix'i
         try:
-            from playwright_stealth import Stealth
-            await Stealth().apply_stealth_async(ctx)
-        except Exception:
-            pass
+            try:
+                from playwright_stealth import Stealth
+                await Stealth().apply_stealth_async(ctx)
+            except Exception:
+                pass
 
-        page = await ctx.new_page()
-        await page.goto(url, timeout=60000, wait_until="domcontentloaded")
+            page = await ctx.new_page()
+            await page.goto(url, timeout=60000, wait_until="domcontentloaded")
 
-        try:
-            await page.wait_for_selector("#chapter-content", timeout=30000, state="attached")
-        except Exception:
-            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            await asyncio.sleep(3)
-            await page.wait_for_selector("#chapter-content", timeout=20000, state="attached")
+            try:
+                await page.wait_for_selector("#chapter-content", timeout=30000, state="attached")
+            except Exception:
+                await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                await asyncio.sleep(3)
+                await page.wait_for_selector("#chapter-content", timeout=20000, state="attached")
 
-        has_encrypted = False
-        try:
-            has_encrypted = await page.evaluate(
-                "() => typeof InitMangaEncryptedChapter !== 'undefined'"
-            )
-        except Exception:
-            pass
-        if has_encrypted:
-            for _ in range(90):
-                img_count = await page.evaluate(
+            has_encrypted = False
+            try:
+                has_encrypted = await page.evaluate(
+                    "() => typeof InitMangaEncryptedChapter !== 'undefined'"
+                )
+            except Exception:
+                pass
+            if has_encrypted:
+                for _ in range(90):
+                    img_count = await page.evaluate(
+                        "() => document.querySelectorAll('#chapter-content img').length"
+                    )
+                    if img_count > 0:
+                        break
+                    await asyncio.sleep(1)
+                else:
+                    img_count = 0
+
+            if not has_encrypted or not img_count:
+                await page.wait_for_selector("#chapter-content img", timeout=30000, state="attached")
+
+            prev_count = 0
+            for _ in range(30):
+                count = await page.evaluate(
                     "() => document.querySelectorAll('#chapter-content img').length"
                 )
-                if img_count > 0:
+                if count == prev_count and count > 0:
                     break
+                prev_count = count
+                await page.evaluate("window.scrollBy(0, 1500)")
                 await asyncio.sleep(1)
-            else:
-                img_count = 0
 
-        if not has_encrypted or not img_count:
-            await page.wait_for_selector("#chapter-content img", timeout=30000, state="attached")
+            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            await asyncio.sleep(2)
 
-        prev_count = 0
-        for _ in range(30):
-            count = await page.evaluate(
-                "() => document.querySelectorAll('#chapter-content img').length"
-            )
-            if count == prev_count and count > 0:
-                break
-            prev_count = count
-            await page.evaluate("window.scrollBy(0, 1500)")
-            await asyncio.sleep(1)
-
-        await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-        await asyncio.sleep(2)
-
-        img_urls = await page.evaluate("""
-            () => {
-                const imgs = document.querySelectorAll('#chapter-content img');
-                const urls = [];
-                imgs.forEach(img => {
-                    let src = img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || '';
-                    if (src.startsWith('//')) src = 'https:' + src;
-                    if (src.startsWith('http')) urls.push(src);
-                });
-                return [...new Set(urls)];
-            }
-        """)
-
-        await browser.close()
+            img_urls = await page.evaluate("""
+                () => {
+                    const imgs = document.querySelectorAll('#chapter-content img');
+                    const urls = [];
+                    imgs.forEach(img => {
+                        let src = img.src || img.getAttribute('data-src') || img.getAttribute('data-lazy-src') || '';
+                        if (src.startsWith('//')) src = 'https:' + src;
+                        if (src.startsWith('http')) urls.push(src);
+                    });
+                    return [...new Set(urls)];
+                }
+                """)
+        finally:
+            try:
+                await browser.close()
+            except Exception:
+                pass
 
     if not img_urls:
-        raise RuntimeError(f"IMC: şifreli içerikten görsel bulunamadı — {url}")
+        raise RuntimeError(f"IMC: Ã…Å¸ifreli iÃƒÂ§erikten gÃƒÂ¶rsel bulunamadÃ„Â± Ã¢â‚¬â€ {url}")
 
     total = len(img_urls)
     files: list[str] = []
@@ -703,15 +715,15 @@ async def _imc_chapter(url: str, output_dir: str, on_progress) -> list[str]:
 
     if skipped > 0:
         import logging
-        logging.getLogger(__name__).info("IMC: %d küçük/hatalı görsel atıldı", skipped)
+        logging.getLogger(__name__).info("IMC: %d kÃƒÂ¼ÃƒÂ§ÃƒÂ¼k/hatalÃ„Â± gÃƒÂ¶rsel atÃ„Â±ldÃ„Â±", skipped)
     if not files:
-        raise RuntimeError(f"IMC: hiç sayfa indirilemedi ({skipped} atıldı) — {url}")
+        raise RuntimeError(f"IMC: hiÃƒÂ§ sayfa indirilemedi ({skipped} atÃ„Â±ldÃ„Â±) Ã¢â‚¬â€ {url}")
     validate_manga_files(files)
     return files
 
 
 async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """Madara WordPress tema sitelerinden manga bölümü indir (?style=list ile)."""
+    """Madara WordPress tema sitelerinden manga bÃƒÂ¶lÃƒÂ¼mÃƒÂ¼ indir (?style=list ile)."""
     list_url = url.rstrip("/") + "/?style=list"
 
     try:
@@ -722,7 +734,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
     seen: set[str] = set()
     chapter_imgs: list[str] = []
 
-    # 1. Reading-content section isolation — en hedefli, UI/icon/reklam dışlar
+    # 1. Reading-content section isolation Ã¢â‚¬â€ en hedefli, UI/icon/reklam dÃ„Â±Ã…Å¸lar
     reading_section = _extract_reading_section(html)
     if reading_section:
         chapter_imgs = _extract_img_urls_from_section(reading_section, seen)
@@ -731,7 +743,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             if len(hinted) >= max(3, len(chapter_imgs) // 2):
                 chapter_imgs = hinted
 
-    # 2. wp-manga-chapter-img class'lı img'leri dene (Madara standart)
+    # 2. wp-manga-chapter-img class'lÃ„Â± img'leri dene (Madara standart)
     if not chapter_imgs:
         for m in re.finditer(r'<img[^>]+class=["\'][^"\']*wp-manga-chapter-img[^"\']*["\'][^>]*>', html, re.IGNORECASE):
             tag = m.group(0)
@@ -746,7 +758,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
                         chapter_imgs.append(src)
                     break
 
-    # 3. page-break class'lı img'leri dene
+    # 3. page-break class'lÃ„Â± img'leri dene
     if not chapter_imgs:
         for m in re.finditer(r'<img[^>]+class=["\'][^"\']*(?:page-break|reading-content|chapter-img)[^"\']*["\'][^>]*>', html, re.IGNORECASE):
             tag = m.group(0)
@@ -761,7 +773,7 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
                         chapter_imgs.append(src)
                     break
 
-    # 4. Broad fallback — tighter filtrelerle (genişletilmiş lazy attrs + skip patterns)
+    # 4. Broad fallback Ã¢â‚¬â€ tighter filtrelerle (geniÃ…Å¸letilmiÃ…Å¸ lazy attrs + skip patterns)
     if not chapter_imgs:
         for m in re.finditer(r'(?:data-src|data-lazy-src|data-lazy|data-original|data-cfsrc|src)=["\']([^"\']*\.(?:jpg|jpeg|png|webp|avif)[^"\']*)["\']', html, re.IGNORECASE):
             src = m.group(1).strip()
@@ -780,12 +792,16 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
             if numbered:
                 chapter_imgs = numbered
 
-    # URL'leri sırala (001, 002, ... sırasını koru)
-    chapter_imgs.sort(key=lambda u: re.search(r'(\d+)\.(?:jpg|jpeg|png|webp|avif)', u, re.IGNORECASE).group(1)
-                      if re.search(r'(\d+)\.(?:jpg|jpeg|png|webp|avif)', u, re.IGNORECASE) else u)
+    # URL'leri sÃ„Â±rala (001, 002, ... sÃ„Â±rasÃ„Â±nÃ„Â± koru)
+    # S-166: numeric sort — string sort "1","10","100","2" karistiriyordu
+    def _chapter_page_key(u: str):
+        m = re.search(r'(\d+)\.(?:jpg|jpeg|png|webp|avif)', u, re.IGNORECASE)
+        return (0, int(m.group(1))) if m else (1, u)
+
+    chapter_imgs.sort(key=_chapter_page_key)
 
     if not chapter_imgs:
-        raise RuntimeError(f"Madara: hiç sayfa görseli bulunamadı — {list_url}")
+        raise RuntimeError(f"Madara: hiÃƒÂ§ sayfa gÃƒÂ¶rseli bulunamadÃ„Â± Ã¢â‚¬â€ {list_url}")
 
     total = len(chapter_imgs)
     files: list[str] = []
@@ -807,18 +823,18 @@ async def _madara_chapter(url: str, output_dir: str, on_progress) -> list[str]:
 
     if skipped > 0:
         import logging
-        logging.getLogger(__name__).info("Madara: %d küçük görsel atlandı (< %d bytes)", skipped, MIN_MANGA_PAGE_BYTES)
+        logging.getLogger(__name__).info("Madara: %d kÃƒÂ¼ÃƒÂ§ÃƒÂ¼k gÃƒÂ¶rsel atlandÃ„Â± (< %d bytes)", skipped, MIN_MANGA_PAGE_BYTES)
     if not files:
-        raise RuntimeError(f"Madara: hiç sayfa indirilemedi ({skipped} küçük görsel atıldı) — {url}")
+        raise RuntimeError(f"Madara: hiÃƒÂ§ sayfa indirilemedi ({skipped} kÃƒÂ¼ÃƒÂ§ÃƒÂ¼k gÃƒÂ¶rsel atÃ„Â±ldÃ„Â±) Ã¢â‚¬â€ {url}")
     validate_manga_files(files)
     return files
 
 
 async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str]:
-    """uzaymanga.com chapter indir. Eski URL formatını otomatik yeni formata çevirir."""
+    """uzaymanga.com chapter indir. Eski URL formatÃ„Â±nÃ„Â± otomatik yeni formata ÃƒÂ§evirir."""
     fetch_url = url
 
-    # Eski format: /manga/{num}/{slug}/{id}/{ch}-bolum → yeni: /manga/{slug}/{ch}-bolum-oku
+    # Eski format: /manga/{num}/{slug}/{id}/{ch}-bolum Ã¢â€ â€™ yeni: /manga/{slug}/{ch}-bolum-oku
     m = _UZAY_OLD_RE.search(url)
     if m:
         slug, ch_num = m.group(1), m.group(2)
@@ -829,18 +845,18 @@ async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str
         if r.status_code == 404 and m:
             raise RuntimeError(
                 f"uzaymanga.com URL 404: '{fetch_url}'\n"
-                f"Bu manga uzaymanga.com'dan kaldırılmış olabilir. "
-                f"Bölüm URL'sini çalışan bir kaynakla güncelle."
+                f"Bu manga uzaymanga.com'dan kaldÃ„Â±rÃ„Â±lmÃ„Â±Ã…Å¸ olabilir. "
+                f"BÃƒÂ¶lÃƒÂ¼m URL'sini ÃƒÂ§alÃ„Â±Ã…Å¸an bir kaynakla gÃƒÂ¼ncelle."
             )
         r.raise_for_status()
         html = r.text
 
-    # CDN image URL'lerini çıkar: cdn-u.efsanelerN.can.re/_manga/{id}/{ch}/{page}.avif
+    # CDN image URL'lerini ÃƒÂ§Ã„Â±kar: cdn-u.efsanelerN.can.re/_manga/{id}/{ch}/{page}.avif
     cdn_urls = _UZAY_CDN_RE.findall(html)
     if not cdn_urls:
-        raise RuntimeError(f"uzaymanga.com: chapter görselleri bulunamadı — {fetch_url}")
+        raise RuntimeError(f"uzaymanga.com: chapter gÃƒÂ¶rselleri bulunamadÃ„Â± Ã¢â‚¬â€ {fetch_url}")
 
-    # Tekrarları kaldır, sırala
+    # TekrarlarÃ„Â± kaldÃ„Â±r, sÃ„Â±rala
     seen: set[str] = set()
     img_urls: list[str] = []
     for u in cdn_urls:
@@ -862,13 +878,13 @@ async def _uzaymanga_chapter(url: str, output_dir: str, on_progress) -> list[str
                 await on_progress(i + 1, total)
 
     if not files:
-        raise RuntimeError(f"uzaymanga.com: hiç sayfa indirilemedi — {fetch_url}")
+        raise RuntimeError(f"uzaymanga.com: hiÃƒÂ§ sayfa indirilemedi Ã¢â‚¬â€ {fetch_url}")
     validate_manga_files(files)
     return files
 
 
 async def extract_manga_chapter_tags(url: str) -> list[str]:
-    """Manga/manhwa bölüm sayfasından yerel kaynak etiketlerini çıkar."""
+    """Manga/manhwa bÃƒÂ¶lÃƒÂ¼m sayfasÃ„Â±ndan yerel kaynak etiketlerini ÃƒÂ§Ã„Â±kar."""
     try:
         html, _ = await _fetch_with_cf(url)
         return extract_manga_source_tags(html, url)
@@ -902,7 +918,7 @@ async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str
 
     await proc.wait()
     if proc.returncode != 0:
-        raise RuntimeError(f"gallery-dl çıkış kodu {proc.returncode}")
+        raise RuntimeError(f"gallery-dl ÃƒÂ§Ã„Â±kÃ„Â±Ã…Å¸ kodu {proc.returncode}")
 
     exts = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
     files = sorted(
@@ -911,6 +927,6 @@ async def _gallerydl_chapter(url: str, output_dir: str, on_progress) -> list[str
         if os.path.splitext(f)[1].lower() in exts
     )
     if not files:
-        raise RuntimeError(f"gallery-dl hiç dosya indirmedi: {output_dir}")
+        raise RuntimeError(f"gallery-dl hiÃƒÂ§ dosya indirmedi: {output_dir}")
     validate_manga_files(files)
     return files

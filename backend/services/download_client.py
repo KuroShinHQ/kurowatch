@@ -291,3 +291,30 @@ def create_client(cfg: dict) -> Optional[DownloadClient]:
         url = cfg.get("aria2_url", "http://localhost:6800/jsonrpc")
         return Aria2Client(url, cfg.get("aria2_token", ""))
     return None
+
+
+# Ayni config -> ayni client (SSE'nin saniyelik yeni-client + re-login leak fix'i, S-166)
+_CLIENT_CACHE: dict = {}
+
+
+def _client_key(cfg: dict):
+    client_type = cfg.get("download_client_type", "").lower()
+    if client_type == "qbittorrent":
+        return ("qbittorrent", cfg.get("qb_url", ""), cfg.get("qb_username", ""), cfg.get("qb_password", ""))
+    if client_type == "aria2":
+        return ("aria2", cfg.get("aria2_url", ""), cfg.get("aria2_token", ""))
+    return None
+
+
+def get_shared_client(cfg: dict) -> Optional[DownloadClient]:
+    key = _client_key(cfg)
+    if key is None:
+        return None
+    client = _CLIENT_CACHE.get(key)
+    if client is None:
+        client = create_client(cfg)
+        _CLIENT_CACHE[key] = client
+        if len(_CLIENT_CACHE) > 4:  # config degisimlerinde eski client'lari dusur
+            for k in list(_CLIENT_CACHE)[:-4]:
+                _CLIENT_CACHE.pop(k, None)
+    return client

@@ -451,9 +451,31 @@ def _title_variants(title: str) -> list[str]:
     return variants
 
 
+def _norm_title(t: str) -> str:
+    """Baslik normalizasyonu: parantez at, kucult, noktalama sil."""
+    t = re.sub(r'\s*\([^)]+\)', '', (t or ''))
+    t = re.sub(r'[^\w\s]', ' ', t, flags=re.UNICODE)
+    return re.sub(r'\s+', ' ', t).lower().strip()
+
+
+def _title_sim(a: str, b: str) -> float:
+    """0-1 benzerlik; kisa baslik uzun icinde tam geciyorsa guclendirilir."""
+    from difflib import SequenceMatcher
+    na, nb = _norm_title(a), _norm_title(b)
+    if not na or not nb:
+        return 0.0
+    r = SequenceMatcher(None, na, nb).ratio()
+    short, long_ = (na, nb) if len(na) <= len(nb) else (nb, na)
+    if short in long_:
+        r = max(r, len(short) / len(long_))
+    return min(r, 1.0)
+
+
 @router.post("/content/enrich-covers")
 async def enrich_covers(db: AsyncSession = Depends(get_db)):
-    """Cover'ı olmayan anime/manga içerikler için AniList'te agresif arama yap."""
+    """Cover'ı olmayan anime/manga içerikler için AniList'te agresif arama yap.
+    S-166 fix: results[0] kör kabul YOK — en iyi başlık benzerliği kazanır,
+    esik alti eslesme reddedilir (Yanlış mal tuzağı: WALL-E mal:34792 dersi)."""
     stmt = select(Content).where(
         Content.cover_url.is_(None),
         Content.type.in_(["anime", "manga", "manhwa", "series", "movie"]),
@@ -466,20 +488,30 @@ async def enrich_covers(db: AsyncSession = Depends(get_db)):
 
     for c in items:
         found = None
+        best_sim = 0.0
         for variant in _title_variants(c.title):
             try:
                 results = await anilist.search(variant, c.type)
-                if results:
-                    found = results[0]
-                    break
                 await asyncio.sleep(0.3)
+                for cand in (results or []):
+                    sim = _title_sim(variant, cand.get("title") or "")
+                    if sim > best_sim:
+                        best_sim, found = sim, cand
+                if best_sim >= 0.82:
+                    break
             except Exception:
                 pass
+
+        if best_sim < 0.55:
+            found = None
 
         if found and found.get("cover_url"):
             c.cover_url = found["cover_url"]
             if not c.external_id:
-                c.external_id = found.get("external_id")
+                new_ext = str(found.get("external_id") or "")
+                if new_ext and ":" not in new_ext:
+                    new_ext = f"anilist:{new_ext}"  # ciplak ID yazma (S-166 prefix fix)
+                c.external_id = new_ext or None
             if not c.genres and found.get("genres"):
                 c.genres = json.dumps(found["genres"])
             if not c.total_episodes and found.get("total_episodes"):
@@ -494,6 +526,101 @@ async def enrich_covers(db: AsyncSession = Depends(get_db)):
 
     await db.commit()
     return {"enriched": enriched, "failed_count": len(failed), "failed_titles": failed[:10]}
+
+
+# ── URL'den İçerik Ekle (menu 9.2 — S-166) ──────────────────────────
+
+class FromUrlIn(BaseModel):
+    url: str
+
+
+_URL_PARSERS = [
+    (re.compile(r"anilist\.(?:co|to)/(?:anime|manga)/(\d+)"), "anilist"),
+    (re.compile(r"myanimelist\.net/(anime|manga)/(\d+)"), "mal"),
+    (re.compile(r"themoviedb\.org/movie/(\d+)"), "tmdb_movie"),
+    (re.compile(r"themoviedb\.org/tv/(\d+)"), "tmdb_tv"),
+    (re.compile(r"imdb\.com/title/(tt\d+)"), "imdb"),
+    (re.compile(r"mangadex\.org/title/([0-9a-fA-F-]{36})"), "mangadex"),
+]
+
+
+def _parse_content_url(url: str) -> tuple[str, str, str]:
+    """(provider_ext_id, type, provider) — taninmayan URL'de ValueError."""
+    for pat, provider in _URL_PARSERS:
+        m = pat.search(url)
+        if not m:
+            continue
+        if provider == "anilist":
+            # anilist.co/anime vs manga path'ten ayrt edilir
+            return f"anilist:{m.group(1)}", ("manga" if "/manga/" in url else "anime"), provider
+        if provider == "mal":
+            return f"mal:{m.group(2)}", m.group(1), provider
+        if provider == "tmdb_movie":
+            return f"tmdb:{m.group(1)}", "movie", provider
+        if provider == "tmdb_tv":
+            return f"tmdb:{m.group(1)}", "series", provider
+        if provider == "imdb":
+            return f"imdb:{m.group(1)}", "movie", provider
+        if provider == "mangadex":
+            return f"mangadex:{m.group(1)}", "manga", provider
+    raise ValueError(
+        "Tanınmayan URL. Desteklenen: anilist.co, myanimelist.net, themoviedb.org, imdb.com, mangadex.org"
+    )
+
+
+@router.post("/content/from-url", status_code=201)
+async def create_from_url(body: FromUrlIn, db: AsyncSession = Depends(get_db)):
+    """URL'den icerik ekle: id + tip parse edilir, anilist/mal ise ad-kapak-puan
+    canli cekilir; digerleri placeholder ile acilir (enrich sonradan doldurur)."""
+    try:
+        ext_id, ctype, provider = _parse_content_url(body.url)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc))
+
+    dup = (await db.execute(select(Content).where(Content.external_id == ext_id))).scalar_one_or_none()
+    if dup:
+        raise HTTPException(409, f"Zaten kayıtlı: #{dup.id} {dup.title}")
+
+    title = f"{ext_id}"
+    cover_url = None
+    score = None
+    synopsis = None
+    total = None
+    if provider == "anilist":
+        try:
+            from backend.scraper import anilist
+            detail = await anilist.get_detail(ext_id.split(":", 1)[1])
+            if detail:
+                title = detail.get("title") or title
+                cover_url = detail.get("cover_url")
+                score = detail.get("external_score") or detail.get("score")
+                synopsis = detail.get("synopsis")
+                total = detail.get("total_episodes") or detail.get("total_chapters")
+                if detail.get("type"):
+                    ctype = detail["type"]
+        except Exception:
+            pass
+
+    c = Content(
+        title=title,
+        type=ctype,
+        external_id=ext_id,
+        cover_url=cover_url,
+        external_score=score,
+        synopsis=synopsis,
+        total_episodes=total if ctype in ("anime", "series", "cartoon") else None,
+        total_chapters=total if ctype in ("manga", "manhwa") else None,
+        status="planning",
+        season_number=1,
+    )
+    db.add(c)
+    await db.commit()
+    await db.refresh(c)
+    return {
+        "id": c.id, "title": c.title, "type": c.type,
+        "external_id": c.external_id, "cover_url": c.cover_url,
+        "provider": provider,
+    }
 
 
 # ── Browser Extension: Otomatik İlerleme ────────────────────────────

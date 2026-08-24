@@ -1,5 +1,5 @@
 """
-SOHBET-147 — Domain Health Checker
+SOHBET-147 â€” Domain Health Checker
 Tests all domains in the site table, updates is_dead status.
 """
 import asyncio, json, logging, os, re, time
@@ -41,7 +41,7 @@ HEADERS = {"User-Agent": UA, "Accept-Language": "tr-TR,tr;q=0.9,en;q=0.8"}
 async def check_single_url(url: str) -> HealthResult:
     """Test a single URL and return health status. Retry for rate-limited domains."""
     parsed = urlparse(url)
-    domain = parsed.netloc.lstrip("www.")
+    domain = parsed.netloc.removeprefix("www.")
     start = time.time()
 
     result = HealthResult(domain=domain, sample_url=url[:120])
@@ -88,7 +88,7 @@ async def check_single_url(url: str) -> HealthResult:
 
     result = await _do_check()
 
-    # Retry: setfilmizle rate-limit 404 → 5sn bekle, tekrar dene
+    # Retry: setfilmizle rate-limit 404 â†’ 5sn bekle, tekrar dene
     if result.status in ("DEAD", "BLOCKED") and 'setfilmizle' in domain:
         await asyncio.sleep(5)
         retry = await _do_check()
@@ -109,7 +109,7 @@ async def check_domain_with_samples(domain: str, sample_urls: list[str]) -> Heal
 
     for url in sample_urls[:3]:
         result = await check_single_url(url)
-        logger.info(f"  Sample: {url[:80]} → {result.status} ({result.status_code})")
+        logger.info(f"  Sample: {url[:80]} â†’ {result.status} ({result.status_code})")
         if result.status == "OK":
             return result
         if result.status == "CLOUDFLARE":
