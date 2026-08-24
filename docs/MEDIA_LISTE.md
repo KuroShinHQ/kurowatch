@@ -45,9 +45,9 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 692 | BOFURI: I Don't Want to Get Hurt, so I'll Max Out My Defense. Season 2 | AniList | - | - | planning | 12 | https://www.tranimaci.com/anime/bofuri-i-don-t-want-to-get-hurt-so-i-ll-max-out-my-defense-season-2/ |  |
 | 253 | Breaking Bad (Walter White | MyAnimeList | 5.4 | - | planning | 13 | https://www.tranimaci.com/breaking-bad-walter-white-1-bolum-izle |  |
 | 709 | By the Grace of the Gods 2 | AniList | - | - | planning | 12 | https://www.tranimaci.com/video/kami-tachi-ni-hirowareta-otoko-2nd-season-1-bolum |  |
-| 256 | Cars | TMDB | 6.8 | 8.5 | completed | 1 | https://www.tranimaci.com/cars-1-bolum-izle | ⚠ C |
-| 258 | Chainsaw Man | TMDB | 8.4 | - | planning | 12 | https://www.tranimaci.com/video/chainsaw-man-1-bolum | ⚠ C |
-| 259 | Charlotte | TMDB | 7.8 | 8.0 | completed | 13 | https://www.tranimaci.com/video/charlotte-1-bolum | ⚠ C |
+| 256 | Cars | TMDB | 6.8 | 8.5 | completed | 1 | https://www.hdfilmcehennemi.nl/1-arabalar-1-izle-hdf-7/ | ⚠ C |
+| 258 | Chainsaw Man | TMDB | 8.4 | - | planning | 12 | https://www.turkanime.tv/video/chainsaw-man-1-bolum | ⚠ C |
+| 259 | Charlotte | TMDB | 7.8 | 8.0 | completed | 13 | https://www.turkanime.tv/video/charlotte-1-bolum | ⚠ C |
 | 261 | Chuunibyou | AniList | 7.5 | 6.0 | completed | 12 | https://www.tranimaci.com/video/chuunibyou-demo-koi-ga-shitai-1-bolum |  |
 | 263 | Classroom of the Elite | AniList | 7.8 | 8.5 | completed | 12 | https://www.tranimaci.com/video/youkoso-jitsuryoku-shijou-shugi-no-kyoushitsu-e-tv-1-bolum |  |
 | 694 | Classroom of the Elite Season 2 | AniList | - | - | planning | 13 | https://www.tranimaci.com/anime/classroom-of-the-elite-season-2/ |  |
@@ -60,14 +60,14 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 270 | Dandadan | AniList | 8.4 | 8.5 | completed | 12 | https://www.tranimaci.com/video/dandadan-1-bolum |  |
 | 271 | DanMachi | AniList | 7.5 | 8.5 | completed | 13 | https://www.tranimaci.com/video/dungeon-ni-deai-wo-motomeru-no-wa-machigatteiru-darou-ka-1-bolum |  |
 | 272 | Danshi Koukousei | AniList | 8.2 | 8.0 | completed | 12 | https://www.tranimaci.com/video/danshi-koukousei-no-nichijou-1-bolum |  |
-| 274 | Dark (2017) | TMDB | 6.9 | - | planning | 25 | https://www.tranimaci.com/2017-1-bolum-izle | ⚠ C |
+| 274 | Dark (2017) | TMDB | 6.9 | - | planning | 25 | https://www.dizibox.live/dark-1-sezon-1-bolum-izle/ | ⚠ C |
 | 275 | Dark Gathering | MyAnimeList | 7.8 | 10.0 | completed | 25 | https://www.tranimaci.com/video/dark-gathering-1-bolum |  |
 | 276 | Dark Healer | TMDB | 5.5 | - | planning | 12 | https://www.tranimaci.com/dark-healer-1-bolum-izle | ⚠ C |
 | 277 | Dawn of the Witch | TMDB | 6.4 | - | planning | 12 | https://www.tranimaci.com/video/mahoutsukai-reimeiki-1-bolum | ⚠ C |
-| 278 | Dead Mount | TMDB | 7.2 | 6.0 | completed | 12 | https://www.tranimaci.com/video/dead-mount-death-play-1-bolum | ⚠ C |
-| 279 | Dead Mount Death Play | TMDB | 7.2 | 6.0 | completed | 12 | https://www.tranimaci.com/video/dead-mount-death-play-1-bolum | ⚠ C |
-| 281 | Death March | TMDB | 6.4 | - | planning | 12 | https://www.tranimaci.com/video/death-march-kara-hajimaru-isekai-kyousoukyoku-1-bolum | ⚠ C |
-| 282 | Death March kara Hajimaru Isekai Kyousoukyoku | TMDB | 6.4 | - | planning | 12 | https://www.tranimaci.com/video/death-march-kara-hajimaru-isekai-kyousoukyoku-1-bolum | ⚠ C |
+| 278 | Dead Mount | TMDB | 7.2 | 6.0 | completed | 12 | https://www.turkanime.tv/video/dead-mount-death-play-1-bolum | ⚠ C |
+| 279 | Dead Mount Death Play | TMDB | 7.2 | 6.0 | completed | 12 | https://www.turkanime.tv/video/dead-mount-death-play-1-bolum | ⚠ C |
+| 281 | Death March | TMDB | 6.4 | - | planning | 12 | https://www.turkanime.tv/video/death-march-kara-hajimaru-isekai-kyousoukyoku-1-bolum | ⚠ C |
+| 282 | Death March kara Hajimaru Isekai Kyousoukyoku | TMDB | 6.4 | - | planning | 12 | https://www.turkanime.tv/video/death-march-kara-hajimaru-isekai-kyousoukyoku-1-bolum | ⚠ C |
 | 283 | Death Note | MyAnimeList | 8.6 | 10.0 | completed | 37 | https://www.tranimaci.com/video/death-note-1-bolum |  |
 | 284 | Demon Lord 2099 | TMDB | 7.4 | 6.0 | completed | 12 | https://www.tranimaci.com/video/maou-2099-1-bolum | ⚠ C |
 | 285 | Demon Slayer | TMDB | 8.4 | - | planning | 13 | https://www.tranimaci.com/video/kimetsu-no-yaiba-1-bolum | ⚠ C |
@@ -75,7 +75,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 295 | Dr. STONE | AniList | 8.3 | 8.5 | completed | 24 | https://www.tranimaci.com/video/dr-stone-1-bolum |  |
 | 96 | Dungeon Meshi | AniList | 8.6 | 8.5 | watching | 24 | https://www.tranimaci.com/video/dungeon-meshi-1-bolum |  |
 | 684 | Dungeon Meshi 2nd Season | AniList | - | - | planning | - | https://www.tranimaci.com/dungeon-meshi-2nd-season-1-bolum-izle |  |
-| 300 | Elfen Lied | TMDB | 7.5 | 6.0 | completed | 13 | https://www.tranimaci.com/video/elfen-lied-1-bolum | ⚠ C |
+| 300 | Elfen Lied | TMDB | 7.5 | 6.0 | completed | 13 | https://www.turkanime.tv/video/elfen-lied-1-bolum | ⚠ C |
 | 98 | Failure Frame (Hazurewaku) | MyAnimeList | 6.5 | - | watching | 12 | https://www.tranimaci.com/video/hazurewaku-no-1-bolum |  |
 | 303 | Faraway Paladin | TMDB | 6.9 | 6.0 | completed | 12 | https://www.tranimaci.com/video/saihate-no-paladin-1-bolum | ⚠ C |
 | 304 | Faraway Paladin 2 | MyAnimeList | 7.4 | - | planning | 12 | https://www.tranimaci.com/video/saihate-no-paladin-1-bolum |  |
@@ -88,7 +88,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 319 | Fullmetal Alchemist: Brotherhood | MyAnimeList | 9.1 | 10.0 | completed | 64 | https://www.tranimaci.com/video/fullmetal-alchemist-brotherhood-1-bolum |  |
 | 325 | Genius Prince | MyAnimeList | 7.4 | - | planning | 12 | https://www.tranimaci.com/video/tensai-ouji-no-akaji-kokka-saisei-jutsu-1-bolum |  |
 | 327 | Genjitsu Shugi Yuusha | MyAnimeList | 7.2 | 8.0 | completed | 13 | https://www.tranimaci.com/video/genjitsu-shugi-yuusha-no-oukoku-saikenki-1-bolum |  |
-| 328 | Genjitsu Shugi Yuusha no Oukoku Saikenki | TMDB | 7.2 | 8.0 | completed | 13 | https://www.tranimaci.com/genjitsu-shugi-yuusha-no-oukoku-saikenki-1-bolum-izle | ⚠ C |
+| 328 | Genjitsu Shugi Yuusha no Oukoku Saikenki | TMDB | 7.2 | 8.0 | completed | 13 | https://www.turkanime.tv/video/genjitsu-shugi-yuusha-no-oukoku-saikenki-1-bolum | ⚠ C |
 | 330 | Ghost in the Shell | MyAnimeList | 8.3 | - | planning | 1 | https://www.tranimaci.com/video/ghost-in-the-shell-sac-1-bolum |  |
 | 332 | Gintama | MyAnimeList | 9.0 | 10.0 | completed | 1 | https://www.tranimaci.com/video/gintama-1-bolum |  |
 | 336 | Gokudols | - | 7.0 | 8.5 | completed | 10 | https://www.tranimaci.com/gokudols-1-bolum-izle | kaynak yok |
@@ -157,7 +157,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 412 | KonoSuba: God's Blessing on This Wonderful World! | AniList | 8.1 | 10.0 | completed | 10 | https://www.tranimaci.com/video/kono-subarashii-sekai-ni-shukufuku-wo-1-bolum |  |
 | 414 | Kuroshitsuji | AniList | 7.7 | 8.5 | completed | 1 | https://www.tranimaci.com/video/kuroshitsuji-1-bolum |  |
 | 417 | Kurtlar Vadisi (Pusu) | - | - | 6.0 | completed | 1 | - | kaynak yok url yok |
-| 419 | Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara | TMDB | 6.5 | 8.5 | completed | - | https://www.tranimaci.com/video/kyuukyoku-shinka-shita-full-dive-rpg-ga-genjitsu-yori-mo-kusoge-dattara-1-bolum | ⚠ C |
+| 419 | Kyuukyoku Shinka shita Full Dive RPG ga Genjitsu yori mo Kusoge Dattara | TMDB | 6.5 | 8.5 | completed | - | https://www.turkanime.tv/video/kyuukyoku-shinka-shita-full-dive-rpg-ga-genjitsu-yori-mo-kusoge-dattara-1-bolum | ⚠ C |
 | 421 | Last Boss | AniList | 7.1 | - | planning | 12 | https://www.tranimaci.com/video/yasei-no-last-boss-ga-arawareta-1-bolum |  |
 | 422 | Let This Grieving Soul Retire | AniList | 7.1 | - | planning | 13 | https://www.tranimaci.com/video/nageki-no-bourei-wa-intai-shitai-1-bolum |  |
 | 718 | Let This Grieving Soul Retire Cour 2 | AniList | - | - | planning | 11 | https://www.tranimaci.com/anime/let-this-grieving-soul-retire-cour-2/ |  |
@@ -229,7 +229,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 532 | Shijou Saikyou no Daimaou, Murabito A ni Tensei suru | MyAnimeList | 6.3 | - | planning | 12 | https://www.tranimaci.com/video/shijou-saikyou-no-daimaou-murabito-a-ni-tensei-suru-1-bolum |  |
 | 533 | Shimoneta | MyAnimeList | 7.2 | 6.0 | completed | 12 | https://www.tranimaci.com/video/shimoneta-to-iu-gainen-ga-sonzai-shinai-taikutsu-na-sekai-1-bolum |  |
 | 534 | Shin no Nakama | MyAnimeList | 6.9 | 8.0 | completed | 13 | https://www.tranimaci.com/video/shin-no-nakama-1-bolum |  |
-| 535 | Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita | TMDB | 6.9 | 8.0 | completed | - | https://www.tranimaci.com/video/shin-no-nakama-1-bolum | ⚠ C |
+| 535 | Shin no Nakama ja Nai to Yuusha no Party wo Oidasareta node, Henkyou de Slow Life suru Koto ni Shimashita | TMDB | 6.9 | 8.0 | completed | - | https://www.turkanime.tv/video/shin-no-nakama-1-bolum | ⚠ C |
 | 536 | Shin Shinka no Mi | MyAnimeList | 5.5 | 6.0 | completed | 15 | https://www.tranimaci.com/video/shin-shinka-no-mi-shiranai-uchi-ni-kachigumi-jinsei-1-bolum |  |
 | 537 | Shin Shinka no Mi: Shiranai Uchi ni Kachigumi Jinsei | MyAnimeList | 5.5 | 6.0 | completed | 12 | https://www.tranimaci.com/video/shin-shinka-no-mi-shiranai-uchi-ni-kachigumi-jinsei-1-bolum |  |
 | 538 | Shinchou Yuusha | MyAnimeList | 7.5 | 10.0 | completed | 12 | https://www.tranimaci.com/video/shinchou-yuusha-kono-yuusha-ga-ore-tueee-kuse-ni-shinchou-sugiru-1-bolum |  |
@@ -255,7 +255,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 573 | Tensei Kenja no Isekai Life | AniList | 6.3 | 8.0 | completed | 12 | https://www.tranimaci.com/video/tensei-kenja-no-isekai-life-dai-2-no-shokugyou-wo-ete-sekai-saikyou-ni-narimashita-1-bolum |  |
 | 574 | Tensei Kizoku, Kantei Skill de Nariagaru (Asasyn Kantei Skill) | MyAnimeList | 7.2 | - | planning | 12 | https://www.tranimaci.com/video/tensei-kizoku-kantei-skill-de-nariagaru-1-bolum |  |
 | 575 | Tensei Oujo to Tensai Reijou | AniList | 7.5 | - | planning | 12 | https://www.tranimaci.com/video/tensei-oujo-to-tensai-reijou-no-mahou-kakumei-1-bolum |  |
-| 576 | Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu | TMDB | 7.4 | - | planning | - | https://www.tranimaci.com/video/tensei-shitara-dainana-ouji-datta-node-kimama-ni-majutsu-wo-kiwamemasu-2nd-season-1-bolum | ⚠ C |
+| 576 | Tensei shitara Dainana Ouji Datta node, Kimama ni Majutsu wo Kiwamemasu | TMDB | 7.4 | - | planning | - | https://www.turkanime.tv/video/tensei-shitara-dainana-ouji-datta-node-kimama-ni-majutsu-wo-kiwamemasu-2nd-season-1-bolum | ⚠ C |
 | 577 | Tensei shitara Ken deshita | MyAnimeList | 7.5 | 8.0 | completed | 12 | https://www.tranimaci.com/tensei-shitara-ken-deshita-1-bolum-izle |  |
 | 580 | Tetikci | MyAnimeList | - | 8.5 | completed | 1 | https://www.tranimaci.com/tetikci-1-bolum-izle |  |
 | 584 | The Daily Life of the Immortal King | MyAnimeList | 7.5 | 6.0 | completed | 15 | https://www.tranimaci.com/xian-wang-de-richang-1-bolum-izle |  |
@@ -478,47 +478,47 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 
 | ID | Baslik | Detay Kaynagi | API Puan | Benim Puan | Durum | Bolum/Ch | Kaynak URL | Not |
 |---|---|---|---|---|---|---|---|---|
-| 201 | 1 Kadın 1 Erkek | MyAnimeList | - | 6.0 | completed | 25 | https://myanimelist.net/anime/2025 | ⚠ C |
-| 212 | Adanalı | MyAnimeList | - | 8.0 | completed | 13 | https://www.tranimaci.com/adanal-1-bolum-izle | ⚠ C |
+| 201 | 1 Kadın 1 Erkek | MyAnimeList | - | 6.0 | completed | 25 | https://www.ddizi.im/diziler/93/1-kadin-1-erkek-kapali-son-bolum-izle | ⚠ C |
+| 212 | Adanalı | MyAnimeList | - | 8.0 | completed | 13 | https://www.ddizi.im/diziler/119/adanali | ⚠ C |
 | 226 | Arka Sokaklar | - | 8.5 | 4.0 | dropped | 25 | https://www.tranimaci.com/arka-sokaklar-1-bolum-izle | kaynak yok |
-| 242 | Behzat Ç. | MyAnimeList | - | 6.0 | completed | 150 | https://www.tranimaci.com/behzat-c-1-bolum-izle | ⚠ C |
+| 242 | Behzat Ç. | MyAnimeList | - | 6.0 | completed | 150 | https://www.ddizi.im/diziler/816/behzat-c-hd6 | ⚠ C |
 | 243 | Behzat Ç. Bir Ankara Polisiyesi | MyAnimeList | - | 6.0 | completed | 4 | https://www.tranimaci.com/behzat-c-bir-ankara-polisiyesi-1-bolum-izle | ⚠ C |
-| 248 | Black Mirror | MyAnimeList | 6.0 | - | planning | 1 | https://www.tranimaci.com/black-mirror-1-bolum-izle | ⚠ C |
-| 252 | Breaking Bad | MyAnimeList | 5.4 | - | planning | 12 | https://www.tranimaci.com/breaking-bad-1-bolum-izle | ⚠ C |
-| 273 | Dark | AniList | 5.5 | - | planning | 2 | https://www.tranimaci.com/dark-1-bolum-izle | ⚠ C |
+| 248 | Black Mirror | MyAnimeList | 6.0 | - | planning | 1 | https://www.hdfilmizle.to/black-mirror/ | ⚠ C |
+| 252 | Breaking Bad | MyAnimeList | 5.4 | - | planning | 12 | https://www.hdfilmizle.to/breaking-bad-izle/ | ⚠ C |
+| 273 | Dark | AniList | 5.5 | - | planning | 2 | https://www.hdfilmizle.to/dark/ | ⚠ C |
 | 287 | Dexter | TMDB | - | 8.5 | completed | 3 | https://www.hdfilmcehennemi.nl/dizi/dexter-izle-91/sezon-8/bolum-7-hd19/ |  |
 | 292 | Doctor Who | TMDB | 5.5 | - | planning | 12 | https://www.tranimaci.com/doctor-who-1-bolum-izle |  |
 | 293 | Doktorlar | TMDB | - | 6.0 | completed | 12 | https://www.tranimaci.com/doktorlar-1-bolum-izle |  |
 | 322 | Galip Derviş | MyAnimeList | 6.6 | 8.0 | completed | 12 | https://www.tranimaci.com/galip-dervis-1-bolum-izle | ⚠ C |
-| 323 | Game of Thrones | MyAnimeList | 6.6 | - | planning | 12 | https://www.tranimaci.com/game-of-thrones-1-bolum-izle | ⚠ C |
-| 326 | Geniş Aile | MyAnimeList | 5.8 | 8.5 | completed | 10 | https://www.tranimaci.com/genis-aile-1-bolum-izle | ⚠ C |
-| 346 | Hannibal | MyAnimeList | - | 10.0 | completed | 1 | https://www.tranimaci.com/hannibal-1-bolum-izle | ⚠ C |
-| 352 | House M.D. | MyAnimeList | 4.8 | - | planning | 12 | https://www.tranimaci.com/video/saraiya-goyou-1-bolum | ⚠ C |
-| 355 | Hugo | MyAnimeList | 5.0 | 8.5 | completed | 51 | https://www.tranimaci.com/hugo-1-bolum-izle | ⚠ C |
-| 400 | Kardeş Payı | MyAnimeList | - | 8.5 | completed | 1 | https://myanimelist.net/anime/2593 | ⚠ C |
+| 323 | Game of Thrones | MyAnimeList | 6.6 | - | planning | 12 | https://www.hdfilmizle.to/game-of-thrones/ | ⚠ C |
+| 326 | Geniş Aile | MyAnimeList | 5.8 | 8.5 | completed | 10 | https://www.ddizi.im/diziler/236/genis-aile | ⚠ C |
+| 346 | Hannibal | MyAnimeList | - | 10.0 | completed | 1 | https://www.hdfilmizle.to/hannibal-izle/ | ⚠ C |
+| 352 | House M.D. | MyAnimeList | 4.8 | - | planning | 12 | https://www.ddizi.im/diziler/409/house-m-d | ⚠ C |
+| 355 | Hugo | MyAnimeList | 5.0 | 8.5 | completed | 51 | https://www.hdfilmizle.to/hugo-izle/ | ⚠ C |
+| 400 | Kardeş Payı | MyAnimeList | - | 8.5 | completed | 1 | https://www.ddizi.im/diziler/1364/kardes-payi | ⚠ C |
 | 409 | Komedi Dükkanı | MyAnimeList | - | 8.5 | completed | 12 | https://myanimelist.net/anime/23289 | ⚠ C |
 | 416 | Kurtlar Vadisi (Pusu dönemi) | MyAnimeList | - | 6.0 | completed | 1 | https://myanimelist.net/anime/13391 | ⚠ C |
-| 420 | La Casa de Papel | MyAnimeList | 6.9 | - | planning | 5 | https://www.tranimaci.com/la-casa-de-papel-1-bolum-izle | ⚠ C |
+| 420 | La Casa de Papel | MyAnimeList | 6.9 | - | planning | 5 | https://www.ddizi.im/diziler/1808/la-casa-de-papel-hd | ⚠ C |
 | 423 | Limitless | AniList | 6.5 | 9.0 | completed | 1 | https://www.tranimaci.com/limitless-1-bolum-izle | ⚠ C |
-| 429 | Love, Death & Robots | MyAnimeList | 6.8 | 10.0 | completed | 16 | https://www.tranimaci.com/love-death-robots-1-bolum-izle | ⚠ C |
+| 429 | Love, Death & Robots | MyAnimeList | 6.8 | 10.0 | completed | 16 | https://www.hdfilmizle.to/love-death-robots/ | ⚠ C |
 | 114 | Marvel's What If (S3) | MyAnimeList | 8.2 | - | watching | 26 | https://www.dizibox.so/marvels-what-if-3-sezon-1-bolum-izle/ | ⚠ C |
-| 457 | Mr. Robot | MyAnimeList | 4.7 | 6.0 | watching | 4 | https://www.tranimaci.com/mr-robot-1-bolum-izle | ⚠ C |
+| 457 | Mr. Robot | MyAnimeList | 4.7 | 6.0 | watching | 4 | https://www.hdfilmizle.to/mr-robot/ | ⚠ C |
 | 459 | Muhteşem Yüzyıl | MyAnimeList | - | 6.0 | completed | 11 | https://myanimelist.net/anime/43763 | ⚠ C |
-| 491 | Pis Yedili | MyAnimeList | 7.4 | 6.0 | completed | 12 | https://www.tranimaci.com/pis-yedili-1-bolum-izle | ⚠ C |
-| 505 | Rick and Morty | AniList | - | 9.0 | completed | 1 | https://www.tranimaci.com/rick-and-morty-1-bolum-izle | ⚠ C |
-| 522 | Seksenler | MyAnimeList | - | 3.0 | planning | 12 | https://www.tranimaci.com/seksenler-1-bolum-izle | ⚠ C |
-| 523 | Selena | MyAnimeList | 6.5 | 6.0 | completed | 12 | https://www.tranimaci.com/selena-1-bolum-izle | ⚠ C |
-| 530 | Sherlock | MyAnimeList | 6.9 | - | planning | 24 | https://www.tranimaci.com/sherlock-1-bolum-izle | ⚠ C |
-| 548 | Sihirli Annem | MyAnimeList | 7.0 | 3.0 | planning | 12 | https://www.tranimaci.com/sihirli-annem-1-bolum-izle | ⚠ C |
-| 559 | Squid Game | MyAnimeList | 6.7 | 6.0 | completed | 12 | https://www.tranimaci.com/video/shinryaku-ika-musume-1-bolum | ⚠ C |
+| 491 | Pis Yedili | MyAnimeList | 7.4 | 6.0 | completed | 12 | https://www.ddizi.im/diziler/1007/pis-yedili | ⚠ C |
+| 505 | Rick and Morty | AniList | - | 9.0 | completed | 1 | https://www.hdfilmizle.to/rick-and-morty/ | ⚠ C |
+| 522 | Seksenler | MyAnimeList | - | 3.0 | planning | 12 | https://www.ddizi.im/diziler/1774/seksenler-1 | ⚠ C |
+| 523 | Selena | MyAnimeList | 6.5 | 6.0 | completed | 12 | https://www.ddizi.im/diziler/79/selena | ⚠ C |
+| 530 | Sherlock | MyAnimeList | 6.9 | - | planning | 24 | https://www.hdfilmizle.to/sherlock/ | ⚠ C |
+| 548 | Sihirli Annem | MyAnimeList | 7.0 | 3.0 | planning | 12 | https://yerlifilmizle.org/sihirli-annem/ | ⚠ C |
+| 559 | Squid Game | MyAnimeList | 6.7 | 6.0 | completed | 12 | https://www.ddizi.im/diziler/1884/squid-game-hd23 | ⚠ C |
 | 568 | Teach You a Lesson | MyAnimeList | 7.9 | 8.5 | completed | 13 | https://www.tranimaci.com/teach-you-a-lesson-1-bolum-izle | ⚠ C |
 | 570 | Teletubbies | - | - | 3.0 | dropped | 12 | https://www.tranimaci.com/teletubbies-1-bolum-izle | kaynak yok |
-| 604 | The Mentalist | AniList | 7.1 | - | planning | 12 | https://www.tranimaci.com/the-mentalist-1-bolum-izle | ⚠ C |
+| 604 | The Mentalist | AniList | 7.1 | - | planning | 12 | https://www.hdfilmizle.to/the-mentalist/ | ⚠ C |
 | 612 | The Walking Dead | MyAnimeList | - | 6.0 | watching | 1 | https://www.tranimaci.com/the-walking-dead-1-bolum-izle | ⚠ C |
-| 613 | The Witcher | MyAnimeList | 6.7 | - | planning | 3 | https://www.tranimaci.com/the-witcher-1-bolum-izle | ⚠ C |
-| 656 | Yahşi Cazibe | MyAnimeList | - | 6.0 | completed | 1 | https://www.tranimaci.com/yahsi-cazibe-1-bolum-izle | ⚠ C |
+| 613 | The Witcher | MyAnimeList | 6.7 | - | planning | 3 | https://www.hdfilmizle.to/the-witcher/ | ⚠ C |
+| 656 | Yahşi Cazibe | MyAnimeList | - | 6.0 | completed | 1 | https://www.ddizi.im/diziler/758/yahsi-cazibe | ⚠ C |
 | 657 | Yaprak Dökümü | MyAnimeList | - | 3.0 | planning | 22 | https://myanimelist.net/anime/23273 | ⚠ C |
-| 661 | You | AniList | 7.5 | 10.0 | completed | 1 | https://www.tranimaci.com/joe-goldberg-1-bolum-izle | ⚠ C |
+| 661 | You | AniList | 7.5 | 10.0 | completed | 1 | https://www.hdfilmizle.to/you/ | ⚠ C |
 | 673 | Çocuklar Duymasın | - | - | 6.0 | completed | 12 | - | kaynak yok url yok |
 | 674 | Çok Güzel Hareketler Bunlar | - | - | 8.0 | completed | 24 | - | kaynak yok url yok |
 | 677 | Öyle Bir Geçer Zaman ki | - | 5.9 | 6.0 | completed | 52 | - | kaynak yok url yok |
@@ -527,24 +527,24 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 
 | ID | Baslik | Detay Kaynagi | API Puan | Benim Puan | Durum | Bolum/Ch | Kaynak URL | Not |
 |---|---|---|---|---|---|---|---|---|
-| 203 | 3 Idiots | MyAnimeList | 4.8 | 8.5 | completed | 1 | https://myanimelist.net/anime/34533 | ⚠ C |
+| 203 | 3 Idiots | MyAnimeList | 4.8 | 8.5 | completed | 1 | https://www.hdfilmizle.to/3-aptal-izle/ | ⚠ C |
 | 204 | 300 (300 Spartalı) | MyAnimeList | 6.9 | 8.0 | completed | 12 | https://www.tranimaci.com/300-spartal-1-bolum-izle | ⚠ C |
 | 205 | 300 Spartalı | MyAnimeList | 6.9 | 8.0 | completed | 50 | https://www.tranimaci.com/300-spartal-1-bolum-izle | ⚠ C |
-| 209 | A Beautiful Mind (Akıl Oyunları) | MyAnimeList | 6.3 | - | planning | 13 | https://myanimelist.net/anime/486 | ⚠ C |
-| 210 | A.R.O.G | MyAnimeList | - | 8.5 | completed | 25 | https://www.tranimaci.com/video/sword-art-online-1-bolum | ⚠ C |
+| 209 | A Beautiful Mind (Akıl Oyunları) | MyAnimeList | 6.3 | - | planning | 13 | https://www.hdfilmcehennemi.nl/hd-akil-oyunlari-izle-hdf-8/ | ⚠ C |
+| 210 | A.R.O.G | MyAnimeList | - | 8.5 | completed | 25 | https://yerlifilmizle.org/a-r-o-g-izle/ | ⚠ C |
 | 211 | Abimm | MyAnimeList | - | 9.0 | completed | 4 | https://www.tranimaci.com/abimm-1-bolum-izle | ⚠ C |
 | 215 | Akıl Oyunları | MyAnimeList | - | - | planning | 12 | https://myanimelist.net/anime/22297 | ⚠ C |
-| 217 | Alvin ve Sincaplar | MyAnimeList | 6.1 | 8.0 | completed | 12 | https://www.tranimaci.com/alvin-ve-sincaplar-1-bolum-izle | ⚠ C |
-| 219 | American Psycho (Amerikan Sapığı) | MyAnimeList | 6.5 | - | planning | 11 | https://myanimelist.net/anime/23281 | ⚠ C |
-| 220 | Amerikan Sapığı | MyAnimeList | - | - | planning | 51 | https://myanimelist.net/anime/2938 | ⚠ C |
+| 217 | Alvin ve Sincaplar | MyAnimeList | 6.1 | 8.0 | completed | 12 | https://www.hdfilmizle.to/alvin-ve-sincaplar-izle/ | ⚠ C |
+| 219 | American Psycho (Amerikan Sapığı) | MyAnimeList | 6.5 | - | planning | 11 | https://www.hdfilmcehennemi.now/film/amerikan-sapigi/ | ⚠ C |
+| 220 | Amerikan Sapığı | MyAnimeList | - | - | planning | 51 | https://www.hdfilmizle.to/amerikan-sapigi-izle/ | ⚠ C |
 | 227 | Asena ve Oniriks | MyAnimeList | - | 8.0 | completed | 12 | https://www.tranimaci.com/asena-ve-oniriks-1-bolum-izle | ⚠ C |
 | 232 | Asteriks ve Oniriks | MyAnimeList | 6.8 | 8.0 | completed | 12 | https://www.tranimaci.com/asteriks-ve-oniriks-1-bolum-izle | ⚠ C |
-| 235 | Avatar | MyAnimeList | 8.1 | 9.0 | completed | 12 | https://www.tranimaci.com/video/quanzhi-gaoshou-2nd-season-1-bolum | ⚠ C |
-| 236 | Avengers | MyAnimeList | 5.9 | 8.5 | completed | 1 | https://www.tranimaci.com/avengers-1-bolum-izle | ⚠ C |
+| 235 | Avatar | MyAnimeList | 8.1 | 9.0 | completed | 12 | https://yerlifilmizle.org/avatar/ | ⚠ C |
+| 236 | Avengers | MyAnimeList | 5.9 | 8.5 | completed | 1 | https://www.hdfilmcehennemi.nl/serifilmlerim-4/avengers-yenilmezler-serisi/ | ⚠ C |
 | 241 | Batman Serisi (Kara Şövalye ve Tüm Filmler) | MyAnimeList | 6.1 | 10.0 | completed | 1 | https://myanimelist.net/anime/36517 | ⚠ C |
 | 255 | Captain America | TMDB | 5.8 | 9.0 | completed | 52 | https://www.tranimaci.com/captain-america-1-bolum-izle |  |
 | 257 | Cem Yılmaz Fundamentals | MyAnimeList | 6.2 | 8.5 | completed | 12 | https://www.tranimaci.com/cem-y-lmaz-fundamentals-1-bolum-izle | ⚠ C |
-| 260 | Chihiro Gidişi | MyAnimeList | 8.8 | - | planning | 1 | https://www.tranimaci.com/chihiro-gidisi-1-bolum-izle | ⚠ C |
+| 260 | Chihiro Gidişi | MyAnimeList | 8.8 | - | planning | 1 | https://www.hdfilmcehennemi.nl/ruhlarin-kacisi-film-izle-hdf1-8/ | ⚠ C |
 | 267 | Corpse Bride | TMDB | 6.4 | 6.0 | completed | 4 | https://www.tranimaci.com/corpse-bride-1-bolum-izle |  |
 | 269 | Dabbe Serisi | - | 7.4 | - | planning | 25 | https://www.tranimaci.com/dabbe-serisi-1-bolum-izle | kaynak yok |
 | 280 | Deadpool | TMDB | - | 9.0 | completed | 12 | https://www.tranimaci.com/deadpool-1-bolum-izle |  |
@@ -554,99 +554,99 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 299 | Edge of Tomorrow (Yarının Sınırında) | TMDB | 6.5 | 9.0 | completed | 1 | https://www.themoviedb.org/movie/137113 |  |
 | 301 | Esaretin Bedeli | TMDB | - | - | planning | 26 | https://www.tranimaci.com/esaretin-bedeli-1-bolum-izle |  |
 | 306 | Fast & Furious | MyAnimeList | 7.4 | 8.5 | completed | 26 | https://www.tranimaci.com/fast-furious-1-bolum-izle | ⚠ C |
-| 310 | Fetih 1453 | MyAnimeList | 3.1 | 8.0 | completed | 1 | https://www.tranimaci.com/fetih-1453-1-bolum-izle | ⚠ C |
-| 311 | Fight Club | MyAnimeList | - | - | planning | 1 | https://www.tranimaci.com/fight-club-1-bolum-izle | ⚠ C |
+| 310 | Fetih 1453 | MyAnimeList | 3.1 | 8.0 | completed | 1 | https://yerlifilmizle.org/fetih-1453-izle/ | ⚠ C |
+| 311 | Fight Club | MyAnimeList | - | - | planning | 1 | https://www.hdfilmcehennemi.nl/1-dovus-kulubu-izle-6/ | ⚠ C |
 | 313 | Filistin | MyAnimeList | - | 8.5 | completed | 50 | https://www.tranimaci.com/filistin-1-bolum-izle | ⚠ C |
 | 314 | Finding Nemo | MyAnimeList | 6.3 | 6.0 | completed | 12 | https://www.tranimaci.com/finding-nemo-1-bolum-izle | ⚠ C |
-| 320 | Fury | MyAnimeList | 6.2 | - | planning | 1 | https://www.tranimaci.com/fury-1-bolum-izle | ⚠ C |
+| 320 | Fury | MyAnimeList | 6.2 | - | planning | 1 | https://www.hdfilmizle.to/fury/ | ⚠ C |
 | 321 | G.O.R.A | - | - | 8.5 | completed | 25 | https://www.tranimaci.com/g-o-r-a-1-bolum-izle | kaynak yok |
 | 331 | Ghost Rider (Hayalet Sürücü) | MyAnimeList | 7.0 | 10.0 | completed | 1 | https://myanimelist.net/anime/19195 | ⚠ C |
 | 333 | Gladiator | MyAnimeList | - | - | planning | 1 | https://www.tranimaci.com/gladiator-1-bolum-izle | ⚠ C |
 | 334 | Gladio | - | 6.7 | 8.5 | completed | 1 | - | kaynak yok url yok |
 | 335 | Gladyatör | MyAnimeList | - | - | planning | 1 | https://www.tranimaci.com/gladyator-1-bolum-izle | ⚠ C |
 | 341 | Hababam Sınıfı (Yeni Nesil) | MyAnimeList | 6.9 | 6.0 | completed | 12 | https://myanimelist.net/anime/21843 | ⚠ C |
-| 344 | Hacivat Karagöz Neden Öldürüldü? | MyAnimeList | 7.5 | 6.0 | completed | 11 | https://myanimelist.net/anime/5630 | ⚠ C |
-| 345 | Hancock | MyAnimeList | 5.6 | - | planning | 12 | https://www.tranimaci.com/hancock-1-bolum-izle | ⚠ C |
+| 344 | Hacivat Karagöz Neden Öldürüldü? | MyAnimeList | 7.5 | 6.0 | completed | 11 | https://www.hdfilmizle.to/hacivat-karagoz-neden-olduruldu/ | ⚠ C |
+| 345 | Hancock | MyAnimeList | 5.6 | - | planning | 12 | https://www.hdfilmizle.to/hancock-izle/ | ⚠ C |
 | 347 | Harry Potter Serisi | - | 6.2 | 8.5 | completed | 12 | https://www.tranimaci.com/harry-potter-serisi-1-bolum-izle | kaynak yok |
 | 354 | Howl's Moving Castle (Yürüyen Şato) | - | 8.7 | 7.5 | completed | 1 | - | kaynak yok url yok |
-| 358 | I Am Legend (Ben Efsaneyim) | MyAnimeList | 6.8 | 10.0 | completed | 1 | https://www.tranimaci.com/video/initial-d-i-1-bolum | ⚠ C |
+| 358 | I Am Legend (Ben Efsaneyim) | MyAnimeList | 6.8 | 10.0 | completed | 1 | https://www.hdfilmizle.to/ben-efsaneyim-izle/ | ⚠ C |
 | 360 | Ice Age (Buz Devri Serisi) | - | 7.4 | 8.5 | completed | 25 | https://www.tranimaci.com/buz-devri-serisi-1-bolum-izle | kaynak yok |
 | 362 | In Time (Zamana Karşı) | MyAnimeList | 5.6 | - | planning | 52 | https://myanimelist.net/anime/42205 | ⚠ C |
-| 363 | Inception | MyAnimeList | - | 8.5 | completed | 12 | https://www.tranimaci.com/inception-1-bolum-izle | ⚠ C |
+| 363 | Inception | MyAnimeList | - | 8.5 | completed | 12 | https://yerlifilmizle.org/inception/ | ⚠ C |
 | 365 | Iron Man | AniList | 6.0 | 9.0 | completed | 12 | https://www.tranimaci.com/video/iron-man-1-bolum | ⚠ C |
-| 381 | İhtiyarlara Yer Yok | MyAnimeList | 5.4 | - | planning | 12 | https://www.tranimaci.com/ihtiyarlara-yer-yok-1-bolum-izle | ⚠ C |
-| 385 | John Wick | MyAnimeList | - | 8.5 | completed | 1 | https://www.tranimaci.com/john-wick-1-bolum-izle | ⚠ C |
-| 390 | Joker (2019) | MyAnimeList | 7.0 | 8.0 | completed | 13 | https://www.tranimaci.com/video/kaitou-joker-1-bolum | ⚠ C |
-| 407 | Koleksiyoncu | MyAnimeList | - | - | planning | 12 | https://www.tranimaci.com/koleksiyoncu-1-bolum-izle | ⚠ C |
-| 408 | Kolpaçino | MyAnimeList | - | 8.0 | completed | 12 | https://www.tranimaci.com/kolpacino-1-bolum-izle | ⚠ C |
-| 413 | Kung Fu Panda | MyAnimeList | - | 8.0 | completed | 1 | https://www.tranimaci.com/kung-fu-panda-1-bolum-izle | ⚠ C |
+| 381 | İhtiyarlara Yer Yok | MyAnimeList | 5.4 | - | planning | 12 | https://www.hdfilmizle.to/ihtiyarlara-yer-yok/ | ⚠ C |
+| 385 | John Wick | MyAnimeList | - | 8.5 | completed | 1 | https://www.hdfilmcehennemi.nl/serifilmlerim-4/john-wick-serisi-izle-1/ | ⚠ C |
+| 390 | Joker (2019) | MyAnimeList | 7.0 | 8.0 | completed | 13 | https://www.hdfilmcehennemi.nl/1-joker-hd-film-izle-hdf-8/ | ⚠ C |
+| 407 | Koleksiyoncu | MyAnimeList | - | - | planning | 12 | https://www.hdfilmizle.to/koleksiyoncu-izle/ | ⚠ C |
+| 408 | Kolpaçino | MyAnimeList | - | 8.0 | completed | 12 | https://www.hdfilmizle.to/kolpacino-izle/ | ⚠ C |
+| 413 | Kung Fu Panda | MyAnimeList | - | 8.0 | completed | 1 | https://www.hdfilmizle.to/kung-fu-panda-izle/ | ⚠ C |
 | 418 | Kurtlar Vadisi Irak | - | 5.4 | 8.5 | completed | 1 | - | kaynak yok url yok |
 | 424 | Limitless (Film) | - | 6.4 | 9.5 | completed | 7 | https://www.tranimaci.com/video/musaigen-no-phantom-world-limitless-phantom-world-1-bolum | kaynak yok |
 | 425 | Lion King | AniList | 6.9 | 6.0 | completed | 52 | https://www.tranimaci.com/lion-king-1-bolum-izle | ⚠ C |
 | 432 | Léon: The Professional (Sevginin Gücü) | MyAnimeList | 6.8 | - | planning | 1 | https://myanimelist.net/anime/1760 | ⚠ C |
-| 433 | Madagaskar | MyAnimeList | - | 8.0 | completed | 12 | https://www.tranimaci.com/madagaskar-1-bolum-izle | ⚠ C |
+| 433 | Madagaskar | MyAnimeList | - | 8.0 | completed | 12 | https://www.hdfilmizle.to/madagaskar-izle/ | ⚠ C |
 | 435 | Maleficent (Malefiz) | MyAnimeList | 7.1 | - | planning | 12 | https://www.tranimaci.com/malefiz-1-bolum-izle | ⚠ C |
-| 436 | Malefiz | MyAnimeList | 7.1 | - | planning | 12 | https://www.tranimaci.com/malefiz-1-bolum-izle | ⚠ C |
+| 436 | Malefiz | MyAnimeList | 7.1 | - | planning | 12 | https://www.hdfilmizle.to/malefiz-izle/ | ⚠ C |
 | 441 | Maskeli Beşler | MyAnimeList | - | 8.0 | completed | 51 | https://www.tranimaci.com/maskeli-besler-1-bolum-izle | ⚠ C |
-| 442 | Matrix Serisi | MyAnimeList | 6.8 | 8.0 | completed | 9 | https://www.tranimaci.com/matrix-serisi-1-bolum-izle | ⚠ C |
+| 442 | Matrix Serisi | MyAnimeList | 6.8 | 8.0 | completed | 9 | https://www.hdfilmcehennemi.nl/hd-the-matrix-izle-hdf-hdf-7/ | ⚠ C |
 | 472 | New York'ta Beş Minare | MyAnimeList | 7.7 | 6.0 | completed | 13 | https://www.tranimaci.com/new-yorkta-bes-minare-1-bolum-izle | ⚠ C |
 | 474 | No Country for Old Men (İhtiyarlara Yer Yok) | MyAnimeList | 5.6 | - | planning | 2 | https://www.tranimaci.com/video/yokohama-kaidashi-kikou-1-bolum | ⚠ C |
 | 485 | Pacific Rim (Pasifik Savaşı Serisi) | MyAnimeList | 6.7 | 10.0 | completed | 1 | https://myanimelist.net/anime/5013 | ⚠ C |
-| 486 | Para Avcısı | MyAnimeList | 5.0 | - | planning | 1 | https://myanimelist.net/anime/6637 | ⚠ C |
+| 486 | Para Avcısı | MyAnimeList | 5.0 | - | planning | 1 | https://www.hdfilmizle.to/para-avcisi-izle/ | ⚠ C |
 | 487 | Percy Jackson Serisi | MyAnimeList | 6.6 | 10.0 | completed | 1 | https://www.tranimaci.com/percy-jackson-serisi-1-bolum-izle | ⚠ C |
-| 490 | Pirates of the Caribbean (Karayip Korsanları Serisi) | MyAnimeList | 7.4 | 10.0 | completed | 26 | https://www.tranimaci.com/video/mouretsu-pirates-1-bolum | ⚠ C |
+| 490 | Pirates of the Caribbean (Karayip Korsanları Serisi) | MyAnimeList | 7.4 | 10.0 | completed | 26 | https://www.sinema.gg/izle/seri-filmler/karayip-korsanlari/ | ⚠ C |
 | 492 | Planet of the Apes (Maymunlar Cehennemi Serisi) | MyAnimeList | 7.4 | 8.5 | completed | 11 | https://www.tranimaci.com/maymunlar-cehennemi-serisi-1-bolum-izle | ⚠ C |
 | 498 | Real Steel (Çelik Yumruk) | - | - | 10.0 | completed | 12 | - | kaynak yok url yok |
 | 499 | Recep İvedik Üçlemesi | MyAnimeList | 6.9 | 8.0 | completed | 12 | https://myanimelist.net/anime/1250 | ⚠ C |
 | 504 | Resident Evil Serisi | MyAnimeList | 6.9 | 8.0 | completed | 1 | https://www.tranimaci.com/resident-evil-serisi-1-bolum-izle | ⚠ C |
-| 528 | Sevginin Gücü | MyAnimeList | - | - | planning | 12 | https://myanimelist.net/anime/31519 | ⚠ C |
+| 528 | Sevginin Gücü | MyAnimeList | - | - | planning | 12 | https://www.hdfilmizle.to/sevginin-gucu-izle/ | ⚠ C |
 | 529 | Shark Tale | MyAnimeList | 7.6 | 6.0 | completed | 26 | https://www.tranimaci.com/shark-tale-1-bolum-izle | ⚠ C |
 | 531 | Sherlock Holmes Serisi | MyAnimeList | 7.4 | 10.0 | completed | 26 | https://www.tranimaci.com/video/meitantei-holmes-1-bolum | ⚠ C |
-| 545 | Shrek | MyAnimeList | 5.3 | 8.0 | completed | 50 | https://www.tranimaci.com/shrek-1-bolum-izle | ⚠ C |
+| 545 | Shrek | MyAnimeList | 5.3 | 8.0 | completed | 50 | https://www.hdfilmizle.to/srek-izle/ | ⚠ C |
 | 555 | Spider-Man (Tobey Maguire Üçlemesi) | MyAnimeList | 6.6 | 9.5 | completed | 24 | https://myanimelist.net/anime/37984 | ⚠ C |
 | 557 | Spirited Away (Sen to Chihiro no Kamikakushi) | - | 8.8 | - | planning | 1 | https://www.tranimaci.com/sen-to-chihiro-no-kamikakushi-1-bolum-izle | kaynak yok |
 | 558 | Split (Parçalanmış) | MyAnimeList | 7.7 | 8.0 | completed | 11 | https://myanimelist.net/anime/41120 | ⚠ C |
-| 567 | Taşıyıcı | MyAnimeList | - | 8.5 | completed | 13 | https://myanimelist.net/anime/13333 | ⚠ C |
+| 567 | Taşıyıcı | MyAnimeList | - | 8.5 | completed | 13 | https://www.hdfilmizle.to/tasiyici-izle/ | ⚠ C |
 | 579 | Terminator Serisi | MyAnimeList | 7.0 | 10.0 | completed | 1 | https://www.tranimaci.com/terminator-serisi-1-bolum-izle | ⚠ C |
 | 581 | Tetikçi | - | - | 8.5 | completed | 1 | https://www.tranimaci.com/tetikci-1-bolum-izle | kaynak yok |
 | 583 | The Collector (Koleksiyoncu) | MyAnimeList | 5.6 | - | planning | 12 | https://www.tranimaci.com/koleksiyoncu-1-bolum-izle | ⚠ C |
-| 593 | The Godfather | MyAnimeList | 7.1 | - | planning | 1 | https://www.tranimaci.com/the-godfather-1-bolum-izle | ⚠ C |
+| 593 | The Godfather | MyAnimeList | 7.1 | - | planning | 1 | https://www.hdfilmcehennemi.nl/serifilmlerim-4/godfather-baba-serisi-1/ | ⚠ C |
 | 594 | The Green Mile (Yeşil Yol) | MyAnimeList | 5.0 | - | planning | 12 | https://www.tranimaci.com/yesil-yol-1-bolum-izle | ⚠ C |
 | 595 | The Hobbit: An Unexpected Journey | - | 7.1 | 8.5 | completed | 13 | https://www.tranimaci.com/the-hobbit-an-unexpected-journey-1-bolum-izle | kaynak yok |
-| 596 | The Hunger Games (Açlık Oyunları Serisi) | MyAnimeList | 6.5 | 8.0 | completed | 1 | https://myanimelist.net/anime/36070 | ⚠ C |
+| 596 | The Hunger Games (Açlık Oyunları Serisi) | MyAnimeList | 6.5 | 8.0 | completed | 1 | https://www.hdfilmcehennemi.now/boxset/aclik-oyunlari-the-hunger-games/ | ⚠ C |
 | 597 | The Incredibles | MyAnimeList | 7.4 | 6.0 | completed | 26 | https://www.tranimaci.com/the-incredibles-1-bolum-izle | ⚠ C |
 | 599 | The Lord of the Rings (Yüzüklerin Efendisi Serisi) | - | 8.1 | 10.0 | completed | 25 | - | kaynak yok url yok |
 | 602 | The Maze Runner (Labirent Serisi) | MyAnimeList | 6.1 | 8.5 | completed | 1 | https://www.tranimaci.com/labirent-serisi-1-bolum-izle | ⚠ C |
 | 605 | The Mummy | MyAnimeList | 4.9 | 8.5 | completed | 12 | https://www.tranimaci.com/the-mummy-1-bolum-izle | ⚠ C |
 | 606 | The Revenant (Diriliş) | MyAnimeList | 7.1 | - | planning | 12 | https://www.tranimaci.com/dirilis-1-bolum-izle | ⚠ C |
 | 607 | The Scorpion King Serisi | - | 7.1 | 8.5 | completed | 25 | https://www.tranimaci.com/mumya-ve-akrepler-kral-1-bolum-izle | kaynak yok |
-| 611 | The Shawshank Redemption (Esaretin Bedeli) | MyAnimeList | - | - | planning | 26 | https://www.tranimaci.com/esaretin-bedeli-1-bolum-izle | ⚠ C |
+| 611 | The Shawshank Redemption (Esaretin Bedeli) | MyAnimeList | - | - | planning | 26 | https://www.hdfilmcehennemi.nl/1-esaretin-bedeli-film-izle-hdf-hdf-6/ | ⚠ C |
 | 614 | The Wolf of Wall Street (Para Avcısı) | - | 5.6 | - | planning | 10 | - | kaynak yok url yok |
-| 616 | Thor | MyAnimeList | 4.9 | 9.0 | completed | 1 | https://www.tranimaci.com/thor-1-bolum-izle | ⚠ C |
+| 616 | Thor | MyAnimeList | 4.9 | 9.0 | completed | 1 | https://www.hdfilmizle.to/thor-izle/ | ⚠ C |
 | 617 | Titanic | - | - | - | planning | 25 | https://www.tranimaci.com/titanic-1-bolum-izle | kaynak yok |
-| 631 | Toy Story | MyAnimeList | 6.3 | 6.0 | completed | 24 | https://www.tranimaci.com/toy-story-1-bolum-izle | ⚠ C |
+| 631 | Toy Story | MyAnimeList | 6.3 | 6.0 | completed | 24 | https://www.hdfilmcehennemi.gen.tr/oyuncak-hikayesi/ | ⚠ C |
 | 633 | Transformers Serisi | - | 5.5 | 10.0 | completed | 52 | https://www.tranimaci.com/transformers-serisi-1-bolum-izle | kaynak yok |
-| 637 | Twilight (Alacakaranlık Serisi) | MyAnimeList | 6.5 | 8.5 | completed | 12 | https://www.tranimaci.com/alacakaranl-k-serisi-1-bolum-izle | ⚠ C |
+| 637 | Twilight (Alacakaranlık Serisi) | MyAnimeList | 6.5 | 8.5 | completed | 12 | https://www.hdfilmcehennemi.nl/serifilmlerim-4/alacakaranlik-twilight-serisi-1/ | ⚠ C |
 | 641 | Undisputed (Yenilmez Serisi) | - | 7.4 | 8.5 | completed | 12 | - | kaynak yok url yok |
 | 642 | Up | TMDB | - | 6.0 | completed | - | https://www.tranimaci.com/up-1-bolum-izle |  |
-| 644 | V for Vendetta | MyAnimeList | 7.5 | - | planning | 1 | https://www.tranimaci.com/v-for-vendetta-1-bolum-izle | ⚠ C |
-| 645 | Venom | AniList | - | 9.0 | completed | 22 | https://www.tranimaci.com/venom-1-bolum-izle | ⚠ C |
+| 644 | V for Vendetta | MyAnimeList | 7.5 | - | planning | 1 | https://www.hdfilmizle.to/v-for-vendetta-izle/ | ⚠ C |
+| 645 | Venom | AniList | - | 9.0 | completed | 22 | https://www.hdfilmizle.to/venom/ | ⚠ C |
 | 648 | WALL-E | MyAnimeList | 4.5 | - | planning | 1 | https://www.tranimaci.com/wall-e-1-bolum-izle | ⚠ C |
 | 653 | World War Z | MyAnimeList | 5.7 | 8.0 | completed | 11 | https://www.tranimaci.com/world-war-z-1-bolum-izle | ⚠ C |
-| 655 | Yahşi Batı | MyAnimeList | - | 8.5 | completed | 10 | https://myanimelist.net/anime/24231 | ⚠ C |
-| 659 | Yeşil Yol | MyAnimeList | 5.5 | - | planning | 1 | https://www.tranimaci.com/yesil-yol-1-bolum-izle | ⚠ C |
+| 655 | Yahşi Batı | MyAnimeList | - | 8.5 | completed | 10 | https://yerlifilmizle.org/yahsi-bati/ | ⚠ C |
+| 659 | Yeşil Yol | MyAnimeList | 5.5 | - | planning | 1 | https://www.hdfilmizle.to/yesil-yol-izle/ | ⚠ C |
 | 670 | Zamana Karşı | - | 7.1 | - | planning | 52 | - | kaynak yok url yok |
-| 676 | Ölüm Yarışı | MyAnimeList | - | 8.5 | completed | 9 | https://myanimelist.net/anime/7596 | ⚠ C |
+| 676 | Ölüm Yarışı | MyAnimeList | - | 8.5 | completed | 9 | https://www.hdfilmizle.to/olum-yarisi-izle/ | ⚠ C |
 
 ## CARTOON (53)
 
 | ID | Baslik | Detay Kaynagi | API Puan | Benim Puan | Durum | Bolum/Ch | Kaynak URL | Not |
 |---|---|---|---|---|---|---|---|---|
 | 213 | Adventure Time | MyAnimeList | - | 10.0 | watching | 5 | https://www.tranimaci.com/adventure-time-1-bolum-izle | ⚠ C |
-| 216 | Aladdin (Çizgi Dizi) | MyAnimeList | 6.4 | 8.0 | completed | 1 | https://www.tranimaci.com/cizgi-dizi-1-bolum-izle | ⚠ C |
+| 216 | Aladdin (Çizgi Dizi) | MyAnimeList | 6.4 | 8.0 | completed | 1 | https://cizgimax.online/diziler/aladdin-izle/ | ⚠ C |
 | 218 | American Dragon: Jake Long (Genç Ejder) | - | 7.3 | 8.5 | completed | 97 | https://www.tranimaci.com/genc-ejder-1-bolum-izle | kaynak yok |
 | 221 | Animated | AniList | 7.6 | 8.5 | completed | 6 | https://www.tranimaci.com/video/robomasters-the-animated-series-1-bolum | ⚠ C |
-| 244 | Ben 10 | MyAnimeList | - | 9.5 | completed | 12 | https://www.tranimaci.com/ben-10-1-bolum-izle | ⚠ C |
+| 244 | Ben 10 | MyAnimeList | - | 9.5 | completed | 12 | https://www.ddizi.im/diziler/490/ben-10 | ⚠ C |
 | 254 | Broken Karaoke | TMDB | 6.6 | 3.0 | planning | 1 | https://www.tranimaci.com/broken-karaoke-1-bolum-izle |  |
 | 262 | Clarence | TMDB | 6.6 | 3.0 | planning | 1 | https://www.tranimaci.com/clarence-1-bolum-izle |  |
 | 288 | Dexter's Laboratory | TMDB | 6.0 | 8.5 | completed | 12 | https://www.tranimaci.com/dexters-laboratory-1-bolum-izle |  |
@@ -659,9 +659,9 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 386 | Johnny Bravo | MyAnimeList | - | 7.5 | completed | 130 | https://www.tranimaci.com/johnny-bravo-1-bolum-izle | ⚠ C |
 | 391 | Justice League | MyAnimeList | 6.5 | 8.5 | completed | 1 | https://www.tranimaci.com/justice-league-1-bolum-izle | ⚠ C |
 | 392 | Justice League Unlimited | MyAnimeList | 6.5 | 8.5 | completed | 12 | https://www.tranimaci.com/justice-league-unlimited-1-bolum-izle | ⚠ C |
-| 402 | Kim Possible | MyAnimeList | - | 10.0 | completed | 11 | https://www.tranimaci.com/kim-possible-1-bolum-izle | ⚠ C |
-| 427 | Looney Tunes | MyAnimeList | - | 6.5 | completed | - | https://www.tranimaci.com/looney-tunes-1-bolum-izle | ⚠ C |
-| 443 | Max Steel | MyAnimeList | 6.7 | 8.5 | completed | 12 | https://www.tranimaci.com/max-steel-1-bolum-izle | ⚠ C |
+| 402 | Kim Possible | MyAnimeList | - | 10.0 | completed | 11 | https://www.hdfilmizle.to/kim-possible/ | ⚠ C |
+| 427 | Looney Tunes | MyAnimeList | - | 6.5 | completed | - | https://www.ddizi.im/diziler/382/looney-tunes | ⚠ C |
+| 443 | Max Steel | MyAnimeList | 6.7 | 8.5 | completed | 12 | https://www.hdfilmizle.to/max-steel-izle/ | ⚠ C |
 | 444 | Megas XLR | MyAnimeList | 7.4 | 10.0 | completed | 13 | https://www.tranimaci.com/megas-xlr-1-bolum-izle | ⚠ C |
 | 447 | Mickey Mouse | MyAnimeList | 5.4 | 6.0 | planning | 15 | https://www.tranimaci.com/mickey-mouse-1-bolum-izle | ⚠ C |
 | 455 | Monsters At Work | - | 5.2 | 6.0 | planning | 13 | - | kaynak yok url yok |
@@ -671,9 +671,9 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 489 | Phineas and Ferb (Fineas ve Förb) | MyAnimeList | 6.4 | 9.0 | completed | 16 | https://www.tranimaci.com/fineas-ve-forb-1-bolum-izle | ⚠ C |
 | 494 | Powerpuff Girls | AniList | 6.5 | 6.5 | completed | 52 | https://www.tranimaci.com/powerpuff-girls-1-bolum-izle | ⚠ C |
 | 502 | Regular Show (Sürekli Dizi) | MyAnimeList | 7.6 | 9.5 | completed | 26 | https://www.tranimaci.com/surekli-dizi-1-bolum-izle | ⚠ C |
-| 113 | Rick and Morty (S7) | MyAnimeList | - | - | completed | 13 | https://yabancidizi.pro/dizi/rick-and-morty-izle-14/sezon-7/bolum-6 | ⚠ C |
+| 113 | Rick and Morty (S7) | MyAnimeList | - | - | completed | 13 | https://www.dizibox.live/dizi/rick-and-morty/7-sezon-rick-and-morty/ | ⚠ C |
 | 515 | Samurai Jack | MyAnimeList | 4.8 | 10.0 | completed | 26 | https://www.tranimaci.com/samurai-jack-1-bolum-izle | ⚠ C |
-| 517 | Scooby-Doo | MyAnimeList | - | 6.5 | completed | 13 | https://www.tranimaci.com/scooby-doo-1-bolum-izle | ⚠ C |
+| 517 | Scooby-Doo | MyAnimeList | - | 6.5 | completed | 13 | https://www.hdfilmizle.to/scooby-doo/ | ⚠ C |
 | 552 | Sonic Serileri | MyAnimeList | - | 8.0 | completed | 12 | https://www.tranimaci.com/sonic-serileri-1-bolum-izle | ⚠ C |
 | 553 | Sonic X | MyAnimeList | 6.7 | 8.0 | completed | 78 | https://www.tranimaci.com/video/sonic-x-1-bolum | ⚠ C |
 | 554 | Space Goofs (Uzay Çılgınları) | MyAnimeList | 7.1 | 8.0 | completed | 13 | https://myanimelist.net/anime/20057 | ⚠ C |
@@ -692,7 +692,7 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 632 | Transformers Prime | MyAnimeList | 5.5 | 8.5 | completed | 52 | https://www.tranimaci.com/transformers-prime-1-bolum-izle | ⚠ C |
 | 639 | Uncle Grandpa | MyAnimeList | 7.8 | 3.0 | planning | 12 | https://www.tranimaci.com/uncle-grandpa-1-bolum-izle | ⚠ C |
 | 649 | We Bare Bears (Kafadan Ayılar) | MyAnimeList | 5.8 | 4.5 | dropped | 1 | https://www.tranimaci.com/kafadan-ay-lar-1-bolum-izle | ⚠ C |
-| 650 | What If...? | AniList | 6.5 | 10.0 | completed | 1 | https://www.tranimaci.com/what-if-1-bolum-izle | ⚠ C |
+| 650 | What If...? | AniList | 6.5 | 10.0 | completed | 1 | https://www.hdfilmizle.to/what-if/ | ⚠ C |
 | 651 | Winnie the Pooh | MyAnimeList | - | 3.0 | dropped | 6 | https://www.tranimaci.com/winnie-the-pooh-1-bolum-izle | ⚠ C |
 | 660 | Yogi Bear | - | 7.6 | 3.0 | planning | 50 | https://www.tranimaci.com/yogi-bear-1-bolum-izle | kaynak yok |
 
@@ -719,6 +719,3 @@ Legendlar: `⚠ C` = tip/kaynak capraz suphe (kaptan kontrol listesi), `-` = ver
 | 116 | Necroking | Steam | 6.6 | - | planning | - | https://store.steampowered.com/app/2852980 |  |
 | 129 | No Man's Sky | Steam | 7.8 | - | planning | - | https://store.steampowered.com/app/275850 |  |
 | 130 | Witchfire | Steam | 7.4 | - | planning | - | https://store.steampowered.com/app/3156770 |  |
-
----
-**Kaptan kontrol listesi:** 184 kayitta tip/kaynak caprazligi isaretli (⚠ C) — bunlar web'de aratildiginda baska sey cikan adaylar.
