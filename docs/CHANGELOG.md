@@ -1,5 +1,14 @@
 # kurowatch - Changelog
 
+## v2.3 (25 Agustos 2026)
+
+**Ekran-2 KULE AURA v2 — kaptan begenmeyisi uzerine tam yeniden tasarim.**
+
+- **Yeni sahne (14 satir, programatik):** parildayan yildizlar + hilal / donen fener huzmesi (10 fazli sol-sag kol salinimi) + magenta lamba / radar kubbesi icinde 4-faz donen anten / balkonda kirpan gozcu (f%8==7 blink) / korkuluk + yanan sonen pencereler ([*]/[ ] deterministik flicker) / genisleyen temel / deniz ufku RADAR TARAMASI (beyaz kafa + yesul iz + 4 blip gecis sonrasi 40-kolon flash) / dalga satiri.
+- **Ders uygulama:** DEEP-SMOKE ASSERT (tum satirlar SCENE_W uniform - programatik canvas, ham art literal YOK); PANEL-WRAP (SCENE_W<=96); AURA OKUNABILIRLIGI (satir bazli tek karakter dokusu); kaynakta sadece \\uXXXX escapes (mojibake/encoding yasaği GI-1/G3 uyumlu).
+- **FAZ A:** 12->18 kare (0.12s), wordmark reveal daha akici.
+- **Kanitlar:** py_compile PY_OK; frame-width assert 5 kare = SCENE_W; pytest unit menu 7/7; `< nul` EOF-pipe EXIT=0; ilk-3-bayt BOM-yok; mojibake taramasi 0.
+
 ## v2.2 (24 Agustos 2026)
 
 **Menu-5 URL YONETIMI + duplike merge + sapkin tip fix + TEK-BAT uyumu.**

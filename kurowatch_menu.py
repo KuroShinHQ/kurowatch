@@ -1,6 +1,8 @@
 """
 KUROWATCH - IZLEME KULESI
-Rich TUI Menu v2.1 - BAT_OLUSTURMA_REHBERI standardi (15.10 3-ekran + 12a i18n)
+Rich TUI Menu v2.3 - BAT_OLUSTURMA_REHBERI standardi (15.10 3-ekran + 12a i18n)
+v2.3: ekran-2 KULE AURA v2 (donen huzme + radar kubbe + kirpan gozcu + pencere
+      flicker + deniz ufku radar taramasi/blip flash; programatik SCENE_W canvas).
 v2.1: kule AURA animasyonu (ekran-2) + mini radar chibi ust serit (ekran-3) +
       canli menu (kaizoku v2.1 reader-thread deseni) + TR/EN L10N ([L], default EN).
 Eski kurowatch.bat v1.2 mantigi birebir korunmus; otomasyon arg yolu ayni.
@@ -44,7 +46,7 @@ KW_URL = f"http://localhost:{KW_PORT}"
 WIDTH = min(console.width, 100)  # PANEL-WRAP kurali (15.10 k9): sabit sinir
 
 SUBTITLE = "Izleme Kulesi - Backend/Frontend Orkestrasyon"
-VERSION = "v2.1"
+VERSION = "v2.3"
 NOW = lambda: datetime.now().strftime("%H:%M:%S")
 
 
@@ -234,7 +236,14 @@ def signal_lines(t, rows=2):
 # ---------------------------------------------------------------- KULE AURA (ekran-2 + mini chibi)
 RADAR_PHASES = ["\\|/", "-|-", "/|\\", "-|-"]
 BEACON_PHASES = [".", "o", "*", "o"]
-EYE_PHASES = ["(o.)", "(oo)", "(.o)", "(oo)"]
+EYE_OPEN, EYE_BLINK = "(o o)", "(- -)"
+# donen fener huzmesi: (sol kol, sag kol) uzunlugu — lamba etrafinda donus hissi
+BEAM_PHASES = [(9, 0), (6, 0), (3, 0), (0, 3), (0, 6), (0, 9), (0, 6), (0, 3), (3, 0), (6, 0)]
+STAR_XS = (4, 14, 24, 34, 62, 70, 78)
+STAR_CHR = ("*", "+", ".")
+BLIP_XS = (8, 21, 74, 88)
+SCENE_W = max(min(WIDTH - 2, 96), 60)
+TC = SCENE_W // 2  # kule merkezi sutunu
 
 
 def mini_radar(t):
@@ -247,32 +256,122 @@ def mini_radar(t):
 
 
 def tower_scene(f):
-    """Ekran-2 AURA'si: izleme kulesi + donen radar + gozcu chibi (AURA OKUNABILIRLIGI: satir bazli, okunur)."""
-    radar = RADAR_PHASES[f % 4]
-    beacon = BEACON_PHASES[f % 4]
-    eyes = EYE_PHASES[f % 4]
-    lines = []
-    ln = Text()
-    ln.append(" " * 20)
-    ln.append(beacon, style="bold magenta")
-    lines.append(ln)
-    ln = Text()
-    ln.append(" " * 8 + "â•²" + " " * 10)
-    ln.append(radar, style="bold cyan")
-    ln.append(" " * 10 + "â•±", style="bold cyan")
-    lines.append(ln)
-    lines.append(Text(" " * 9 + "â•²" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â•±", style="cyan"))
-    lines.append(Text(" " * 15 + "â”Œ" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€" + "â”", style="green"))
-    ln = Text()
-    ln.append(" " * 15 + "â”‚" + "  ")
-    ln.append(eyes, style="bold white")
-    ln.append("   " + "â”‚", style="green")
-    lines.append(ln)
-    lines.append(Text(" " * 15 + "â””" + "â”€â”€â”€â”€â”€â”€â”€â”€â”€" + "â”˜", style="green"))
-    lines.append(Text(" " * 14 + "â•±" + "â–”" * 11 + "â•²", style="green"))
-    lines.append(Text(" " * 13 + "â–ˆ" * 15, style="bold green"))
-    lines.append(Text(" " * 12 + "â–ˆ" * 17, style="green"))
-    return lines
+    """Ekran-2 AURA v2: izleme kulesi — donen huzme, donen radar kubbesi, kirpan
+    gozcu, yanan pencereler ve deniz ufku radar taramasi (blip flash'li).
+    Tum satirlar programatik SCENE_W genisliginde (deep-smoke assert uyumlu)."""
+    q = f % 4
+    bl, br = BEAM_PHASES[f % len(BEAM_PHASES)]
+
+    def render(m):
+        t = Text()
+        for x in range(SCENE_W):
+            ch, st = m.get(x, (" ", None))
+            t.append(ch, style=st)
+        return t
+
+    def place(m, col, s, st):
+        for i, ch in enumerate(s):
+            m[col + i] = (ch, st)
+
+    def span(col_l, col_r, ch, st, m):
+        for x in range(col_l, col_r + 1):
+            m[x] = (ch, st)
+
+    # gokyuzu: parildayan yildizlar + hilal
+    sky = [{}, {}]
+    for si, sx in enumerate(STAR_XS):
+        if sx < SCENE_W - 12:
+            sky[si % 2][sx] = (STAR_CHR[(sx + f) % 3], "dim white")
+    sky[0][SCENE_W - 8] = ("\u263e", "bold yellow")
+    rows = [render(sky[0]), render(sky[1])]
+
+    # donen huzme + lamba
+    m = {}
+    if bl:
+        place(m, TC - bl, "\u2500" * bl, "bold cyan")
+    if br:
+        place(m, TC + 1, "\u2500" * br, "bold cyan")
+    m[TC] = ("\u25c9", "bold magenta")
+    rows.append(render(m))
+
+    # direk + kubbe (icinde donen radar)
+    rows.append(render({TC: ("\u2502", "cyan")}))
+    m = {}
+    place(m, TC - 3, "\u256d" + "\u2500" * 6 + "\u256e", "cyan")
+    rows.append(render(m))
+    m = {}
+    m[TC - 3] = ("\u2502", "cyan")
+    m[TC + 3] = ("\u2502", "cyan")
+    place(m, TC - 1, RADAR_PHASES[q], "bold cyan")
+    rows.append(render(m))
+
+    # balkon + gozcu (arada kirpar)
+    m = {}
+    place(m, TC - 7, "\u250c" + "\u2500" * 13 + "\u2510", "green")
+    rows.append(render(m))
+    m = {}
+    m[TC - 7] = ("\u2502", "green")
+    m[TC + 7] = ("\u2502", "green")
+    place(m, TC - 2, EYE_BLINK if f % 8 == 7 else EYE_OPEN, "bold white")
+    rows.append(render(m))
+
+    # korkuluk
+    m = {}
+    m[TC - 7] = ("\u2502", "green")
+    m[TC + 7] = ("\u2502", "green")
+    span(TC - 6, TC + 6, "\u254c", "dim green", m)
+    rows.append(render(m))
+
+    # kat + yanip sonen pencereler
+    m = {}
+    m[TC - 7] = ("\u2502", "green")
+    m[TC + 7] = ("\u2502", "green")
+    for wi in range(4):
+        wx = TC - 6 + wi * 3
+        lit = ((f >> 1) + wi) % 3 != 0
+        place(m, wx, "[*]" if lit else "[ ]", "yellow" if lit else "dim green")
+    rows.append(render(m))
+
+    # govde dokusu + genis temel
+    m = {}
+    m[TC - 7] = ("\u2502", "green")
+    m[TC + 7] = ("\u2502", "green")
+    span(TC - 6, TC + 6, "\u2593", "green", m)
+    rows.append(render(m))
+    m = {}
+    m[TC - 8] = ("\u2571", "bold green")
+    m[TC + 8] = ("\u2572", "bold green")
+    span(TC - 7, TC + 7, "\u2588", "bold green", m)
+    rows.append(render(m))
+
+    # deniz ufku: radar taramasi + blip flash
+    head = int((f * 3) % SCENE_W)
+    m = {}
+    for x in range(SCENE_W):
+        d = (x - head) % SCENE_W
+        if d == 0:
+            m[x] = ("\u25a0", "bold white")
+        elif d < 5:
+            m[x] = ("'", "bold green")
+        elif d < 14:
+            m[x] = ("\u2500", "green")
+        elif any(abs(x - b) <= 1 for b in BLIP_XS if b < SCENE_W - 2):
+            flashed = (head - x) % SCENE_W < 40
+            m[x] = ("\u25c6", "magenta") if flashed else ("\u00b7", "dim magenta")
+        else:
+            m[x] = ("~", "dim cyan")
+    rows.append(render(m))
+
+    # dalga satiri
+    m = {}
+    for x in range(SCENE_W):
+        if (x + (f >> 1)) % 7 == 0:
+            m[x] = ("^", "cyan")
+        elif x % 5 == 2:
+            m[x] = ("~", "dim cyan")
+    rows.append(render(m))
+
+    return rows
 
 
 def _skip_pressed():
@@ -293,7 +392,7 @@ def boot_animation():
 
     with Live(console=console, refresh_per_second=10) as live:
         # FAZ A: kule sahnesi + wordmark reveal
-        n_frames = 12
+        n_frames = 18
         for f in range(n_frames):
             if _skip_pressed():
                 break
@@ -304,7 +403,7 @@ def boot_animation():
             parts.append(Text(""))
             parts.extend(signal_lines(f * 0.5, rows=1))
             live.update(Group(*parts))
-            time.sleep(0.13)
+            time.sleep(0.12)
 
         # FAZ B: kontrol listesi + gercek veriler
         wsl_ip = get_wsl_ip()
