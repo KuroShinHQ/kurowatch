@@ -14,6 +14,8 @@
              ███████████████
 ```
 
+![kurowatch TUI animasyonu](docs/img/readme_demo.gif)
+
 <p align="center">
   <img alt="Status" src="https://img.shields.io/badge/status-v1.2--STABLE%20%2097.6%25%20matched-brightgreen">
   <img alt="License" src="https://img.shields.io/github/license/KuroShinHQ/kurowatch">
