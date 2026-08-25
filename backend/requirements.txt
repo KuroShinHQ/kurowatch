@@ -15,4 +15,4 @@ pywebpush>=2.0.0
 
 # TUI menu (kurowatch_menu.py)
 rich>=13.0
-pyfiglet>=1.7
+pyfiglet>=1.0.0
